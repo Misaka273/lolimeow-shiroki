@@ -200,7 +200,7 @@ function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_
         <div class='email-wrapper'>
             <!-- 邮件头部 -->
             <div class='email-header'>
-                <div class='email-logo'><img src='{$logo_url}' alt='{$your_site_name}' onerror='this.style.display="none"'></div>
+                <div class='email-logo'><img src='{$logo_url}' alt='{$your_site_name}' onerror='this.style.display=\'none\''></div>
                 <h2 class='email-title'>🎉 你的友情链接申请已通过！</h2>
             </div>
             
@@ -382,7 +382,7 @@ function send_friendlink_apply_notification($admin_email, $site_name, $site_url,
         <div class='email-wrapper'>
             <!-- 邮件头部 -->
             <div class='email-header'>
-                <div class='email-logo'><img src='{$logo_url}' alt='{$your_site_name}' onerror='this.style.display="none"'></div>
+                <div class='email-logo'><img src='{$logo_url}' alt='{$your_site_name}' onerror='this.style.display=\'none\''></div>
                 <h2 class='email-title'>📢 你有新的友联申请</h2>
             </div>
             

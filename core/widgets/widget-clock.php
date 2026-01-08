@@ -190,32 +190,20 @@ class widget_clock extends WP_Widget {
 							timeZone: timezone
 						};
 						
-						// 日期格式化选项
-						var dateOptions = {
-							year: 'numeric',
-							month: '2-digit',
-							day: '2-digit',
-							weekday: 'long',
-							timeZone: timezone
-						};
-						
-						// 格式化时间和日期
+						// 直接使用API格式化日期和时间
 						var formattedTime = new Intl.DateTimeFormat('zh-CN', timeOptions).format(now);
-						var formattedDate = new Intl.DateTimeFormat('zh-CN', dateOptions).format(now);
 						
-						// 提取时间部分（HH:MM:SS）
-						var timeParts = formattedTime.match(/(\d{2}):(\d{2}):(\d{2})/);
-						var timeString = timeParts ? timeParts[0] : '';
+						// 分别获取年、月、日和星期
+						var year = now.toLocaleString('zh-CN', { year: 'numeric', timeZone: timezone });
+						var month = now.toLocaleString('zh-CN', { month: '2-digit', timeZone: timezone });
+						var day = now.toLocaleString('zh-CN', { day: '2-digit', timeZone: timezone });
+						var weekday = now.toLocaleString('zh-CN', { weekday: 'long', timeZone: timezone });
 						
-						// 提取日期部分并转换为指定格式（YYYY-MM-DD 星期X）
-						var dateParts = formattedDate.match(/(\d{4})年(\d{2})月(\d{2})日\s*(.{2})/);
-						var dateString = '';
-						if (dateParts) {
-							dateString = dateParts[1] + '-' + dateParts[2] + '-' + dateParts[3] + ' ' + dateParts[4];
-						}
+						// 组合成所需格式：YYYY-MM-DD 星期X
+						var dateString = year + '-' + month + '-' + day + ' ' + weekday;
 						
 						// 更新显示
-						timeElement.innerHTML = timeString;
+						timeElement.innerHTML = formattedTime;
 						dateElement.innerHTML = dateString;
 					}
 					

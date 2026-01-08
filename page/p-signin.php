@@ -349,6 +349,7 @@ if (is_user_logged_in()){
             margin-bottom: 1.5rem;
             width: 100%;
             max-width: 380px;
+            min-height: 60px;
         }
         .floating-label-group .form-control {
             height: 3.5rem;
@@ -360,23 +361,25 @@ if (is_user_logged_in()){
             transition: all 0.3s ease;
             width: 100%;
             box-sizing: border-box;
+            position: relative;
+            z-index: 1;
             /* 隐藏浏览器默认的密码显示按钮 */
             -moz-appearance: none;
             -webkit-appearance: none;
         }
-        
+
         /* 强制隐藏浏览器默认的密码显示按钮 */
         input[type="password"]::-ms-reveal {
             display: none;
         }
-        
+
         input[type="password"]::-webkit-clear-button,
         input[type="password"]::-webkit-inner-spin-button,
         input[type="password"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-        
+
         /* 确保显示密码按钮始终可见 */
         .toggle-password {
             z-index: 10 !important;
@@ -384,12 +387,21 @@ if (is_user_logged_in()){
             align-items: center !important;
             justify-content: center !important;
             opacity: 0.7 !important;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text);
+            transition: opacity 0.3s ease;
         }
-        
+
         .toggle-password:hover {
             opacity: 1 !important;
         }
-        
+
         .toggle-password:focus {
             outline: none !important;
             opacity: 1 !important;
@@ -414,7 +426,11 @@ if (is_user_logged_in()){
             width: auto;
             height: auto;
             font-size: 1rem;
-            border-radius: 4px;
+            border-radius: 0;
+            background: transparent;
+            box-sizing: border-box;
+            line-height: 1.2;
+            font-weight: 500;
         }
         .floating-label-group label::after {
             content: attr(data-default);
@@ -428,19 +444,76 @@ if (is_user_logged_in()){
             font-size: 0.75rem;
             transform: translateY(-50%);
             color: var(--primary);
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(4px);
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
         .floating-label-group .form-control:focus ~ label::after,
         .floating-label-group .form-control:not(:placeholder-shown) ~ label::after {
             content: attr(data-active);
         }
-        /* 表单验证反馈 */
+        /* 表单验证反馈 - 避免影响输入框布局 */
         .invalid-feedback {
             color: #dc3545;
             font-size: 0.875em;
-            margin-top: 0.25rem;
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            z-index: 3;
+            background: transparent;
+            box-sizing: border-box;
+            text-align: left;
+        }
+        /* 表单消息样式 - 避免影响输入框布局 */
+        #login-message,
+        #signup-message {
+            width: 100%;
+            max-width: 380px;
+            margin: 10px 0;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 10;
+        }
+        /* 验证码按钮样式 - 修复被盖住问题 */
+        .floating-label-group .Acquire_box {
+            position: absolute !important;
+            right: 10px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            z-index: 10 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .floating-label-group .Acquire {
+            display: inline-block !important;
+            background: var(--primary) !important;
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 20px !important;
+            cursor: pointer !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            border: none !important;
+            line-height: 1 !important;
+            height: auto !important;
+            min-height: 32px !important;
+            box-sizing: border-box !important;
+        }
+
+        /* 确保验证码输入框有足够的右侧内边距 */
+        .floating-label-group input[name="verificationcode"] {
+            padding-right: 130px !important;
         }
         /* 按钮样式优化 - 统一居中样式 */
         .btn {
@@ -882,6 +955,8 @@ if (is_user_logged_in()){
         }
 
     </style>
+    <!-- 🌟 移动端专用样式文件 -->
+    <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/mobile-signin-shiroki.css">
 </head>
 
 <body>
@@ -917,7 +992,7 @@ if (is_user_logged_in()){
                      </span>
                   </p>
                   <?php wp_nonce_field('user_login', 'login_nonce'); ?>
-                  <button class="btn" type="submit" name="login_submit">Go</button>
+                  <button class="btn" type="submit" name="login_submit"><span>Go</span></button>
                   <div id="login-message" class="mt-3"></div>
                   <div class="mt-3">
                      <a href="<?php echo boxmoe_reset_password_link_page(); ?>" class="text-primary text-decoration-none">忘记密码?</a>
@@ -971,7 +1046,7 @@ if (is_user_logged_in()){
                      </span>
                   </p>
                   <input type="hidden" name="signup_nonce" value="<?php echo wp_create_nonce('user_signup'); ?>">
-                  <button class="btn" type="submit" name="signup_submit">Go</button>
+                  <button class="btn" type="submit" name="signup_submit"><span>Go</span></button>
                   <div id="signup-message" class="mt-3"></div>
                </form>
             </div>
@@ -1278,8 +1353,164 @@ if (is_user_logged_in()){
                   btn.textContent = 'Go';
               });
           });
+          
+          // 📱 移动端480x690尺寸专用功能
+          function initMobileFeatures() {
+              // 检测是否为480x690尺寸
+              const isMobile480x690 = window.innerWidth === 480 && window.innerHeight === 690;
+              
+              if (isMobile480x690) {
+                  console.log('🌟 移动端480x690模式激活');
+                  
+                  // 🌟 增强左右切换动画
+                  const signInBtn = document.getElementById('sign-in-btn');
+                  const signUpBtn = document.getElementById('sign-up-btn');
+                  const container = document.querySelector('.container');
+                  
+                  if (signInBtn && signUpBtn && container) {
+                      // 移除原有的点击事件监听器，防止重复绑定
+                      signInBtn.removeEventListener('click', mobileSignInHandler);
+                      signUpBtn.removeEventListener('click', mobileSignUpHandler);
+                      
+                      // 绑定移动端专用事件处理器
+                      signInBtn.addEventListener('click', mobileSignInHandler);
+                      signUpBtn.addEventListener('click', mobileSignUpHandler);
+                  }
+                  
+                  // 🌟 注册表单滚动增强
+                  enhanceRegistrationFormScroll();
+                  
+                  // 🌟 版权信息位置优化
+                  optimizeCopyrightPosition();
+              }
+          }
+          
+          // 🌟 移动端登录按钮处理器
+          function mobileSignInHandler() {
+              const container = document.querySelector('.container');
+              if (container) {
+                  // 🌟 添加球体动画效果
+                  container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                  container.classList.remove('sign-up-mode');
+                  
+                  // 🌟 球体脉冲动画
+                  const ball = container.querySelector('::before');
+                  if (ball) {
+                      container.style.setProperty('--ball-scale', '1.05');
+                      setTimeout(() => {
+                          container.style.setProperty('--ball-scale', '1');
+                      }, 400);
+                  }
+                  
+                  // 添加切换动画完成后的回调
+                  setTimeout(() => {
+                      console.log('📱 切换到登录模式');
+                  }, 800);
+          }
+          }
+          
+          // 🌟 移动端注册按钮处理器
+          function mobileSignUpHandler() {
+              const container = document.querySelector('.container');
+              if (container) {
+                  // 🌟 添加球体动画效果
+                  container.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                  container.classList.add('sign-up-mode');
+                  
+                  // 🌟 球体脉冲动画
+                  const ball = container.querySelector('::before');
+                  if (ball) {
+                      container.style.setProperty('--ball-scale', '1.05');
+                      setTimeout(() => {
+                          container.style.setProperty('--ball-scale', '1');
+                      }, 400);
+                  }
+                  
+                  // 添加切换动画完成后的回调
+                  setTimeout(() => {
+                      console.log('📱 切换到注册模式');
+                  }, 800);
+              }
+          }
+          
+          // 🌟 注册表单滚动增强
+          function enhanceRegistrationFormScroll() {
+              const signUpForm = document.querySelector('.sign-up-form');
+              if (signUpForm) {
+                  // 确保注册表单可以独立滚动
+                  signUpForm.style.overflowY = 'auto';
+                  signUpForm.style.webkitOverflowScrolling = 'touch'; // iOS平滑滚动
+                  
+                  // 监听表单高度变化
+                  const observer = new MutationObserver(() => {
+                      adjustFormScroll();
+                  });
+                  
+                  observer.observe(signUpForm, {
+                      childList: true,
+                      subtree: true,
+                      attributes: true
+                  });
+                  
+                  // 初始调整
+                  setTimeout(adjustFormScroll, 100);
+              }
+          }
+          
+          // 🌟 调整表单滚动
+          function adjustFormScroll() {
+              const signUpForm = document.querySelector('.sign-up-form');
+              const formsContainer = document.querySelector('.forms-container');
+              
+              if (signUpForm && formsContainer) {
+                  const formHeight = signUpForm.scrollHeight;
+                  const containerHeight = formsContainer.clientHeight;
+                  
+                  if (formHeight > containerHeight) {
+                      // 如果表单内容超出容器高度，启用滚动
+                      signUpForm.style.paddingBottom = '20px';
+                      console.log('📱 注册表单滚动已启用');
+                  }
+              }
+          }
+          
+          // 🌟 版权信息位置优化
+          function optimizeCopyrightPosition() {
+              const copyright = document.querySelector('.theme-copyright');
+              if (copyright) {
+                  // 确保版权信息始终位于底部
+                  copyright.style.position = 'fixed';
+                  copyright.style.bottom = '10px';
+                  copyright.style.left = '50%';
+                  copyright.style.transform = 'translateX(-50%)';
+                  copyright.style.zIndex = '9999';
+                  
+                  // 监听窗口大小变化
+                  window.addEventListener('resize', () => {
+                      if (window.innerWidth === 480 && window.innerHeight === 690) {
+                          copyright.style.display = 'block';
+                      }
+                  });
+                  
+                  console.log('📱 版权信息位置已优化');
+              }
+          }
+          
+          // 🌟 监听窗口大小变化
+          let resizeTimer;
+          window.addEventListener('resize', () => {
+              clearTimeout(resizeTimer);
+              resizeTimer = setTimeout(() => {
+                  initMobileFeatures();
+              }, 250);
+          });
+          
+          // 🌟 页面加载完成后初始化移动端功能
+          setTimeout(initMobileFeatures, 100);
       });
     </script>
+    <!-- 📱 移动端触摸滑动脚本 -->
+    <script src="<?php echo get_template_directory_uri(); ?>/assets/js/mobile-touch-scroll-shiroki.js"></script>
     <!-- 🌌 引入粒子效果脚本 -->
     <script src="<?php echo get_template_directory_uri(); ?>/assets/js/login-particles.js"></script>
 </body></html>

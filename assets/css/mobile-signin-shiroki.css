@@ -1,0 +1,791 @@
+/* 🌟 移动端登录页面专用样式 */
+
+@media screen and (max-width: 870px) {
+    /* 🌆 移动端整体布局重置 */
+    html, body, main {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        overflow: hidden !important;
+        position: fixed !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 🌟 移动端容器重新布局 */
+    .container {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: rgba(202, 214, 255, 0.6) !important;
+        backdrop-filter: blur(20px) !important;
+    }
+    
+    /* 🌙 正圆形顶部覆盖 - 完全覆盖顶部 */
+    .container::before {
+        content: "" !important;
+        position: absolute !important;
+        width: 120% !important;
+        height: 40% !important;
+        top: -15% !important;
+        left: 50% !important;
+        transform: translateX(-50%) scale(var(--ball-scale, 1)) !important;
+        background-image: linear-gradient(-45deg, #1c5fd1 0%, #1ec3fa 100%) !important;
+        border-radius: 0 0 50% 50% / 0 0 100% 100% !important;
+        z-index: 10 !important;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 
+            0 8px 32px rgba(28, 95, 209, 0.3) !important,
+            0 16px 64px rgba(28, 95, 209, 0.2) !important,
+            inset 0 2px 4px rgba(255, 255, 255, 0.2) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    /* 🌟 球体光晕效果 - 适配半圆形状 */
+    .container::after {
+        content: "" !important;
+        position: absolute !important;
+        width: 130% !important;
+        height: 45% !important;
+        top: -18% !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        background: radial-gradient(circle, rgba(89, 149, 253, 0.1) 0%, transparent 70%) !important;
+        border-radius: 0 0 50% 50% / 0 0 100% 100% !important;
+        z-index: 9 !important;
+        pointer-events: none !important;
+    }
+    
+    /* 🌟 注册模式下的球体位置 - 保持完全覆盖效果 */
+    .container.sign-up-mode::before {
+        transform: translateX(-50%) scale(var(--ball-scale, 1)) !important;
+        left: 50% !important;
+        top: -15% !important;
+    }
+    
+    /* 🌟 面板容器重新布局 - 文字精确居中到圆形中心 */
+    .panels-container {
+        position: absolute !important;
+        top: 60px !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        z-index: 11 !important;
+        overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 🌟 左右面板水平排列 - 居中显示 */
+    .panel {
+        position: absolute !important;
+        width: 100% !important;
+        height: 100px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 🌟 左面板位置 - 居中显示 */
+    .left-panel {
+        left: 0 !important;
+        top: 0 !important;
+        pointer-events: all !important;
+    }
+    
+    /* 🌟 右面板位置 - 居中显示 */
+    .right-panel {
+        right: 0 !important;
+        top: 0 !important;
+        pointer-events: all !important;
+    }
+    
+    /* 🌟 面板内容样式 - 文字完全居中到圆形中心 */
+    .panel .content {
+        padding: 0 20px !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        text-align: center !important;
+        position: relative !important;
+        z-index: 12 !important;
+        transform: translateY(-25px) !important;
+    }
+    
+    /* 🌟 面板标题 - 适配球体效果 */
+    .panel h3 {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #fff !important;
+        margin: 0 0 4px 0 !important;
+        line-height: 1.2 !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+        z-index: 13 !important;
+    }
+    
+    /* 🌟 面板段落样式 - 紧凑布局 */
+    .panel p {
+        font-size: 13px !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        margin: 4px 0 8px 0 !important;
+        line-height: 1.4 !important;
+        max-width: 320px !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        z-index: 13 !important;
+    }
+    
+    /* 🌟 面板按钮 - 紧凑布局 */
+    .panel .btn.transparent {
+        margin: 4px 0 0 0 !important;
+        padding: 8px 22px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        border: 1px solid #fff !important;
+        border-radius: 20px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: #fff !important;
+        cursor: pointer !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        width: auto !important;
+        height: auto !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+        backdrop-filter: blur(10px) !important;
+        z-index: 13 !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+    
+    .panel .btn.transparent::before {
+        content: "" !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .panel .btn.transparent:hover {
+        background: rgba(255, 255, 255, 0.2) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .panel .btn.transparent:hover::before {
+        left: 100% !important;
+    }
+    
+    /* 🌟 面板图片隐藏 */
+    .panel .image {
+        display: none !important;
+    }
+    
+    /* 🌟 左右面板样式统一 - 确保文字都在圆形中心 */
+    .left-panel,
+    .right-panel {
+        opacity: 1 !important;
+        transform: translateX(0) !important;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .left-panel .content,
+    .right-panel .content {
+        transform: translateY(-25px) !important;
+        opacity: 1 !important;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    /* 🌟 左右切换动画 - 适配居中布局 */
+    .container .left-panel {
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+    
+    .container .right-panel {
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+    
+    .container .right-panel .content {
+        opacity: 0 !important;
+    }
+    
+    .container.sign-up-mode .left-panel {
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+    
+    .container.sign-up-mode .right-panel {
+        opacity: 1 !important;
+        pointer-events: all !important;
+    }
+    
+    .container.sign-up-mode .right-panel .content {
+        opacity: 1 !important;
+    }
+    
+    /* 🌟 确保两个面板内容样式完全一致 */
+    .left-panel .content,
+    .right-panel .content {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    
+    .left-panel h3,
+    .right-panel h3 {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #fff !important;
+        margin: 0 0 4px 0 !important;
+        line-height: 1.2 !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .left-panel p,
+    .right-panel p {
+        font-size: 13px !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        margin: 4px 0 8px 0 !important;
+        line-height: 1.4 !important;
+        max-width: 320px !important;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .left-panel .btn.transparent,
+    .right-panel .btn.transparent {
+        margin: 4px 0 0 0 !important;
+        padding: 8px 22px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+    }
+    
+    /* 🌟 表单容器重新布局 - 适配半圆顶部 */
+    .forms-container {
+        position: absolute !important;
+        top: 220px !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: calc(100% - 260px) !important;
+        overflow: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 7 !important;
+    }
+    
+    /* 🌟 登录注册表单切换 - 适配新布局 */
+    .signin-signup {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 200% !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transform: translateX(0) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 🌟 表单样式 - 适配新布局 */
+    form {
+        width: 50% !important;
+        height: 100% !important;
+        padding: 20px !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        position: relative !important;
+        box-sizing: border-box !important;
+        background: rgba(255, 255, 255, 0.8) !important;
+        backdrop-filter: blur(10px) !important;
+        scrollbar-width: thin !important;
+        scrollbar-color: rgba(89, 149, 253, 0.3) transparent !important;
+    }
+    
+    /* 🌟 表单标题样式 - 增强对比度 */
+    form .title {
+        font-size: 20px !important;
+        margin: 0 0 18px 0 !important;
+        color: #2c3e50 !important;
+        font-weight: 600 !important;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    /* 🌟 浮动标签组 - 增强可见性 */
+    .floating-label-group {
+        margin-bottom: 24px !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        position: relative !important;
+        display: block !important;
+        min-height: 54px !important;
+    }
+
+    .floating-label-group .form-control {
+        height: 50px !important;
+        padding: 16px 14px !important;
+        font-size: 15px !important;
+        line-height: 1.2 !important;
+        border-radius: 8px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(89, 149, 253, 0.2) !important;
+        color: #2c3e50 !important;
+        display: block !important;
+        position: relative !important;
+        z-index: 1 !important;
+        box-sizing: border-box !important;
+    }
+
+    .floating-label-group label {
+        font-size: 15px !important;
+        color: #666 !important;
+        background: transparent !important;
+        padding: 0 8px !important;
+        position: absolute !important;
+        left: 14px !important;
+        top: 50% !important;
+        transform: translateY(-55%) !important;
+        transition: all 0.3s ease !important;
+        z-index: 2 !important;
+        pointer-events: none !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        height: auto !important;
+        line-height: 1.2 !important;
+        font-weight: 500 !important;
+        border-radius: 0 !important;
+    }
+
+    /* 🌟 激活状态样式 - 增强对比度 */
+    .floating-label-group .form-control:focus ~ label,
+    .floating-label-group .form-control:not(:placeholder-shown) ~ label {
+        color: #1c5fd1 !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        font-size: 12px !important;
+        top: 0 !important;
+        transform: translateY(-50%) !important;
+        left: 10px !important;
+        padding: 4px 6px !important;
+        border-radius: 4px !important;
+    }
+
+    /* 🌟 激活状态样式 - 增强对比度 */
+    .floating-label-group .form-control:focus {
+        background: rgba(255, 255, 255, 0.98) !important;
+        box-shadow: 0 0 0 3px rgba(89, 149, 253, 0.2) !important;
+        border-color: #1c5fd1 !important;
+    }
+
+    .floating-label-group .form-control:focus ~ label,
+    .floating-label-group .form-control:not(:placeholder-shown) ~ label {
+        color: #1c5fd1 !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        font-size: 12px !important;
+        top: 0 !important;
+        transform: translateY(-50%) !important;
+        left: 10px !important;
+        padding: 2px 6px !important;
+    }
+
+    /* 🌟 验证码按钮样式 - 修复被盖住问题 */
+    .floating-label-group .Acquire_box {
+        position: absolute !important;
+        right: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        z-index: 10 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .floating-label-group .Acquire {
+        display: inline-block !important;
+        background: var(--primary) !important;
+        color: white !important;
+        padding: 8px 16px !important;
+        border-radius: 20px !important;
+        cursor: pointer !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        border: none !important;
+        line-height: 1 !important;
+        height: auto !important;
+        min-height: 32px !important;
+        box-sizing: border-box !important;
+    }
+
+    .floating-label-group .Acquire:hover {
+        background: var(--primary-dark) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* 🌟 确保验证码输入框有足够的右侧内边距 */
+    .floating-label-group input[name="verificationcode"] {
+        padding-right: 130px !important;
+    }
+
+    /* 🌟 密码显示/隐藏按钮样式 */
+    .floating-label-group .toggle-password {
+        position: absolute !important;
+        right: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer !important;
+        color: var(--text) !important;
+        opacity: 0.7 !important;
+        transition: opacity 0.3s ease !important;
+        z-index: 10 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 16px !important;
+    }
+
+    /* 🌟 错误信息样式 - 避免影响输入框布局 */
+    .invalid-feedback {
+        position: absolute !important;
+        bottom: -20px !important;
+        left: 0 !important;
+        width: 100% !important;
+        font-size: 12px !important;
+        color: #dc3545 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 3 !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+        text-align: left !important;
+    }
+
+    /* 🌟 表单消息样式 - 避免影响输入框布局 */
+    #login-message,
+    #signup-message {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 10px 0 !important;
+        padding: 8px 12px !important;
+        border-radius: 6px !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+
+    /* 🌟 确保错误信息不影响表单整体高度 */
+    form {
+        align-items: center !important;
+        justify-content: flex-start !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        position: relative !important;
+    }
+    
+    /* 🌟 Webkit浏览器滚动条样式 */
+    form::-webkit-scrollbar {
+        width: 4px !important;
+    }
+    
+    form::-webkit-scrollbar-track {
+        background: transparent !important;
+    }
+    
+    form::-webkit-scrollbar-thumb {
+        background: rgba(89, 149, 253, 0.3) !important;
+        border-radius: 2px !important;
+    }
+    
+    form::-webkit-scrollbar-thumb:hover {
+        background: rgba(89, 149, 253, 0.5) !important;
+    }
+    
+    /* 🌟 表单标题 */
+    form .title {
+        font-size: 18px !important;
+        margin: 0 0 15px 0 !important;
+        color: #444 !important;
+        font-weight: 600 !important;
+    }
+    
+    /* 🌟 Logo容器 */
+    .logo-container {
+        margin: 0 0 10px 0 !important;
+    }
+    
+    .logo {
+        max-width: 80px !important;
+        height: auto !important;
+    }
+    
+    /* 🌟 按钮样式 - 修复被压扁问题 */
+    .btn {
+        width: 160px !important;
+        height: 44px !important;
+        font-size: 16px !important;
+        margin: 12px 0 !important;
+        border-radius: 22px !important;
+        background-color: #5995fd !important;
+        color: #fff !important;
+        border: none !important;
+        outline: none !important;
+        text-transform: uppercase !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        position: relative !important;
+        overflow: hidden !important; /* 确保扫光效果在按钮内部 */
+        padding: 0 20px !important;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        box-shadow: 0 4px 12px rgba(89, 149, 253, 0.3) !important;
+    }
+    
+    /* 🌟 按钮扫光效果 */
+    .btn::before {
+        content: "" !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: -100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(255, 255, 255, 0.4) 50%, 
+            transparent 100%) !important;
+        transition: all 0.6s ease !important;
+        z-index: 0 !important;
+        transform: skewX(-20deg) !important;
+    }
+    
+    /* 🌟 按钮悬停效果 - 显示扫光 */
+    .btn:hover {
+        background-color: #4d84e2 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 16px rgba(89, 149, 253, 0.4) !important;
+    }
+    
+    /* 🌟 按钮悬停 - 扫光动画 */
+    .btn:hover::before {
+        left: 100% !important; /* 扫光从左到右移动 */
+    }
+    
+    /* 🌟 按钮激活效果 */
+    .btn:active {
+        transform: translateY(0) scale(0.98) !important;
+        box-shadow: 0 2px 8px rgba(89, 149, 253, 0.3) !important;
+    }
+    
+    /* 🌟 确保按钮文本在扫光上方 */
+    .btn span {
+        position: relative !important;
+        z-index: 1 !important;
+        display: inline-block !important;
+    }
+    
+    /* 🌟 复选框文本 */
+    .social_text {
+        margin: 8px 0 !important;
+    }
+    
+    .agree_text {
+        font-size: 11px !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* 🌟 表单切换 */
+    .container.sign-up-mode .signin-signup {
+        transform: translateX(-50%) !important;
+    }
+    
+    /* 🌟 注册表单独立滚动 */
+    .sign-up-form {
+        overflow-y: auto !important;
+        padding-bottom: 20px !important;
+    }
+    
+    /* 🌟 版权信息底部定位 - 适配新布局 */
+    .theme-copyright {
+        position: fixed !important;
+        bottom: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100% - 20px) !important;
+        max-width: 460px !important;
+        text-align: center !important;
+        font-size: 10px !important;
+        color: rgba(0, 0, 0, 0.6) !important;
+        z-index: 9999 !important;
+        line-height: 1.4 !important;
+        padding: 6px 10px !important;
+        box-sizing: border-box !important;
+        background: rgba(255, 255, 255, 0.6) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(15px) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    }
+    
+    .theme-copyright p {
+        margin: 2px 0 !important;
+    }
+    
+    .theme-copyright a {
+        color: #1a5fb4 !important;
+        text-decoration: none !important;
+    }
+    
+    /* 🌙 暗色模式适配 */
+    [data-bs-theme="dark"] .theme-copyright {
+        color: rgba(255, 255, 255, 0.6) !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    [data-bs-theme="dark"] .theme-copyright a {
+        color: #6e9eff !important;
+    }
+    
+    /* 🌟 粒子效果隐藏 */
+    #particles-js {
+        display: none !important;
+    }
+    
+    /* 🌟 背景优化 - 适配半圆顶部 */
+    body {
+        background: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 100%) !important;
+        background-image: none !important;
+        background-size: 100% 100% !important;
+        background-attachment: fixed !important;
+    }
+    
+    /* 🌟 整体容器优化 */
+    .container {
+        background: rgba(255, 255, 255, 0.4) !important;
+        backdrop-filter: blur(25px) !important;
+    }
+    
+    /* 🌟 增强按钮点击反馈 */
+    .btn:active {
+        transform: scale(0.96) !important;
+        transition: transform 0.1s ease !important;
+    }
+    
+    /* 🌟 表单元素焦点优化 */
+    input:focus,
+    button:focus {
+        outline: 2px solid rgba(89, 149, 253, 0.3) !important;
+        outline-offset: 2px !important;
+    }
+    
+    /* 🌟 滚动条优化 */
+    form::-webkit-scrollbar-thumb {
+        background: rgba(89, 149, 253, 0.4) !important;
+        border-radius: 2px !important;
+        transition: background 0.3s ease !important;
+    }
+    
+    form::-webkit-scrollbar-thumb:hover {
+        background: rgba(89, 149, 253, 0.6) !important;
+    }
+    
+    /* 🌟 预加载图片隐藏 */
+    #bg-preloader {
+        display: none !important;
+    }
+    
+    /* 🌟 小屏幕高度适配 */
+    @media screen and (max-height: 790px) {
+        /* 调整表单容器顶部位置和高度，确保内容溢出 */
+        .forms-container {
+            top: 180px !important;
+            height: 360px !important;
+            overflow: hidden !important;
+            max-height: calc(100% - 220px) !important;
+        }
+        
+        /* 确保表单容器的子元素高度适应 */
+        .signin-signup {
+            height: 100% !important;
+        }
+        
+        /* 确保表单可以独立滚动 */
+        form {
+            height: 100% !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding-bottom: 40px !important;
+        }
+        
+        /* 强制显示滚动条轨道，增强用户体验 */
+        form::-webkit-scrollbar {
+            width: 6px !important;
+            display: block !important;
+        }
+        
+        /* 增强滚动条可见性 */
+        form::-webkit-scrollbar-track {
+            background: rgba(89, 149, 253, 0.1) !important;
+            border-radius: 3px !important;
+        }
+        
+        form::-webkit-scrollbar-thumb {
+            background: rgba(89, 149, 253, 0.6) !important;
+            border-radius: 3px !important;
+            display: block !important;
+        }
+        
+        /* 确保Firefox浏览器也显示滚动条 */
+        form {
+            scrollbar-width: thin !important;
+            scrollbar-color: rgba(89, 149, 253, 0.6) rgba(89, 149, 253, 0.1) !important;
+        }
+        
+        /* 注册表单特殊处理 */
+        .sign-up-form {
+            overflow-y: auto !important;
+            padding-bottom: 50px !important;
+        }
+    }
+}

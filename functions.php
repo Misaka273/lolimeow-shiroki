@@ -1222,6 +1222,44 @@ function lolimeow_rename_wp_fastest_cache_menu() {
         }
     }
 }
+
+// 🚀 添加页面缓存头设置，解决缓存检测问题
+function shiroki_add_cache_headers() {
+    // 只对前端页面添加缓存头，排除管理员页面和登录页面
+    if (!is_admin() && !shiroki_is_login() && !shiroki_is_logout()) {
+        // 设置Cache-Control头
+        header('Cache-Control: public, max-age=3600'); // ◀️ 缓存1小时
+        
+        // 设置Expires头
+        header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 3600) . ' GMT');
+        
+        // 设置Last-Modified头
+        $last_modified = get_lastpostmodified('GMT');
+        if ($last_modified) {
+            header('Last-Modified: ' . $last_modified . ' GMT');
+        }
+        
+        // 设置ETag头
+        $etag = md5(get_bloginfo('name') . $last_modified);
+        header('ETag: "' . $etag . '"');
+        
+        // 添加自定义缓存启用标识
+        header('X-Cache-Enabled: true');
+    }
+}
+add_action('send_headers', 'shiroki_add_cache_headers');
+
+// 🔧 辅助函数：检查是否为登录页面
+function shiroki_is_login() {
+    return strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false && 
+           (strpos($_SERVER['REQUEST_URI'], 'action=logout') === false);
+}
+
+// 🔧 辅助函数：检查是否为注销页面
+function shiroki_is_logout() {
+    return strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false && 
+           strpos($_SERVER['REQUEST_URI'], 'action=logout') !== false;
+}
 add_action('admin_menu', 'lolimeow_rename_wp_fastest_cache_menu', 999);
 
 // 🎯 修改WP-Optimize插件菜单名称

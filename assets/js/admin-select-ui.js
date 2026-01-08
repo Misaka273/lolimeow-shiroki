@@ -146,4 +146,13 @@ jQuery(document).ready(function($) {
     $(document).ajaxComplete(function() {
         setTimeout(initBoxmoeSelect, 500);
     });
+    
+    // 监听 WordPress 小部件事件 (针对动态添加/更新的小部件)
+    $(document).on('widget-added widget-updated', function(e, widget) {
+        // 延迟执行，确保小部件内容已完全加载
+        setTimeout(function() {
+            // 在当前小部件内重新初始化下拉框
+            initBoxmoeSelect();
+        }, 200);
+    });
 });
