@@ -15,32 +15,40 @@ $options[] = array(
     'icon' => 'dashicons-admin-comments',
     'type' => 'heading');     
 
-    $options[] = array(
-        'group' => 'start',
-        'group_title' => '评论开关设置',
-        'name' => __('全站评论关闭', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_comment_switch',
-        'type' => "checkbox",
-        'std' => false,
-        );
-    $options[] = array(
-        'name' => __('仅登录评论开关', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_comment_login_switch',
-        'type' => "checkbox",
-        'std' => false,
-        );
-    $options[] = array(
-        'name' => __('禁止纯英文评论', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_comment_english_switch',
-        'type' => "checkbox",
-        'std' => false,
-        );
-    $options[] = array(
-        'group' => 'end',
-        'name' => __('博主标签自定义', 'ui_boxmoe_com'),
-        'id' => 'boxmoe_comment_blogger_tag',
-        'type' => "text",
-        'std' => '博主',
-        'desc' => __('博主标签，留空则显示博主', 'ui_boxmoe_com'),
-        'class' => 'mini',
-        ); 
+// 💬 评论开关设置分组
+$options[] = array(
+    'group' => 'start',
+    'group_title' => '评论开关设置',
+    'name' => __('全站评论关闭', 'ui_boxmoe_com'),
+    'id' => 'boxmoe_comment_switch',
+    'type' => "checkbox",
+    'std' => false,
+    );
+$options[] = array(
+    'name' => __('仅登录评论开关', 'ui_boxmoe_com'),
+    'id' => 'boxmoe_comment_login_switch',
+    'type' => "checkbox",
+    'std' => false,
+    );
+$options[] = array(
+    'name' => __('禁止纯英文评论', 'ui_boxmoe_com'),
+    'id' => 'boxmoe_comment_english_switch',
+    'type' => "checkbox",
+    'std' => false,
+    );
+$options[] = array(
+    'group' => 'end');
+
+// 💬 评论显示设置分组
+$options[] = array(
+    'group' => 'start',
+    'group_title' => '评论显示设置',
+    'name' => __('博主标签自定义', 'ui_boxmoe_com'),
+    'id' => 'boxmoe_comment_blogger_tag',
+    'type' => "text",
+    'std' => '博主',
+    'desc' => __('博主标签，留空则显示博主', 'ui_boxmoe_com'),
+    'class' => 'mini',
+    );
+$options[] = array(
+    'group' => 'end'); 

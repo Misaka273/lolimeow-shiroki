@@ -6,6 +6,41 @@
  */
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
+
+// 获取验证码设置
+$captcha_enabled = get_boxmoe('captcha_enabled');
+$captcha_type = get_boxmoe('captcha_type');
+$captcha_login_enabled = get_boxmoe('captcha_login_enabled');
+$captcha_register_enabled = get_boxmoe('captcha_register_enabled');
+$cloudflare_site_key = get_boxmoe('captcha_cloudflare_site_key');
+
+// 加载Cloudflare脚本
+if ($captcha_enabled && $captcha_type === 'cloudflare' && !empty($cloudflare_site_key)) {
+    wp_enqueue_script('cf-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, true);
+}
+
+// 注册验证码脚本
+function register_captcha_scripts() {
+    global $captcha_enabled, $captcha_type, $cloudflare_site_key;
+    
+    // 验证码核心脚本
+    if ($captcha_enabled) {
+        wp_enqueue_script('captcha-manager', get_template_directory_uri() . '/assets/js/captcha.js', array('jquery'), '2.0.0', true);
+        
+        // 传递验证码设置给JavaScript
+        wp_localize_script('captcha-manager', 'boxmoe_captcha_settings', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'enabled' => $captcha_enabled,
+            'type' => $captcha_type,
+            'login_enabled' => get_boxmoe('captcha_login_enabled'),
+            'register_enabled' => get_boxmoe('captcha_register_enabled'),
+            'cloudflare_site_key' => $cloudflare_site_key,
+            'captcha_nonce' => wp_create_nonce('captcha_verify')
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'register_captcha_scripts');
+
 //如果用户已经登陆那么跳转到首页或重定向页面
 if (is_user_logged_in()){
    // 🔗 检查是否有 reauth 参数，如果有则不重定向，允许重新认证
@@ -62,6 +97,17 @@ if (is_user_logged_in()){
     <?php boxmoe_keywords(); ?>
     <?php boxmoe_description(); ?>
     <?php ob_start();wp_head();$wp_head_output = ob_get_clean();echo preg_replace('/\n/', "\n    ", trim($wp_head_output))."\n    ";?>
+    <!-- 传递验证码设置给JS -->
+    <meta name="captcha-settings" content='<?php echo json_encode([
+        'type' => $captcha_type,
+        'enabled' => $captcha_enabled,
+        'loginEnabled' => $captcha_login_enabled,
+        'registerEnabled' => $captcha_register_enabled,
+        'cloudflareSiteKey' => $cloudflare_site_key
+    ]); ?>'>
+    <?php if ($captcha_type === 'cloudflare' && !empty($cloudflare_site_key)): ?>
+    <meta name="captcha-cloudflare-sitekey" content="<?php echo esc_attr($cloudflare_site_key); ?>">
+    <?php endif; ?>
     <style>
         /* 🥳 登录页样式 - 双面板设计 */
         :root {
@@ -104,8 +150,6 @@ if (is_user_logged_in()){
             height: 0;
             opacity: 0;
         }
-        
-
         
         /* 🌟 解决无法全屏显示 */
         html, body, main {
@@ -244,8 +288,6 @@ if (is_user_logged_in()){
             border: none !important;
             outline: none !important;
         }
-        
-
         
         /* 🌟 防止WordPress添加额外容器 */
         body > *:not(main) {
@@ -592,8 +634,6 @@ if (is_user_logged_in()){
             font-weight: 500;
         }
         
-
-        
         .shortMessage,
         .Password_login {
             width: 16px;
@@ -815,6 +855,216 @@ if (is_user_logged_in()){
             pointer-events: all;
         }
         
+        /* 验证码相关样式 */
+        .captcha-wrapper {
+            max-width: 380px;
+            width: 100%;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .captcha-label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        [data-bs-theme="dark"] .captcha-label {
+            color: #aaa;
+        }
+        
+        .input-group-captcha {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+            max-width: 380px;
+        }
+        
+        .input-group-captcha .captcha-input {
+            flex: 1;
+            min-width: 0;
+            height: 3.5rem;
+            padding: 1.25rem 15px 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            border-color: transparent;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .input-group-captcha .captcha-image-container {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .captcha-image {
+            height: 45px;
+            width: 120px;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .captcha-image:hover {
+            opacity: 0.8;
+        }
+        
+        .captcha-refresh {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            height: 45px;
+            min-width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        .captcha-refresh:hover {
+            background: var(--primary-dark);
+            transform: rotate(90deg);
+        }
+        
+        .cf-turnstile-container {
+            margin: 10px 0;
+            min-height: 65px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .captcha-message {
+            font-size: 12px;
+            color: #ff0000;
+            margin-top: 5px;
+            min-height: 20px;
+            text-align: center;
+        }
+        
+        .captcha-message.success {
+            color: #28a745;
+        }
+        
+        .captcha-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .captcha-input:focus {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 0 3px rgba(89, 149, 253, 0.2);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+        
+        .captcha-input.error {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+        }
+        
+        .captcha-input.success {
+            border-color: #28a745;
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+        }
+        
+        /* 加载状态 */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+            pointer-events: none;
+        }
+        
+        .btn-loading:after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-top: -8px;
+            margin-left: -8px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: btn-loading-spinner 0.6s linear infinite;
+        }
+        
+        @keyframes btn-loading-spinner {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 防止表单提交动画 */
+        .form-submitting {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        
+        /* 错误提示 */
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        .success-message {
+            color: #28a745;
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        /* 验证码刷新动画 */
+        .captcha-success {
+            animation: captcha-success 0.6s ease;
+        }
+        
+        @keyframes captcha-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 暗色模式下的验证码样式 */
+        [data-bs-theme="dark"] .captcha-input,
+        [data-bs-theme="dark"] .input-group-captcha .captcha-input {
+            background: #3d3d3d;
+            border-color: #555;
+            color: #e0e0e0;
+        }
+        
+        [data-bs-theme="dark"] .captcha-input:focus,
+        [data-bs-theme="dark"] .input-group-captcha .captcha-input:focus {
+            background: #4a4a4a;
+            border-color: #6e9eff;
+        }
+        
+        [data-bs-theme="dark"] .captcha-image {
+            background: #3d3d3d;
+            border-color: #555;
+        }
+        
         @media (max-width: 870px) {
             .container {
                 min-height: 800px;
@@ -924,6 +1174,17 @@ if (is_user_logged_in()){
                 top: 5%;
                 transform: translate(-50%, 0);
             }
+            
+            .captcha-field,
+            .input-group-captcha {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .captcha-refresh {
+                width: 100%;
+                margin-top: 5px;
+            }
         }
         
         @media (max-width: 570px) {
@@ -951,6 +1212,17 @@ if (is_user_logged_in()){
             .container.sign-up-mode:before {
                 bottom: 28%;
                 left: 50%;
+            }
+            
+            .cf-turnstile-container {
+                transform: scale(0.9);
+                transform-origin: center center;
+            }
+            
+            .captcha-input,
+            .input-group-captcha .captcha-input {
+                padding: 10px 12px;
+                font-size: 13px;
             }
         }
 
@@ -985,6 +1257,43 @@ if (is_user_logged_in()){
                         <i class="fa fa-eye-slash"></i>
                      </button>
                   </div>
+                  
+                  <!-- 登录验证码 -->
+                  <?php if ($captcha_enabled && $captcha_login_enabled): ?>
+                  <div class="captcha-wrapper">
+                      <?php if ($captcha_type === 'cloudflare' && !empty($cloudflare_site_key)): ?>
+                          <div id="login-captcha-widget" class="cf-turnstile-container"></div>
+                          <input type="hidden" id="login-cf-response" name="cf_response">
+                          <div class="captcha-message" id="login-captcha-message"></div>
+                      <?php else: ?>
+                          <div class="input-group-captcha">
+                              <input type="text" 
+                                     class="captcha-input" 
+                                     name="captcha_code" 
+                                     placeholder="请输入验证码" 
+                                     required
+                                     maxlength="6"
+                                     autocomplete="off"
+                                     id="login-captcha-input">
+                              <div class="captcha-image-container">
+                                  <img src="<?php echo admin_url('admin-ajax.php'); ?>?action=generate_captcha_image&t=<?php echo time(); ?>" 
+                                       class="captcha-image" 
+                                       alt="验证码"
+                                       id="login-captcha-image"
+                                       onclick="refreshCaptcha('login')">
+                                  <button type="button" 
+                                          class="captcha-refresh" 
+                                          title="刷新验证码" 
+                                          onclick="refreshCaptcha('login')">
+                                      ↻
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="captcha-message" id="login-captcha-message"></div>
+                      <?php endif; ?>
+                  </div>
+                  <?php endif; ?>
+                  
                   <p class="social_text">
                      <input class="Password_login" type="checkbox" name="rememberme" id="rememberme">
                      <span class="agree_text">
@@ -992,7 +1301,9 @@ if (is_user_logged_in()){
                      </span>
                   </p>
                   <?php wp_nonce_field('user_login', 'login_nonce'); ?>
-                  <button class="btn" type="submit" name="login_submit"><span>Go</span></button>
+                  <button class="btn" type="submit" name="login_submit" id="login-submit-btn">
+                     <span class="btn-text">Go</span>
+                  </button>
                   <div id="login-message" class="mt-3"></div>
                   <div class="mt-3">
                      <a href="<?php echo boxmoe_reset_password_link_page(); ?>" class="text-primary text-decoration-none">忘记密码?</a>
@@ -1015,8 +1326,45 @@ if (is_user_logged_in()){
                      <label for="signupEmailInput" data-default="请输入邮箱" data-active="邮箱"></label>
                      <div class="invalid-feedback">请输入有效的邮箱地址。</div>
                   </div>
-                  <div class="floating-label-group" style="position: relative;">
-                     <input type="text" name="verificationcode" class="form-control" id="signupVerificationCode" required placeholder=" " style="padding-right: 120px; width: 100%; max-width: 380px;" />
+                  
+                  <!-- 注册验证码 -->
+                  <?php if ($captcha_enabled && $captcha_register_enabled): ?>
+                  <div class="captcha-wrapper">
+                      <?php if ($captcha_type === 'cloudflare' && !empty($cloudflare_site_key)): ?>
+                          <div id="register-captcha-widget" class="cf-turnstile-container"></div>
+                          <input type="hidden" id="register-cf-response" name="cf_response">
+                          <div class="captcha-message" id="register-captcha-message"></div>
+                      <?php else: ?>
+                          <div class="input-group-captcha">
+                              <input type="text" 
+                                     class="captcha-input" 
+                                     name="captcha_code" 
+                                     placeholder="请输入验证码" 
+                                     required
+                                     maxlength="6"
+                                     autocomplete="off"
+                                     id="register-captcha-input">
+                              <div class="captcha-image-container">
+                                  <img src="<?php echo admin_url('admin-ajax.php'); ?>?action=generate_captcha_image&t=<?php echo time(); ?>" 
+                                       class="captcha-image" 
+                                       alt="验证码"
+                                       id="register-captcha-image"
+                                       onclick="refreshCaptcha('register')">
+                                  <button type="button" 
+                                          class="captcha-refresh" 
+                                          title="刷新验证码" 
+                                          onclick="refreshCaptcha('register')">
+                                      ↻
+                                  </button>
+                              </div>
+                          </div>
+                          <div class="captcha-message" id="register-captcha-message"></div>
+                      <?php endif; ?>
+                  </div>
+                  <?php endif; ?>
+                  
+                  <div class="floating-label-group">
+                     <input type="text" name="verificationcode" class="form-control" id="signupVerificationCode" required placeholder=" " style="padding-right: 130px !important;" />
                      <label for="signupVerificationCode" data-default="请输入验证码" data-active="验证码"></label>
                      <div class="invalid-feedback">请输入验证码。</div>
                      <div class="Acquire_box" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
@@ -1046,7 +1394,9 @@ if (is_user_logged_in()){
                      </span>
                   </p>
                   <input type="hidden" name="signup_nonce" value="<?php echo wp_create_nonce('user_signup'); ?>">
-                  <button class="btn" type="submit" name="signup_submit"><span>Go</span></button>
+                  <button class="btn" type="submit" name="signup_submit" id="signup-submit-btn">
+                     <span class="btn-text">Go</span>
+                  </button>
                   <div id="signup-message" class="mt-3"></div>
                </form>
             </div>
@@ -1194,48 +1544,400 @@ if (is_user_logged_in()){
               });
           }
 
+          // 获取验证码设置
+          const captchaSettings = JSON.parse(document.querySelector('meta[name="captcha-settings"]').content);
+          const captchaEnabled = captchaSettings.enabled;
+          const captchaLoginEnabled = captchaSettings.loginEnabled;
+          const captchaRegisterEnabled = captchaSettings.registerEnabled;
+          const captchaType = captchaSettings.type;
+          const cloudflareSiteKey = captchaSettings.cloudflareSiteKey;
+          
+          // 全局变量
+          var isSubmitting = false;
+          var loginCfToken = '';
+          var registerCfToken = '';
+          
+          // 刷新验证码函数
+          function refreshCaptcha(type) {
+              var imgElement = document.getElementById(type + '-captcha-image');
+              var captchaInput = document.getElementById(type + '-captcha-input');
+              var messageElement = document.getElementById(type + '-captcha-message');
+              
+              if (!imgElement) return;
+              
+              // 清空验证码输入框
+              if (captchaInput) {
+                  captchaInput.value = '';
+                  captchaInput.classList.remove('error', 'success');
+              }
+              
+              // 清空错误消息
+              if (messageElement) {
+                  messageElement.innerHTML = '';
+                  messageElement.className = 'captcha-message';
+              }
+              
+              // 构建新的URL
+              var newUrl = ajax_object.ajaxurl + '?action=generate_captcha_image&t=' + new Date().getTime() + '&r=' + Math.random().toString(36).substring(7);
+              
+              // 添加加载效果
+              imgElement.style.opacity = '0.5';
+              
+              // 预加载图片
+              var tempImg = new Image();
+              tempImg.onload = function() {
+                  imgElement.src = newUrl;
+                  imgElement.style.opacity = '1';
+                  
+                  // 成功动画
+                  var container = imgElement.closest('.captcha-image-container');
+                  if (container) {
+                      container.classList.add('captcha-success');
+                      setTimeout(function() {
+                          container.classList.remove('captcha-success');
+                      }, 600);
+                  }
+                  
+                  // 聚焦到输入框
+                  if (captchaInput) {
+                      captchaInput.focus();
+                  }
+              };
+              tempImg.onerror = function() {
+                  imgElement.style.opacity = '1';
+                  if (messageElement) {
+                      messageElement.innerHTML = '<span class="error-message">验证码加载失败，请重试</span>';
+                  }
+              };
+              tempImg.src = newUrl;
+          }
+          
+          // 显示消息
+          function showMessage(elementId, message, isError = true) {
+              var element = document.getElementById(elementId);
+              if (element) {
+                  var alertClass = isError ? 'alert-danger' : 'alert-success';
+                  element.innerHTML = '<div class="alert ' + alertClass + ' mt-3">' + message + '</div>';
+                  
+                  // 5秒后自动消失
+                  setTimeout(function() {
+                      if (element.firstChild) {
+                          element.firstChild.classList.remove('show');
+                          setTimeout(function() {
+                              element.innerHTML = '';
+                          }, 300);
+                      }
+                  }, 5000);
+              }
+          }
+          
+          // 显示验证码消息
+          function showCaptchaMessage(type, message, isError = true) {
+              var element = document.getElementById(type + '-captcha-message');
+              if (element) {
+                  element.innerHTML = '<span class="' + (isError ? 'error-message' : 'success-message') + '">' + message + '</span>';
+                  element.className = 'captcha-message ' + (isError ? '' : 'success');
+              }
+          }
+          
+          // 验证普通验证码
+          function validateNormalCaptcha(captchaCode, type) {
+              return new Promise((resolve, reject) => {
+                  if (!captchaCode || captchaCode.trim() === '') {
+                      reject(new Error('请输入验证码'));
+                      return;
+                  }
+                  
+                  fetch(ajax_object.ajaxurl, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/x-www-form-urlencoded',
+                      },
+                      body: new URLSearchParams({
+                          action: 'verify_captcha',
+                          captcha_code: captchaCode,
+                          nonce: '<?php echo wp_create_nonce('captcha_verify'); ?>'
+                      })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          resolve(data);
+                      } else {
+                          reject(new Error(data.message || '验证码错误'));
+                      }
+                  })
+                  .catch(error => {
+                      reject(new Error('验证码验证失败，请重试'));
+                  });
+              });
+          }
+          
+          // 验证Cloudflare验证码
+          function validateCloudflareCaptcha(token) {
+              return new Promise((resolve, reject) => {
+                  if (!token) {
+                      reject(new Error('请先完成人机验证'));
+                      return;
+                  }
+                  
+                  fetch(ajax_object.ajaxurl, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/x-www-form-urlencoded',
+                      },
+                      body: new URLSearchParams({
+                          action: 'verify_cloudflare_captcha',
+                          cf_response: token
+                      })
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          resolve(data);
+                      } else {
+                          reject(new Error(data.message || '人机验证失败'));
+                      }
+                  })
+                  .catch(error => {
+                      reject(new Error('人机验证失败，请重试'));
+                  });
+              });
+          }
+          
+          // 获取表单验证状态
+          function getFormValidationState(form) {
+              var isValid = true;
+              var inputs = form.querySelectorAll('input[required]');
+              
+              inputs.forEach(function(input) {
+                  if (!input.value.trim()) {
+                      isValid = false;
+                      input.classList.add('error');
+                  } else {
+                      input.classList.remove('error');
+                  }
+              });
+              
+              return isValid;
+          }
+          
+          // 设置按钮加载状态
+          function setButtonLoading(button, isLoading) {
+              var btnText = button.querySelector('.btn-text');
+              if (btnText) {
+                  if (isLoading) {
+                      button.classList.add('btn-loading');
+                      btnText.textContent = '验证中...';
+                  } else {
+                      button.classList.remove('btn-loading');
+                      if (button.id.includes('login')) {
+                          btnText.textContent = 'Go';
+                      } else {
+                          btnText.textContent = 'Go';
+                      }
+                  }
+              }
+              button.disabled = isLoading;
+          }
+          
+          // 初始化Cloudflare Turnstile验证码
+          <?php if ($captcha_enabled && $captcha_type === 'cloudflare' && !empty($cloudflare_site_key)): ?>
+          function initTurnstileCaptcha() {
+              if (typeof turnstile === 'undefined') {
+                  console.error('Cloudflare Turnstile未加载');
+                  return;
+              }
+              
+              <?php if ($captcha_login_enabled): ?>
+              // 初始化登录验证码
+              turnstile.render('#login-captcha-widget', {
+                  sitekey: '<?php echo esc_js($cloudflare_site_key); ?>',
+                  callback: function(token) {
+                      loginCfToken = token;
+                      document.getElementById('login-cf-response').value = token;
+                      showCaptchaMessage('login-captcha', '验证通过', false);
+                  },
+                  'expired-callback': function() {
+                      loginCfToken = '';
+                      document.getElementById('login-cf-response').value = '';
+                      showCaptchaMessage('login-captcha', '验证已过期，请重新验证', true);
+                  },
+                  'error-callback': function() {
+                      loginCfToken = '';
+                      document.getElementById('login-cf-response').value = '';
+                      showCaptchaMessage('login-captcha', '验证失败，请重试', true);
+                  },
+                  theme: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light'
+              });
+              <?php endif; ?>
+              
+              <?php if ($captcha_register_enabled): ?>
+              // 初始化注册验证码
+              turnstile.render('#register-captcha-widget', {
+                  sitekey: '<?php echo esc_js($cloudflare_site_key); ?>',
+                  callback: function(token) {
+                      registerCfToken = token;
+                      document.getElementById('register-cf-response').value = token;
+                      showCaptchaMessage('register-captcha', '验证通过', false);
+                  },
+                  'expired-callback': function() {
+                      registerCfToken = '';
+                      document.getElementById('register-cf-response').value = '';
+                      showCaptchaMessage('register-captcha', '验证已过期，请重新验证', true);
+                  },
+                  'error-callback': function() {
+                      registerCfToken = '';
+                      document.getElementById('register-cf-response').value = '';
+                      showCaptchaMessage('register-captcha', '验证失败，请重试', true);
+                  },
+                  theme: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'dark' : 'light'
+              });
+              <?php endif; ?>
+          }
+          
+          // 等待Turnstile脚本加载完成
+          if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', function() {
+                  if (typeof turnstile !== 'undefined') {
+                      initTurnstileCaptcha();
+                  } else {
+                      // 等待Turnstile脚本加载
+                      var checkTurnstile = setInterval(function() {
+                          if (typeof turnstile !== 'undefined') {
+                              clearInterval(checkTurnstile);
+                              initTurnstileCaptcha();
+                          }
+                      }, 100);
+                      
+                      setTimeout(function() {
+                          clearInterval(checkTurnstile);
+                      }, 10000);
+                  }
+              });
+          } else {
+              if (typeof turnstile !== 'undefined') {
+                  initTurnstileCaptcha();
+              } else {
+                  // 等待Turnstile脚本加载
+                  var checkTurnstile = setInterval(function() {
+                      if (typeof turnstile !== 'undefined') {
+                          clearInterval(checkTurnstile);
+                          initTurnstileCaptcha();
+                      }
+                  }, 100);
+                  
+                  setTimeout(function() {
+                      clearInterval(checkTurnstile);
+                  }, 10000);
+              }
+          }
+          <?php endif; ?>
+
           // 🔗 登录表单提交事件监听
-          document.getElementById('loginform').addEventListener('submit', function(e) {
+          document.getElementById('loginform').addEventListener('submit', async function(e) {
               e.preventDefault();
               
-              const loginButton = this.querySelector('button[type="submit"]');
+              if (isSubmitting) {
+                  return;
+              }
               
-              loginButton.disabled = true;
-              loginButton.textContent = '登录中...';
-
-              // 🔗 获取 URL 中的 redirect_to 参数
-              const urlParams = new URLSearchParams(window.location.search);
-              const redirect_to = urlParams.get('redirect_to');
-
-              // 🔄 动态生成新的nonce，避免过期问题
-              const newNonce = document.querySelector('input[name="login_nonce"]').value;
-              const formData = {
-                  username: document.getElementById('username').value,
-                  password: document.getElementById('password').value,
-                  rememberme: document.getElementById('rememberme').checked,
-                  login_nonce: newNonce,
-                  redirect_to: redirect_to // ⬅️ 将重定向参数传给后端
-              };
+              isSubmitting = true;
               
-              // 使用FormData来构建请求体，确保WordPress能正确解析
-              const formDataToSend = new FormData();
-              formDataToSend.append('action', 'user_login_action');
-              formDataToSend.append('formData', JSON.stringify(formData));
+              const loginButton = document.getElementById('login-submit-btn');
+              const form = this;
               
-              fetch(ajax_object.ajaxurl, {
-                  method: 'POST',
-                  credentials: 'same-origin',
-                  body: formDataToSend
-              })
-              .then(response => response.json())
-              .then(response => {
-                  if(response.success) {
-                      document.getElementById('login-message').innerHTML = 
-                          '<div class="alert alert-success mt-3">' + response.data.message + '，正在跳转...</div>';
+              // 设置按钮加载状态
+              setButtonLoading(loginButton, true);
+              
+              try {
+                  // 验证表单
+                  if (!getFormValidationState(form)) {
+                      throw new Error('请填写所有必填字段');
+                  }
+                  
+                  // 获取验证码配置
+                  var captchaEnabled = <?php echo $captcha_enabled ? 'true' : 'false'; ?>;
+                  var captchaLoginEnabled = <?php echo $captcha_login_enabled ? 'true' : 'false'; ?>;
+                  var captchaType = '<?php echo esc_js($captcha_type); ?>';
+                  
+                  // 第一步：验证验证码（如果启用）
+                  if (captchaEnabled && captchaLoginEnabled) {
+                      console.log('开始验证登录验证码');
+                      
+                      if (captchaType === 'cloudflare') {
+                          // Cloudflare验证码
+                          if (!loginCfToken) {
+                              throw new Error('请先完成人机验证');
+                          }
+                          const cfResult = await validateCloudflareCaptcha(loginCfToken);
+                          console.log('Cloudflare验证结果:', cfResult);
+                      } else {
+                          // 普通验证码
+                          const captchaInput = document.getElementById('login-captcha-input');
+                          const captchaCode = captchaInput ? captchaInput.value : '';
+                          const captchaResult = await validateNormalCaptcha(captchaCode, 'login');
+                          
+                          if (!captchaResult.success) {
+                              // 标记输入框错误
+                              if (captchaInput) {
+                                  captchaInput.classList.add('error');
+                                  captchaInput.classList.remove('success');
+                              }
+                              throw new Error(captchaResult.message || '验证码错误');
+                          } else {
+                              // 标记输入框成功
+                              if (captchaInput) {
+                                  captchaInput.classList.remove('error');
+                                  captchaInput.classList.add('success');
+                              }
+                          }
+                      }
+                      console.log('验证码验证通过');
+                  }
+                  
+                  // 第二步：收集表单数据并提交
+                  const urlParams = new URLSearchParams(window.location.search);
+                  const redirect_to = urlParams.get('redirect_to');
+                  
+                  const formData = {
+                      username: document.getElementById('username').value,
+                      password: document.getElementById('password').value,
+                      rememberme: document.getElementById('rememberme').checked,
+                      login_nonce: document.querySelector('input[name="login_nonce"]').value,
+                      redirect_to: redirect_to
+                  };
+                  
+                  // 添加验证码数据
+                  if (captchaEnabled && captchaLoginEnabled) {
+                      if (captchaType === 'cloudflare') {
+                          formData.cf_response = loginCfToken;
+                      } else {
+                          formData.captcha_code = document.getElementById('login-captcha-input')?.value;
+                      }
+                  }
+                  
+                  console.log('提交登录数据:', formData);
+                  
+                  // 提交表单
+                  const formDataToSend = new FormData();
+                  formDataToSend.append('action', 'user_login_action');
+                  formDataToSend.append('formData', JSON.stringify(formData));
+                  
+                  const response = await fetch(ajax_object.ajaxurl, {
+                      method: 'POST',
+                      credentials: 'same-origin',
+                      body: formDataToSend
+                  });
+                  
+                  const responseData = await response.json();
+                  console.log('登录响应数据:', responseData);
+                  
+                  if(responseData.success) {
+                      showMessage('login-message', responseData.data.message + '，正在跳转...', false);
                       setTimeout(() => {
-                          // 🔗 优先跳转到后端返回的地址，其次尝试 URL 参数，最后回落到 referrer 或首页
-                          if (response.data.redirect_url) {
-                              window.location.href = response.data.redirect_url;
+                          if (responseData.data.redirect_url) {
+                              window.location.href = responseData.data.redirect_url;
                           } else if (redirect_to) {
                               window.location.href = redirect_to;
                           } else {
@@ -1243,49 +1945,260 @@ if (is_user_logged_in()){
                           }
                       }, 1000);
                   } else {
-                      loginButton.disabled = false;
-                      loginButton.textContent = 'Go';
+                      showMessage('login-message', responseData.data.message || '登录失败', true);
                       
-                      document.getElementById('login-message').innerHTML = 
-                          '<div class="alert alert-danger mt-3">' + response.data.message + '</div>';
+                      // 刷新验证码
+                      if (captchaEnabled && captchaLoginEnabled && captchaType !== 'cloudflare') {
+                          refreshCaptcha('login');
+                      }
                   }
-              })
-              .catch(error => {
-                  loginButton.disabled = false;
-                  loginButton.textContent = 'Go';
                   
-                  // 显示更详细的错误信息，帮助用户了解登录失败的原因
-                  const errorMessage = error.message || '未知错误';
-                  document.getElementById('login-message').innerHTML = 
-                      '<div class="alert alert-danger mt-3">登录请求失败: ' + errorMessage + '，请稍后重试</div>';
+              } catch (error) {
+                  console.error('登录过程错误:', error);
                   
-                  // 在控制台打印完整的错误信息，方便开发者调试
-                  console.error('登录请求失败:', error);
-              });
+                  // 显示错误信息
+                  let errorMessage = error.message || '登录失败，请重试';
+                  showMessage('login-message', errorMessage, true);
+                  
+                  // 显示验证码错误
+                  if (errorMessage.includes('验证码') || errorMessage.includes('验证') || errorMessage.includes('人机')) {
+                      showCaptchaMessage('login-captcha', errorMessage, true);
+                      
+                      // 刷新验证码
+                      if (captchaEnabled && captchaLoginEnabled && captchaType !== 'cloudflare') {
+                          refreshCaptcha('login');
+                      }
+                  }
+              } finally {
+                  // 恢复按钮状态
+                  setButtonLoading(loginButton, false);
+                  isSubmitting = false;
+              }
           });
 
-          // 🔗 注册相关JS功能
-          // 发送验证码逻辑
-          document.getElementById('sendVerificationCode').addEventListener('click', function() {
-              var email = document.getElementById('signupEmailInput').value;
-              var btn = this;
-              if(!email) {
-                  alert('请先填写邮箱地址');
+          // 🔗 注册表单提交
+          document.getElementById('signupform').addEventListener('submit', async function(e) {
+              e.preventDefault();
+              
+              if (isSubmitting) {
                   return;
               }
               
+              isSubmitting = true;
+              
+              var btn = document.getElementById('signup-submit-btn');
+              var form = this;
+              
+              // 设置按钮加载状态
+              setButtonLoading(btn, true);
+              
+              try {
+                  // 验证表单
+                  if (!getFormValidationState(form)) {
+                      throw new Error('请填写所有必填字段');
+                  }
+                  
+                  // 验证密码一致性
+                  const password = document.getElementById('formSignUpPassword').value;
+                  const confirmPassword = document.getElementById('formSignUpConfirmPassword').value;
+                  
+                  if (password !== confirmPassword) {
+                      throw new Error('两次输入的密码不一致');
+                  }
+                  
+                  // 验证密码长度
+                  if (password.length < 6) {
+                      throw new Error('密码长度至少需要6个字符');
+                  }
+                  
+                  // 检查协议是否同意
+                  const agreeCheckbox = form.querySelector('input[name="agree"]');
+                  if (!agreeCheckbox.checked) {
+                      throw new Error('请阅读并同意用户协议和隐私政策');
+                  }
+                  
+                  // 获取验证码配置
+                  var captchaEnabled = <?php echo $captcha_enabled ? 'true' : 'false'; ?>;
+                  var captchaRegisterEnabled = <?php echo $captcha_register_enabled ? 'true' : 'false'; ?>;
+                  var captchaType = '<?php echo esc_js($captcha_type); ?>';
+                  
+                  // 第一步：验证验证码（如果启用）
+                  if (captchaEnabled && captchaRegisterEnabled) {
+                      console.log('开始验证注册验证码');
+                      
+                      if (captchaType === 'cloudflare') {
+                          // Cloudflare验证码
+                          if (!registerCfToken) {
+                              throw new Error('请先完成人机验证');
+                          }
+                          const cfResult = await validateCloudflareCaptcha(registerCfToken);
+                          console.log('Cloudflare验证结果:', cfResult);
+                      } else {
+                          // 普通验证码
+                          const captchaInput = document.getElementById('register-captcha-input');
+                          const captchaCode = captchaInput ? captchaInput.value : '';
+                          const captchaResult = await validateNormalCaptcha(captchaCode, 'register');
+                          
+                          if (!captchaResult.success) {
+                              // 标记输入框错误
+                              if (captchaInput) {
+                                  captchaInput.classList.add('error');
+                                  captchaInput.classList.remove('success');
+                              }
+                              throw new Error(captchaResult.message || '验证码错误');
+                          } else {
+                              // 标记输入框成功
+                              if (captchaInput) {
+                                  captchaInput.classList.remove('error');
+                                  captchaInput.classList.add('success');
+                              }
+                          }
+                      }
+                  }
+                  
+                  // 第二步：提交注册表单
+                  var formData = {
+                      username: document.getElementById('signupFullnameInput').value,
+                      email: document.getElementById('signupEmailInput').value,
+                      verificationcode: document.getElementById('signupVerificationCode').value,
+                      password: password,
+                      confirmpassword: confirmPassword,
+                      agree: agreeCheckbox.checked,
+                      signup_nonce: document.querySelector('input[name="signup_nonce"]').value
+                  };
+                  
+                  // 添加验证码数据
+                  if (captchaEnabled && captchaRegisterEnabled) {
+                      if (captchaType === 'cloudflare') {
+                          formData.cf_response = registerCfToken;
+                      } else {
+                          formData.captcha_code = document.getElementById('register-captcha-input')?.value;
+                      }
+                  }
+                  
+                  console.log('提交注册数据:', formData);
+                  
+                  const response = await fetch(ajax_object.ajaxurl, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/x-www-form-urlencoded'
+                      },
+                      body: 'action=user_signup_action&formData=' + encodeURIComponent(JSON.stringify(formData))
+                  });
+                  
+                  const data = await response.json();
+                  console.log('注册响应数据:', data);
+                  
+                  if(data.success) {
+                      showMessage('signup-message', data.data.message + '，正在跳转到登录页面...', false);
+                      setTimeout(function(){
+                          window.location.href = '<?php echo home_url("/signin"); ?>';
+                      }, 2000);
+                  } else {
+                      showMessage('signup-message', data.data.message || '注册失败', true);
+                      
+                      // 刷新验证码
+                      if (captchaEnabled && captchaRegisterEnabled && captchaType !== 'cloudflare') {
+                          refreshCaptcha('register');
+                      }
+                  }
+                  
+              } catch (error) {
+                  console.error('注册过程错误:', error);
+                  showMessage('signup-message', error.message || '注册失败，请重试', true);
+                  
+                  // 显示验证码错误
+                  if (error.message.includes('验证码') || error.message.includes('验证') || error.message.includes('人机')) {
+                      showCaptchaMessage('register-captcha', error.message, true);
+                      
+                      // 刷新验证码
+                      if (captchaEnabled && captchaRegisterEnabled && captchaType !== 'cloudflare') {
+                          refreshCaptcha('register');
+                      }
+                  }
+              } finally {
+                  // 恢复按钮状态
+                  setButtonLoading(btn, false);
+                  isSubmitting = false;
+              }
+          });
+          
+          // 发送验证码按钮
+          document.getElementById('sendVerificationCode').addEventListener('click', async function() {
+              var email = document.getElementById('signupEmailInput').value;
+              var btn = this;
+              
+              if(!email) {
+                  showMessage('signup-message', '请先填写邮箱地址', true);
+                  return;
+              }
+              
+              // 验证邮箱格式
+              var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(email)) {
+                  showMessage('signup-message', '请输入有效的邮箱地址', true);
+                  return;
+              }
+              
+              if (btn.disabled) return;
+              
               btn.disabled = true;
+              var originalText = btn.textContent;
               btn.textContent = '发送中...';
               
-              fetch(ajax_object.ajaxurl, {
-                  method: 'POST',
-                  headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                  body: 'action=send_verification_code&email=' + encodeURIComponent(email)
-              })
-              .then(response => response.json())
-              .then(data => {
+              try {
+                  // 获取验证码配置
+                  var captchaEnabled = <?php echo $captcha_enabled ? 'true' : 'false'; ?>;
+                  var captchaRegisterEnabled = <?php echo $captcha_register_enabled ? 'true' : 'false'; ?>;
+                  var captchaType = '<?php echo esc_js($captcha_type); ?>';
+                  
+                  // 验证验证码（如果启用）
+                  if (captchaEnabled && captchaRegisterEnabled) {
+                      console.log('发送验证码前验证验证码');
+                      
+                      if (captchaType === 'cloudflare') {
+                          if (!registerCfToken) {
+                              throw new Error('请先完成人机验证');
+                          }
+                          const cfResult = await validateCloudflareCaptcha(registerCfToken);
+                          if (!cfResult.success) {
+                              throw new Error(cfResult.message || '人机验证失败');
+                          }
+                      } else {
+                          const captchaInput = document.getElementById('register-captcha-input');
+                          const captchaCode = captchaInput ? captchaInput.value : '';
+                          const captchaResult = await validateNormalCaptcha(captchaCode, 'register');
+                          
+                          if (!captchaResult.success) {
+                              throw new Error(captchaResult.message || '验证码错误');
+                          }
+                      }
+                  }
+                  
+                  // 构建请求数据
+                  const formData = new FormData();
+                  formData.append('action', 'send_verification_code');
+                  formData.append('email', email);
+                  
+                  // 添加验证码数据
+                  if (captchaEnabled && captchaRegisterEnabled) {
+                      if (captchaType === 'cloudflare') {
+                          formData.append('cf_response', registerCfToken);
+                      } else {
+                          const captchaCode = document.getElementById('register-captcha-input')?.value;
+                          formData.append('captcha_code', captchaCode);
+                      }
+                  }
+                  
+                  const response = await fetch(ajax_object.ajaxurl, {
+                      method: 'POST',
+                      body: formData
+                  });
+                  
+                  const data = await response.json();
+                  
                   if(data.success) {
-                      alert(data.data.message);
+                      showMessage('signup-message', data.data?.message || '验证码已发送到您的邮箱', false);
                       var countdown = 60;
                       var timer = setInterval(function() {
                           btn.textContent = countdown + 's后重试';
@@ -1293,66 +2206,72 @@ if (is_user_logged_in()){
                           if(countdown < 0) {
                               clearInterval(timer);
                               btn.disabled = false;
-                              btn.textContent = '获取验证码';
+                              btn.textContent = originalText;
                           }
                       }, 1000);
                   } else {
-                      alert(data.data.message);
+                      showMessage('signup-message', data.data?.message || '发送失败，请重试', true);
                       btn.disabled = false;
-                      btn.textContent = '获取验证码';
+                      btn.textContent = originalText;
                   }
-              })
-              .catch(err => {
-                  alert('发送失败，请重试');
+              } catch (error) {
+                  console.error('发送验证码失败:', error);
+                  showMessage('signup-message', error.message || '发送失败，请重试', true);
                   btn.disabled = false;
-                  btn.textContent = '获取验证码';
-              });
+                  btn.textContent = originalText;
+              }
           });
-
-          // 注册表单提交
-          document.getElementById('signupform').addEventListener('submit', function(e) {
-              e.preventDefault();
-              var btn = this.querySelector('button[type="submit"]');
-              
-              btn.disabled = true;
-              btn.textContent = '注册中...';
-              
-              // 构建表单数据对象
-              var formData = {
-                  username: document.getElementById('signupFullnameInput').value,
-                  email: document.getElementById('signupEmailInput').value,
-                  verificationcode: document.getElementById('signupVerificationCode').value,
-                  password: document.getElementById('formSignUpPassword').value,
-                  confirmpassword: document.getElementById('formSignUpConfirmPassword').value,
-                  signup_nonce: this.querySelector('input[name="signup_nonce"]').value
-              };
-              
-              fetch(ajax_object.ajaxurl, {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/x-www-form-urlencoded'
-                  },
-                  body: 'action=user_signup_action&formData=' + encodeURIComponent(JSON.stringify(formData))
-              })
-              .then(response => response.json())
-              .then(data => {
-                  if(data.success) {
-                      document.getElementById('signup-message').innerHTML = '<div class="alert alert-success mt-3">'+data.data.message+'</div>';
-                      setTimeout(function(){
-                          window.location.href = '<?php echo boxmoe_sign_in_link_page(); ?>';
-                      }, 2000);
-                  } else {
-                      document.getElementById('signup-message').innerHTML = '<div class="alert alert-danger mt-3">'+data.data.message+'</div>';
-                      btn.disabled = false;
-                      btn.textContent = 'Go';
-                  }
-              })
-              .catch(err => {
-                  document.getElementById('signup-message').innerHTML = '<div class="alert alert-danger mt-3">网络错误，请重试</div>';
-                  btn.disabled = false;
-                  btn.textContent = 'Go';
+          
+          // 输入框实时验证
+          function setupRealTimeValidation() {
+              // 登录表单验证
+              const loginInputs = document.querySelectorAll('#loginform input[required]');
+              loginInputs.forEach(input => {
+                  input.addEventListener('input', function() {
+                      if (this.value.trim()) {
+                          this.classList.remove('error');
+                      }
+                  });
               });
-          });
+              
+              // 注册表单验证
+              const registerInputs = document.querySelectorAll('#signupform input[required]');
+              registerInputs.forEach(input => {
+                  input.addEventListener('input', function() {
+                      if (this.value.trim()) {
+                          this.classList.remove('error');
+                      }
+                      
+                      // 特殊处理密码确认
+                      if (this.id === 'formSignUpConfirmPassword') {
+                          const password = document.getElementById('formSignUpPassword').value;
+                          if (this.value && password !== this.value) {
+                              this.classList.add('error');
+                              showMessage('signup-message', '两次输入的密码不一致', true);
+                          } else if (this.value && password === this.value) {
+                              this.classList.remove('error');
+                              const messageDiv = document.getElementById('signup-message');
+                              if (messageDiv && messageDiv.textContent.includes('密码不一致')) {
+                                  messageDiv.innerHTML = '';
+                              }
+                          }
+                      }
+                  });
+              });
+              
+              // 验证码输入框验证
+              const captchaInputs = document.querySelectorAll('.captcha-input');
+              captchaInputs.forEach(input => {
+                  input.addEventListener('input', function() {
+                      const value = this.value.trim();
+                      if (value.length >= 4 && value.length <= 6) {
+                          this.classList.remove('error');
+                      }
+                  });
+              });
+          }
+          
+          setupRealTimeValidation();
           
           // 📱 移动端480x690尺寸专用功能
           function initMobileFeatures() {
@@ -1376,9 +2295,6 @@ if (is_user_logged_in()){
                       signInBtn.addEventListener('click', mobileSignInHandler);
                       signUpBtn.addEventListener('click', mobileSignUpHandler);
                   }
-                  
-                  // 🌟 注册表单滚动增强
-                  enhanceRegistrationFormScroll();
                   
                   // 🌟 版权信息位置优化
                   optimizeCopyrightPosition();
@@ -1406,7 +2322,7 @@ if (is_user_logged_in()){
                   setTimeout(() => {
                       console.log('📱 切换到登录模式');
                   }, 800);
-          }
+              }
           }
           
           // 🌟 移动端注册按钮处理器
@@ -1430,47 +2346,6 @@ if (is_user_logged_in()){
                   setTimeout(() => {
                       console.log('📱 切换到注册模式');
                   }, 800);
-              }
-          }
-          
-          // 🌟 注册表单滚动增强
-          function enhanceRegistrationFormScroll() {
-              const signUpForm = document.querySelector('.sign-up-form');
-              if (signUpForm) {
-                  // 确保注册表单可以独立滚动
-                  signUpForm.style.overflowY = 'auto';
-                  signUpForm.style.webkitOverflowScrolling = 'touch'; // iOS平滑滚动
-                  
-                  // 监听表单高度变化
-                  const observer = new MutationObserver(() => {
-                      adjustFormScroll();
-                  });
-                  
-                  observer.observe(signUpForm, {
-                      childList: true,
-                      subtree: true,
-                      attributes: true
-                  });
-                  
-                  // 初始调整
-                  setTimeout(adjustFormScroll, 100);
-              }
-          }
-          
-          // 🌟 调整表单滚动
-          function adjustFormScroll() {
-              const signUpForm = document.querySelector('.sign-up-form');
-              const formsContainer = document.querySelector('.forms-container');
-              
-              if (signUpForm && formsContainer) {
-                  const formHeight = signUpForm.scrollHeight;
-                  const containerHeight = formsContainer.clientHeight;
-                  
-                  if (formHeight > containerHeight) {
-                      // 如果表单内容超出容器高度，启用滚动
-                      signUpForm.style.paddingBottom = '20px';
-                      console.log('📱 注册表单滚动已启用');
-                  }
               }
           }
           
@@ -1507,10 +2382,13 @@ if (is_user_logged_in()){
           
           // 🌟 页面加载完成后初始化移动端功能
           setTimeout(initMobileFeatures, 100);
+          
+          console.log('页面初始化完成');
       });
     </script>
     <!-- 📱 移动端触摸滑动脚本 -->
     <script src="<?php echo get_template_directory_uri(); ?>/assets/js/mobile-touch-scroll-shiroki.js"></script>
     <!-- 🌌 引入粒子效果脚本 -->
     <script src="<?php echo get_template_directory_uri(); ?>/assets/js/login-particles.js"></script>
-</body></html>
+</body>
+</html>

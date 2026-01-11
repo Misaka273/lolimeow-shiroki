@@ -107,5 +107,5 @@ $options[] = array(
         'group' => 'end',
 		'name' => __('图片外链APi链接', 'ui_boxmoe_com'),
 		'id' => 'boxmoe_banner_api_url',
-		'std' => 'https://api.boxmoe.com/random.php?size=mw1024',
+		'std' => 'https://mu.baimu.live/',
 		'type' => 'text');     

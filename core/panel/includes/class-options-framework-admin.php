@@ -218,7 +218,7 @@ class Options_Framework_Admin {
 		<div class="el-button" style="padding: 8px 16px; line-height: 1.5; display: inline-block; text-align: center;">
 			<a href="https://www.boxmoe.com/706.html" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: none;">📃在线文档</a>  
 			🚀V<?php echo THEME_VERSION; ?>  
-			🎉更新日期：2026-01-04<br>
+			🎉更新日期：2026-01-10<br>
 			🥰本主题二次创作 <a href="https://gl.baimu.live/864" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: underline;">白木</a>
 		</div>
 		</div>			
@@ -229,10 +229,8 @@ class Options_Framework_Admin {
 				<?php do_action( 'optionsframework_after' ); ?>
 				
 				<div id="optionsframework-submit">
+				<input type="button" class="button-primary" id="super-fast-reset-button" value="🚀 重置后台所有设置" onclick="superFastResetFunction()" data-theme-uri="<?php echo get_template_directory_uri(); ?>" />
 				<input type="submit" class="button-primary" name="update" value="<?php esc_attr_e( '保存设置', 'textdomain' ); ?>" />
-				<!-- 恢复为submit类型，但添加隐藏字段 -->
-				<input type="hidden" name="reset_confirm" value="false" />
-				<input type="submit" class="reset-button button-secondary" name="reset" value="<?php esc_attr_e( '重置所有设置', 'textdomain' ); ?>" onclick="return confirm('<?php print esc_js( __( '警告：点击确定，之前所有设置修改都将丢失！', 'textdomain' ) ); ?>');" />
 				<div class="clear"></div>
 			</div>
 				
@@ -316,44 +314,45 @@ document.addEventListener('DOMContentLoaded', function() {
       showTopBanner('设置已保存成功！', 5000);
     }
   }
+  
+  // 📡 获取并更新最新版本信息
+  var boxmoe_version = function () {
+      fetch("https://doc.boxmoe.com/wp-json/themes/v1/version/lolimeow")
+          .then(response => response.json())
+          .then(data => {
+              var vboxElement = document.getElementById("vbox");
+              if (vboxElement) {
+                  vboxElement.innerHTML = data.data.version;
+              }
+          })
+          .catch(error => {
+
+          });
+  };
+  boxmoe_version();
+  
+  // 📡 标语重置功能
+  var ofResetBtn=document.getElementById('of-reset-slogan-btn');
+  var mask=document.getElementById('of-slogan-modal-mask');
+  var confirmBtn=document.getElementById('of-slogan-confirm');
+  var cancelBtn=document.getElementById('of-slogan-cancel');
+  if(ofResetBtn&&mask&&confirmBtn&&cancelBtn){
+    ofResetBtn.addEventListener('click',function(){mask.style.display='flex'});
+    cancelBtn.addEventListener('click',function(){mask.style.display='none'});
+    confirmBtn.addEventListener('click',function(){
+      var form=document.querySelector('#optionsframework form');
+      if(form){
+        var hidden=document.createElement('input');
+        hidden.type='hidden';
+        hidden.name='reset_slogan';
+        hidden.value='1';
+        form.appendChild(hidden);
+        form.submit();
+      }
+      mask.style.display='none';
+    });
+  }
 });
-
-// 📡 获取并更新最新版本信息
-var boxmoe_version = function () {
-    fetch("https://doc.boxmoe.com/wp-json/themes/v1/version/lolimeow")
-        .then(response => response.json())
-        .then(data => {
-            var vboxElement = document.getElementById("vbox");
-            if (vboxElement) {
-                vboxElement.innerHTML = data.data.version;
-            }
-        })
-        .catch(error => {
-
-        });
-};
-boxmoe_version();
-
-var ofResetBtn=document.getElementById('of-reset-slogan-btn');
-var mask=document.getElementById('of-slogan-modal-mask');
-var confirmBtn=document.getElementById('of-slogan-confirm');
-var cancelBtn=document.getElementById('of-slogan-cancel');
-if(ofResetBtn&&mask&&confirmBtn&&cancelBtn){
-  ofResetBtn.addEventListener('click',function(){mask.style.display='flex'});
-  cancelBtn.addEventListener('click',function(){mask.style.display='none'});
-  confirmBtn.addEventListener('click',function(){
-    var form=document.querySelector('#optionsframework form');
-    if(form){
-      var hidden=document.createElement('input');
-      hidden.type='hidden';
-      hidden.name='reset_slogan';
-      hidden.value='1';
-      form.appendChild(hidden);
-      form.submit();
-    }
-    mask.style.display='none';
-  });
-}
 </script>
 	<?php
 	}
@@ -380,51 +379,69 @@ if(ofResetBtn&&mask&&confirmBtn&&cancelBtn){
 		 * file will be added to the option for the active theme.
 		 */
 
-		if ( isset( $_POST['reset'] ) ) {
-			// 获取所有默认值
-			$defaults = $this->get_default_values();
-			
-			// 使用WordPress默认的提示框
+		// 🔧 优化重置检测，支持多种检测方式
+		$isResetRequest = isset($_POST['reset']) || 
+		                 (isset($_POST['reset_flag']) && $_POST['reset_flag'] === '1');
+		                 
+		if ( $isResetRequest ) {
+			// 🔧 优化重置处理，确保重置功能正确工作
 			add_settings_error( 'options-framework', 'restore_defaults', __( '已恢复默认选项!', 'textdomain' ), 'updated fade' );
 			
-			// 直接返回默认值数组，让WordPress完全重置为默认值
+			// 获取默认设置
+			$defaults = $this->get_default_values();
+			
+			// 获取选项名称
+			$options_framework = new Options_Framework;
+			$name = $options_framework->get_option_name();
+			
+			// 🔧 关键修复：直接更新数据库，确保重置生效
+			update_option( $name, $defaults );
+			
+			// 🔧 记录重置操作，便于调试
+			error_log('Options Framework：重置操作已执行 - ' . date('Y-m-d H:i:s'));
+			
+			// 🔧 修复：使用WordPress原生方式设置重定向URL
+			add_filter('wp_redirect', function($location) {
+				return admin_url('themes.php?page=options-framework&reset=success');
+			}, 99);
+			
+			// 🔧 关键修复：确保重置后立即返回默认值
 			return $defaults;
 		}
 
 		/*
 	 * Reset only Page Slogan options
 	 */
-	if ( isset( $_POST['reset_slogan'] ) ) {
-		$options_framework = new Options_Framework;
-		$name = $options_framework->get_option_name();
-		$current = get_option( $name );
-		$defaults = $this->get_default_values();
-		$slogan_keys = array(
-			'boxmoe_slogan_home_text',
-			'boxmoe_slogan_category_text',
-			'boxmoe_slogan_tag_text',
-			'boxmoe_slogan_search_text',
-			'boxmoe_slogan_404_text',
-			'boxmoe_slogan_author_text',
-			'boxmoe_slogan_date_text',
-			'boxmoe_slogan_archive_text',
-			'boxmoe_slogan_post_text',
-			'boxmoe_slogan_page_text',
-			'boxmoe_slogan_page_links_text',
-			'boxmoe_slogan_page_user_center_text',
-		);
-		foreach ( $slogan_keys as $key ) {
-			// 使用与validate_options相同的ID处理逻辑，确保键名匹配
-			$processed_key = preg_replace( '/[^a-zA-Z0-9._\-]/', '', strtolower( $key ) );
-			if ( isset( $defaults[$processed_key] ) ) {
-				$current[$processed_key] = $defaults[$processed_key];
+		if ( isset( $_POST['reset_slogan'] ) ) {
+			$options_framework = new Options_Framework;
+			$name = $options_framework->get_option_name();
+			$current = get_option( $name );
+			$defaults = $this->get_default_values();
+			$slogan_keys = array(
+				'boxmoe_slogan_home_text',
+				'boxmoe_slogan_category_text',
+				'boxmoe_slogan_tag_text',
+				'boxmoe_slogan_search_text',
+				'boxmoe_slogan_404_text',
+				'boxmoe_slogan_author_text',
+				'boxmoe_slogan_date_text',
+				'boxmoe_slogan_archive_text',
+				'boxmoe_slogan_post_text',
+				'boxmoe_slogan_page_text',
+				'boxmoe_slogan_page_links_text',
+				'boxmoe_slogan_page_user_center_text',
+			);
+			foreach ( $slogan_keys as $key ) {
+				// 使用与validate_options相同的ID处理逻辑，确保键名匹配
+				$processed_key = preg_replace( '/[^a-zA-Z0-9._\-]/', '', strtolower( $key ) );
+				if ( isset( $defaults[$processed_key] ) ) {
+					$current[$processed_key] = $defaults[$processed_key];
+				}
 			}
+			// 直接更新数据库，确保标语重置生效
+			update_option( $name, $current );
+			return $current;
 		}
-		// 不使用默认的WordPress提示框，改为使用自定义的顶部横幅提示
-		// add_settings_error( 'options-framework', 'restore_slogan_defaults', __( '页面标语已恢复默认值！', 'textdomain' ), 'updated fade' );
-		// 提示信息将通过JavaScript在前端显示
-		return $current;
-	}
 
 		/*
 		 * 设置默认值防止未定义键警告
@@ -478,9 +495,7 @@ if(ofResetBtn&&mask&&confirmBtn&&cancelBtn){
 	 */
 
 	function save_options_notice() {
-		// 不使用默认的WordPress提示框，改为使用自定义的顶部横幅提示
-		// add_settings_error( 'options-framework', 'save_options', __( '设置已保存成功！', 'textdomain' ), 'updated fade' );
-		// 提示信息将通过JavaScript在前端显示
+		add_settings_error( 'options-framework', 'save_options', __( '设置已保存成功！', 'textdomain' ), 'updated fade' );
 	}
 
 	/**

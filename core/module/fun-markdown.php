@@ -179,18 +179,34 @@ function boxmoe_markdown_to_html($text){
         return '<details class="shiroki-collapse"><summary class="shiroki-collapse-title">' . $title . '</summary><div class="shiroki-collapse-content">' . $content_html . '</div></details>';
     }, $text);
     
+    // 先处理段落，添加<p>标签
+    $parts = preg_split('/\n\n+/', trim($text));
+    foreach($parts as &$p){
+        // 🎯 检查是否是代码块占位符，如果是则不添加<p>标签
+        if(!preg_match('/^\s*<(h\d|ul|ol|pre|blockquote|img|a|table|audio|video)/i',$p) && 
+           !preg_match('/^__MD_CODE_\d+__$/', $p)){
+            $p = '<p>'.$p.'</p>';
+        }
+    }
+    $text = implode("\n", $parts);
+    
     // 将卡片占位符替换回完整的HTML
     foreach($card_placeholders as $placeholder => $card_html){
         $text = str_replace($placeholder, $card_html, $text);
     }
-    $parts = preg_split('/\n\n+/', trim($text));
-    foreach($parts as &$p){
-        if(!preg_match('/^\s*<(h\d|ul|ol|pre|blockquote|img|a|table)/i',$p)){
-            $p = '<p>'.$p.'</p>';
-        }
+    
+    // 修复：将包裹在<p>标签中的卡片HTML提取出来，移除<p>标签
+    $text = preg_replace('/<p>\s*(<a href=".+?" target="_blank" class="md-card-link-wrap">.+?<\/a>)\s*<\/p>/s', '$1', $text);
+    
+    // 处理代码块占位符
+    $html = $text;
+    foreach($blocks as $k=>$v){
+        $html = str_replace($k,$v,$html);
     }
-    $html = implode("\n", $parts);
-    foreach($blocks as $k=>$v){$html = str_replace($k,$v,$html);}
+    
+    // 🎯 修复：移除包裹在代码块HTML外的<p>标签
+    $html = preg_replace('/<p>\s*(<pre class="prettyprint linenums.*?<\/pre>)\s*<\/p>/s', '$1', $html);
+    
     return $html;
 }
 

@@ -2071,7 +2071,7 @@ function initCodeCopy() {
         const copySpan = document.createElement('span');
         copySpan.className = 'single-copy copy';
         copySpan.setAttribute('title', '点击复制本段代码');
-        copySpan.innerHTML = '<i class="fa fa-files-o"></i> 复制代码';
+        copySpan.innerHTML = '🧑🏻‍💻</i> 复制代码';
         btnCopy.appendChild(copySpan);
         pre.insertBefore(btnCopy, pre.firstChild);
         const codeList = pre.querySelector('ol.linenums');
@@ -2094,7 +2094,7 @@ function initCodeCopy() {
         const trigger = e.trigger;
         trigger.innerHTML = '<span style="color:#32cd32"><i class="fa fa-check-square-o" aria-hidden="true"></i> 复制成功</span>';     
         setTimeout(() => {
-            trigger.innerHTML = '<i class="fa fa-files-o"></i> 复制代码';
+            trigger.innerHTML = '🧑🏻‍💻</i> 复制代码';
         }, 3000);
         if (window._copyBannerShow) {
             try { window._copyBannerShow(); } catch(_) {}

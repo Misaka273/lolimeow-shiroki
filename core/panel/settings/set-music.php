@@ -10,128 +10,86 @@
 if(!defined('ABSPATH')){exit;}
 
 $options[] = array(
-    'name' => '音乐播放器设置',
-    'id' => 'music_player_settings',
+    'name' => '全站音乐设置',
+    'id' => 'music_settings',
     'icon' => 'dashicons-playlist-audio',
     'type' => 'heading');
 
+// 🎵 基础设置分组
 $options[] = array(
     'group' => 'start',
-    'group_title' => '音乐播放器基本设置',
-    'name' => '启用音乐播放器',
-    'id' => 'boxmoe_music_player_switch',
+    'group_title' => '基础设置',
+    'name' => '启用全站底部音乐播放器',
+    'id' => 'music_on',
     'type' => 'checkbox',
     'std' => false,
-    'desc' => '开启后将在网站中显示音乐播放器');
+    'desc' => '开启后将在网站底部显示音乐播放器');
 
 $options[] = array(
-    'name' => '播放器位置',
-    'id' => 'boxmoe_music_player_position',
-    'std' => 'bottom-right',
-    'type' => 'select',
-    'options' => array(
-        'top-left' => '左上角',
-        'top-right' => '右上角',
-        'bottom-left' => '左下角',
-        'bottom-right' => '右下角'
-    ));
+    'group' => 'end');
 
-$options[] = array(
-    'name' => '播放器大小',
-    'id' => 'boxmoe_music_player_size',
-    'std' => 'medium',
-    'type' => 'select',
-    'options' => array(
-        'small' => '小',
-        'medium' => '中',
-        'large' => '大'
-    ));
-
-$options[] = array(
-    'name' => '自动播放',
-    'id' => 'boxmoe_music_player_autoplay',
-    'type' => 'checkbox',
-    'std' => false,
-    'desc' => '开启后页面加载时自动播放音乐');
-
-$options[] = array(
-    'name' => '默认音量',
-    'id' => 'boxmoe_music_player_volume',
-    'std' => '50',
-    'type' => 'text',
-    'class' => 'mini',
-    'desc' => '设置播放器默认音量（0-100）');
-
-$options[] = array(
-    'name' => '循环播放',
-    'id' => 'boxmoe_music_player_loop',
-    'type' => 'checkbox',
-    'std' => true,
-    'desc' => '开启后音乐将循环播放');
-
-$options[] = array(
-    'name' => '播放器主题色',
-    'id' => 'boxmoe_music_player_theme_color',
-    'std' => '#8b3dff',
-    'type' => 'color',
-    'desc' => '设置播放器的主题颜色');
-
-$options[] = array(
-    'group' => 'end',
-    'name' => '自定义CSS',
-    'id' => 'boxmoe_music_player_custom_css',
-    'std' => '',
-    'settings' => array('rows' => 3),
-    'type' => 'textarea',
-    'desc' => '添加自定义CSS样式，用于调整播放器外观');
-
+// 🎵 音乐源设置分组
 $options[] = array(
     'group' => 'start',
     'group_title' => '音乐源设置',
-    'name' => '音乐服务器',
-    'id' => 'boxmoe_music_player_server',
+    'name' => '选择音乐运营商',
+    'id' => 'music_server',
     'std' => 'netease',
-    'type' => 'select',
+    'type' => 'radio',
     'options' => array(
         'netease' => '网易云音乐',
         'tencent' => 'QQ音乐',
-        'xiami' => '虾米音乐'
+        'kugou' => '酷狗音乐',
+        'xiami' => '虾米音乐',
+        'baidu' => '百度音乐'
     ));
 
 $options[] = array(
-    'name' => '音乐类型',
-    'id' => 'boxmoe_music_player_type',
-    'std' => 'playlist',
-    'type' => 'select',
-    'options' => array(
-        'song' => '单曲',
-        'album' => '专辑',
-        'artist' => '艺术家',
-        'playlist' => '歌单'
-    ));
-
-$options[] = array(
-    'name' => '自定义API地址',
-    'id' => 'boxmoe_music_player_api',
-    'std' => '',
-    'type' => 'text',
-    'desc' => '输入自定义音乐API地址，留空则使用预设API，填写方式如：https://xxx.com/api?server=:server&type=:type&id=:id&r=:r');
-
-$options[] = array(
-    'name' => '预设API选择',
-    'id' => 'boxmoe_music_player_default_api',
-    'std' => 'default',
-    'type' => 'select',
-    'options' => array(
-        'default' => '默认 API',
-        'tencent_vip' => '初叶🍂 API（仅QQ音乐支持会员）'
-    ),
-    'desc' => '选择预设的音乐API，当自定义API为空时使用');
-
-$options[] = array(
-    'group' => 'end',
-    'name' => '音乐ID',
-    'id' => 'boxmoe_music_player_id',
+    'name' => '歌单ID',
+    'id' => 'music_id',
     'std' => '6814606449',
     'type' => 'text',
-    'desc' => '输入音乐ID，如网易云音乐歌单ID');
+    'desc' => '输入音乐平台的歌单ID，建议不要使用超过100首歌曲的歌单');
+
+$options[] = array(
+    'name' => '自定义API接口',
+    'id' => 'music_api',
+    'std' => '',
+    'type' => 'text',
+    'desc' => '留空使用默认API，填写自定义API地址将强制使用该接口作为音乐源，优先级最高');
+
+$options[] = array(
+    'name' => 'API源选择',
+    'id' => 'music_api_source',
+    'std' => 'api_injahow',
+    'type' => 'select',
+    'options' => array(
+        'api_injahow' => 'api.injahow.cn (推荐)',
+        'api_imeto' => 'api.i-meto.com (默认)',
+        'api_ihuan' => 'meting-api.ihuan.me',
+        'api_github' => 'api-meting.github.io',
+        'api_chuyel' => 'musicapi.chuyel.top (初叶🍂仅QQ音乐)'
+    ),
+    'desc' => '选择音乐API源，如果自定义API不为空则优先使用自定义API');
+
+$options[] = array(
+    'group' => 'end');
+
+// 🎵 播放设置分组
+$options[] = array(
+    'group' => 'start',
+    'group_title' => '播放设置',
+    'name' => '歌单列表播放顺序',
+    'id' => 'music_order',
+    'std' => 'list',
+    'type' => 'radio',
+    'options' => array(
+        'list' => '顺序播放',
+        'random' => '随机播放'
+    ));
+
+$options[] = array(
+    'group' => 'end');
+
+
+

@@ -17,7 +17,7 @@ class Options_Framework_Interface {
 		$options = & Options_Framework::_optionsframework_options();
 		$menu = '<ul>'; 
 		foreach ( $options as $value ) {
-			if ( $value['type'] == "heading" ) {
+			if ( isset( $value['type'] ) && $value['type'] == "heading" ) {
 				$counter++;
 				$class = '';
 				$class = ! empty( $value['id'] ) ? $value['id'] : $value['name'];
@@ -70,12 +70,14 @@ class Options_Framework_Interface {
 			$output = '';
 
 			// Wrap all options
-			if ( ( $value['type'] != "heading" ) && ( $value['type'] != "info" ) ) {
+			if ( ( !isset( $value['type'] ) || $value['type'] != "heading" ) && ( !isset( $value['type'] ) || $value['type'] != "info" ) ) {
 
 				// Keep all ids lowercase with no spaces
-				$value['id'] = preg_replace('/[^a-zA-Z0-9._\-]/', '', strtolower($value['id']) );
+				if ( isset( $value['id'] ) ) {
+					$value['id'] = preg_replace('/[^a-zA-Z0-9._\-]/', '', strtolower($value['id']) );
+				}
 
-				$id = 'section-' . $value['id'];
+				$id = isset( $value['id'] ) ? 'section-' . $value['id'] : '';
 
 				$class = 'section';
 				if ( isset( $value['type'] ) ) {
@@ -85,7 +87,7 @@ class Options_Framework_Interface {
 					$class .= ' ' . $value['class'];
 				}
 
-				if (isset($value['group']) && $value['group'] == 'start') {
+				if (isset($value['group']) && $value['group'] == 'start' && isset($value['id'])) {
 					$group_opened = true;
 					$group_section_id = 'section-' . $value['id'];
 					$output .= '<div id="' . esc_attr($group_section_id) .'" class="' . esc_attr( $class ) . ' mini col">' . "\n";
@@ -98,7 +100,7 @@ class Options_Framework_Interface {
 					$output .= '<div class="boxmoe_group_opened">' . "\n";
 				}
 				
-				if (!$group_opened) {
+				if (!$group_opened && !empty($id)) {
 					$output .= '<div id="' . esc_attr( $id ) .'" class="' . esc_attr( $class ) . ' col">' . "\n";
 				}
 
@@ -110,8 +112,9 @@ class Options_Framework_Interface {
                     $heading .= '</h4>' . "\n";
                     $output .= $heading;
                 }
-				if ( $value['type'] != 'editor' ) {
-					$output .= '<div class="option">' . "\n" . '<div id="'.$value['id'].'-controls" class="controls">' . "\n";
+				if ( !isset( $value['type'] ) || $value['type'] != 'editor' ) {
+					$id_attr = isset($value['id']) ? 'id="'.$value['id'].'-controls"' : '';
+					$output .= '<div class="option">' . "\n" . '<div '.$id_attr.' class="controls">' . "\n";
 				}
 				else {
 					$output .= '<div class="option">' . "\n" . '<div>' . "\n";
@@ -124,8 +127,8 @@ class Options_Framework_Interface {
 			}
 
 			// If the option is already saved, override $val
-			if ( ( $value['type'] != 'heading' ) && ( $value['type'] != 'info') ) {
-				if ( isset( $settings[($value['id'])]) ) {
+			if ( ( !isset( $value['type'] ) || $value['type'] != 'heading' ) && ( !isset( $value['type'] ) || $value['type'] != 'info') ) {
+				if ( isset( $value['id'] ) && isset( $settings[($value['id'])]) ) {
 					$val = $settings[($value['id'])];
 					// Striping slashes of non-array options
 					if ( !is_array($val) ) {
@@ -146,26 +149,34 @@ class Options_Framework_Interface {
 				$placeholder = ' placeholder="' . esc_attr( $value['placeholder'] ) . '"';
 			}
 
-			if ( has_filter( 'optionsframework_' . $value['type'] ) ) {
+			if ( isset( $value['type'] ) && has_filter( 'optionsframework_' . $value['type'] ) ) {
 				$output .= apply_filters( 'optionsframework_' . $value['type'], $option_name, $value, $val );
 			}
 
 
-			switch ( $value['type'] ) {
+			switch ( isset($value['type']) ? $value['type'] : '' ) {
 
 			// Basic text input
 			case 'text':
 				$class = isset($value['class']) ? ' ' . $value['class'] : '';
-				if ($value['id'] == 'boxmoe_article_card_kanban_image') {
+				if ( isset($value['id']) && $value['id'] == 'boxmoe_article_card_kanban_image' ) {
 					$default_image = get_template_directory_uri() . '/assets/images/post-list.png';
-					$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input' . $class . '" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="text" value="' . esc_attr( $val ) . '"' . $placeholder . ' />';
+					if ( isset($value['id']) ) {
+						$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input' . $class . '" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="text" value="' . esc_attr( $val ) . '"' . $placeholder . ' />';
+					}
 					$output .= '<div style="margin-top: 10px; display: flex; gap: 10px;">';
-					$output .= '<input id="upload-' . esc_attr( $value['id'] ) . '" class="upload-button button" type="button" value="' . __( '替换', 'textdomain' ) . '" />';
-					$output .= '<input id="confirm-' . esc_attr( $value['id'] ) . '" class="confirm-button button button-primary" type="button" value="' . __( '确认', 'textdomain' ) . '" />';
-					$output .= '<input id="reset-' . esc_attr( $value['id'] ) . '" class="reset-button button" type="button" value="' . __( '重置', 'textdomain' ) . '" data-default="' . esc_attr( $default_image ) . '" />';
+					if ( isset($value['id']) ) {
+						$output .= '<input id="upload-' . esc_attr( $value['id'] ) . '" class="upload-button button" type="button" value="' . __( '替换', 'textdomain' ) . '" />';
+						$output .= '<input id="confirm-' . esc_attr( $value['id'] ) . '" class="confirm-button button button-primary" type="button" value="' . __( '确认', 'textdomain' ) . '" />';
+						$output .= '<input id="reset-' . esc_attr( $value['id'] ) . '" class="reset-button button" type="button" value="' . __( '重置', 'textdomain' ) . '" data-default="' . esc_attr( $default_image ) . '" />';
+					}
 					$output .= '</div>';
 					// 将预览图的HTML存储起来，稍后在描述之后显示
-					$preview_html = '<div class="screenshot" id="' . esc_attr( $value['id'] ) . '-image" style="margin-top: 10px;">';
+					if ( isset($value['id']) ) {
+						$preview_html = '<div class="screenshot" id="' . esc_attr( $value['id'] ) . '-image" style="margin-top: 10px;">';
+					} else {
+						$preview_html = '<div class="screenshot" style="margin-top: 10px;">';
+					}
 					if ( $val ) {
 						$image = preg_match( '/(^.*\.jpg|jpeg|png|gif|ico|svg*)/i', $val );
 						if ( $image ) {
@@ -176,13 +187,17 @@ class Options_Framework_Interface {
 					// 存储预览HTML以便稍后使用
 					$GLOBALS['boxmoe_preview_html'] = $preview_html;
 				} else {
-					$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input' . $class . '" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="text" value="' . esc_attr( $val ) . '"' . $placeholder . ' />';
+					if ( isset($value['id']) ) {
+						$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input' . $class . '" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="text" value="' . esc_attr( $val ) . '"' . $placeholder . ' />';
+					}
 				}
 				break;
 
 			// Password input
 			case 'password':
-				$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="password" value="' . esc_attr( $val ) . '" />';
+				if ( isset($value['id']) ) {
+					$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" type="password" value="' . esc_attr( $val ) . '" />';
+				}
 				break;
 
 			// Textarea
@@ -197,82 +212,98 @@ class Options_Framework_Interface {
 				}
 
 				$val = stripslashes( $val );
-				$output .= '<textarea id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" rows="' . $rows . '"' . $placeholder . '>' . esc_textarea( $val ) . '</textarea>';
+				if ( isset($value['id']) ) {
+					$output .= '<textarea id="' . esc_attr( $value['id'] ) . '" class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" rows="' . $rows . '"' . $placeholder . '>' . esc_textarea( $val ) . '</textarea>';
+				}
 				break;
 
 			// Select Box
 			case 'select':
-				$output .= '<select class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" id="' . esc_attr( $value['id'] ) . '">';
+				if ( isset($value['id']) && isset($value['options']) ) {
+					$output .= '<select class="of-input" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" id="' . esc_attr( $value['id'] ) . '">';
 
-				foreach ($value['options'] as $key => $option ) {
-					$output .= '<option'. selected( $val, $key, false ) .' value="' . esc_attr( $key ) . '">' . esc_html( $option ) . '</option>';
+					foreach ($value['options'] as $key => $option ) {
+						$output .= '<option'. selected( $val, $key, false ) .' value="' . esc_attr( $key ) . '">' . esc_html( $option ) . '</option>';
+					}
+					$output .= '</select>';
 				}
-				$output .= '</select>';
 				break;
 
 
 			// Radio Box
 			case "radio":
-				$name = $option_name .'['. $value['id'] .']';
-				foreach ($value['options'] as $key => $option) {
-					$id = $option_name . '-' . $value['id'] .'-'. $key;
-					$output .= '<input class="of-input of-radio" type="radio" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" value="'. esc_attr( $key ) . '" '. checked( $val, $key, false) .' /><label for="' . esc_attr( $id ) . '">' . esc_html( $option ) . '</label>';
+				if ( isset($value['id']) && isset($value['options']) ) {
+					$name = $option_name .'['. $value['id'] .']';
+					foreach ($value['options'] as $key => $option) {
+						$id = $option_name . '-' . $value['id'] .'-'. $key;
+						$output .= '<input class="of-input of-radio" type="radio" name="' . esc_attr( $name ) . '" id="' . esc_attr( $id ) . '" value="'. esc_attr( $key ) . '" '. checked( $val, $key, false) .' /><label for="' . esc_attr( $id ) . '">' . esc_html( $option ) . '</label>';
+					}
 				}
 				break;
 
 			// Image Selectors
 			case "images":
-				$name = $option_name .'['. $value['id'] .']';
-				foreach ( $value['options'] as $key => $option ) {
-					$selected = '';
-					if ( $val != '' && ($val == $key) ) {
-						$selected = ' of-radio-img-selected';
+				if ( isset($value['id']) && isset($value['options']) ) {
+					$name = $option_name .'['. $value['id'] .']';
+					foreach ( $value['options'] as $key => $option ) {
+						$selected = '';
+						if ( $val != '' && ($val == $key) ) {
+							$selected = ' of-radio-img-selected';
+						}
+						$output .= '<input type="radio" id="' . esc_attr( $value['id'] .'_'. $key) . '" class="of-radio-img-radio" value="' . esc_attr( $key ) . '" name="' . esc_attr( $name ) . '" '. checked( $val, $key, false ) .' />';
+						$output .= '<div class="of-radio-img-label">' . esc_html( $key ) . '</div>';
+						$output .= '<img src="' . esc_url( $option ) . '" alt="' . $option .'" class="of-radio-img-img' . $selected .'" onclick="document.getElementById(\''. esc_attr($value['id'] .'_'. $key) .'\').checked=true;" />';
 					}
-					$output .= '<input type="radio" id="' . esc_attr( $value['id'] .'_'. $key) . '" class="of-radio-img-radio" value="' . esc_attr( $key ) . '" name="' . esc_attr( $name ) . '" '. checked( $val, $key, false ) .' />';
-					$output .= '<div class="of-radio-img-label">' . esc_html( $key ) . '</div>';
-					$output .= '<img src="' . esc_url( $option ) . '" alt="' . $option .'" class="of-radio-img-img' . $selected .'" onclick="document.getElementById(\''. esc_attr($value['id'] .'_'. $key) .'\').checked=true;" />';
 				}
 				break;
 
 			// Checkbox
 			case "checkbox":
-				$output .= '<input type="hidden" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" value="0" />';
-				$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="checkbox of-input" type="checkbox" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" value="1" '. checked( $val, 1, false) .' />';
-				$output .= '<label class="explain" for="' . esc_attr( $value['id'] ) . '">' . wp_kses( $explain_value, $allowedtags) . '</label>';
+				if ( isset($value['id']) ) {
+					$output .= '<input type="hidden" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" value="0" />';
+					$output .= '<input id="' . esc_attr( $value['id'] ) . '" class="checkbox of-input" type="checkbox" name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" value="1" '. checked( $val, 1, false) .' />';
+					$output .= '<label class="explain" for="' . esc_attr( $value['id'] ) . '">' . wp_kses( $explain_value, $allowedtags) . '</label>';
+				}
 				break;
 
 			// Multicheck
 			case "multicheck":
-				foreach ($value['options'] as $key => $option) {
-					$checked = '';
-					$label = $option;
-					$option = preg_replace('/[^a-zA-Z0-9._\-]/', '', strtolower($key));
+				if ( isset($value['id']) && isset($value['options']) ) {
+					foreach ($value['options'] as $key => $option) {
+						$checked = '';
+						$label = $option;
+						$option = preg_replace('/[^a-zA-Z0-9._\-]/', '', strtolower($key));
 
-					$id = $option_name . '-' . $value['id'] . '-'. $option;
-					$name = $option_name . '[' . $value['id'] . '][' . $option .']';
+						$id = $option_name . '-' . $value['id'] . '-'. $option;
+						$name = $option_name . '[' . $value['id'] . '][' . $option .']';
 
-					if ( isset($val[$option]) ) {
-						$checked = checked($val[$option], 1, false);
+						if ( isset($val[$option]) ) {
+							$checked = checked($val[$option], 1, false);
+						}
+
+						$output .= '<input id="' . esc_attr( $id ) . '" class="checkbox of-input" type="checkbox" name="' . esc_attr( $name ) . '" ' . $checked . ' /><label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
 					}
-
-					$output .= '<input id="' . esc_attr( $id ) . '" class="checkbox of-input" type="checkbox" name="' . esc_attr( $name ) . '" ' . $checked . ' /><label for="' . esc_attr( $id ) . '">' . esc_html( $label ) . '</label>';
 				}
 				break;
 
 			// Color picker
 			case "color":
-				$default_color = '';
-				if ( isset($value['std']) ) {
-					if ( $val !=  $value['std'] )
-						$default_color = ' data-default-color="' .$value['std'] . '" ';
+				if ( isset($value['id']) ) {
+					$default_color = '';
+					if ( isset($value['std']) ) {
+						if ( $val !=  $value['std'] )
+							$default_color = ' data-default-color="' .$value['std'] . '" ';
+					}
+					$output .= '<input name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" id="' . esc_attr( $value['id'] ) . '" class="of-color"  type="text" value="' . esc_attr( $val ) . '"' . $default_color .' />';
 				}
-				$output .= '<input name="' . esc_attr( $option_name . '[' . $value['id'] . ']' ) . '" id="' . esc_attr( $value['id'] ) . '" class="of-color"  type="text" value="' . esc_attr( $val ) . '"' . $default_color .' />';
 
 				break;
 
 			// Uploader
 			case "upload":
-				$output .= Options_Framework_Media_Uploader::optionsframework_uploader( $value['id'], $val, null );
+				if ( isset($value['id']) ) {
+					$output .= Options_Framework_Media_Uploader::optionsframework_uploader( $value['id'], $val, null );
+				}
 
 				break;
 
@@ -515,13 +546,13 @@ class Options_Framework_Interface {
                 break;
 			}
 
-			if ( ( $value['type'] != "heading" ) && ( $value['type'] != "info" ) ) {
+			if ( ( !isset( $value['type'] ) || $value['type'] != "heading" ) && ( !isset( $value['type'] ) || $value['type'] != "info" ) ) {
 				$output .= '</div>';
-				if ( ( $value['type'] != "checkbox" ) && ( $value['type'] != "editor" ) ) {
+				if ( ( !isset( $value['type'] ) || $value['type'] != "checkbox" ) && ( !isset( $value['type'] ) || $value['type'] != "editor" ) ) {
 					$output .= '<div class="explain">' . wp_kses( $explain_value, $allowedtags) . '</div>' ."
 ";
 					// 如果是看板娘图片设置，在描述之后显示预览图
-					if ($value['id'] == 'boxmoe_article_card_kanban_image' && isset($GLOBALS['boxmoe_preview_html'])) {
+					if ( isset($value['id']) && $value['id'] == 'boxmoe_article_card_kanban_image' && isset($GLOBALS['boxmoe_preview_html'])) {
 						$output .= $GLOBALS['boxmoe_preview_html'];
 						// 清除全局变量，避免影响其他设置项
 						unset($GLOBALS['boxmoe_preview_html']);
@@ -529,7 +560,7 @@ class Options_Framework_Interface {
 				}
 				$output .= '</div>';
 				// 如果不是checkbox或editor，并且不是看板娘图片设置，确保正常显示
-				if ( ( $value['type'] != "checkbox" ) && ( $value['type'] != "editor" ) && $value['id'] != 'boxmoe_article_card_kanban_image' ) {
+				if ( ( !isset( $value['type'] ) || $value['type'] != "checkbox" ) && ( !isset( $value['type'] ) || $value['type'] != "editor" ) && ( !isset( $value['id'] ) || $value['id'] != 'boxmoe_article_card_kanban_image' ) ) {
 					// 普通设置项的正常处理
 				}
 

@@ -12,100 +12,104 @@ class widget_clock extends WP_Widget {
 	}
 
 	function widget( $args, $instance ) {
-		extract( $args );
-		$title = apply_filters('widget_name', $instance['title']);
-		$timezone = isset( $instance['timezone'] ) ? $instance['timezone'] : 'Asia/Shanghai';
-		
-		// 时区名称映射，用于将英文时区转换为中文+英文格式
-			$timezone_names = array(
-				'Asia/Shanghai' => '北京时间 (Asia/Shanghai)',
-				'Asia/Tokyo' => '东京时间 (Asia/Tokyo)',
-				'Asia/Seoul' => '首尔时间 (Asia/Seoul)',
-				'Asia/Hong_Kong' => '香港时间 (Asia/Hong_Kong)',
-				'Europe/London' => '伦敦时间 (Europe/London)',
-				'Europe/Paris' => '巴黎时间 (Europe/Paris)',
-				'America/New_York' => '纽约时间 (America/New_York)',
-				'America/Los_Angeles' => '洛杉矶时间 (America/Los_Angeles)',
-				'UTC' => 'UTC时间 (UTC)'
-			);
-			
-			// 设置时区名称作为默认标题，使用中文+英文格式
-			if ( empty( $title ) ) {
-				$title = isset($timezone_names[$timezone]) ? $timezone_names[$timezone] : $timezone;
-			}
-		
-		echo $before_widget;
-		echo '<H4 class="widget-title">'.$title.'</H4>';
-		?>  
-		<style type="text/css">
-			#clock-<?php echo $this->id; ?>,
-			#clock-<?php echo $this->id; ?> .time,
-			#clock-<?php echo $this->id; ?> .date {
-				text-align: center !important;
-				display: block !important;
-				width: 100% !important;
-			}
-			
-			#clock-<?php echo $this->id; ?>.clock-display {
-				padding: 20px 10px !important;
-				display: flex !important;
-				flex-direction: column !important;
-				align-items: center !important;
-				justify-content: center !important;
-				box-sizing: border-box !important;
-				overflow: visible !important;
-			}
-			
-			/* 基础时间样式 */
-			#time-<?php echo $this->id; ?>.time {
-				font-size: 2.5rem !important;
-				font-weight: bold !important;
-				margin-bottom: 10px !important;
-				letter-spacing: 2px !important;
-				font-family: "boxmoe", monospace !important;
-				line-height: 1.2 !important;
-				background: none !important;
-				-webkit-background-clip: text !important;
-				-webkit-text-fill-color: transparent !important;
-				background-clip: text !important;
-				position: relative !important;
-				z-index: 1 !important;
-				white-space: nowrap !important;
-				overflow: visible !important;
-				word-break: keep-all !important;
-			}
-			
-			/* 亮色模式：蓝色渐变 */
-			#time-<?php echo $this->id; ?>.time {
-				background: linear-gradient(135deg, #3b82f6, #10b981) !important;
-				-webkit-background-clip: text !important;
-				-webkit-text-fill-color: transparent !important;
-				background-clip: text !important;
-			}
-			
-			/* 暗色模式：紫色渐变 */
-			[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time {
-				background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
-				-webkit-background-clip: text !important;
-				-webkit-text-fill-color: transparent !important;
-				background-clip: text !important;
-				color: transparent !important;
-			}
-			
-			/* 确保暗色模式下没有额外的背景色 */
-			[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time:before,
-			[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time:after {
-				display: none !important;
-			}
-			
-			#date-<?php echo $this->id; ?>.date {
-				font-size: 0.9rem !important;
-				color: var(--bs-gray-600) !important;
-				font-weight: 500 !important;
-				margin: 0 !important;
-				line-height: 1.2 !important;
-				white-space: nowrap !important;
-			}
+						extract( $args );
+						$title = apply_filters('widget_name', $instance['title']);
+						$timezone = isset( $instance['timezone'] ) ? $instance['timezone'] : 'Asia/Shanghai';
+						
+						// 获取自定义字体设置
+						$default_font = get_boxmoe('boxmoe_default_font');
+						$font_family = $default_font && $default_font !== 'default' ? $default_font : 'boxmoe';
+						
+						// 时区名称映射，用于将英文时区转换为中文+英文格式
+							$timezone_names = array(
+								'Asia/Shanghai' => '北京时间 (Asia/Shanghai)',
+								'Asia/Tokyo' => '东京时间 (Asia/Tokyo)',
+								'Asia/Seoul' => '首尔时间 (Asia/Seoul)',
+								'Asia/Hong_Kong' => '香港时间 (Asia/Hong_Kong)',
+								'Europe/London' => '伦敦时间 (Europe/London)',
+								'Europe/Paris' => '巴黎时间 (Europe/Paris)',
+								'America/New_York' => '纽约时间 (America/New_York)',
+								'America/Los_Angeles' => '洛杉矶时间 (America/Los_Angeles)',
+								'UTC' => 'UTC时间 (UTC)'
+							);
+							
+							// 设置时区名称作为默认标题，使用中文+英文格式
+							if ( empty( $title ) ) {
+								$title = isset($timezone_names[$timezone]) ? $timezone_names[$timezone] : $timezone;
+							}
+						
+						echo $before_widget;
+						echo '<H4 class="widget-title">'.$title.'</H4>';
+						?>	  
+						<style type="text/css">
+							#clock-<?php echo $this->id; ?>,
+							#clock-<?php echo $this->id; ?> .time,
+							#clock-<?php echo $this->id; ?> .date {
+								text-align: center !important;
+								display: block !important;
+								width: 100% !important;
+							}
+							
+							#clock-<?php echo $this->id; ?>.clock-display {
+								padding: 20px 10px !important;
+								display: flex !important;
+								flex-direction: column !important;
+								align-items: center !important;
+								justify-content: center !important;
+								box-sizing: border-box !important;
+								overflow: visible !important;
+							}
+							
+							/* 基础时间样式 */
+							#time-<?php echo $this->id; ?>.time {
+								font-size: 2.5rem !important;
+								font-weight: bold !important;
+								margin-bottom: 10px !important;
+								letter-spacing: 2px !important;
+								font-family: "<?php echo $font_family; ?>", monospace !important;
+								line-height: 1.2 !important;
+								background: none !important;
+								-webkit-background-clip: text !important;
+								-webkit-text-fill-color: transparent !important;
+								background-clip: text !important;
+								position: relative !important;
+								z-index: 1 !important;
+								white-space: nowrap !important;
+								overflow: visible !important;
+								word-break: keep-all !important;
+							}
+							
+							/* 亮色模式：蓝色渐变 */
+							#time-<?php echo $this->id; ?>.time {
+								background: linear-gradient(135deg, #3b82f6, #10b981) !important;
+								-webkit-background-clip: text !important;
+								-webkit-text-fill-color: transparent !important;
+								background-clip: text !important;
+							}
+							
+							/* 暗色模式：紫色渐变 */
+							[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time {
+								background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
+								-webkit-background-clip: text !important;
+								-webkit-text-fill-color: transparent !important;
+								background-clip: text !important;
+								color: transparent !important;
+							}
+							
+							/* 确保暗色模式下没有额外的背景色 */
+							[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time:before,
+							[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time:after {
+								display: none !important;
+							}
+							
+							#date-<?php echo $this->id; ?>.date {
+								font-size: 0.9rem !important;
+								color: var(--bs-gray-600) !important;
+								font-weight: 500 !important;
+								margin: 0 !important;
+								line-height: 1.2 !important;
+								white-space: nowrap !important;
+							}
 			
 			/* 响应式设计：适配不同屏幕尺寸 */
 			@media (max-width: 1200px) {

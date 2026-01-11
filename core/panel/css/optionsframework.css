@@ -165,6 +165,18 @@ input[type="number"].number-text-d {width:70px;}
 #optionsframework-wrap .postbox {border-radius:0;}
 /**保存/重置**/#optionsframework-submit {padding:10px;box-sizing:border-box;text-align:right;background-color:#f9fafb;border-top:1px solid #e9e9ea;position:fixed;border-radius:0;width:calc(80% - 250px);right:10%;bottom:0;left:auto;}
 input.reset-button.button-secondary {float:left;background:#be3838;color:#fff;border-color:#be3838;}
+/* 🚀 重置按钮样式 */
+#super-fast-reset-button {
+    background-color: #ff4d4f !important;
+    border-color: #ff4d4f !important;
+    color: #fff !important;
+    float: left !important;
+    margin-right: 10px;
+}
+#super-fast-reset-button:hover {
+    background-color: #ff7875 !important;
+    border-color: #ff7875 !important;
+}
 @media screen and (max-width:550px) {#optionsframework-wrap {margin:10px auto 0 !important;}
 #of-search-input{width:55vw}
 #optionsframework-wrap .el-button span {display:none;}

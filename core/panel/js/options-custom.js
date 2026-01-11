@@ -321,4 +321,163 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	// 🚀 重构主题后台重置按钮功能，确保重置操作正确执行
+	// 🔧 全局重置函数 - 使用独立处理文件
+	window.shirokiResetAllSettings = function() {
+		if (!confirm('警告：点击确定，之前所有设置修改都将丢失！')) {
+			return false;
+		}
+		
+		// 获取当前主题目录URI
+		var themeUri = $('#direct-reset-button').data('theme-uri') || '/wp-content/themes/lolimeow-shiroki';
+		
+		// 🔧 显示加载提示窗口
+		var loadingHtml = '<div id="shiroki-reset-loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999999;display:flex;align-items:center;justify-content:center;">' +
+			'<div style="background:#fff;padding:30px;border-radius:5px;text-align:center;max-width:400px;">' +
+			'<h3>正在重置设置...</h3>' +
+			'<p>请稍候，这可能需要几秒钟时间。</p>' +
+			'<div style="margin:20px 0;">' +
+			'<div style="width:100%;height:10px;background:#f1f1f1;border-radius:5px;overflow:hidden;">' +
+			'<div id="shiroki-reset-progress" style="width:0%;height:100%;background:#2271b1;transition:width 0.3s;"></div>' +
+			'</div>' +
+			'</div>' +
+			'<p id="shiroki-reset-status">正在初始化...</p>' +
+			'</div>' +
+			'</div>';
+		$('body').append(loadingHtml);
+		
+		// 🔧 模拟进度更新
+		var progress = 0;
+		var progressInterval = setInterval(function() {
+			progress += Math.random() * 15;
+			if (progress > 90) progress = 90;
+			$('#shiroki-reset-progress').css('width', progress + '%');
+			
+			if (progress < 30) {
+				$('#shiroki-reset-status').text('正在初始化...');
+			} else if (progress < 60) {
+				$('#shiroki-reset-status').text('正在获取默认设置...');
+			} else {
+				$('#shiroki-reset-status').text('正在更新数据库...');
+			}
+		}, 500);
+		
+		// 创建表单并提交到独立的重置处理文件
+		var $form = $('<form>', {
+			'action': themeUri + '/direct-reset.php',
+			'method': 'POST',
+			'target': '_self'
+		});
+		
+		// 添加重置标志
+		$('<input>', {
+			'type': 'hidden',
+			'name': 'reset',
+			'value': '1'
+		}).appendTo($form);
+		
+		// 🔧 重置进度条
+		setTimeout(function() {
+			clearInterval(progressInterval);
+			$('#shiroki-reset-progress').css('width', '100%');
+			$('#shiroki-reset-status').text('正在完成...');
+			
+			// 提交表单
+			setTimeout(function() {
+				$form.appendTo('body').submit();
+			}, 500);
+		}, 2000);
+	};
+	
+	// 🔧 检测重置成功参数，显示成功消息
+	$(document).ready(function() {
+		// 🔧 检查URL中是否包含reset参数，而不是仅检查页面
+		var urlParams = new URLSearchParams(window.location.search);
+		var isResetSuccess = urlParams.get('reset') === 'success';
+		
+		// 只有在真正重置成功后才显示消息
+		if (isResetSuccess) {
+			// 移除URL参数，避免刷新时重复显示
+			var newUrl = window.location.pathname + window.location.search.replace(/[?&]reset=success/, '');
+			window.history.replaceState({}, document.title, newUrl);
+			
+			// 显示成功消息
+			$('#message').remove();
+			var successHtml = '<div id="message" class="updated fade"><p><strong>✅ 已恢复默认选项!</strong></p></div>';
+			$('.wrap h2').after(successHtml);
+			
+			// 5秒后自动隐藏消息
+			setTimeout(function() {
+				$('#message').fadeOut();
+			}, 5000);
+		}
+	});
+	
+	// 🔧 重置功能 - 使用预定义默认值，避免动态获取
+	window.superFastResetFunction = function() {
+		if (!confirm('警告：点击确定，之前所有设置修改都将丢失！')) {
+			return false;
+		}
+		
+		// 获取当前主题目录URI
+		var themeUri = $('#super-fast-reset-button').data('theme-uri') || '/wp-content/themes/lolimeow-shiroki';
+		
+		// 🔧 加载提示
+		var loadingHtml = '<div id="shiroki-reset-loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999999;display:flex;align-items:center;justify-content:center;">' +
+			'<div style="background:#fff;padding:30px;border-radius:5px;text-align:center;max-width:400px;">' +
+			'<h3>🚀 重置中...</h3>' +
+			'<p>🌏即将重置主题设置~✍🏻</p>' +
+			'<div style="margin:20px 0;">' +
+			'<div style="width:100%;height:10px;background:#f1f1f1;border-radius:5px;overflow:hidden;">' +
+			'<div id="shiroki-reset-progress" style="width:0%;height:100%;background:#2271b1;transition:width 0.3s;"></div>' +
+			'</div>' +
+			'</div>' +
+			'<p id="shiroki-reset-status">正在初始化...</p>' +
+			'</div>' +
+			'</div>';
+		$('body').append(loadingHtml);
+		
+		// 🔧 重置初始化进展
+		var progress = 0;
+		var progressInterval = setInterval(function() {
+			progress += 20;
+			if (progress > 90) progress = 90;
+			$('#shiroki-reset-progress').css('width', progress + '%');
+			
+			if (progress < 30) {
+				$('#shiroki-reset-status').text('正在初始化...');
+			} else if (progress < 60) {
+				$('#shiroki-reset-status').text('正在应用预定义默认值...');
+			} else {
+				$('#shiroki-reset-status').text('正在更新数据库...');
+			}
+		}, 200);
+		
+		// 创建表单并提交到重置处理文件
+		var $form = $('<form>', {
+			'action': themeUri + '/super-fast-reset.php',
+			'method': 'POST',
+			'target': '_self'
+		});
+		
+		// 添加重置标志
+		$('<input>', {
+			'type': 'hidden',
+			'name': 'reset',
+			'value': '1'
+		}).appendTo($form);
+		
+		// 重置进展
+		setTimeout(function() {
+			clearInterval(progressInterval);
+			$('#shiroki-reset-progress').css('width', '100%');
+			$('#shiroki-reset-status').text('正在完成...');
+			
+			// 提交表单
+			setTimeout(function() {
+				$form.appendTo('body').submit();
+			}, 300);
+		}, 1000);
+	};
+
 });

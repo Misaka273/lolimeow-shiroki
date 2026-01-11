@@ -4,6 +4,12 @@ jQuery(document).ready(function($) {
     // 排除特定插件可能冲突的区域
     
     function initBoxmoeSelect() {
+        // 🛡️ 添加额外的安全检查，确保jQuery和DOM已完全加载
+        if (typeof $ === 'undefined' || !$.fn) {
+            console.log('Boxmoe Select: jQuery未完全加载，跳过初始化');
+            return;
+        }
+        
         $('select:not([multiple]):not(.boxmoe-select-hidden)').each(function() {
             var $this = $(this);
             
@@ -14,6 +20,25 @@ jQuery(document).ready(function($) {
             
             // 排除已经被其他插件美化过的 select (如 select2)
             if ($this.hasClass('select2-hidden-accessible') || $this.hasClass('chosen-select')) {
+                return;
+            }
+            
+            // 🎯 特别处理：使用更精确的识别方式
+            // 1. 必须有 regular-text 类
+            // 2. 但不在小部件区域内
+            // 这样可以确保只美化特定的下拉框，避免与小部件系统冲突
+            if (!$this.hasClass('regular-text')) {
+                return;
+            }
+            
+            // 排除小部件区域中的所有select元素，无论是否有regular-text类
+            if (
+                $this.closest('.widget-inside').length > 0 || // 排除小部件编辑区域
+                $this.closest('.widget-content').length > 0 || // 排除小部件内容区域
+                $this.closest('#widgets-right').length > 0 || // 排除右侧小部件区域
+                $this.closest('.widgets-holder-wrap').length > 0 || // 排除整个小部件包装区域
+                $this.closest('.widget').length > 0 // 排除所有小部件
+            ) {
                 return;
             }
             
@@ -141,6 +166,9 @@ jQuery(document).ready(function($) {
 
     // 初始化
     initBoxmoeSelect();
+    
+    // 🛡️ 添加额外的延迟初始化，确保在所有环境下都能正常工作
+    setTimeout(initBoxmoeSelect, 500);
     
     // 监听 Ajax 完成事件 (针对部分动态加载的 select)
     $(document).ajaxComplete(function() {

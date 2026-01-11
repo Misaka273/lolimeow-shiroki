@@ -82,7 +82,7 @@ $options[] = array(
         'id' => 'boxmoe_article_thumbnail_random_api_url',
         'type' => "text",
         'class' => '',
-        'std' => 'https://api.boxmoe.com/random.php?size=small',
+        'std' => 'https://mu.baimu.live/img/acg/',
         'desc' => __('文章缩略图随机API URL', 'ui_boxmoe_com'),
         );  
         $options[] = array(

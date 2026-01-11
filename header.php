@@ -86,6 +86,10 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
          <animateTransform attributeName="transform" type="scale" additive="sum" keyTimes="0;0.5;1" keySplines="0.42 0.0 0.58 1.0" values="1,1;0.75,0.75;1,1" dur="3s" repeatCount="indefinite"></animateTransform>
          <animateTransform attributeName="transform" type="translate" additive="sum" from="-40,-40" to="-40,-40"></animateTransform>
       </svg>
+
+      <p style="color: #ffffffff; font-size: 14px; margin-top: 120px; font-family: 'Microsoft YaHei', sans-serif; z-index: 10; position: relative; white-space: normal; text-align: center; width: 100%; line-height: 1.5;">
+        🛰️请耐心等待，正在努力加载站点资源🚀
+      </p>
    </div>
    <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity 0.5s ease;}.preloader svg{max-width:80%;max-height:80%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}.preloader{background:#f8c3cd;text-align:center;height:100%;position:fixed;width:100%;top:0;z-index:1031}.preloader .st0{fill:#FCFCFC}.preloader .st1{fill:none;stroke:#FCFCFC;stroke-miterlimit:10;stroke-width:1.1}</style>
   <?php endif; ?>

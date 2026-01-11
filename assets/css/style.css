@@ -197,6 +197,27 @@ Author URI:https://www.boxmoe.com
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
+/* 🎬 自定义视频区块样式，覆盖WordPress原生样式 */
+.wp-block-video {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.wp-block-video video {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 🌆 暗色模式下的视频区块样式 */
+[data-bs-theme="dark"] .wp-block-video video {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
 /* 🌆 暗色模式下的普通页码悬停效果 */
 [data-bs-theme="dark"] .page-links a:hover {
   background-color: #8b5cf6 !important;
@@ -2886,7 +2907,7 @@ hr:not([size]) {height:1px}
 .single-info-right i{margin-right:5px;font-size:13px}
 .single-content img{max-width:100%;border-radius:var(--bs-border-radius-lg) ;box-shadow:0 .125rem .25rem rgba(2,6,23,.075) ;margin:0 auto 1rem;height:auto;display:block;border: 2px solid var(--bs-gray-300);border-width: 2px 2px 4px;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);transform:scale(1);}
 .single-content img:hover{border-color:var(--bs-primary);transform:scale(1.05);box-shadow:0 .5rem 1rem rgba(2,6,23,.15);}
-.single-content code{color:#c7254e;padding:0.25rem 0.5rem;margin:0;font-size:.85em;background-color:#f9f2f4;border-radius:2px;word-break:normal;overflow-wrap:break-word}
+.single-content code{color:#c7254e;padding:0.25rem 0.5rem;margin:0;font-size:16px;font-family:inherit;background-color:#f9f2f4;border-radius:2px;word-break:normal;overflow-wrap:break-word}
 .single-content pre code{white-space:pre !important;word-break:normal !important;overflow-wrap:normal !important}
 
 /* 🎨 文字链接 - 新样式*/
@@ -3041,6 +3062,8 @@ hr:not([size]) {height:1px}
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
+    font-size: 16px;
+    font-family: inherit;
 }
 
 .post-single pre.prettyprint {
@@ -3056,6 +3079,7 @@ hr:not([size]) {height:1px}
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     z-index: 1;
     white-space: pre-wrap !important;
+    font-family: inherit;
 }
 
 @keyframes gradient-flow {
@@ -3089,6 +3113,7 @@ hr:not([size]) {height:1px}
     white-space: pre-wrap !important;
     word-break: break-all !important;
     overflow-wrap: break-word !important;
+    font-family: inherit !important;
 }
 
 /* 行号容器样式 */
@@ -3096,17 +3121,17 @@ hr:not([size]) {height:1px}
     position: relative;
     background: var(--bs-white);
     border: 1px solid #ebebeb;
-    padding: 5px 0;
+    padding: 8px 0;
     box-shadow: inset 33px 0 0 linear-gradient(0deg, #d8d8d8, #ececec), inset 34px 0 0 #ebebeb;
     list-style-type: none;
     counter-reset: line-number;
     z-index: 1;
     margin: 0 !important;
-    padding: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
     white-space: pre-wrap !important;
     overflow: hidden !important;
+    font-family: inherit;
 }
 
 /* 行号悬停效果 */
@@ -3154,6 +3179,8 @@ hr:not([size]) {height:1px}
     overflow-wrap: break-word !important;
     box-sizing: border-box !important;
     user-select: text !important;
+    font-size: 16px;
+    font-family: inherit;
 }
 
 /* 行号样式 */
@@ -3195,6 +3222,7 @@ hr:not([size]) {height:1px}
 /* 确保文本可以选中 */
 .post-single pre.prettyprint,
 .post-single pre.prettyprint * {
+    font-family: inherit !important;
     user-select: text !important;
     -webkit-user-select: text !important;
     -moz-user-select: text !important;

@@ -50,6 +50,20 @@ add_action( 'wp_enqueue_scripts', function() {
     wp_dequeue_style( 'wp-block-library' );
     wp_dequeue_style( 'wp-block-library-theme' );
     wp_dequeue_style( 'wp-block-style' );
+    // 🎬 禁用视频区块特定样式
+    wp_dequeue_style( 'wp-block-video' );
+    wp_dequeue_style( 'wp-block-video-style' );
+    // 🎬 禁用所有单个区块的样式
+    wp_dequeue_style( 'wp-block-audio' );
+    wp_dequeue_style( 'wp-block-code' );
+    wp_dequeue_style( 'wp-block-cover' );
+    wp_dequeue_style( 'wp-block-embed' );
+    wp_dequeue_style( 'wp-block-file' );
+    wp_dequeue_style( 'wp-block-group' );
+    wp_dequeue_style( 'wp-block-image' );
+    wp_dequeue_style( 'wp-block-list' );
+    wp_dequeue_style( 'wp-block-quote' );
+    wp_dequeue_style( 'wp-block-table' );
 }, 20 );
 
 
@@ -131,6 +145,20 @@ function boxmoe_disable_gutenberg() {
     wp_dequeue_style('wp-block-library');
     wp_dequeue_style('wp-block-library-theme');
     wp_dequeue_style('wp-block-style');
+    // 🎬 禁用视频区块特定样式
+    wp_dequeue_style( 'wp-block-video' );
+    wp_dequeue_style( 'wp-block-video-style' );
+    // 🎬 禁用所有单个区块的样式
+    wp_dequeue_style( 'wp-block-audio' );
+    wp_dequeue_style( 'wp-block-code' );
+    wp_dequeue_style( 'wp-block-cover' );
+    wp_dequeue_style( 'wp-block-embed' );
+    wp_dequeue_style( 'wp-block-file' );
+    wp_dequeue_style( 'wp-block-group' );
+    wp_dequeue_style( 'wp-block-image' );
+    wp_dequeue_style( 'wp-block-list' );
+    wp_dequeue_style( 'wp-block-quote' );
+    wp_dequeue_style( 'wp-block-table' );
     }
 }
 add_action('init', 'boxmoe_disable_gutenberg');

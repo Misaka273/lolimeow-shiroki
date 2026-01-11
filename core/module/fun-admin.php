@@ -448,8 +448,10 @@ function boxmoe_admin_profile_enqueue($hook){
 add_action('admin_enqueue_scripts', 'boxmoe_admin_profile_enqueue');
 
 function boxmoe_admin_flat_rounded_enqueue($hook){
-    wp_enqueue_style('lolimeow-admin-flat-rounded', get_template_directory_uri() . '/assets/css/admin-flat-rounded.css', array(), '1.1');
-    wp_enqueue_script('boxmoe-admin-select-ui', get_template_directory_uri() . '/assets/js/admin-select-ui.js', array('jquery'), '1.0', true);
+    wp_enqueue_style('lolimeow-admin-flat-rounded', get_template_directory_uri() . '/assets/css/admin-flat-rounded.css', array(), '1.2');
+    // 使用文件修改时间作为版本号，确保缓存更新
+    $js_version = file_exists(get_template_directory() . '/assets/js/admin-select-ui.js') ? filemtime(get_template_directory() . '/assets/js/admin-select-ui.js') : '1.2';
+    wp_enqueue_script('boxmoe-admin-select-ui', get_template_directory_uri() . '/assets/js/admin-select-ui.js', array('jquery'), $js_version, true);
 }
 add_action('admin_enqueue_scripts', 'boxmoe_admin_flat_rounded_enqueue');
 

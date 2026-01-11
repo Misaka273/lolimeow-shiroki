@@ -1,0 +1,212 @@
+/* 
+ * 验证码样式文件 由初叶🍂www.chuyel.top提供集成
+ * Version: 1.0.0
+ */
+
+/* 🎯 验证码容器样式 */
+.captcha-container {
+    margin: 15px 0;
+    max-width: 380px;
+    width: 100%;
+}
+
+/* 🎨 验证码输入区域 - 适配双面板布局 */
+.captcha-field {
+    background-color: #f0f0f0;
+    height: 55px;
+    border-radius: 55px;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    padding: 0 0.4rem;
+    position: relative;
+    margin: 10px 0;
+    border: none;
+}
+
+.captcha-input {
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1;
+    min-width: 270px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding-left: 10px;
+    color: #333;
+    font-size: 16px;
+    width: 100%;
+}
+
+.captcha-input::placeholder {
+    color: #aaa;
+    font-weight: 500;
+}
+
+.captcha-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: transparent;
+}
+
+.captcha-image {
+    height: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+}
+
+.captcha-image:hover {
+    opacity: 0.8;
+}
+
+.captcha-refresh {
+    position: absolute;
+    right: -10px;
+    background: #5995fd;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.captcha-refresh:hover {
+    background: #4d84e2;
+}
+
+/* ☁️ Cloudflare Turnstile 样式 */
+.cf-turnstile {
+    margin: 15px 0;
+    max-width: 380px;
+    width: 100%;
+    min-height: 65px;
+}
+
+.cf-turnstile iframe {
+    border-radius: 12px !important;
+}
+
+/* 📝 验证码消息区域 */
+.captcha-message {
+    margin-top: 5px;
+    min-height: 24px;
+}
+
+.captcha-message .alert {
+    margin: 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+}
+
+/* 🌙 暗色模式适配 */
+[data-bs-theme="dark"] .captcha-field {
+    background-color: #3d3d3d;
+}
+
+[data-bs-theme="dark"] .captcha-input {
+    color: #e0e0e0;
+}
+
+[data-bs-theme="dark"] .captcha-input::placeholder {
+    color: #888;
+}
+
+[data-bs-theme="dark"] .captcha-refresh {
+    background: #6e9eff;
+}
+
+[data-bs-theme="dark"] .captcha-refresh:hover {
+    background: #5a87e3;
+}
+
+[data-bs-theme="dark"] .cf-turnstile iframe {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 📱 响应式设计 */
+@media (max-width: 870px) {
+    .captcha-field {
+        grid-template-columns: 55% 45%;
+    }
+    
+    .captcha-input {
+        font-size: 14px;
+    }
+    
+    .cf-turnstile {
+        transform: scale(0.95);
+        transform-origin: center;
+    }
+}
+
+@media (max-width: 570px) {
+    .captcha-field {
+        grid-template-columns: 50% 50%;
+        padding: 0 0.3rem;
+        height: 50px;
+    }
+    
+    .captcha-input {
+        font-size: 13px;
+        min-width: auto;
+    }
+    
+    .captcha-image {
+        height: 36px;
+    }
+    
+    .captcha-refresh {
+        right: -8px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .cf-turnstile {
+        min-height: 55px !important;
+        transform: scale(0.9);
+        transform-origin: left center;
+    }
+}
+
+/* 🎯 验证码动画效果 */
+.captcha-success {
+    animation: captchaSuccessPulse 0.6s ease;
+}
+
+.captcha-error {
+    animation: captchaErrorShake 0.5s ease;
+}
+
+@keyframes captchaSuccessPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+@keyframes captchaErrorShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
