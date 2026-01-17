@@ -3449,7 +3449,7 @@ hr:not([size]) {height:1px}
     .post-single .bookmark ul li a .icon::before {content:'';position:absolute;right:2px;bottom:0;width:13px;height:13px;border-radius:50%;z-index:2;transition:border .4s cubic-bezier(0.345,0.045,0.345,1);}
     .post-single .bookmark ul li a.on .icon::before {border:2px solid #fff;background:linear-gradient(to bottom,#38F090,#0cd07e);}
     .post-single .bookmark ul li a.off .icon::before {border:2px solid #fff;background:linear-gradient(to bottom,#ff7e94,#ff5c77);pointer-events:none;user-select:none;}
-    .post-single .bookmark ul li .icon img {width:100%;height:100%;border-radius:50%;object-fit:cover;z-index:1;/* border:2px solid #fff;*/}
+    .post-single .bookmark ul li .icon img {width:100%;height:100%;border-radius:50%;object-fit:contain;z-index:1;/* border:2px solid #fff;*/}
     .post-single .bookmark ul li .info {padding-left:10px;width:calc(100% - 60px);display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
     .post-single .bookmark ul li .info h3 {font-size:16px;color:var(--bs-dark);font-weight:500;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;transition:color .4s cubic-bezier(0.345,0.045,0.345,1);}
     .post-single .bookmark ul li .info p {font-size:13px;color:var(--bs-gray-500);margin-top:5px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;transition:color .4s cubic-bezier(0.345,0.045,0.345,1);}
@@ -3457,7 +3457,7 @@ hr:not([size]) {height:1px}
     .post-single .bookmark ul li .profile .imgbox {position:relative;width:100%;opacity:.2;transition:opacity .4s cubic-bezier(0.345,0.045,0.345,1);}
     .post-single .bookmark ul li:hover .profile .imgbox {opacity:.4;}
     .post-single .bookmark ul li .profile .imgbox::before {content:'';position:absolute;top:0;right:0;width:100%;height:100%;background:linear-gradient(to left,var(--bs-white) 30%,#00000000);}
-    .post-single .bookmark ul li .profile .imgbox img {width:100%;height:100%;object-fit:cover;border-radius:15px;user-select:none;pointer-events:none;}
+    .post-single .bookmark ul li .profile .imgbox img {width:100%;height:100%;object-fit:contain;border-radius:15px;user-select:none;pointer-events:none;}
     /* 友链点击数定位到右侧 */
     .post-single .bookmark ul li .info {display:flex;flex-direction:column;}
     .post-single .bookmark ul li .info h3 {
@@ -4253,7 +4253,7 @@ hr:not([size]) {height:1px}
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
     z-index: 1;
 }
 

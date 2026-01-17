@@ -44,6 +44,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <meta name="register-url" content="<?php echo boxmoe_sign_up_link_page(); ?>">
     <!-- 🎯 页面元数据：登录状态 -->
     <meta name="logged-in" content="<?php echo is_user_logged_in() ? 'true' : 'false'; ?>">
+    <!-- 🎯 页面元数据：用户中心页面。新增检查是否存在 -->
+    <meta name="user-center-exists" content="<?php echo boxmoe_user_center_page_exists() ? 'true' : 'false'; ?>">
     <!-- 🖼️ 输出Banner随机图片列表 -->
     <?php boxmoe_banner_random_images_list(); ?>
 </head>
@@ -126,9 +128,13 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
               <div class="user-panel-content">
                 <div class="mobile-user-wrapper">
                   <div class="mobile-logged-menu">
+                  <!-- 新增判断用户中心页面是否存在 -->
+                    <?php if(boxmoe_user_center_page_exists()): ?>
                     <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="mobile-menu-item">
                       <i class="fa fa-user-circle"></i>
                       <span>会员中心</span></a>
+                      <!-- 新增判断用户中心页面是否存在 -->
+                      <?php endif; ?>
                       <?php if(current_user_can('administrator')): ?>
                     <a href="<?php echo admin_url(); ?>" class="mobile-menu-item">
                       <i class="fa fa-cog"></i>
@@ -171,6 +177,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
             </div>
             <?php if(is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
             <div class="mobile-logged-user-wrapper d-block d-lg-none">
+            <!-- 新增判断用户中心页面是否存在 -->
+              <?php if(boxmoe_user_center_page_exists()): ?>
               <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="user-info-wrap d-flex align-items-center">
                   <div class="user-avatar">
                   <?php 
@@ -184,6 +192,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
                   <div class="user-email"><?php echo get_the_author_meta('user_email', get_current_user_id()); ?></div>
                 </div>
               </a>
+              <!-- 新增判断用户中心页面是否存在 -->
+              <?php endif; ?>
               </div>
               <?php endif; ?>
               <div class="lighting d-lg-none ">
@@ -251,6 +261,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
                  <?php if(is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')):  ?>
                 <div class="logged-user-wrapper d-none d-lg-flex">
                   <div class="user-info-wrap d-flex align-items-center dropdown">
+                  <!-- 新增判断用户中心页面是否存在 -->
+                    <?php if(boxmoe_user_center_page_exists()): ?>
                     <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                       <div class="user-avatar">
                       <?php $avatar_url = boxmoe_get_avatar_url(get_current_user_id(), 100); ?>
@@ -261,11 +273,28 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
                         <div class="user-email"><?php echo get_the_author_meta('user_email', get_current_user_id()); ?></div>
                     </div>
                     </a>
+                    <!-- 新增判断用户中心页面是否存在 -->
+                    <?php else: ?>
+                    <div class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                      <div class="user-avatar">
+                      <?php $avatar_url = boxmoe_get_avatar_url(get_current_user_id(), 100); ?>
+                      <img src="<?php echo !empty($avatar_url) ? $avatar_url : boxmoe_default_avatar_url(); ?>" alt="avatar" class="img-fluid rounded-3" onerror="this.src='<?php echo boxmoe_default_avatar_url(); ?>'">
+                    </div>
+                      <div class="user-info">
+                        <div class="user-name"><?php echo get_the_author_meta('display_name', get_current_user_id()); ?></div>
+                        <div class="user-email"><?php echo get_the_author_meta('user_email', get_current_user_id()); ?></div>
+                    </div>
+                    </div>
+                    <?php endif; ?>
                     <ul class="dropdown-menu dropdown-menu-end">
+                    <!-- 新增判断用户中心页面是否存在 -->
+                      <?php if(boxmoe_user_center_page_exists()): ?>
                       <li>
                         <a class="dropdown-item" href="<?php echo boxmoe_user_center_link_page(); ?>">
                           <i class="fa fa-user-circle"></i>会员中心</a>
                       </li>
+                      <!-- 新增判断用户中心页面是否存在 -->
+                      <?php endif; ?>
                       <?php if(current_user_can('administrator')): ?>
                       <li>
                         <a class="dropdown-item" target="_blank" href="<?php echo admin_url(); ?>">

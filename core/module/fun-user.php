@@ -764,3 +764,66 @@ function boxmoe_generate_custom_uid() {
 
 // 🔒 移除了登录失败重定向函数，使用 WordPress 默认处理
 // 🔒 移除了认证失败重定向函数，使用 WordPress 默认处理
+
+// 🔍 检查用户中心页面是否存在
+function boxmoe_user_center_page_exists() {
+    $boxmoe_user_center_link_page = get_boxmoe('boxmoe_user_center_link_page');
+    if($boxmoe_user_center_link_page && is_numeric($boxmoe_user_center_link_page)){
+        $page = get_post($boxmoe_user_center_link_page);
+        if($page && $page->post_status === 'publish') {
+            return true;
+        }
+    }
+    
+    // 🔍 自动查找使用 p-user_center.php 模板的用户中心页面（尝试多种模板路径格式）
+    $template_paths = array(
+        'page/p-user_center.php',
+        'p-user_center.php'
+    );
+    
+    foreach($template_paths as $template_path){
+        $user_center_pages = get_pages(array(
+            'meta_key' => '_wp_page_template',
+            'meta_value' => $template_path
+        ));
+        if(!empty($user_center_pages)){
+            return true;
+        }
+    }
+    
+    // 🔍 按模板名称查找用户中心页面
+    $args = array(
+        'post_type' => 'page',
+        'posts_per_page' => 1,
+        'meta_query' => array(
+            array(
+                'key' => '_wp_page_template',
+                'value' => 'p-user_center.php',
+                'compare' => 'LIKE'
+            )
+        )
+    );
+    
+    $user_center_query = new WP_Query($args);
+    if($user_center_query->have_posts()){
+        wp_reset_postdata();
+        return true;
+    }
+    
+    // 🔍 按slug查找用户中心页面
+    $user_center_page = get_page_by_path('user-center');
+    if($user_center_page && $user_center_page->post_status === 'publish'){
+        return true;
+    }
+    
+    // 🔍 最后尝试获取所有页面，手动检查模板
+    $all_pages = get_pages();
+    foreach($all_pages as $page){
+        $template = get_page_template_slug($page->ID);
+        if($template && strpos($template, 'user_center') !== false && $page->post_status === 'publish'){
+            return true;
+        }
+    }
+    
+    return false;
+}

@@ -289,6 +289,8 @@ function initMobileUserPanel() {
         
         // 渲染菜单内容
         const renderMenu = () => {
+            // 检查是否存在用户中心页面模板
+            const userCenterExists = document.querySelector('meta[name="user-center-exists"]')?.content === 'true';
             const userCenterLink = getUserCenterLink();
             const adminLink = getAdminLink();
             const logoutLink = getLogoutLink();
@@ -296,7 +298,8 @@ function initMobileUserPanel() {
             
             dropdownMenu.innerHTML = `
                 <div class="mobile-dropdown-content" style="padding: 0;">
-                    <a href="${userCenterLink}" class="mobile-dropdown-item" style="
+                <!-- 新增检查用户中心页面是否存在 -->
+                    ${userCenterExists ? `<a href="${userCenterLink}" class="mobile-dropdown-item" style="
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
@@ -313,7 +316,7 @@ function initMobileUserPanel() {
                     ">
                         <i class="fa fa-user-circle" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
                         <span>会员中心</span>
-                    </a>
+                    </a>` : ''}
                     ${admin ? `
                         <a href="${adminLink}" class="mobile-dropdown-item" style="
                             display: flex;
@@ -979,7 +982,6 @@ class ImageLoadMonitor {
                 this.metrics.failedImages++;
             }
             
-            console.log(`🖼️ 图片加载完成: ${src}, 耗时: ${loadTime}ms, 状态: ${success ? '成功' : '失败'}`);
         }
     }
 
@@ -1005,13 +1007,6 @@ class ImageLoadMonitor {
         
         const stats = this.getStats();
         if (stats && stats.total > 0) {
-            console.log('📊 图片加载统计:');
-            console.log(`   总计: ${stats.total} 张`);
-            console.log(`   成功: ${stats.loaded} 张`);
-            console.log(`   失败: ${stats.failed} 张`);
-            console.log(`   成功率: ${stats.successRate}%`);
-            console.log(`   平均加载时间: ${stats.avgLoadTime}ms`);
-            console.log(`   总耗时: ${stats.totalTime}ms`);
         }
     }
 }
@@ -1634,13 +1629,16 @@ const LoginStatusManager = (() => {
                 const themeUrl = window.ajax_object && window.ajax_object.themeurl ? window.ajax_object.themeurl : '';
                 
                 if (isLoggedIn) {
+                    // 新增检查用户中心页面是否存在
+                    const userCenterExists = document.querySelector('meta[name="user-center-exists"]')?.content === 'true';
                     newPanel.innerHTML = `
                         <div class="user-panel-content">
                             <div class="mobile-user-wrapper">
                                 <div class="mobile-logged-menu">
-                                    <a href="${getUserCenterLink()}" class="mobile-menu-item">
+                                <!-- 新增检查用户中心页面是否存在 -->
+                                ${userCenterExists ? `<a href="${getUserCenterLink()}" class="mobile-menu-item">
                                         <i class="fa fa-user-circle"></i>
-                                        <span>会员中心</span></a>
+                                        <span>会员中心</span></a>` : ''}
                                         ${isAdmin() ? `
                                     <a href="${window.ajax_object?.adminurl || '/wp-admin/'}" class="mobile-menu-item">
                                         <i class="fa fa-cog"></i>
@@ -1745,9 +1743,12 @@ const LoginStatusManager = (() => {
                         // 获取头像URL
                         const avatarUrl = getUserAvatarUrl(userInfo.user_id || 0, userInfo);
                         
+                        // 新增检查用户中心页面是否存在
+                        const userCenterExists = document.querySelector('meta[name="user-center-exists"]')?.content === 'true';
                         newWrapper.innerHTML = `
                             <div class="user-info-wrap d-flex align-items-center dropdown">
-                                <a href="${getUserCenterLink()}" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                                <!-- 新增检查用户中心页面是否存在 -->
+                                ${userCenterExists ? `<a href="${getUserCenterLink()}" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">` : `<div class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">`}
                                     ${avatarUrl ? `
                                     <div class="user-avatar">
                                     <img src="${themeUrl}/assets/images/loading.gif" data-src="${avatarUrl}" alt="avatar" class="img-fluid rounded-3 lazy">
@@ -1756,12 +1757,15 @@ const LoginStatusManager = (() => {
                                         <div class="user-name">${userInfo.display_name || '用户'}</div>
                                         <div class="user-email">${userInfo.user_email || ''}</div>
                                 </div>
-                                </a>
+                                <!-- 新增检查用户中心页面是否存在 -->
+                                ${userCenterExists ? `</a>` : `</div>`}
                                 <ul class="dropdown-menu dropdown-menu-end">
+                                <!-- 新增检查用户中心页面是否存在 -->
+                                  ${userCenterExists ? `
                                   <li>
                                     <a class="dropdown-item" href="${getUserCenterLink()}">
                                       <i class="fa fa-user-circle"></i>会员中心</a>
-                                  </li>
+                                  </li>` : ''}
                                   ${isAdmin() ? `
                                   <li>
                                     <a class="dropdown-item" target="_blank" href="${window.ajax_object?.adminurl || '/wp-admin/'}">
@@ -3976,10 +3980,12 @@ function animateThemeToggle(btn, cur, nxt){
         };
         
         // 🛡️ 使用Object.defineProperty保护关键状态变量
-        Object.defineProperty(window, '__boxmoeBannerAnimationState', {
-            get: () => animationState,
-            configurable: false
-        });
+        if (!window.hasOwnProperty('__boxmoeBannerAnimationState')) {
+            Object.defineProperty(window, '__boxmoeBannerAnimationState', {
+                get: () => animationState,
+                configurable: false
+            });
+        }
         
         function type() {
             // 🔒 防止动画函数被多次调用
@@ -4287,7 +4293,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const loggedUserWrappers = document.querySelectorAll('.logged-user-wrapper');
             
             if (!loggedUserWrappers || loggedUserWrappers.length === 0) {
-                console.log('未找到用户信息容器');
+                // console.log('未找到用户信息容器');
                 return;
             }
             
@@ -4367,7 +4373,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                     
-                    console.log('下拉菜单事件监听器已添加');
                 } catch (error) {
                     console.error('处理用户信息容器错误:', error);
                 }

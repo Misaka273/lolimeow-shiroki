@@ -120,6 +120,25 @@ get_header();
     gap: 8px;
 }
 
+/* 🎨 友链图标自适应样式 */
+.shiroki-link-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* 🎨 网站ICO自适应样式 */
+.shiroki-site-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    object-fit: contain;
+    border: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+
 .shiroki-link-url {
     font-size: 13px;
     color: #666;
@@ -357,7 +376,7 @@ get_header();
                 <div class="shiroki-link-card <?php echo esc_attr($category_class); ?>">
                     <div class="shiroki-link-title">
                         <?php if (!empty($link_image)) : ?>
-                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
+                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" class="shiroki-link-icon">
                         <?php else : ?>
                             <span style="font-size: 20px;">- </span>
                         <?php endif; ?>
@@ -424,7 +443,7 @@ get_header();
                 <div class="shiroki-link-card">
                     <div class="shiroki-link-title">
                         <?php if (!empty($link_image)) : ?>
-                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
+                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" class="shiroki-link-icon">
                         <?php else : ?>
                             <span style="font-size: 20px;">- </span>
                         <?php endif; ?>
@@ -476,7 +495,7 @@ get_header();
                     </p>
                     <p style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
                         <strong>网站ICO：</strong>
-                        <img src="<?php echo get_site_icon_url(); ?>" alt="<?php echo esc_attr(get_option('blogname')); ?> ICO" style="width: 32px; height: 32px; border-radius: 4px; object-fit: cover; border: 1px solid #e0e0e0;">
+                        <img src="<?php echo get_site_icon_url(); ?>" alt="<?php echo esc_attr(get_option('blogname')); ?> ICO" class="shiroki-site-icon">
                         <span style="font-size: 13px;"><?php echo get_site_icon_url(); ?></span>
                     </p>
                 </div>
