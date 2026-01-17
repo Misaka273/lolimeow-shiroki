@@ -1,0 +1,91 @@
+/* 🌊 shiroki分割线样式 */
+.shiroki-divider {
+    display: block;
+    width: 60%; /* ◀️ 缩短分割线宽度 */
+    height: 40px;
+    margin: 2em auto; /* ◀️ 使用auto实现水平居中 */
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 20px; /* ◀️ 添加圆角边缘 */
+}
+
+/* 🌊 第一条波浪线 - 粉紫蓝渐变 */
+.shiroki-divider::before {
+    content: '';
+    position: absolute;
+    top: 35%;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    transform: translateY(-50%);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='gradient' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23ff9ec7'/%3E%3Cstop offset='25%25' stop-color='%23c77dff'/%3E%3Cstop offset='50%25' stop-color='%237209b7'/%3E%3Cstop offset='75%25' stop-color='%23560bad'/%3E%3Cstop offset='100%25' stop-color='%23480ca8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,20 C100,5 200,35 300,20 C400,5 500,35 600,20 C700,5 800,35 900,20 C1000,5 1100,35 1200,20' stroke='url(%23gradient)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-size: 1200px 40px;
+    background-repeat: repeat-x;
+    filter: drop-shadow(0 1px 3px rgba(199, 125, 255, 0.3));
+    border-radius: 20px; /* ◀️ 添加圆角边缘 */
+    z-index: 3; /* ◀️ 设置层级，确保在最上层 */
+}
+
+/* 🌊 第二条波浪线 - 蓝绿青渐变 */
+.shiroki-divider::after {
+    content: '';
+    position: absolute;
+    top: 65%;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    transform: translateY(-50%);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='gradient2' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%234facfe'/%3E%3Cstop offset='25%25' stop-color='%2300f2fe'/%3E%3Cstop offset='50%25' stop-color='%234361ee'/%3E%3Cstop offset='75%25' stop-color='%233f2b96'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,20 C100,5 200,35 300,20 C400,5 500,35 600,20 C700,5 800,35 900,20 C1000,5 1100,35 1200,20' stroke='url(%23gradient2)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-size: 1200px 40px;
+    background-repeat: repeat-x;
+    filter: drop-shadow(0 1px 3px rgba(79, 172, 254, 0.3));
+    border-radius: 20px; /* ◀️ 添加圆角边缘 */
+    z-index: 2; /* ◀️ 设置层级，在中间层 */
+    /* 移除动画 */
+}
+
+
+
+/* 🌊 暗色模式适配 */
+[data-bs-theme="dark"] .shiroki-divider::before {
+    filter: drop-shadow(0 1px 5px rgba(199, 125, 255, 0.5));
+}
+
+[data-bs-theme="dark"] .shiroki-divider::after {
+    filter: drop-shadow(0 1px 5px rgba(79, 172, 254, 0.5));
+}
+
+
+
+/* 🌊 小屏幕适配 */
+@media (max-width: 768px) {
+    .shiroki-divider {
+        width: 80%; /* ◀️ 小屏幕上稍微宽一点 */
+        height: 35px;
+        margin: 1.5em auto; /* ◀️ 保持居中 */
+        border-radius: 17.5px; /* ◀️ 小屏幕圆角 */
+    }
+    
+    .shiroki-divider::before {
+        height: 35px;
+        background-size: 800px 35px;
+        border-radius: 17.5px; /* ◀️ 小屏幕圆角 */
+    }
+    
+    .shiroki-divider::after {
+        height: 35px;
+        background-size: 800px 35px;
+        border-radius: 17.5px; /* ◀️ 小屏幕圆角 */
+    }
+    
+
+}
+
+/* 🌊 文章内容中的分割线响应式 */
+.entry-content .shiroki-divider,
+.single-content .shiroki-divider {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}

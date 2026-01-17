@@ -34,7 +34,7 @@ function boxmoe_theme_url(){
     return get_template_directory_uri();
 }
 
-// 前端布局--------------------------boxmoe.com--------------------------
+// 前端布局--------------------------gl.baimu.live--------------------------
 function boxmoe_layout_setting(){
     $layout = get_boxmoe('boxmoe_blog_layout');
     $article_layout = get_boxmoe('boxmoe_article_layout_style');
@@ -84,6 +84,173 @@ function boxmoe_logo(){
     }
 }
 
+// 🥳 菜单自定义图标字段--------------------------gl.baimu.live--------------------------
+// 添加菜单自定义图标字段
+function shiroki_menu_item_icon_field() {
+    global $pagenow;
+    
+    if ( 'nav-menus.php' != $pagenow ) {
+        return;
+    }
+    
+    add_meta_box(
+        'shiroki_menu_item_icon',
+        '🥳 菜单图标设置',
+        'shiroki_menu_item_icon_field_html',
+        'nav-menus',
+        'side',
+        'default'
+    );
+}
+add_action( 'admin_init', 'shiroki_menu_item_icon_field' );
+
+// 菜单图标字段HTML
+function shiroki_menu_item_icon_field_html() {
+    ?>
+    <div class="field-meta-box">
+        <div class="description description-wide">
+            <label for="shiroki_menu_icon">
+                <strong><?php _e( '自定义菜单图标' ); ?></strong><br />
+                <span><?php _e( '上传或输入图片URL，支持PNG、SVG、JPG格式，尺寸建议1:1' ); ?></span>
+            </label>
+            <div class="shiroki-menu-icon-uploader">
+                <input type="text" id="shiroki_menu_icon" name="shiroki_menu_icon" value="" class="widefat" placeholder="<?php _e( '图片URL' ); ?>">
+                <br /><br />
+                <input type="button" id="shiroki_menu_icon_upload" class="button button-secondary" value="<?php _e( '选择图片' ); ?>">
+                <input type="button" id="shiroki_menu_icon_remove" class="button button-secondary" value="<?php _e( '移除图片' ); ?>">
+            </div>
+            <div class="shiroki-menu-icon-preview" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        // 上传图片
+        $('#shiroki_menu_icon_upload').click(function(e) {
+            e.preventDefault();
+            
+            var mediaUploader = wp.media({
+                title: '<?php _e( '选择菜单图标' ); ?>',
+                button: {
+                    text: '<?php _e( '选择图片' ); ?>'
+                },
+                multiple: false
+            });
+            
+            mediaUploader.on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                $('#shiroki_menu_icon').val(attachment.url);
+                shiroki_update_icon_preview();
+            });
+            
+            mediaUploader.open();
+        });
+        
+        // 移除图片
+        $('#shiroki_menu_icon_remove').click(function(e) {
+            e.preventDefault();
+            $('#shiroki_menu_icon').val('');
+            shiroki_update_icon_preview();
+        });
+        
+        // 实时预览
+        $('#shiroki_menu_icon').on('input', function() {
+            shiroki_update_icon_preview();
+        });
+        
+        // 菜单项展开时填充值
+        function shiroki_init_menu_icon_field() {
+            // 监听菜单项展开事件
+            $(document).on('click', '.item-edit', function() {
+                var $this = $(this); // 保存当前点击的元素
+                setTimeout(function() {
+                    // 获取当前展开的菜单项ID
+                    var menu_item = $this.closest('.menu-item');
+                    var item_id = menu_item.attr('id').replace('menu-item-', '');
+                    
+                    // 填充当前菜单项的图标值到右侧元框
+                    var icon_value = $('#shiroki_menu_icon_' + item_id).val();
+                    $('#shiroki_menu_icon').val(icon_value);
+                    shiroki_update_icon_preview();
+                    
+                    // 保存当前选中的菜单项ID
+                    menu_item.addClass('shiroki-current-menu-item');
+                    menu_item.siblings().removeClass('shiroki-current-menu-item');
+                }, 100);
+            });
+        }
+        
+        // 更新预览
+        function shiroki_update_icon_preview() {
+            var icon_url = $('#shiroki_menu_icon').val();
+            var preview = $('.shiroki-menu-icon-preview');
+            
+            if (icon_url) {
+                preview.html('<img src="' + icon_url + '" style="max-width: 50px; max-height: 50px; border: 1px solid #ddd; padding: 2px;">');
+            } else {
+                preview.html('');
+            }
+        }
+        
+        // 保存当前选中菜单项的图标值
+        $('#update-nav-menu').click(function(e) {
+            // 只保存当前选中的菜单项的图标值
+            var current_menu_item = $('.shiroki-current-menu-item');
+            if (current_menu_item.length > 0) {
+                var item_id = current_menu_item.attr('id').replace('menu-item-', '');
+                var icon_value = $('#shiroki_menu_icon').val();
+                $('#shiroki_menu_icon_' + item_id).val(icon_value);
+            }
+        });
+        
+        // 右侧元框输入变化时，实时更新当前选中菜单项的隐藏字段
+        $('#shiroki_menu_icon').on('input', function() {
+            shiroki_update_icon_preview();
+            
+            // 实时更新当前选中菜单项的隐藏字段
+            var current_menu_item = $('.shiroki-current-menu-item');
+            if (current_menu_item.length > 0) {
+                var item_id = current_menu_item.attr('id').replace('menu-item-', '');
+                var icon_value = $(this).val();
+                $('#shiroki_menu_icon_' + item_id).val(icon_value);
+            }
+        });
+        
+        // 初始化
+        shiroki_init_menu_icon_field();
+    });
+    </script>
+    <?php
+}
+
+// 添加菜单项自定义字段
+function shiroki_add_menu_item_icon_fields($item_id, $item) {
+    $icon_url = get_post_meta($item_id, '_shiroki_menu_icon', true);
+    ?>
+    <div class="field-shiroki-menu-icon description-wide" style="margin: 10px 0;">
+        <label for="shiroki_menu_icon_<?php echo $item_id; ?>">
+            <span><?php _e( '菜单图标' ); ?></span><br />
+            <input type="text" id="shiroki_menu_icon_<?php echo $item_id; ?>" name="menu_item_icon[<?php echo $item_id; ?>]" value="<?php echo esc_attr($icon_url); ?>" class="widefat" placeholder="<?php _e( '图片URL' ); ?>">
+        </label>
+    </div>
+    <?php
+}
+add_action( 'wp_nav_menu_item_custom_fields', 'shiroki_add_menu_item_icon_fields', 10, 2 );
+
+// 保存菜单项自定义字段
+function shiroki_save_menu_item_icon_fields($menu_id, $menu_item_db_id) {
+    if (isset($_POST['menu_item_icon'][$menu_item_db_id])) {
+        update_post_meta(
+            $menu_item_db_id,
+            '_shiroki_menu_icon',
+            esc_url_raw($_POST['menu_item_icon'][$menu_item_db_id])
+        );
+    } else {
+        delete_post_meta($menu_item_db_id, '_shiroki_menu_icon');
+    }
+}
+add_action( 'wp_update_nav_menu_item', 'shiroki_save_menu_item_icon_fields', 10, 2 );
+
 // Banner图片--------------------------boxmoe.com--------------------------
 function boxmoe_banner_image(){
     $src='';
@@ -102,6 +269,32 @@ function boxmoe_banner_image(){
         $src= boxmoe_theme_url().'/assets/images/banner.jpg';
     }
     echo $src;
+}
+
+// 🖼️ 输出Banner随机图片列表到JavaScript--------------------------gl.baimu.live--------------------------
+function boxmoe_banner_random_images_list(){
+    $banner_mode = '';
+    $banner_data = array();
+    
+    if(get_boxmoe('boxmoe_banner_api_switch')){
+        $banner_mode = 'api';
+        $banner_data['apiUrl'] = get_boxmoe('boxmoe_banner_api_url', '');
+    } elseif(get_boxmoe('boxmoe_banner_rand_switch')){
+        $banner_mode = 'local';
+        $random_images = glob(get_template_directory().'/assets/images/banner/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE);
+        if (!empty($random_images)) {
+            $image_urls = array();
+            foreach($random_images as $image) {
+                $relative_path = str_replace(get_template_directory(), '', $image);
+                $image_urls[] = boxmoe_theme_url() . $relative_path;
+            }
+            $banner_data['images'] = $image_urls;
+        }
+    }
+    
+    if (!empty($banner_mode)) {
+        echo '<script>window.shirokiBannerMode = "' . $banner_mode . '"; window.shirokiBannerData = ' . json_encode($banner_data) . ';</script>';
+    }
 }
 
 // 节日灯笼--------------------------boxmoe.com--------------------------
@@ -250,7 +443,7 @@ function boxmoe_load_assets_footer(){?>
           </div>
           <div class="col-lg-12 text-center mt-3 copyright">
           <span><?php echo get_boxmoe('boxmoe_footer_copyright_hidden') ? '' : 'Copyright'; ?> © <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a> <?php echo get_boxmoe('boxmoe_footer_info','Powered by WordPress'); ?> </span>
-          <span><?php echo get_boxmoe('boxmoe_footer_theme_by_text','Theme by <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'); ?></span>
+          <span><?php $footer_text = get_boxmoe('boxmoe_footer_theme_by_text','本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'📦 主题版本：{THEME_VERSION}'); echo str_replace('{THEME_VERSION}', THEME_VERSION, $footer_text); ?></span>
           <?php if(get_boxmoe('boxmoe_footer_running_days_switch')): ?>
           <span class="runtime-line">
             <i class="fa fa-clock-o runtime-icon"></i>
@@ -286,7 +479,7 @@ function boxmoe_nav_menu(){
         'container' => false,
         'menu_class' => 'navbar-nav align-items-lg-center',
         'walker' => new bootstrap_5_wp_nav_menu_walker(),
-        'depth' => 3,
+        'depth' => 10,
         'fallback_cb' => false
     ];
     if (has_nav_menu('boxmoe-menu')) {

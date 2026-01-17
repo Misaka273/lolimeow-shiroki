@@ -1,18 +1,18 @@
 <?php
 /**
- * Template Name: YIKAN友联
+ * Template Name: 提交友链-YIKAN出品
  * Description: 集成友联展示、申请、邮件通知+图形验证码+提交限流+配置项提取+按钮加载的专用页面模板
  * Copyright: YI KAN搜索导航yy4y.com博客44y4.com © 2025 保留所有权利
  */
 
 // ========== 核心配置项（集中管理，修改超方便） | YI KAN搜索导航yy4y.com博客44y4.com ==========
-define('FL_ADMIN_EMAIL', '1909824@qq.com');      // 管理员接收邮箱 | YI KAN搜索导航yy4y.com博客44y4.com
+// define('FL_ADMIN_EMAIL', '1909824@qq.com');      // 管理员接收邮箱 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_SUBMIT_INTERVAL', 30);                // 提交间隔限制（秒） | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_CAPTCHA_LENGTH', 4);                  // 验证码位数 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_CAPTCHA_WIDTH', 120);                 // 验证码图片宽度 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_CAPTCHA_HEIGHT', 40);                 // 验证码图片高度 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_LOGO_PATH', '/logo.png');             // LOGO相对于博客根目录的路径 | YI KAN搜索导航yy4y.com博客44y4.com
-define('FL_EMAIL_SUBJECT_APPLY', '【YIKAN友联】新的友情链接申请'); // 申请通知邮件标题 | YI KAN搜索导航yy4y.com博客44y4.com
+define('FL_EMAIL_SUBJECT_APPLY', '【新友链申请通知-YIKAN出品】'); // 申请通知邮件标题 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_EMAIL_SUBJECT_APPROVE', '【%s】你的友情链接申请已通过！'); // 审核通过邮件标题 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_COPYRIGHT_TEXT', 'YI KAN博客44y4.com'); // 版权信息配置项 | YI KAN搜索导航yy4y.com博客44y4.com
 
@@ -60,11 +60,16 @@ if (isset($_GET['fl_captcha_img'])) {
     create_fl_image_captcha();
 }
 
-// ========== 核心函数2：发送审核通过通知邮件（默认博客LOGO） | YI KAN搜索导航yy4y.com博客44y4.com ==========
+// ========== 核心函数2：发送审核通过通知邮件（使用主题设置中的LOGO） | YI KAN搜索导航yy4y.com博客44y4.com ==========
 function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_site_name = '', $your_site_url = '') {
     $your_site_name = empty($your_site_name) ? get_option('blogname') : $your_site_name;
     $your_site_url = empty($your_site_url) ? get_option('siteurl') : $your_site_url;
-    $logo_url = $your_site_url . FL_LOGO_PATH;
+    // $logo_url = $your_site_url . FL_LOGO_PATH;
+    
+    // 获取主题设置中的LOGO，如果没有则使用默认路径  | 灵阈研都-纸鸢社开发 gl.baimu.live
+    $logo_src = get_boxmoe('boxmoe_logo_src');
+    $logo_url = !empty($logo_src) ? $logo_src : $your_site_url . FL_LOGO_PATH;
+    
     $subject = sprintf(FL_EMAIL_SUBJECT_APPROVE, $your_site_name);
 
     $message = "
@@ -110,7 +115,7 @@ function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_
                 padding: 10px;
             }
             .email-title {
-                color: #ffffff;
+                color: #000000ff;
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -242,11 +247,18 @@ function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_
     return wp_mail($to_email, $subject, $message, $headers);
 }
 
-// ========== 核心函数3：发送新申请通知邮件（默认博客LOGO） | YI KAN搜索导航yy4y.com博客44y4.com ==========
-function send_friendlink_apply_notification($admin_email, $site_name, $site_url, $contact_email, $remarks) {
+// ========== 核心函数3：发送新申请通知邮件（使用主题设置中的LOGO） | YI KAN搜索导航yy4y.com博客44y4.com ==========
+// function send_friendlink_apply_notification($admin_email, $site_name, $site_url, $contact_email, $remarks) {
+// 🏞️ 新增ICO表单项   | 灵阈研都-纸鸢社开发 gl.baimu.live
+function send_friendlink_apply_notification($admin_email, $site_name, $site_url, $contact_email, $remarks, $site_ico = '') {
     $your_site_name = get_option('blogname');
     $your_site_url = get_option('siteurl');
-    $logo_url = $your_site_url . FL_LOGO_PATH;
+    // $logo_url = $your_site_url . FL_LOGO_PATH;
+    
+    // 获取主题设置中的LOGO，如果没有则使用默认路径  | 灵阈研都-纸鸢社开发 gl.baimu.live
+    $logo_src = get_boxmoe('boxmoe_logo_src');
+    $logo_url = !empty($logo_src) ? $logo_src : $your_site_url . FL_LOGO_PATH;
+    
     $subject = FL_EMAIL_SUBJECT_APPLY . ' - ' . $site_name;
 
     $message = "
@@ -292,7 +304,7 @@ function send_friendlink_apply_notification($admin_email, $site_name, $site_url,
                 padding: 10px;
             }
             .email-title {
-                color: #ffffff;
+                color: #000000ff;
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -401,6 +413,11 @@ function send_friendlink_apply_notification($admin_email, $site_name, $site_url,
                             <td class='value'><a href='{$site_url}' target='_blank'>{$site_url}</a></td>
                         </tr>
                         <tr>
+                        <!-- 🏞️ 新增ICO表单项   | 灵阈研都-纸鸢社开发 gl.baimu.live -->
+                            <td class='label'>网站ICO：</td>
+                            <td class='value'>" . ($site_ico ? "<a href='{$site_ico}' target='_blank'>{$site_ico}</a>" : '无') . "</td>
+                        </tr>
+                        <tr>
                             <td class='label'>联系邮箱：</td>
                             <td class='value'>{$contact_email}</td>
                         </tr>
@@ -499,10 +516,15 @@ if (isset($_POST['yikan_fl_action']) && $_POST['yikan_fl_action'] === 'send_emai
     // 数据清洗与验证 | YI KAN搜索导航yy4y.com博客44y4.com
     $site_name = sanitize_text_field($_POST['site_name']);
     $site_url = esc_url_raw($_POST['site_url']);
+    // 🏞️ 新增ICO表单项   | 灵阈研都-纸鸢社开发 gl.baimu.live
+    $site_ico = esc_url_raw($_POST['site_ico']);
     $contact_email = sanitize_email($_POST['contact_email']);
     $remarks = sanitize_textarea_field($_POST['remarks']);
 
-    if (empty($site_name) || empty($site_url) || empty($contact_email) || !is_email($contact_email)) {
+    // if (empty($site_name) || empty($site_url) || empty($contact_email) || !is_email($contact_email)) {
+
+    // 🏞️ 新增ICO表单项   | 灵阈研都-纸鸢社开发 gl.baimu.live
+    if (empty($site_name) || empty($site_url) || empty($site_ico) || empty($contact_email) || !is_email($contact_email)) {
         wp_redirect(add_query_arg(['fl_msg' => urlencode('请填写所有必填项且邮箱格式正确！'), 'fl_type' => 'error'], get_permalink()));
         exit;
     }
@@ -511,11 +533,24 @@ if (isset($_POST['yikan_fl_action']) && $_POST['yikan_fl_action'] === 'send_emai
     $_SESSION[$cache_key] = time();
     unset($_SESSION['fl_captcha_code']);
     
-    // 发送通知邮件 | YI KAN搜索导航yy4y.com博客44y4.com
-    if (send_friendlink_apply_notification(FL_ADMIN_EMAIL, $site_name, $site_url, $contact_email, $remarks)) {
+    //  // 🔽 原版 | YI KAN搜索导航yy4y.com博客44y4.com
+    // if (send_friendlink_apply_notification(FL_ADMIN_EMAIL, $site_name, $site_url, $contact_email, $remarks)) {
+    
+    // 获取SMTP邮件设置的消息接受邮箱，优先从独立SMTP设置页面获取，其次从主题选项框架获取，最后使用系统管理员邮箱 | 灵阈研都-纸鸢社开发 gl.baimu.live
+    $receive_email = get_option('boxmoe_smtp_receive_email');
+    if (empty($receive_email)) {
+        $receive_email = get_boxmoe('boxmoe_smtp_receive_email');
+    }
+    $admin_email = !empty($receive_email) ? $receive_email : get_option('admin_email');
+    
+    // 发送通知邮件  | 灵阈研都-纸鸢社开发 gl.baimu.live
+    if (send_friendlink_apply_notification($admin_email, $site_name, $site_url, $contact_email, $remarks, $site_ico)) {
+        // 发送通知邮件 | YI KAN搜索导航yy4y.com博客44y4.com
         wp_redirect(add_query_arg(['fl_msg' => urlencode('申请提交成功！我们会尽快审核'), 'fl_type' => 'success'], get_permalink()));
     } else {
-        wp_redirect(add_query_arg(['fl_msg' => urlencode('邮件发送失败，请手动发邮件到'.FL_ADMIN_EMAIL), 'fl_type' => 'error'], get_permalink()));
+        wp_redirect(add_query_arg(['fl_msg' => urlencode('邮件发送失败，请手动发邮件到'.$admin_email), 'fl_type' => 'error'], get_permalink()));
+        // 🔽 原版 | YI KAN搜索导航yy4y.com博客44y4.com
+        // wp_redirect(add_query_arg(['fl_msg' => urlencode('邮件发送失败，请手动发邮件到'.FL_ADMIN_EMAIL), 'fl_type' => 'error'], get_permalink()));
     }
     exit;
 }
@@ -524,9 +559,101 @@ if (isset($_POST['yikan_fl_action']) && $_POST['yikan_fl_action'] === 'send_emai
 get_header();
 ?>
 
+<!-- 🌸 新增暗色模式适配样式 -->
+<style>
+@media (prefers-color-scheme: dark) {
+    /* 🌆 全局容器样式 */
+    .yikan-friendlink-page {
+        color: #e0e0e0 !important;
+    }
+    
+    /* 🌆 标题样式 */
+    .yikan-friendlink-page h2 {
+        color: #e0e0e0 !important;
+    }
+    
+    /* 🌆 管理员邮件发送模块 */
+    .fl-notice-section > div {
+        background: #2d2d2d !important;
+        border-color: #404040 !important;
+    }
+    
+    .fl-notice-section > div > p {
+        color: #b0b0b0 !important;
+    }
+    
+    /* 🌆 表单元素 */
+    .fl-notice-section input,
+    .fl-notice-section textarea {
+        background: #333 !important;
+        border-color: #555 !important;
+        color: #e0e0e0 !important;
+    }
+    
+    .fl-notice-section label {
+        color: #e0e0e0 !important;
+    }
+    
+    /* 🌆 按钮样式 */
+    .fl-notice-section button,
+    .fl-apply-section button {
+        background: #007cba !important;
+        color: #fff !important;
+    }
+    
+    /* 🌆 友链申请区域 */
+    .fl-apply-section > div {
+        background: #2d2d2d !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+    }
+    
+    .fl-apply-section > div > div {
+        color: #b0b0b0 !important;
+    }
+    
+    .fl-apply-section > div > div > p {
+        color: #b0b0b0 !important;
+    }
+    
+    /* 🌆 友链申请说明文字 */
+    .fl-apply-section > div > div > p:nth-child(1) {
+        color: #000000ff !important;
+        font-weight: 500 !important;
+    }
+    
+    /* 🌆 申请表单 */
+    .fl-apply-section input,
+    .fl-apply-section textarea {
+        background: #333 !important;
+        border-color: #555 !important;
+        color: #e0e0e0 !important;
+    }
+    
+    .fl-apply-section label {
+        color: #e0e0e0 !important;
+    }
+    
+    /* 🌆 验证码区域 */
+    .fl-apply-section span {
+        color: #b0b0b0 !important;
+    }
+    
+    /* 🌆 状态消息 */
+    .fl-notice-section div[style*="background: #d4edda"],
+    .fl-notice-section div[style*="background: #f8d7da"] {
+        color: #e0e0e0 !important;
+    }
+    
+    /* 🌆 链接样式 */
+    .yikan-friendlink-page a {
+        color: #00bfff !important;
+    }
+}
+</style>
+
 <div class="yikan-friendlink-page" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
     <!-- 友联列表区域 | YI KAN搜索导航yy4y.com博客44y4.com -->
-    <div class="fl-list-section" style="margin-bottom: 50px;">
+    <!-- <div class="fl-list-section" style="margin-bottom: 50px;">
         <h1 style="color: #333; font-size: 28px; margin-bottom: 30px; text-align: center;"><?php the_title(); ?></h1>
         <h2 style="color: #444; font-size: 22px; margin-bottom: 20px;">YIKAN友联</h2>
         
@@ -552,12 +679,13 @@ get_header();
         <?php else : ?>
             <p style="color: #666; font-size: 16px; line-height: 1.6;">暂无友情链接，欢迎提交申请～</p>
         <?php endif; ?>
+        -->
         
         <!-- 版权声明 | YI KAN搜索导航yy4y.com博客44y4.com -->
-        <p style="color: #999; font-size: 14px; margin-top: 20px; text-align: right;">
+        <!--<p style="color: #999; font-size: 14px; margin-top: 20px; text-align: right;">
             © <?php echo date('Y'); ?> <?php echo FL_COPYRIGHT_TEXT; ?> 版权所有
         </p>
-    </div>
+    </div> -->
 
     <!-- 管理员专属：邮件发送模块 | YI KAN搜索导航yy4y.com博客44y4.com -->
     <?php if (is_user_logged_in() && current_user_can('manage_options')) : ?>
@@ -622,10 +750,10 @@ get_header();
 
     <!-- 友联申请区域（带图形验证码+限流+按钮加载） | YI KAN搜索导航yy4y.com博客44y4.com -->
     <div class="fl-apply-section" style="max-width: 800px; margin: 0 auto; border-top: 1px solid #eee; padding-top: 40px;">
-        <h2 style="color: #444; font-size: 22px; margin-bottom: 20px;">YIKAN友联申请</h2>
+        <h2 style="color: #444; font-size: 22px; margin-bottom: 20px;">友链申请-YIKAN出品</h2>
         <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
             <div style="margin-bottom: 20px; color: #666; line-height: 1.8;">
-                <p>请填写以下信息申请友联，申请前请先在你的站点添加本站链接（名称：<?php echo get_option('blogname'); ?>，地址：<?php echo get_option('siteurl'); ?>），审核通过后会第一时间邮件通知你。</p>
+            <p style="color: #444;">请填写以下信息申请友联，申请前请先在你的站点添加本站链接（名称：<?php echo get_option('blogname'); ?>，地址：<?php echo get_option('siteurl'); ?>），审核通过后会第一时间邮件通知你。</p>
                 <!-- 版权提示 | YI KAN搜索导航yy4y.com博客44y4.com -->
                 <p style="font-size: 12px; color: #999;">
                     本友联系统由 <?php echo FL_COPYRIGHT_TEXT; ?> 开发提供
@@ -647,6 +775,14 @@ get_header();
                     <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">网站地址：*</label>
                     <input type="url" name="site_url" required
                            placeholder="比如：https://www.44y4.com"
+                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                </div>
+
+                <!-- 🏞️ 新增ICO表单项   | 灵阈研都-纸鸢社开发 gl.baimu.live -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">网站ICO：*</label>
+                    <input type="url" name="site_ico" required
+                           placeholder="比如：https://www.44y4.com/favicon.ico"
                            style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
                 </div>
 

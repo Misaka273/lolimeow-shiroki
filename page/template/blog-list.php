@@ -177,7 +177,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
             <div id="infinite-end-message" class="infinite-end-message" style="display: none;">
               <nav class="d-flex justify-content-center">
                 <ul class="pagination">
-                  <li class="page-item active"><a class="page-link" href="#">🎉 全部都在这里啦 🔝</a></li>
+                  <li class="page-item active"><a class="page-link" href="#">🎉 很高兴你翻到了这里，但是真的没有惹... 🔝</a></li>
                 </ul>
               </nav>
             </div>

@@ -218,7 +218,7 @@ class Options_Framework_Admin {
 		<div class="el-button" style="padding: 8px 16px; line-height: 1.5; display: inline-block; text-align: center;">
 			<a href="https://www.boxmoe.com/706.html" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: none;">📃在线文档</a>  
 			🚀V<?php echo THEME_VERSION; ?>  
-			🎉更新日期：2026-01-10<br>
+			🎉更新日期：2026-01-17<br>
 			🥰本主题二次创作 <a href="https://gl.baimu.live/864" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: underline;">白木</a>
 		</div>
 		</div>			

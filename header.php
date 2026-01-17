@@ -44,6 +44,8 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <meta name="register-url" content="<?php echo boxmoe_sign_up_link_page(); ?>">
     <!-- 🎯 页面元数据：登录状态 -->
     <meta name="logged-in" content="<?php echo is_user_logged_in() ? 'true' : 'false'; ?>">
+    <!-- 🖼️ 输出Banner随机图片列表 -->
+    <?php boxmoe_banner_random_images_list(); ?>
 </head>
   <body <?php if(is_singular()) echo 'data-post-id="' . get_the_ID() . '"'; ?> >
   <?php if(get_boxmoe('boxmoe_page_loading_switch')): ?>  

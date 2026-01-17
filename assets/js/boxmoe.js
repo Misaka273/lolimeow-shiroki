@@ -663,10 +663,15 @@ function initMobileUserPanel() {
 }
 
 // 🎨 优化的懒加载初始化 - 集成静默预加载
-function initLazyLoad() {
-    const lazyImages = document.querySelectorAll('img.lazy');
+function initLazyLoad(container = document) {
+    const lazyImages = container.querySelectorAll('img.lazy');
     
     const loadImage = async (img) => {
+        // 如果图片已经加载过，直接返回
+        if (img.classList.contains('loaded')) {
+            return;
+        }
+        
         let ds = img.dataset && img.dataset.src ? img.dataset.src : '';
         if (!ds) {
             const attrs = ['original','lazy','lazySrc','srcLazy'];
@@ -689,11 +694,11 @@ function initLazyLoad() {
         if (img.hasAttribute('sizes')) img.removeAttribute('sizes');
         
         // 添加占位符
-        const container = img.parentElement;
-        if (container && !container.querySelector('.shiroki-image-placeholder')) {
+        const imgContainer = img.parentElement;
+        if (imgContainer && !imgContainer.querySelector('.shiroki-image-placeholder')) {
             const placeholder = document.createElement('div');
             placeholder.className = 'shiroki-image-placeholder';
-            container.appendChild(placeholder);
+            imgContainer.appendChild(placeholder);
         }
         
         // 使用静默预加载器
@@ -913,9 +918,19 @@ class ShirokiImageLoader {
         }
     }
 
-    // 渐显图片
+    // 渐显图片 - 优化无限加载时的显示效果
     revealImage(imgElement) {
+        // 如果图片已经加载过，不再重复处理
+        if (imgElement.classList.contains('loaded')) {
+            return;
+        }
+        
+        // 添加加载完成的类
         imgElement.classList.add('loaded');
+        
+        // 确保图片有正确的显示状态
+        imgElement.style.opacity = '1';
+        imgElement.style.transform = 'scale(1)';
         
         // 移除占位符
         const placeholder = imgElement.parentElement.querySelector('.shiroki-image-placeholder');
@@ -1030,11 +1045,6 @@ function initBannerImage() {
     bannerImg.style.opacity = '1';
     bannerImg.style.transform = 'scale(1)';
 
-    // 确保图片初始可见
-    img.style.opacity = '1';
-    img.style.transform = 'scale(1)';
-    img.style.filter = 'blur(0)';
-
     // 添加占位符
     const placeholder = document.createElement('div');
     placeholder.className = 'shiroki-image-placeholder';
@@ -1044,7 +1054,8 @@ function initBannerImage() {
     const handleLoad = () => {
         // 显示banner容器
         bannerImg.classList.add('loaded');
-        img.classList.add('loaded');
+        // 添加淡入类，让原始图片可见
+        img.classList.add('shiroki-fade-in');
         
         // 延迟隐藏占位符
         setTimeout(() => {
@@ -1066,6 +1077,128 @@ function initBannerImage() {
         img.addEventListener('load', handleLoad);
         img.addEventListener('error', handleLoad);
     }
+}
+
+// 🔄 Banner随机图片自动切换功能
+function initBannerRandomSwitch() {
+    const bannerImg = document.querySelector('.boxmoe_header_banner_img');
+    const originalImg = bannerImg ? bannerImg.querySelector('img') : null;
+    
+    if (!bannerImg || !originalImg) return;
+    
+    // 检查Banner模式
+    if (!window.shirokiBannerMode) return;
+    
+    // 确保原始图片有正确的初始样式
+    originalImg.style.position = 'absolute';
+    originalImg.style.top = '0';
+    originalImg.style.left = '0';
+    originalImg.style.width = '100%';
+    originalImg.style.height = '100%';
+    originalImg.style.objectFit = 'cover';
+    
+    let currentIndex = 0;
+    let isSwitching = false;
+    let currentImg = originalImg;
+    let nextImageLoader = null;
+    const switchInterval = 8000; // 8秒切换一次Banner图片
+    
+    // 获取下一张图片URL
+    function getNextImageUrl() {
+        if (window.shirokiBannerMode === 'api') {
+            // API模式：每次请求API URL（添加时间戳避免缓存）
+            const apiUrl = window.shirokiBannerData.apiUrl || '';
+            if (apiUrl) {
+                const separator = apiUrl.includes('?') ? '&' : '?';
+                return apiUrl + separator + 't=' + Date.now();
+            }
+            return null;
+        } else if (window.shirokiBannerMode === 'local') {
+            // 本地模式：从图片列表中循环获取
+            const images = window.shirokiBannerData.images || [];
+            if (images.length < 2) return null;
+            
+            currentIndex = (currentIndex + 1) % images.length;
+            return images[currentIndex];
+        }
+        return null;
+    }
+    
+    // 预加载下一张图片
+    function preloadNextImage() {
+        if (nextImageLoader) {
+            nextImageLoader.onload = null;
+            nextImageLoader.onerror = null;
+        }
+        
+        const nextImageUrl = getNextImageUrl();
+        if (!nextImageUrl) return null;
+        
+        nextImageLoader = new Image();
+        nextImageLoader.src = nextImageUrl;
+        return nextImageUrl;
+    }
+    
+    // 切换到下一张图片（交叉淡入淡出）
+    function switchToNextImage() {
+        if (isSwitching) return;
+        isSwitching = true;
+        
+        // 先预加载下一张图片
+        const nextImageUrl = preloadNextImage();
+        if (!nextImageUrl) {
+            isSwitching = false;
+            return;
+        }
+        
+        // 等待预加载完成后再开始切换
+        const startSwitch = () => {
+            // 创建新图片元素
+            const newImg = document.createElement('img');
+            newImg.src = nextImageUrl;
+            newImg.alt = 'banner';
+            // 初始不添加shiroki-fade-in类，让图片透明
+            bannerImg.appendChild(newImg);
+            
+            // 旧图片淡出
+            currentImg.classList.add('shiroki-fade-out');
+            
+            // 下一帧添加淡入类，触发过渡动画
+            requestAnimationFrame(() => {
+                newImg.classList.add('shiroki-fade-in');
+            });
+            
+            // 等待过渡完成后清理旧图片
+            setTimeout(() => {
+                if (currentImg !== originalImg) {
+                    currentImg.remove();
+                }
+                currentImg = newImg;
+                isSwitching = false;
+            }, 800); // 等待淡出动画完成
+        };
+        
+        // 如果预加载已完成，立即开始切换
+        if (nextImageLoader.complete) {
+            startSwitch();
+        } else {
+            // 等待预加载完成
+            nextImageLoader.onload = startSwitch;
+            nextImageLoader.onerror = startSwitch;
+        }
+    }
+    
+    // 启动定时器
+    const intervalId = setInterval(switchToNextImage, switchInterval);
+    
+    // 页面隐藏时暂停切换，显示时恢复
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            clearInterval(intervalId);
+        } else {
+            setInterval(switchToNextImage, switchInterval);
+        }
+    });
 }
 
 // 🎨 简化的文章封面图片加载
@@ -3501,11 +3634,53 @@ function initInfiniteScroll() {
                     post.style.opacity = '1';
                     post.style.transform = 'translateY(0)';
                 });
+                
+                // 🎭 初始化新文章卡片的滚动放大效果
+                if (typeof window.shirokiInitPostCards === 'function') {
+                    window.shirokiInitPostCards();
+                }
             }, 50);
 
-            // 初始化新文章中的懒加载图片
+            // 🎨 只对新添加的文章初始化懒加载图片，避免已加载图片闪烁
             if (typeof initLazyLoad === 'function') {
-                initLazyLoad();
+                // 获取新添加的文章元素
+                const addedPosts = postsContainer.querySelectorAll('.row.g-4 > div');
+                const lastPosts = Array.from(addedPosts).slice(-addedPostsCount);
+                
+                // 为新文章中的图片设置初始状态，防止闪烁
+                lastPosts.forEach(post => {
+                    const images = post.querySelectorAll('img.lazy');
+                    images.forEach(img => {
+                        // 确保新图片有正确的初始状态
+                        if (!img.classList.contains('loaded')) {
+                            img.style.opacity = '0';
+                            img.style.transform = 'scale(0.8)';
+                        }
+                    });
+                });
+                
+                // 使用修改后的initLazyLoad函数，只处理新文章中的图片
+                lastPosts.forEach(post => {
+                    if (typeof initLazyLoad === 'function') {
+                        initLazyLoad(post);
+                    }
+                });
+                
+                // 立即加载新文章中的可见图片，提供更好的用户体验
+                setTimeout(() => {
+                    lastPosts.forEach(post => {
+                        const images = post.querySelectorAll('img.lazy');
+                        images.forEach(img => {
+                            const rect = img.getBoundingClientRect();
+                            // 如果图片在视口中或接近视口，立即加载
+                            if (rect.top < window.innerHeight + 200 && rect.bottom > -200) {
+                                // 触发图片加载
+                                const loadEvent = new Event('load');
+                                img.dispatchEvent(loadEvent);
+                            }
+                        });
+                    });
+                }, 100);
             }
 
             // 初始化新文章中的标签颜色
@@ -3523,15 +3698,15 @@ function initInfiniteScroll() {
         }
     }
 
-    // 滚动事件监听
+    // 📜 滚动事件监听
     function handleScroll() {
         if (isLoading || !hasMorePosts) return;
 
         const scrollPosition = window.scrollY + window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
 
-        // 当滚动到页面底部200px时加载更多
-        if (scrollPosition >= documentHeight - 200) {
+        // 🔄 当滚动到页面50%时加载更多
+        if (scrollPosition >= documentHeight * 0.5) {
             loadMorePosts();
         }
     }
@@ -3554,6 +3729,7 @@ document.addEventListener("DOMContentLoaded", () => {
     run(initLazyLoad);
     run(initMobileUserPanel);
     run(initBannerImage);
+    run(initBannerRandomSwitch);
     run(initPostCoverImages);
     run(initStickyHeader);
     run(initTableOfContents);
@@ -3736,10 +3912,10 @@ function animateThemeToggle(btn, cur, nxt){
         
 
         
-        // 🔒 设置不可修改的元素标记，防止外部脚本干扰
+        // 🔒 设置可修改的元素标记，防止外部脚本干扰
         Object.defineProperty(target, '__bannerAnimationInitialized', {
-            writable: false,
-            configurable: false,
+            writable: true,
+            configurable: true,
             value: true
         });
         
@@ -4016,4 +4192,212 @@ document.addEventListener('DOMContentLoaded', function() {
         LoginStatusManager.init();
     }
 });
+
+// 🎯 修复用户信息容器从其他标签页回到页面时的渲染问题
+document.addEventListener('DOMContentLoaded', function() {
+    // 🎨 获取所有用户信息容器元素
+    const userInfoWraps = document.querySelectorAll('.user-info-wrap');
+    
+    // 🔄 监听页面可见性变化
+    document.addEventListener('visibilitychange', function() {
+        // 📱 当页面从隐藏变为可见时，强制重绘用户信息容器
+        if (!document.hidden && userInfoWraps.length > 0) {
+            userInfoWraps.forEach(wrap => {
+                // 🎨 强制重绘方法：先移除再添加transform属性
+                const currentTransform = window.getComputedStyle(wrap).transform;
+                const currentBackdropFilter = window.getComputedStyle(wrap).backdropFilter;
+                
+                // 🔄 临时移除backdrop-filter，然后重新应用
+                wrap.style.backdropFilter = 'none';
+                wrap.style.transform = 'scale(0.99)';
+                
+                // ⏱️ 短暂延迟后恢复原始状态
+                setTimeout(() => {
+                    wrap.style.backdropFilter = currentBackdropFilter || 'blur(10px)';
+                    wrap.style.transform = currentTransform || 'translateZ(0)';
+                    
+                    // 🔄 再次强制重绘，确保效果应用
+                    wrap.offsetHeight;
+                }, 50);
+            });
+        }
+    });
+    
+    // 🔄 监听页面获得焦点事件（从其他标签页切换回来时）
+    window.addEventListener('focus', function() {
+        if (userInfoWraps.length > 0) {
+            userInfoWraps.forEach(wrap => {
+                // 🎨 强制重绘方法：触发reflow
+                wrap.offsetHeight; // 触发reflow
+                
+                // 🔄 临时修改样式强制重绘
+                const originalOpacity = wrap.style.opacity;
+                wrap.style.opacity = '0.99';
+                
+                // ⏱️ 短暂延迟后恢复原始状态
+                setTimeout(() => {
+                    wrap.style.opacity = originalOpacity || '';
+                    
+                    // 🔄 再次强制重绘
+                    wrap.offsetHeight;
+                }, 50);
+            });
+        }
+    });
+    
+    // 🔄 监听页面加载完成事件，确保初始渲染正确
+    window.addEventListener('load', function() {
+        if (userInfoWraps.length > 0) {
+            userInfoWraps.forEach(wrap => {
+                // 🎨 强制重绘确保backdrop-filter正确应用
+                wrap.offsetHeight;
+                
+                // 🔄 确保子元素正确显示
+                const userAvatar = wrap.querySelector('.user-avatar');
+                const userInfo = wrap.querySelector('.user-info');
+                
+                if (userAvatar) {
+                    userAvatar.style.zIndex = '2';
+                    userAvatar.offsetHeight;
+                }
+                
+                if (userInfo) {
+                    userInfo.style.zIndex = '2';
+                    userInfo.offsetHeight;
+                }
+            });
+        }
+    });
+});
+
+// 🎯 修复用户信息下拉菜单悬停问题
+(function() {
+    try {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDropdownMenus);
+        } else {
+            initDropdownMenus();
+        }
+    } catch (error) {
+        console.error('下拉菜单初始化错误:', error);
+    }
+
+    function initDropdownMenus() {
+        try {
+            const loggedUserWrappers = document.querySelectorAll('.logged-user-wrapper');
+            
+            if (!loggedUserWrappers || loggedUserWrappers.length === 0) {
+                console.log('未找到用户信息容器');
+                return;
+            }
+            
+            loggedUserWrappers.forEach(function(wrapper) {
+                try {
+                    const userInfoWrap = wrapper.querySelector('.user-info-wrap');
+                    const dropdownMenu = wrapper.querySelector('.dropdown-menu');
+                    
+                    if (!userInfoWrap || !dropdownMenu) {
+                        console.warn('用户信息容器或下拉菜单未找到');
+                        return;
+                    }
+                    
+                    let hoverTimeout;
+                    
+                    // 🔄 鼠标进入用户信息容器时显示下拉菜单
+                    userInfoWrap.addEventListener('mouseenter', function() {
+                        try {
+                            clearTimeout(hoverTimeout);
+                            dropdownMenu.style.display = 'block';
+                            dropdownMenu.style.opacity = '1';
+                            dropdownMenu.style.visibility = 'visible';
+                        } catch (e) {
+                            console.error('显示下拉菜单错误:', e);
+                        }
+                    });
+                    
+                    // 🔄 鼠标离开用户信息容器时，延迟隐藏下拉菜单
+                    userInfoWrap.addEventListener('mouseleave', function() {
+                        try {
+                            clearTimeout(hoverTimeout);
+                            hoverTimeout = setTimeout(function() {
+                                try {
+                                    // 检查鼠标是否在下拉菜单上
+                                    if (!isElementHovered(dropdownMenu)) {
+                                        hideDropdownMenu(dropdownMenu);
+                                    }
+                                } catch (e) {
+                                    console.error('检查悬停状态错误:', e);
+                                    hideDropdownMenu(dropdownMenu);
+                                }
+                            }, 100);
+                        } catch (e) {
+                            console.error('mouseleave事件处理错误:', e);
+                        }
+                    });
+                    
+                    // 🔄 鼠标进入下拉菜单时保持显示
+                    dropdownMenu.addEventListener('mouseenter', function() {
+                        try {
+                            clearTimeout(hoverTimeout);
+                            dropdownMenu.style.display = 'block';
+                            dropdownMenu.style.opacity = '1';
+                            dropdownMenu.style.visibility = 'visible';
+                        } catch (e) {
+                            console.error('下拉菜单mouseenter错误:', e);
+                        }
+                    });
+                    
+                    // 🔄 鼠标离开下拉菜单时隐藏
+                    dropdownMenu.addEventListener('mouseleave', function() {
+                        try {
+                            clearTimeout(hoverTimeout);
+                            hoverTimeout = setTimeout(function() {
+                                try {
+                                    // 检查鼠标是否在用户信息容器上
+                                    if (!isElementHovered(userInfoWrap)) {
+                                        hideDropdownMenu(dropdownMenu);
+                                    }
+                                } catch (e) {
+                                    console.error('检查用户信息容器悬停状态错误:', e);
+                                    hideDropdownMenu(dropdownMenu);
+                                }
+                            }, 100);
+                        } catch (e) {
+                            console.error('下拉菜单mouseleave错误:', e);
+                        }
+                    });
+                    
+                    console.log('下拉菜单事件监听器已添加');
+                } catch (error) {
+                    console.error('处理用户信息容器错误:', error);
+                }
+            });
+            
+            console.log('下拉菜单初始化完成，共处理', loggedUserWrappers.length, '个容器');
+        } catch (error) {
+            console.error('下拉菜单初始化错误:', error);
+        }
+    }
+    
+    function isElementHovered(element) {
+        try {
+            if (!element) return false;
+            return element.matches && element.matches(':hover');
+        } catch (e) {
+            return false;
+        }
+    }
+    
+    function hideDropdownMenu(menu) {
+        try {
+            if (menu) {
+                menu.style.display = 'none';
+                menu.style.opacity = '0';
+                menu.style.visibility = 'hidden';
+            }
+        } catch (e) {
+            console.error('隐藏下拉菜单错误:', e);
+        }
+    }
+})();
 

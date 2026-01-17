@@ -1,8 +1,9 @@
 <?php
 /**
- * @link https://www.boxmoe.com
- * @package lolimeow
+ * @link https://gl.baimu.live/
+ * @package 灵阈研都-纸鸢社
  */
+
 
 // 🥳 右键菜单功能
 // 🔗 替换浏览器默认右键菜单

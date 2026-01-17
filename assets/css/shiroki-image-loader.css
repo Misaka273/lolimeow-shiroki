@@ -32,15 +32,36 @@
 }
 
 /* 🎯 Banner图片特殊效果 */
+.boxmoe_header_banner_img {
+    position: relative;
+    overflow: hidden;
+}
+
 .boxmoe_header_banner_img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     opacity: 0;
-    transform: scale(0.9) translateY(10px);
-    transition: all 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    filter: blur(12px);
+    transform: scale(0.95) translateY(5px);
+    filter: blur(4px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform, opacity, filter;
 }
 
-.boxmoe_header_banner_img img.loaded {
+/* 🔄 Banner图片切换淡出效果 */
+.boxmoe_header_banner_img img.shiroki-fade-out {
+    opacity: 0;
+    transform: scale(1.05) translateY(-5px);
+    filter: blur(8px);
+}
+
+/* 🌟 Banner图片切换淡入效果 */
+.boxmoe_header_banner_img img.shiroki-fade-in {
     opacity: 1;
     transform: scale(1) translateY(0);
     filter: blur(0);

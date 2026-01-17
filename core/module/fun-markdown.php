@@ -127,32 +127,41 @@ function boxmoe_markdown_to_html($text){
     // 🔗 链接
     $text = preg_replace('/\[([^\]]+)\]\(([^\)]+)\)/','<a href="$2"'.(is_admin()?'':' target="_blank"').'>$1</a>',$text);
     // 📊 表格支持
-    $text = preg_replace_callback('/(^|\n)(?:[|].+[|](?:\n|$))+(?:[|].+[|](?:\n|$))+/', function($m){
-        $lines = preg_split('/\n/', trim($m[0]));
+    // 先将表格内容用占位符替换，避免贪婪匹配问题
+    $tables = [];
+    $text = preg_replace_callback('/(?:^|\n)((?:[|][^\n]*[|](?:\n|$)){2,})(?=(?:\n\n|\n[^|]|$))/', function($m) use (&$tables) {
+        $table_key = '__MD_TABLE_' . count($tables) . '__';
+        $tables[$table_key] = $m[1];
+        return $table_key;
+    }, $text);
+    
+    // 逐个处理每个表格
+    foreach ($tables as $key => $table_content) {
+        $lines = preg_split('/\n/', trim($table_content));
         $thead = true;
-        $html = '<table class="md-table"><thead>';
-        foreach($lines as $line){
-            if(preg_match('/^[|](.*)[|]$/', $line, $mm)){
+        $html = '<div class="md-table-wrapper"><table class="md-table"><thead>';
+        foreach ($lines as $line) {
+            if (preg_match('/^[|](.*)[|]$/', $line, $mm)) {
                 $cells = array_map('trim', explode('|', $mm[1]));
-                if($thead){
+                if ($thead) {
                     $html .= '<tr>';
-                    foreach($cells as $cell){
-                        $html .= '<th>'.$cell.'</th>';
+                    foreach ($cells as $cell) {
+                        $html .= '<th>' . $cell . '</th>';
                     }
                     $html .= '</tr></thead><tbody>';
                     $thead = false;
                 } else {
                     $html .= '<tr>';
-                    foreach($cells as $cell){
-                        $html .= '<td>'.$cell.'</td>';
+                    foreach ($cells as $cell) {
+                        $html .= '<td>' . $cell . '</td>';
                     }
                     $html .= '</tr>';
                 }
             }
         }
-        $html .= '</tbody></table>';
-        return $html;
-    }, $text);
+        $html .= '</tbody></table></div>';
+        $text = str_replace($key, $html, $text);
+    }
     // 📏 水平分割线
     $text = preg_replace('/^---$/m','<hr class="md-hr" />',$text);
     $text = preg_replace('/^___$/m','<hr class="md-hr" />',$text);

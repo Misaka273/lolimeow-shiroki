@@ -1,0 +1,53 @@
+/* 🎵 修复APlayer音乐播放器箭头图标不显示的问题 */
+
+/* 🏹 为箭头图标添加基本定位和样式 */
+.aplayer .aplayer-miniswitcher {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 66px;
+    background: #e7e7e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* 🎨 确保箭头图标可见 */
+.aplayer .aplayer-miniswitcher .aplayer-icon {
+    width: 12px !important;
+    height: 12px !important;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+}
+
+/* 🖱️ 悬停效果 */
+.aplayer .aplayer-miniswitcher:hover .aplayer-icon {
+    opacity: 1;
+}
+
+/* 🎯 确保SVG图标路径可见 */
+.aplayer .aplayer-miniswitcher .aplayer-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.aplayer .aplayer-miniswitcher .aplayer-icon path {
+    fill: #666;
+}
+
+/* 🌙 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .aplayer .aplayer-miniswitcher {
+        background: #333;
+    }
+    
+    .aplayer .aplayer-miniswitcher .aplayer-icon path {
+        fill: #ccc;
+    }
+}

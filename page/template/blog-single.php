@@ -96,6 +96,11 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                               <i class="fa fa-star"></i>
                               <span class="favorite-text"><?php echo isPostFavorited(get_the_ID()) ? '已收藏' : '收藏'; ?></span>
                           </button>
+                          <button class="action-btn shiroki-follow-btn <?php echo shiroki_is_post_followed(get_the_ID()) ? 'followed' : ''; ?>" title="关注" data-post-id="<?php the_ID(); ?>">
+                              <i class="follow-icon fa <?php echo shiroki_is_post_followed(get_the_ID()) ? 'fa-bell' : 'fa-bell-o'; ?>"></i>
+                              <span class="follow-text"><?php echo shiroki_is_post_followed(get_the_ID()) ? '已订阅' : '订阅'; ?></span>
+                              <span class="follow-count"><?php echo shiroki_get_post_follow_count(get_the_ID()); ?></span>
+                          </button>
                           <?php endif; ?>
                           <?php if(get_boxmoe('boxmoe_reward_switch')): ?>
                           <button class="action-btn reward-btn" title="赞赏">

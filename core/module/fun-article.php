@@ -130,9 +130,25 @@ function _get_excerpt($limit = 60, $after = '...') {
 
 // 表格替换--------------------------boxmoe.com--------------------------
 function boxmoe_table_replace($text){
+	// 🔧 跳过已经由Markdown生成的表格，避免破坏样式
+	$md_tables = [];
+	$text = preg_replace_callback('/<div class="md-table-wrapper">.*?<\/div>/s', function($matches) use (&$md_tables) {
+		$key = '__MD_TABLE_PLACEHOLDER_' . count($md_tables) . '__';
+		$md_tables[$key] = $matches[0];
+		return $key;
+	}, $text);
+	
+	// 处理其他表格
 	$replace = array( '<table>' => '<div class="table-responsive"><table class="table" >','</table>' => '</table></div>' );
 	$text = str_replace(array_keys($replace), $replace, $text);
-	return $text;}
+	
+	// 恢复Markdown表格
+	foreach ($md_tables as $key => $original) {
+		$text = str_replace($key, $original, $text);
+	}
+	
+	return $text;
+}
 add_filter('the_content', 'boxmoe_table_replace');
 
 //防止代码转义--------------------------boxmoe.com--------------------------

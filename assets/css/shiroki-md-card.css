@@ -1,4 +1,4 @@
-/* 🎨 Shiroki MD卡片式内容样式 - 漫画风 */
+/* 🎨 灵阈研都-纸鸢社开发 MD卡片式内容样式 - 漫画风 */
 
 
 
@@ -290,4 +290,92 @@ body [data-bs-theme="dark"] .single-content .md-card-link-wrap a::after {
     height: 0;
     background-color: transparent;
     opacity: 0;
+}
+
+/* 🎨 表格样式 - 圆角卡片式 */
+body .single-content .md-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(255, 61, 239, 0.15);
+    transition: all 0.3s ease;
+}
+
+body .single-content .md-table-wrapper:hover {
+    box-shadow: 0 8px 20px rgba(255, 61, 174, 0.25);
+}
+
+body .single-content .md-table {
+    width: auto;
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #f3e8ff;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 0;
+}
+
+/* 表头样式 - 异色背景，文字加粗 */
+body .single-content .md-table thead {
+    background: linear-gradient(135deg, #ea66d4 0%, #ff00b36c 100%);
+}
+
+body .single-content .md-table th {
+    color: white;
+    font-weight: 700;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    white-space: nowrap;
+}
+
+/* 表格单元格样式 */
+body .single-content .md-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e9d5ff;
+    color: #4b5563;
+    white-space: nowrap;
+}
+
+/* 间隔一行透明浅色 - 斑马纹效果 */
+body .single-content .md-table tbody tr:nth-child(even) td {
+    background: rgba(139, 61, 255, 0.05);
+}
+
+/* 悬停效果 */
+body .single-content .md-table tbody tr:hover td {
+    background: rgba(139, 61, 255, 0.1);
+}
+
+/* 🌆 暗色模式下的表格样式 */
+body [data-bs-theme="dark"] .single-content .md-table {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+body [data-bs-theme="dark"] .single-content .md-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body [data-bs-theme="dark"] .single-content .md-table th {
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+body [data-bs-theme="dark"] .single-content .md-table td {
+    color: var(--bs-body-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 🌆 暗色模式 - 间隔一行透明浅色 - 斑马纹效果 */
+body [data-bs-theme="dark"] .single-content .md-table tbody tr:nth-child(even) td {
+    background: rgba(102, 126, 234, 0.15);
+}
+
+body [data-bs-theme="dark"] .single-content .md-table tbody tr:hover td {
+    background: rgba(102, 126, 234, 0.25);
 }

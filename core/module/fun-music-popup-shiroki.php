@@ -685,6 +685,121 @@ function boxmoe_music_player_popup_html() {
         .dark-theme .playlist-item.active {
             background-color: rgba(167, 139, 250, 0.15);
         }
+        
+        /* 📱 移动端适配样式 */
+        @media (max-width: 768px) {
+            .music-popup-content {
+                width: 95%;
+                max-width: none;
+                padding: 16px;
+                max-height: 90vh;
+                border-radius: 12px;
+            }
+            
+            .music-popup-header h3 {
+                font-size: 18px;
+            }
+            
+            /* 🎵 移动端上下布局 */
+            .music-layout {
+                flex-direction: column;
+                gap: 16px;
+                min-height: auto;
+                max-height: calc(90vh - 80px);
+                overflow-y: auto;
+            }
+            
+            /* 🎵 移动端各区域样式调整 */
+            .music-lyrics-section,
+            .music-control-section,
+            .music-playlist-section {
+                flex: none;
+                padding: 12px;
+                border-radius: 8px;
+            }
+            
+            /* 🎵 音乐控制区域在移动端置顶 */
+            .music-control-section {
+                order: -1; /* ◀️ 将控制区域移到最前面 */
+                background-color: rgba(139, 61, 255, 0.1); /* ◀️ 突出显示控制区域 */
+                border: 1px solid rgba(139, 61, 255, 0.2);
+            }
+            
+            /* 🎵 歌词区域在移动端排第二 */
+            .music-lyrics-section {
+                order: 0; /* ◀️ 歌词区域排第二 */
+                max-height: 200px; /* ◀️ 限制歌词区域高度 */
+            }
+            
+            /* 🎵 歌单区域在移动端排最后 */
+            .music-playlist-section {
+                order: 1; /* ◀️ 歌单区域排最后 */
+                max-height: 200px; /* ◀️ 限制歌单区域高度 */
+            }
+            
+            /* 🎵 移动端歌曲信息样式调整 */
+            .music-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 12px;
+            }
+            
+            .music-cover {
+                width: 120px;
+                height: 120px;
+            }
+            
+            /* 🎵 移动端播放控制按钮样式调整 */
+            .music-controls {
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .control-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            /* 🎵 移动端进度条和音量控制样式调整 */
+            .music-progress,
+            .volume-control {
+                margin: 8px 0;
+            }
+            
+            .progress-bar,
+            .volume-bar {
+                height: 6px;
+            }
+            
+            /* 🎵 移动端区域标题样式调整 */
+            .section-header h4 {
+                font-size: 14px;
+            }
+            
+            /* 🎵 移动端歌词样式调整 */
+            .lyrics-line {
+                font-size: 13px;
+                line-height: 1.6;
+                margin: 6px 0;
+            }
+            
+            .lyrics-line.active {
+                font-size: 15px;
+            }
+            
+            /* 🎵 移动端歌单项样式调整 */
+            .playlist-item {
+                padding: 6px 8px;
+                margin: 2px 0;
+            }
+            
+            .playlist-item-number {
+                font-size: 11px;
+                margin-right: 8px;
+                min-width: 16px;
+            }
+        }
     </style>'
     ;
     $html .= '<script>

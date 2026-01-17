@@ -1,8 +1,9 @@
 <?php
 /**
- * @link https://www.boxmoe.com
- * @package lolimeow
+ * @link https://gl.baimu.live/
+ * @package 灵阈研都-纸鸢社
  */
+
 
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){

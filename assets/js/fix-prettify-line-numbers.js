@@ -1,6 +1,5 @@
 // 🎯 修复Prettify代码块行号显示问题
-// 问题：行号到9后自动从0开始，而不是显示为10
-// 解决方案：确保CSS计数器方案正常工作，移除冲突的行号属性
+
 
 (function() {
     // 等待页面加载完成
@@ -28,11 +27,56 @@
                 
                 // 确保CSS计数器正常工作
                 ensureCSSCounterWorks();
+                
+                // 🌟 动态调整行号宽度
+                adjustLineNumberWidth();
             };
         }
 
         // 立即修复已渲染的行号
         ensureCSSCounterWorks();
+        
+        // 🌟 动态调整行号宽度以适应不同位数的行号
+        adjustLineNumberWidth();
+    }
+
+    // 🌟 动态调整行号宽度函数
+    function adjustLineNumberWidth() {
+        const codeBlocks = document.querySelectorAll('.prettyprint.linenums');
+        
+        codeBlocks.forEach(function(block) {
+            const ol = block.querySelector('ol.linenums');
+            if (ol) {
+                const lines = ol.querySelectorAll('li');
+                if (lines.length > 0) {
+                    // 获取最大行号
+                    const maxLineNumber = lines.length;
+                    // 计算需要的位数
+                    const digits = Math.max(2, Math.floor(Math.log10(maxLineNumber)) + 1);
+                    // 根据位数计算所需宽度（每个数字约8px，加上padding和边距）
+                    const requiredWidth = Math.max(35, digits * 8 + 10);
+                    
+                    // 动态设置行号宽度
+                    const styleId = 'dynamic-line-number-style-' + Math.random().toString(36).substr(2, 9);
+                    let styleEl = document.getElementById(styleId);
+                    
+                    if (!styleEl) {
+                        styleEl = document.createElement('style');
+                        styleEl.id = styleId;
+                        document.head.appendChild(styleEl);
+                    }
+                    
+                    styleEl.textContent = `
+                        #${block.id || 'prettify-' + Math.random().toString(36).substr(2, 9)} .linenums li:before {
+                            width: ${requiredWidth}px !important;
+                        }
+                        #${block.id || 'prettify-' + Math.random().toString(36).substr(2, 9)} .linenums li {
+                            padding-left: ${requiredWidth + 15}px !important;
+                        }
+                    `;
+                }
+            }
+        });
     }
 
     function ensureCSSCounterWorks() {

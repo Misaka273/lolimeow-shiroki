@@ -51,6 +51,25 @@ Author URI:https://www.boxmoe.com
     --bs-gray-200: #2a2a2a;
 }
 
+/* 🥳 菜单图标样式 */
+.shiroki-menu-icon {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.10em; /* ◀️ 导航图标与文本的间距 */
+    vertical-align: middle;
+    object-fit: contain;
+    display: inline-block;
+}
+
+/* 导航链接中的图标样式调整 */
+.nav-link .shiroki-menu-icon,
+.dropdown-item .shiroki-menu-icon {
+    width: 1em;
+    height: 1em;
+    margin-right: 0.10em; /* ◀️ 导航图标与文本的间距 */
+    vertical-align: middle;
+}
+
 /* 📄 文章分页样式 - 纯数字设计 */
 .page-links {
   margin: 30px 0;
@@ -695,13 +714,38 @@ img, video, iframe {
     margin: 0 auto;
 }
 
-img.lazy {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0.3, 1);}
+/* 🎨 图片懒加载优化 - 防止无限加载时闪烁 */
+img.lazy {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0.3, 1);will-change: opacity, transform;}
 img.lazy.loaded {opacity:1;transform: scale(1);}
 .lazy:not([src]) {background:transparent url('../images/loading.gif') center no-repeat;background-size:30px;min-height:60px;}
 
-/* 🎨 文章封面图片加载效果 */
-.post-list-img img {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0.3, 1);}
+/* 🎨 文章封面图片加载效果 - 优化无限加载 */
+.post-list-img img {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0. 3, 1);will-change: opacity, transform;}
 .post-list-img img.loaded {opacity:1;transform: scale(1);}
+
+/* 🎨 无限加载新文章动画优化 */
+.blog-post .row.g-4 > div {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+}
+
+/* 🎨 图片占位符样式 */
+.shiroki-image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+}
+
+.shiroki-image-placeholder.loaded {
+    opacity: 0;
+}
 
 /* 🎨 Banner图片静默预加载效果 */
 .boxmoe_header_banner_img {
@@ -1057,7 +1101,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .navbar .navbar-nav .nav-item .nav-link.active {color:var(--bs-dark);border:none;}
 .boxmoe_header .navbar .navbar-nav .nav-item .nav-link:hover:before,.boxmoe_header .navbar .navbar-nav .nav-item .nav-link.active:before {opacity:1;}
 
-.boxmoe_header .navbar .navbar-nav .nav-item .nav-link i {margin-right:5px;color:var(--bs-dark);}
+.boxmoe_header .navbar .navbar-nav .nav-item .nav-link i {margin-right:3px;color:var(--bs-dark);}
 .boxmoe_header .navbar .dropdown .nav-link.dropdown-toggle:after {color:var(--bs-dark);}
 .boxmoe_header .navbar-brand img {width:116px;height:36px;object-fit:contain;}
 
@@ -1103,12 +1147,12 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .new-tag {position:absolute;top:0;right:-30px;width:40px;height:auto;}
 .boxmoe_header .user-panel-content {display:flex;justify-content:center;align-items:center;padding:10px 0;}
 .boxmoe_header .user-wrapper {padding:6px;position:relative;align-items:center;justify-content:space-around;margin-right:10px;}
-.boxmoe_header .logged-user-wrapper {position:relative;}
-.boxmoe_header .user-info-wrap {padding:5px 10px;background:rgba(255,255,255,0.1);border-radius:8px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s ease;}
+.boxmoe_header .logged-user-wrapper {position:relative;overflow:visible;z-index:5;}
+.boxmoe_header .user-info-wrap {padding:5px 10px;background:rgba(255,255,255,0.1);border-radius:8px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s ease;transform:translateZ(0);will-change:transform,backdrop-filter;position:relative;z-index:1;}
 .boxmoe_header .user-info-wrap:hover {background:rgba(255,255,255,0.2);}
-.boxmoe_header .user-avatar {width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;}
+.boxmoe_header .user-avatar {width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;position:relative;z-index:2;}
 .boxmoe_header .user-avatar img {width:100%;height:100%;object-fit:cover;}
-.boxmoe_header .user-info {display:flex;flex-direction:column;justify-content:center;}
+.boxmoe_header .user-info {display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
 .boxmoe_header .user-name {color:var(--bs-dark);font-size:14px;font-weight:500;line-height:1.2;}
 .boxmoe_header .user-email {color:var(--bs-dark);font-size:12px;line-height:1.2;}
 .boxmoe_header .navbar.scrolled .user-info-wrap {background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.1);}
@@ -1116,14 +1160,17 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .navbar.scrolled .user-email {color:var(--bs-gray-600);}
 .boxmoe_header .logged-user-wrapper .dropdown-toggle {text-decoration:none;}
 .boxmoe_header .logged-user-wrapper .dropdown-toggle::after {display:none;}
-.boxmoe_header .logged-user-wrapper .dropdown-menu {margin-top:10px;min-width:200px;border:1px solid rgba(0,0,0,.1);box-shadow:0 0.5rem 1rem rgba(0,0,0,.15);position:absolute;inset:100% 0 auto auto !important;transform:none !important;}
-.boxmoe_header .logged-user-wrapper .dropdown-item {padding:8px 16px;font-size:14px;}
-.boxmoe_header .logged-user-wrapper .dropdown-item i {margin-right:8px;width:16px;text-align:center;}
-.boxmoe_header .logged-user-wrapper .dropdown-divider {margin:4px 0;}
+.boxmoe_header .logged-user-wrapper .dropdown-menu {margin-top:10px;min-width:200px;border:1px solid rgba(0,0,0,.1);box-shadow:0 0.5rem 1rem rgba(0,0,0,.15);position:absolute;top:100%;left:100%;transform:translateX(-100%);z-index:1000;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;opacity:0;visibility:hidden;transition:opacity 0.3s ease, visibility 0.3s ease;}
+.boxmoe_header .logged-user-wrapper .dropdown-item {padding:10px 16px;font-size:14px;transition:background-color 0.2s ease, color 0.2s ease;display:flex;align-items:center;}
+.boxmoe_header .logged-user-wrapper .dropdown-item i {margin-right:8px;width:12px;text-align:center;}
+.boxmoe_header .logged-user-wrapper .dropdown-item:hover {background-color:rgba(var(--bs-primary-rgb),0.1);color:var(--bs-primary);}
+.boxmoe_header .logged-user-wrapper:hover .dropdown-menu {display:block;opacity:1;visibility:visible;}
+.boxmoe_header .logged-user-wrapper .dropdown-menu:hover {display:block;opacity:1;visibility:visible;}
+.boxmoe_header .logged-user-wrapper .dropdown-menu:before {content:'';position:absolute;top:-10px;left:0;right:0;height:10px;width:100%;background:transparent;z-index:-1;transform:translateX(0);}
 .boxmoe_header .panel-item {display:flex;align-items:center;padding:10px;color:var(--bs-gray-600);text-decoration:none;border-radius:8px;transition:background-color 0.3s;}
 .boxmoe_header .panel-item:hover {background-color:#f5f5f5;}
 .boxmoe_header .panel-item i {margin-right:10px;font-size:16px;}
-.boxmoe_header .nav-right-section {margin-left:auto;display:flex;align-items:center;justify-content:flex-end;}
+.boxmoe_header .nav-right-section {margin-left:auto;display:flex;align-items:center;justify-content:flex-end;overflow:visible;position:relative;z-index:10;}
 .boxmoe_header .btn-close {width:1.5rem;height:1.5rem;padding:0.25rem;background:transparent;border:2px solid var(--bs-dark);border-radius:50%;opacity:1;transition:all 0.3s ease;position:relative;}
 .boxmoe_header .btn-close:hover {transform:rotate(90deg);background-color:var(--bs-dark);}
 .boxmoe_header .btn-close:hover::before,.boxmoe_header .btn-close:hover::after {background-color:var(--bs-white);}
@@ -1144,7 +1191,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .mobile-search-form.active .mobile-search-input {width:240px;padding:0 40px 0 15px;opacity:1;background:var(--bs-white);border:1px solid #e0e0e0;transform: translateY(28px);}
 .boxmoe_header .mobile-search-submit {position:absolute;right:0;width:40px;height:40px;border:none;background:transparent;cursor:pointer;display:none !important;}
 .boxmoe_header .mobile-logged-user-wrapper {padding:15px 2rem;}
-.boxmoe_header .mobile-logged-user-wrapper .user-info-wrap {width:100%;padding:10px;background:rgba(0,0,0,0.05);border-radius:8px;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease;text-decoration:none;}
+.boxmoe_header .mobile-logged-user-wrapper .user-info-wrap {width:100%;padding:10px;background:rgba(0,0,0,0.05);border-radius:8px;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease;text-decoration:none;transform:translateZ(0);will-change:transform,background;contain:layout style paint;isolation:isolate;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
 .boxmoe_header .mobile-logged-user-wrapper .user-info-wrap:active {transform:scale(0.98);}
 .boxmoe_header .mobile-logged-user-wrapper .user-avatar {width:40px;height:40px;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;}
 .boxmoe_header .mobile-logged-user-wrapper .user-avatar img {width:100%;height:100%;object-fit:cover;}
@@ -1769,7 +1816,8 @@ background: rgba(0, 0, 0, .25);}
 .boxmoe_header .navbar .dropdown-menu .dropdown-submenu.dropend .dropdown-menu {margin-top:-25px;}
 .boxmoe_header .dropdown-submenu {position:relative;}
 .boxmoe_header .dropdown-submenu .dropdown-menu {top:0;left:100%;margin-top:-1px;display:none;}
-.boxmoe_header .dropdown-submenu .dropdown-menu.show {display:block;position:static;margin-left:1rem;}
+.boxmoe_header .dropdown-submenu:hover > .dropdown-menu,
+.boxmoe_header .dropdown-submenu .dropdown-menu.show {display:block;}
 .boxmoe_header .dropdown-submenu .dropdown-toggle::after {transform:rotate(-90deg);}
 .boxmoe_header .dropdown-submenu .dropdown-toggle[aria-expanded="true"]::after {transform:rotate(0deg);}
 .boxmoe_header .navbar-brand {position:static;left:auto;transform:none;}
@@ -1777,7 +1825,11 @@ background: rgba(0, 0, 0, .25);}
 .boxmoe_header .nav-right-section {display:none !important;}
 .boxmoe_header .logged-user-wrapper {display:none !important;}
 .boxmoe_header .user-wrapper {display:inline-flex !important;}}
-@media screen and (max-width:991px) {.boxmoe_header .navbar.scrolled {z-index:999;}
+@media screen and (max-width:991px) {
+  .boxmoe_header .navbar.scrolled {z-index:999;}
+  .boxmoe_header .dropdown-submenu .dropdown-menu {top:0;left:0;margin-left:1rem;}
+  .boxmoe_header .dropdown-submenu .dropdown-toggle::after {transform:rotate(0deg);}
+  .boxmoe_header .dropdown-submenu .dropdown-toggle[aria-expanded="true"]::after {transform:rotate(180deg);}
 }
 @keyframes panelSlideDown {from {transform:translateY(-100%);opacity:0;}
 to {transform:translateY(0);opacity:1;}
@@ -2344,7 +2396,39 @@ to {transform:translateY(0);opacity:1;}
 .badge {
     --bs-badge-font-size: 0.8rem !important; /* ◀️ 控制文字大小 */
     --bs-badge-padding-x:1em !important;  /* ◀️ 控制药丸背景宽度 */
-    --bs-badge-padding-y:0.65em !important;  /* ◀️ 控制药丸背景高度 */
+    --bs-badge-padding-y:0.25em !important;  /* ◀️ 控制药丸背景高度 */
+    white-space: normal !important; /* ◀️ 允许文本自动换行 */
+    display: inline-block !important; /* ◀️ 确保换行后样式正常 */
+    max-width: 100%; /* ◀️ 限制最大宽度 */
+    word-wrap: break-word; /* ◀️ 允许长单词换行 */
+    overflow-wrap: break-word; /* ◀️ 允许长单词换行 */
+    line-height: 1.6; /* ◀️ 换行后文本上下间距增加 */
+}
+
+/* 🌈 药丸模块渐变色-9至16号药丸模块 */
+.badge.text-bg-primary.bg-gradient {
+    background: linear-gradient(135deg, #0d6efd, #ff69b4) !important; /* ◀️ 9号药丸模块 */
+}
+.badge.text-bg-secondary.bg-gradient {
+    background: linear-gradient(135deg, #6c757d, #495057) !important; /* ◀️ 10号药丸模块 */
+}
+.badge.text-bg-info.bg-gradient {
+    background: linear-gradient(135deg, #7dd3fc, #1e3a8a) !important; /* ◀️ 11号药丸模块 */
+}
+.badge.text-bg-success.bg-gradient {
+    background: linear-gradient(135deg, #10b981, #e9ecef) !important; /* ◀️ 12号药丸模块 */
+}
+.badge.text-bg-danger.bg-gradient {
+    background: linear-gradient(135deg, #e9ecef, #991b1b) !important; /* ◀️ 13号药丸模块 */
+}
+.badge.text-bg-warning.bg-gradient {
+    background: linear-gradient(135deg, #fb923c, #fef3c7) !important; /* ◀️ 14号药丸模块 */
+}
+.badge.text-bg-light.bg-gradient {
+    background: linear-gradient(135deg, #0dcaf0, #e9ecef) !important; /* ◀️ 15号药丸模块 */
+}
+.badge.text-bg-dark.bg-gradient {
+    background: linear-gradient(135deg, #212529, #0d6efd) !important; /* ◀️ 16号药丸模块 */
 }
 /* 🎬 播放按钮样式 */
 .single-content .play-btn {
@@ -2628,6 +2712,7 @@ hr.horizontal {background-color:transparent}
 hr:not([size]) {height:1px}
 /* sidebar */
 .blog-sidebar .logo {height:35px;}
+.blog-sidebar .position-sticky.top {position:sticky !important;top:2% !important;padding-bottom:3rem !important;z-index:10 !important;height:fit-content !important;}
 .blog-sidebar .widget {padding:30px 25px;padding-top:45px;position:relative;border-radius:var(--bs-border-radius-lg) !important;margin-bottom:50px;width:auto;float:none;background-color:transparent;transition:all 0.3s ease;}
 .blog-sidebar .widget:before {content:"";display:block;position:absolute;top:0;left:0;width:100%;height:100%;background-color:var(--bs-white);border-radius:var(--bs-border-radius-lg) !important;z-index:-1;}
 .blog-sidebar .widget:hover {transform:translateY(-10px);}
@@ -2851,7 +2936,13 @@ hr:not([size]) {height:1px}
 .blog-sidebar .widget-profile .stat-value {font-size:1.1rem;font-weight:600;color:var(--bs-dark);}
 .blog-sidebar .widget-profile .stat-label {font-size:0.75rem;color:var(--bs-gray-600);}
 @media (max-width:991px) {
-    .blog-sidebar .position-sticky.top {top:0;padding-bottom:0;position:absolute !important;}
+    /* 🎯 移动端侧边栏样式优化 */
+    .blog-sidebar .position-sticky.top {
+        position: relative !important;
+        top: 0 !important;
+        padding-bottom: 0 !important;
+        height: auto !important;
+    }
     .blog-sidebar .offcanvas-lg {transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);z-index:1090;}
     .blog-sidebar .offcanvas-lg:not(.show) {transform:translateX(100%);}
     .blog-sidebar .offcanvas-lg.show {transform:translateX(0);}
@@ -3116,13 +3207,13 @@ hr:not([size]) {height:1px}
     font-family: inherit !important;
 }
 
-/* 行号容器样式 */
+/* 🎨 行号容器样式 */
 .post-single pre.prettyprint ol.linenums {
     position: relative;
     background: var(--bs-white);
     border: 1px solid #ebebeb;
     padding: 8px 0;
-    box-shadow: inset 33px 0 0 linear-gradient(0deg, #d8d8d8, #ececec), inset 34px 0 0 #ebebeb;
+    box-shadow: inset 43px 0 0 linear-gradient(0deg, #d8d8d8, #ececec), inset 44px 0 0 #ebebeb; /* ◀️ 调整阴影宽度以适应更宽的行号 */
     list-style-type: none;
     counter-reset: line-number;
     z-index: 1;
@@ -3169,7 +3260,7 @@ hr:not([size]) {height:1px}
 /* 行样式 */
 .post-single pre.prettyprint ol.linenums li {
     padding-right: 16px;
-    padding-left: 40px;
+    padding-left: 50px; /* ◀️ 增加左边距以适应更宽的行号 */
     color: #000;
     list-style-type: none;
     counter-increment: line-number;
@@ -3183,11 +3274,11 @@ hr:not([size]) {height:1px}
     font-family: inherit;
 }
 
-/* 行号样式 */
+/* 🌟 行号样式 - 自适应宽度，避免换行 */
 .post-single pre.prettyprint ol.linenums li:before {
     content: counter(line-number);
     display: inline-block;
-    width: 25px;
+    width: 35px; /* ◀️ 增加宽度以容纳两位数以上的行号 */
     text-align: right;
     margin-right: 15px;
     position: absolute;
@@ -3196,6 +3287,10 @@ hr:not([size]) {height:1px}
     font-size: 12px;
     padding: 0 5px;
     user-select: none;
+    white-space: nowrap; /* ◀️ 防止行号换行 */
+    font-family: monospace; /* ◀️ 使用等宽字体确保对齐 */
+    overflow: hidden; /* ◀️ 隐藏溢出内容 */
+    text-overflow: ellipsis; /* ◀️ 溢出时显示省略号 */
 }
 
 /* 🌆 暗色模式支持 */
@@ -3208,7 +3303,7 @@ hr:not([size]) {height:1px}
 [data-bs-theme="dark"] .post-single pre.prettyprint ol.linenums {
     background: #1e1e1e;
     border: 1px solid #3e3e42;
-    box-shadow: inset 33px 0 0 #1e1e1e, inset 34px 0 0 #3e3e42;
+    box-shadow: inset 43px 0 0 #1e1e1e, inset 44px 0 0 #3e3e42; /* ◀️ 调整暗色模式阴影宽度以适应更宽的行号 */
 }
 
 [data-bs-theme="dark"] .post-single pre.prettyprint ol.linenums li {
@@ -3362,7 +3457,7 @@ hr:not([size]) {height:1px}
     .post-single .bookmark ul li .profile .imgbox {position:relative;width:100%;opacity:.2;transition:opacity .4s cubic-bezier(0.345,0.045,0.345,1);}
     .post-single .bookmark ul li:hover .profile .imgbox {opacity:.4;}
     .post-single .bookmark ul li .profile .imgbox::before {content:'';position:absolute;top:0;right:0;width:100%;height:100%;background:linear-gradient(to left,var(--bs-white) 30%,#00000000);}
-    .post-single .bookmark ul li .profile .imgbox img {width:70%;height:100%;object-fit:cover;border-radius:15px;user-select:none;pointer-events:none;}
+    .post-single .bookmark ul li .profile .imgbox img {width:100%;height:100%;object-fit:cover;border-radius:15px;user-select:none;pointer-events:none;}
     /* 友链点击数定位到右侧 */
     .post-single .bookmark ul li .info {display:flex;flex-direction:column;}
     .post-single .bookmark ul li .info h3 {
@@ -3498,6 +3593,24 @@ hr:not([size]) {height:1px}
 @media (max-width:991px) {.post-actions {padding:15px 0;}
 .action-btn {padding:6px 15px;font-size:0.85rem;}
 }
+
+/* 🔔 关注文章按钮样式 */
+.shiroki-follow-btn {position:relative;}
+.shiroki-follow-btn.followed {background:var(--bs-primary);color:var(--bs-white);border-color:var(--bs-primary);}
+.shiroki-follow-btn.followed:hover {background:var(--bs-primary);color:var(--bs-white);border-color:var(--bs-primary);}
+[data-bs-theme="dark"] .shiroki-follow-btn.followed {background:var(--bs-primary);color:var(--bs-white);border-color:var(--bs-primary);}
+.shiroki-follow-btn.loading {opacity:0.7;cursor:progress;}
+.shiroki-follow-btn.loading .follow-icon {animation:shirokiFollowSpin 1s linear infinite;}
+@keyframes shirokiFollowSpin {0% {transform:rotate(0deg);}
+100% {transform:rotate(360deg);}
+}
+
+/* 🎉 消息提示样式 */
+.shiroki-message {position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-20px);padding:12px 24px;border-radius:8px;font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:all 0.3s ease;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.shiroki-message.show {transform:translateX(-50%) translateY(0);opacity:1;}
+.shiroki-message-success {background:linear-gradient(135deg, #00c853, #00e676);color:var(--bs-white);}
+.shiroki-message-error {background:linear-gradient(135deg, #ff5252, #ff1744);color:var(--bs-white);}
+[data-bs-theme="dark"] .shiroki-message {box-shadow:0 4px 12px rgba(255,255,255,0.1);}
 
 /* 🎪 底部栏小部件样式 */
 
@@ -5625,6 +5738,27 @@ footer .logo {height:35px;}
 
 [data-bs-theme="dark"] .footer-bar .widget-title {
     border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 🎭 文章卡片滚动放大效果 - shiroki版本 */
+.post-list.shiroki-card-animating {
+    will-change: transform, opacity; /* ◀️ 优化性能，提示浏览器这些属性将会变化 */
+    backface-visibility: hidden; /* ◀️ 防止动画闪烁 */
+    perspective: 1000px; /* ◀️ 启用3D加速 */
+}
+
+.post-list.shiroki-card-visible {
+    will-change: auto; /* ◀️ 动画完成后重置，避免不必要的性能消耗 */
+}
+
+/* 🌆 暗色模式下的文章卡片动画优化 */
+[data-bs-theme="dark"] .post-list.shiroki-card-animating {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* ◀️ 暗色模式下添加阴影增强立体感 */
+}
+
+/* ☀️ 亮色模式下的文章卡片动画优化 */
+[data-bs-theme="light"] .post-list.shiroki-card-animating {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* ◀️ 亮色模式下添加轻微阴影 */
 }
 
 

@@ -25,8 +25,12 @@ function boxmoe_music_player_init() {
     // 注册音乐播放器样式
     wp_register_style('boxmoe-music-player-css', get_template_directory_uri() . '/assets/css/music-player/APlayer.min.css', array(), THEME_VERSION, 'all');
     
+    // 🎵 注册miniswitcher修复样式 - 修复箭头图标不显示问题
+    wp_register_style('shiroki-aplayer-miniswitcher-fix', get_template_directory_uri() . '/assets/css/music-player/aplayer-miniswitcher-fix-shiroki.css', array('boxmoe-music-player-css'), THEME_VERSION, 'all');
+    
     // 加载样式
     wp_enqueue_style('boxmoe-music-player-css');
+    wp_enqueue_style('shiroki-aplayer-miniswitcher-fix');
 }
 
 // 加载音乐播放器资源
@@ -55,7 +59,7 @@ function boxmoe_music_player_html() {
         'api_imeto' => 'https://api.i-meto.com/meting/api',
         'api_ihuan' => 'https://meting-api.ihuan.me/api',
         'api_github' => 'https://api-meting.github.io/api',
-        'api_chuyel' => 'https://musicapi.chuyel.top/api'
+        'api_chuyel' => 'https://musicapi.chuyel.top/meting/api'
     );
     
     // 🎵 强制使用自定义API接口：如果用户自定义了API，则强制使用自定义API

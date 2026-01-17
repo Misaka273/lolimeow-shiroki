@@ -28,7 +28,7 @@ class bootstrap_5_wp_nav_menu_walker extends Walker_Nav_menu
   function start_lvl(&$output, $depth = 0, $args = null)
   {
     $indent = str_repeat("\t", $depth * 2);
-    $submenu = ($depth >= 1) ? '' : '';
+    $submenu = ($depth >= 1) ? ' dropdown-submenu' : '';
     $output .= "\n$indent<ul class=\"dropdown-menu$submenu depth-$depth\">\n";
   }
 
@@ -61,9 +61,17 @@ class bootstrap_5_wp_nav_menu_walker extends Walker_Nav_menu
 
 
 
+    // 获取菜单图标
+    $icon_url = get_post_meta($item->ID, '_shiroki_menu_icon', true);
+    $icon_html = '';
+    
+    if ($icon_url) {
+        $icon_html = '<img src="' . esc_url($icon_url) . '" alt="' . esc_attr($item->title) . '" class="shiroki-menu-icon" style="vertical-align: middle;" /> ';
+    }
+    
     $item_output = $args->before;
     $item_output .= '<a' . $attributes . '>';
-    $item_output .= $args->link_before . $item->title . $args->link_after;
+    $item_output .= $args->link_before . $icon_html . $item->title . $args->link_after;
     $item_output .= '</a>';
     $item_output .= $args->after;
 

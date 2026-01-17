@@ -1,7 +1,7 @@
 <?php
 /**
- * @link https://www.boxmoe.com
- * @package lolimeow
+ * @link https://gl.baimu.live/
+ * @package 灵阈研都-纸鸢社
  */
 
 // 🥳 角色管理逻辑

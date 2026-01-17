@@ -50,8 +50,6 @@ function shiroki_fix_reset_button() {
                 return admin_url('themes.php?page=options-framework&reset=success');
             }, 99);
             
-            // 🔧 记录重置操作，便于调试
-            error_log('Shiroki主题：重置操作已执行 - ' . date('Y-m-d H:i:s'));
         }
     }
 }
@@ -154,6 +152,7 @@ require_once  get_stylesheet_directory() . '/core/module/fun-shortcode.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-fonts.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-markdown.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-submenu.php'; // ⬅️ 引入子菜单整合功能
+require_once  get_stylesheet_directory() . '/core/module/fun-post-follow.php'; // ⬅️ 引入关注文章功能
 // 验证码功能模块，由初叶🍂www.chuyel.top构建集成
 require_once get_stylesheet_directory() . '/core/module/fun-captcha.php';
 // 🔽 由初叶🍂www.chuyel.top提供，白木🥰gl.baimu.live集成
@@ -887,10 +886,18 @@ function boxmoe_enqueue_fix_prettify_script() {
         '4.1.1'
     );
     
-    // 🎨 加载Shiroki图片加载优化样式
+    // 🎨 加载图片加载优化样式 - 灵阈研都-纸鸢社开发
     wp_enqueue_style(
         'shiroki-image-loader',
         get_template_directory_uri() . '/assets/css/shiroki-image-loader.css',
+        array(),
+        '1.0.0'
+    );
+    
+    // 🌊 加载分割线样式 - 灵阈研都-纸鸢社开发
+    wp_enqueue_style(
+        'shiroki-divider',
+        get_template_directory_uri() . '/assets/css/shiroki-divider.css',
         array(),
         '1.0.0'
     );
@@ -908,6 +915,51 @@ function boxmoe_enqueue_fix_prettify_script() {
 
 }
 add_action('wp_enqueue_scripts', 'boxmoe_enqueue_fix_prettify_script');
+
+// 🎯 加载侧边栏滚动固定脚本
+function shiroki_enqueue_sidebar_sticky_script() {
+    // 🎯 只在有侧边栏的页面加载此脚本
+    if (get_boxmoe('boxmoe_blog_layout') == 'two') {
+        wp_enqueue_script(
+            'shiroki-sidebar-sticky',
+            get_template_directory_uri() . '/assets/js/shiroki-sidebar-sticky.js',
+            array('jquery'),
+            '1.0.0',
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_sidebar_sticky_script', 15); // ◀️ 设置稍高的优先级，确保在基础脚本后加载
+
+// 🌊 处理分割线注释，将其转换为HTML
+function shiroki_convert_divider_comment($content) {
+    // 🔍 查找分割线注释
+    $pattern = '/<!--shiroki-divider-->/';
+    
+    // 🔄 替换为分割线HTML
+    $replacement = '<div class="shiroki-divider"></div>';
+    
+    // 📝 执行替换
+    $content = preg_replace($pattern, $replacement, $content);
+    
+    return $content;
+}
+
+// 🌊 处理Markdown语法，将---转换为分割线
+function shiroki_convert_markdown_divider($content) {
+    // 🔍 查找Markdown分割线语法
+    $pattern = '/^---$/m';
+    
+    // 🔄 替换为分割线HTML
+    $replacement = '<!--shiroki-divider-->';
+    
+    // 📝 执行替换
+    $content = preg_replace($pattern, $replacement, $content);
+    
+    return $content;
+}
+add_filter('the_content', 'shiroki_convert_divider_comment');
+add_filter('the_content', 'shiroki_convert_markdown_divider');
 
 //自定义文章密码保护表单
 function custom_password_protected_form($form) {
@@ -2551,3 +2603,33 @@ function boxmoe_load_turnstile_correct() {
     }
 }
 add_action('wp_head', 'boxmoe_load_turnstile_correct', 20);
+
+/**
+ * 🎭 引入文章卡片滚动放大效果 - 灵阈研都-纸鸢社开发
+ * 实现页面下滑时，文章卡片从小到大的动画效果
+ */
+function shiroki_enqueue_post_card_animation_script() {
+    // 只在文章列表页面加载
+    if (is_home() || is_front_page() || is_archive()) {
+        wp_enqueue_script(
+            'shiroki-post-card-animation',
+            get_template_directory_uri() . '/assets/js/shiroki-post-card-animation.js',
+            array(),
+            '1.0.0',
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_post_card_animation_script', 20);
+
+// 🔗 引入链接SVG图标功能 - 为所有链接添加SVG图标
+function shiroki_enqueue_link_icon_script() {
+    wp_enqueue_script(
+        'shiroki-link-icon',
+        get_template_directory_uri() . '/assets/js/shiroki-link-icon-shiroki.js',
+        array(),
+        '1.0.0',
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_link_icon_script', 25);

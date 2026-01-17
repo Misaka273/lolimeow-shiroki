@@ -11,8 +11,8 @@ if(!defined('ABSPATH')){
 }
 
 
-// Gravatar头像--------------------------boxmoe.com--------------------------
-// 🖼️ 本地默认头像地址
+// Gravatar头像--------------------------gl.baimu.live--------------------------
+// 🖼️ 取代Gravatar头像，使用本地默认头像地址
 function boxmoe_default_avatar_url() {
     return get_stylesheet_directory_uri() . '/assets/images/touxiang.jpg'; // ⬅️ 返回主题内默认头像路径
 }

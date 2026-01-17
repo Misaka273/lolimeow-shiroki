@@ -463,6 +463,10 @@ function boxmoe_admin_clear_format_scripts($hook){
 	if ($hook === 'post.php' || $hook === 'post-new.php') {
 		wp_enqueue_script('boxmoe-clear-format-quicktags', get_template_directory_uri() . '/assets/js/clear-format-quicktags.js', array('quicktags'), THEME_VERSION, true);
 		wp_enqueue_script('boxmoe-quicktags-shiroki', get_template_directory_uri() . '/assets/js/quicktags-shiroki.js', array('quicktags', 'jquery'), THEME_VERSION, true);
+		// 🌊 加载shiroki分割线相关脚本和样式
+		wp_enqueue_style('shiroki-divider', get_template_directory_uri() . '/assets/css/shiroki-divider.css', array(), THEME_VERSION);
+		wp_enqueue_script('tinymce-shiroki-divider', get_template_directory_uri() . '/assets/js/tinymce-shiroki-divider.js', array('jquery'), THEME_VERSION, true);
+		wp_enqueue_script('quicktags-shiroki-divider', get_template_directory_uri() . '/assets/js/quicktags-shiroki-divider.js', array('jquery'), THEME_VERSION, true);
 	}
 }
 add_action('admin_enqueue_scripts', 'boxmoe_admin_clear_format_scripts');
@@ -893,3 +897,19 @@ function boxmoe_fix_date_i18n($date, $format, $timestamp, $gmt) {
     return $formatted_date;
 }
 add_filter('date_i18n', 'boxmoe_fix_date_i18n', 10, 4);
+
+// 🌊 注册shiroki分割线TinyMCE插件
+function boxmoe_register_tinymce_shiroki_divider_plugin($plugin_array) {
+    $plugin_array['shiroki_divider'] = get_template_directory_uri() . '/assets/js/tinymce-shiroki-divider.js';
+    return $plugin_array;
+}
+add_filter('mce_external_plugins', 'boxmoe_register_tinymce_shiroki_divider_plugin');
+
+// 🌊 添加shiroki分割线按钮到TinyMCE工具栏
+function boxmoe_add_tinymce_shiroki_divider_button($buttons) {
+    array_push($buttons, 'shiroki_divider');
+    return $buttons;
+}
+add_filter('mce_buttons', 'boxmoe_add_tinymce_shiroki_divider_button');
+
+// 🌊 Quicktags按钮现在通过JavaScript动态添加，详见quicktags-shiroki-divider.js文件

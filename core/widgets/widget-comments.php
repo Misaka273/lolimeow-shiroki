@@ -33,7 +33,7 @@ class widget_comments extends WP_Widget {
             $content = mb_strimwidth(strip_tags($content), 0, '40', '...', 'UTF-8');
             $content = convert_smilies($content);
             $lazy_img = boxmoe_lazy_load_images();
-            $comment_avatar = '<img src="'.esc_url($lazy_img).'" data-src="'.esc_url(boxmoe_get_avatar_url($comment->user_id, 60)).'" class="avatar lazy" alt="avatar" onerror="this.src=\''.boxmoe_default_avatar_url().'\'">';
+            $comment_avatar = '<img src="'.esc_url($lazy_img).'" data-src="'.esc_url(boxmoe_get_avatar_url($comment->comment_author_email, 60)).'" class="avatar lazy" alt="avatar" onerror="this.src=\''.boxmoe_default_avatar_url().'\'">';
 			$output .= '<li class="comment-listitem">
 			            <div class="comment-user">
                           <span class="comment-avatar">
