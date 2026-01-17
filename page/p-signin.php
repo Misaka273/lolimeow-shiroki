@@ -2090,9 +2090,9 @@ if (is_user_logged_in()){
                   console.log('注册响应数据:', data);
                   
                   if(data.success) {
-                      showMessage('signup-message', data.data.message + '，正在跳转到登录页面...', false);
+                      showMessage('signup-message', data.data.message + '，正在跳转到会员中心...', false);
                       setTimeout(function(){
-                          window.location.href = '<?php echo home_url("/signin"); ?>';
+                          window.location.href = '<?php echo boxmoe_user_center_link_page(); ?>';
                       }, 2000);
                   } else {
                       showMessage('signup-message', data.data.message || '注册失败', true);

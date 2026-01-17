@@ -66,8 +66,8 @@ function boxmoe_user_center_link_page(){
         }
     }
     
-    // 🔗 回退到默认用户中心页面链接
-    return home_url('/user-center');
+    // 🔗 回退到首页，避免404错误
+    return home_url();
 }
 
 // 注册页面链接设置--------------------------boxmoe.com--------------------------
