@@ -19,7 +19,6 @@ jQuery(document).ready(function($) {
     console.log('shiroki-post-follow: 找到订阅按钮，数量 = ' + $followBtn.length);
     var postId = $followBtn.data('post-id');
     var isFollowed = $followBtn.hasClass('followed');
-    console.log('shiroki-post-follow: 文章ID = ' + postId + ', 已订阅 = ' + isFollowed);
 
     if (typeof shirokiPostFollow === 'undefined') {
         console.error('shiroki-post-follow: shirokiPostFollow 对象未定义，请检查脚本加载');
@@ -70,10 +69,6 @@ jQuery(document).ready(function($) {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('shiroki-post-follow: 请求失败');
-                console.error('shiroki-post-follow: 状态 = ' + status);
-                console.error('shiroki-post-follow: 错误 = ' + error);
-                console.error('shiroki-post-follow: 响应文本 = ' + xhr.responseText);
                 shirokiShowMessage('网络错误，请重试', 'error');
             },
             complete: function() {

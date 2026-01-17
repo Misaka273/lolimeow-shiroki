@@ -359,7 +359,7 @@ get_header();
                         <?php if (!empty($link_image)) : ?>
                             <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
                         <?php else : ?>
-                            <span style="font-size: 20px;">🔗</span>
+                            <span style="font-size: 20px;">- </span>
                         <?php endif; ?>
                         <span><?php echo esc_html($link->link_name); ?></span>
                     </div>
@@ -408,7 +408,7 @@ get_header();
         <!-- 🎯 <?php echo esc_html($category->name); ?> 分类 -->
         <div class="shiroki-category-content" id="category-<?php echo esc_attr($category->slug); ?>">
             <h2 style="color: #444; font-size: 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                <span>🔗</span>
+                <span>- </span>
                 <span><?php echo esc_html($category->name); ?></span>
             </h2>
             <div class="shiroki-link-grid">
@@ -426,7 +426,7 @@ get_header();
                         <?php if (!empty($link_image)) : ?>
                             <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
                         <?php else : ?>
-                            <span style="font-size: 20px;">🔗</span>
+                            <span style="font-size: 20px;">- </span>
                         <?php endif; ?>
                         <span><?php echo esc_html($link->link_name); ?></span>
                     </div>

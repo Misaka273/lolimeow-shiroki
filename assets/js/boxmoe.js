@@ -4373,7 +4373,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            console.log('下拉菜单初始化完成，共处理', loggedUserWrappers.length, '个容器');
         } catch (error) {
             console.error('下拉菜单初始化错误:', error);
         }
