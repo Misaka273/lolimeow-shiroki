@@ -1,7 +1,6 @@
 
 
-**欢迎使用 Lolimeow🕊️纸鸢版 Wordpress主题**
-<h1 align="center">SCUM-地图网站-刻荒岛项目</h1>
+<h1 align="center">**欢迎使用 Lolimeow🕊️纸鸢版 Wordpress主题**</h1>
 
 <div align="center">
 
