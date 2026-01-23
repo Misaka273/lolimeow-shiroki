@@ -539,7 +539,7 @@ get_header();
 
     <!-- 📋 页脚信息 -->
     <div style="text-align: center; margin-top: 40px; padding: 20px; color: #999; font-size: 14px;">
-        <p>© <?php echo date('Y'); ?> <?php echo get_option('blogname'); ?> | 友链分类页面由 灵阈研都-纸鸢社 提供</p>
+        <p>© <?php echo date('Y'); ?> <?php echo get_option('blogname'); ?> | 友链分类页面由 灵阈研都 🕊️ 纸鸢社 提供</p>
     </div>
 </div>
 

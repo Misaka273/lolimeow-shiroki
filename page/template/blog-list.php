@@ -112,7 +112,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
             <div class="post-list-img">
               <figure class="zoom-img">
                 <a <?php echo boxmoe_article_new_window(); ?> rel="noopener noreferrer" href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).boxmoe_title_link().get_bloginfo('name')?>">
-                  <img src="<?php boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_article_thumbnail_src(); ?>?id<?php echo get_the_ID(); ?>" alt="<?php the_title(); ?>" class="img-fluid rounded-3 lazy"></a>
+                  <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_article_thumbnail_src(); ?>?id=<?php echo get_the_ID(); ?>" alt="<?php the_title(); ?>" class="img-fluid rounded-3 lazy"></a>
               </figure>
             </div>
             <div class="post-list-content">
@@ -134,7 +134,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                 <p class="post-content small"><?php echo _get_excerpt(100); ?></p></div>
               <div class="post-meta align-items-center small">
                 <div class="post-list-avatar">
-                <img src="<?php boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_the_author_meta('ID'), 50); ?>" alt="avatar" class="avatar lazy">
+                <img src="<?php echo boxmoe_lazy_load_images(); ?>" data-src="<?php echo boxmoe_get_avatar_url(get_the_author_meta('ID'), 50); ?>" alt="avatar" class="avatar lazy">
                     </div>
                 <div class="post-meta-info">
                   <div class="post-meta-stats">

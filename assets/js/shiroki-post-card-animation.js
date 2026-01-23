@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // 如果卡片完全可见
             if (visiblePercent >= 1) {
-                card.style.transform = 'scale(1)';
+                card.style.transform = '';
                 card.style.opacity = '1';
                 card.classList.remove('shiroki-card-animating');
                 card.classList.add('shiroki-card-visible');

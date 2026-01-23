@@ -66,7 +66,7 @@ add_action('manage_posts_custom_column', 'boxmoe_admin_post_thumbnail_column_con
 function boxmoe_dashboard_widget_function() {
     echo '<div style="text-align:center;">
     <img src="'.boxmoe_theme_url().'/assets/images/logo.png" style="width:100px;margin-bottom:10px;">
-    <h3>盒子萌 - 纸鸢版</h3>
+    <h3>盒子萌 - 纸鸢版🕊️</h3>
     <p>原创作者：<a href="https://www.boxmoe.com" target="_blank">boxmoe</a></p>
     <p>当前主题版本: '.THEME_VERSION.'</p>
     <p>当前主题二创作者： <a href="https://gl.baimu.live" target="_blank">白木</a></p>

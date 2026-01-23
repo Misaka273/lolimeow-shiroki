@@ -234,7 +234,7 @@ $options[] = array(
 	$options[] = array(
 		'name' => __('底部版权信息自定义', 'ui_boxmoe_com'),
 		'id' => 'boxmoe_footer_theme_by_text',
-		'std' => '本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'📦 主题版本：{THEME_VERSION}',
+		'std' => '本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'🕊️ 主题版本：{THEME_VERSION}',
 		'desc' => __('自定义底部 Theme by 信息，支持HTML', 'ui_boxmoe_com'),
 		'type' => 'textarea',
 		'settings' => array('rows' => 2));

@@ -717,7 +717,8 @@ img, video, iframe {
 /* 🎨 图片懒加载优化 - 防止无限加载时闪烁 */
 img.lazy {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0.3, 1);will-change: opacity, transform;}
 img.lazy.loaded {opacity:1;transform: scale(1);}
-.lazy:not([src]) {background:transparent url('../images/loading.gif') center no-repeat;background-size:30px;min-height:60px;}
+/* 移除background-image规则，避免与src属性重复加载loading.gif */
+.lazy {min-height:60px;}
 
 /* 🎨 文章封面图片加载效果 - 优化无限加载 */
 .post-list-img img {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0. 3, 1);will-change: opacity, transform;}
@@ -3027,14 +3028,14 @@ hr:not([size]) {height:1px}
 
 .single-content iframe {width:auto;height:100%;margin:0 auto;max-width:100%;}
 .single-content .quote{display:block;margin:1em;overflow:hidden;transition:all 0.3s ease}
-.single-content .quote:hover{transform:translateY(-5px)}
+.single-content .quote:hover{transform:translateY(-5px) scale(1.02)}
 .single-content .quote blockquote{background-color:var(--bs-white);border:solid 2px #757575;display:block;margin:0;padding:1em;position:relative;border-radius:10px;transition:all 0.3s ease}
 .single-content .quote blockquote:before{background-color:var(--bs-white);bottom:-10%;content:"";left:0;position:absolute;right:0;top:-10%;transform:rotate(-15deg) skew(5deg)}
 .single-content .quote blockquote cite{display:block;font-style:italic;text-align:right}
 .single-content .quote blockquote cite:before{content:"- "}
 .single-content .quote blockquote>*{position:relative;z-index:1}
 .animated-border-quote{display:block;overflow:hidden;margin-bottom:20px;transition:all 0.3s ease}
-.animated-border-quote:hover{transform:translateY(-5px)}
+.animated-border-quote:hover{transform:translateY(-5px) scale(1.02)}
 .animated-border-quote blockquote{background-color:var(--bs-white);border:solid 2px #757575;display:block;margin:0;padding:1em;position:relative;border-radius:10px;transition:all 0.3s ease}
 .animated-border-quote blockquote:before{animation:clockwise 30s infinite linear;background-color:var(--bs-white);bottom:10%;content:"";left:0;opacity:0.5;position:absolute;right:0;top:10%}
 .animated-border-quote blockquote:after{animation:counter 30s infinite linear;background-color:var(--bs-white);bottom:10%;content:"";left:0;opacity:0.5;position:absolute;right:0;top:10%}
@@ -3063,16 +3064,25 @@ hr:not([size]) {height:1px}
 .single-content ul ul li{list-style:circle}
 .single-content ol ol li{list-style:lower-alpha}
 .single-content li{margin:0.25rem 0}
-.single-content h1{font-size: 1.65rem;font-weight:600;border-bottom: 2px #8b3dff solid;width: auto;display: table;margin: 15px 0;}
-.single-content h2{font-size: 1.45rem;font-weight:600;border-bottom: 2px #0dcaf0 solid;width: auto;display: table;margin: 15px 0;}
-.single-content h3{font-size: 1.25rem;font-weight:600;border-bottom: 2px #ffda6a solid;width: auto;display: table;margin: 15px 0;}
-.single-content h4{font-size: 1.05rem;font-weight:600;border-bottom: 2px #e97286 solid;width: auto;display: table;margin: 15px 0;}
+.single-content h1{font-size: 1.65rem;font-weight:600;width: auto;display: table;margin: 15px 0 15px;position:relative;transition:transform 0.3s ease;}
+.single-content h1::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:2px;background:#8b3dff;border-radius:2px;transform-origin:center;transition:transform 0.3s ease;}
+.single-content h2{font-size: 1.45rem;font-weight:600;width: auto;display: table;margin: 15px 0 15px;position:relative;transition:transform 0.3s ease;}
+.single-content h2::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:2px;background:#e97286;border-radius:2px;transform-origin:center;transition:transform 0.3s ease;}
+.single-content h3{font-size: 1.25rem;font-weight:600;width: auto;display: table;margin: 15px 0 15px;position:relative;transition:transform 0.3s ease;}
+.single-content h3::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:2px;background:#0dcaf0;border-radius:2px;transform-origin:center;transition:transform 0.3s ease;}
+.single-content h4{font-size: 1.05rem;font-weight:600;width: auto;display: table;margin: 15px 0 15px;position:relative;transition:transform 0.3s ease;}
+.single-content h4::after{content:'';position:absolute;bottom:-1px;left:0;width:100%;height:2px;background:#ffda6a;border-radius:2px;transform-origin:center;transition:transform 0.3s ease;}
+.single-content h1:hover,.single-content h2:hover,.single-content h3:hover,.single-content h4:hover{transform:scale(1.05);}
+.single-content h1:hover::after,.single-content h2:hover::after,.single-content h3:hover::after,.single-content h4:hover::after{transform:scaleX(0);}
 .single-content h3.h-title,.single-content h2.h-title{position:relative;padding:0 0 0 1rem;line-height:1.8;margin:1.5rem 0 1rem -1rem;font-size:1.2rem}
 .single-content h2.h-title:before,.single-content h3.h-title:before{content:'';position:absolute;left:0;top:7px;width:6px;height:22px;border-radius:10px;background:#f0494d;background:-o-linear-gradient(bottom,#ff843a,#f0494d);background:-webkit-gradient(linear,left bottom,left top,from(#ff843a),to(#f0494d));background:linear-gradient(to top,#ff843a,#f0494d)}
 .single-content h2.h-title:before{background:#47484e;background:-o-linear-gradient(bottom,#47484e,#d0caca);background:-webkit-gradient(linear,left bottom,left top,from(#47484e),to(#d0caca));background:linear-gradient(to top,#47484e,#d0caca)}
 .single-content .pagination,.comments-area .pagination{display:flex;padding-top:20px}
 .single-content .pagination span,.comments-area .pagination span{font-size:.875rem;line-height:10px}
-.single-content .section-title{position:relative;margin:1em 0;font-size:12px;letter-spacing:1px;font-weight:700;border-bottom:none;display:flex;}
+.single-content .section-title{position:relative;margin:1em 0;font-size:12px;letter-spacing:1px;font-weight:700;border-bottom:none;display:flex;transition:all 0.3s ease;}
+.single-content .section-title::after{display:none;}
+.single-content .section-title:hover::after{display:none;}
+.single-content .section-title:hover{transform:translateY(-5px) scale(1.02);}
 .single-content .section-title:before{content:"";position:absolute;top:50%;left:0;width:80%;border-bottom:2px solid var(--bs-gray-800)}
 .single-content .section-title span{position:relative;display:inline-block;padding-right:1.4em;background:var(--bs-white);color:var(--bs-gray-800);font-size:14px;font-weight:600}
 .single-content .row+.section-title{margin-top:3em}

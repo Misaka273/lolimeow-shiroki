@@ -22,7 +22,7 @@ $options[] = array(
 		'name' => __( 'Banner欢迎语', 'ui_boxmoe_com' ),
 		'desc' => __('（留空则不显示）', 'ui_boxmoe_com'),
 		'id' => 'boxmoe_banner_font',
-		'std' => 'Hello! 欢迎来到盒子萌-🎉纸鸢版！',
+		'std' => '🎉Hello! 欢迎来到盒子萌-🕊️纸鸢版！',
 		'type' => 'text');
     $options[] = array(
 		'name' => __('banner一言开关', 'ui_boxmoe_com'),
@@ -100,6 +100,12 @@ $options[] = array(
 		'name' => __('使用外链APi-Banner图片', 'ui_boxmoe_com'),
 		'desc' => __('（开启后上方本地设置图片功能全失效）', 'ui_boxmoe_com'),		
 		'id' => 'boxmoe_banner_api_switch',
+		'type' => "checkbox",
+		'std' => false,
+		);
+	$options[] = array(
+		'name' => __('关闭自动换图功能', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_banner_auto_switch',
 		'type' => "checkbox",
 		'std' => false,
 		);

@@ -36,7 +36,7 @@ $options[] = array(
     ', 'ui_boxmoe_com'),
     'type' => 'info');
     $options[] = array(
-        'name' => __('🚀当前二创主题介绍「纸鸢版⌋', 'ui_boxmoe_com'), 
+        'name' => __('🕊️当前二创主题介绍「纸鸢版⌋🚀', 'ui_boxmoe_com'), 
         'id' => 'shiyong',
         'desc' => __('
          <p>🎉 对后台UI界面进行美化</p>

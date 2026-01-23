@@ -293,7 +293,8 @@ function boxmoe_banner_random_images_list(){
     }
     
     if (!empty($banner_mode)) {
-        echo '<script>window.shirokiBannerMode = "' . $banner_mode . '"; window.shirokiBannerData = ' . json_encode($banner_data) . ';</script>';
+        $auto_switch = get_boxmoe('boxmoe_banner_auto_switch', false);
+        echo '<script>window.shirokiBannerMode = "' . $banner_mode . '"; window.shirokiBannerData = ' . json_encode($banner_data) . '; window.shirokiBannerAutoSwitch = ' . ($auto_switch ? 'true' : 'false') . ';</script>';
     }
 }
 
@@ -443,7 +444,7 @@ function boxmoe_load_assets_footer(){?>
           </div>
           <div class="col-lg-12 text-center mt-3 copyright">
           <span><?php echo get_boxmoe('boxmoe_footer_copyright_hidden') ? '' : 'Copyright'; ?> © <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a> <?php echo get_boxmoe('boxmoe_footer_info','Powered by WordPress'); ?> </span>
-          <span><?php $footer_text = get_boxmoe('boxmoe_footer_theme_by_text','本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'📦 主题版本：{THEME_VERSION}'); echo str_replace('{THEME_VERSION}', THEME_VERSION, $footer_text); ?></span>
+          <span><?php $footer_text = get_boxmoe('boxmoe_footer_theme_by_text','本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'🕊️ 主题版本：{THEME_VERSION}'); echo str_replace('{THEME_VERSION}', THEME_VERSION, $footer_text); ?></span>
           <?php if(get_boxmoe('boxmoe_footer_running_days_switch')): ?>
           <span class="runtime-line">
             <i class="fa fa-clock-o runtime-icon"></i>
@@ -557,9 +558,10 @@ if (function_exists('register_sidebar')){
 // 懒加载图片--------------------------boxmoe.com--------------------------
 function boxmoe_lazy_load_images(){
     if(get_boxmoe('boxmoe_lazy_load_images')){
-        $src = get_boxmoe('boxmoe_lazy_load_images');
+        $src = get_boxmoe('boxmoe_lazy_load_images');    
     }else{
-        $src = boxmoe_theme_url().'/assets/images/loading.gif';
+        // 使用 base64 编码的 1x1 透明 GIF 作为占位符，避免额外的 HTTP 请求
+        $src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     }
     return $src;
 }

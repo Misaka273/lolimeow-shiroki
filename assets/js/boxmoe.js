@@ -670,10 +670,13 @@ function initLazyLoad(container = document) {
     const lazyImages = container.querySelectorAll('img.lazy');
     
     const loadImage = async (img) => {
-        // 如果图片已经加载过，直接返回
-        if (img.classList.contains('loaded')) {
+        // 如果图片已经加载过或正在加载，直接返回
+        if (img.classList.contains('loaded') || img.classList.contains('loading')) {
             return;
         }
+        
+        // 添加正在加载标记
+        img.classList.add('loading');
         
         let ds = img.dataset && img.dataset.src ? img.dataset.src : '';
         if (!ds) {
@@ -685,7 +688,7 @@ function initLazyLoad(container = document) {
                 if (/\.(?:jpe?g|png|webp|gif)(\?.*)?$/i.test(ah)) ds = ah;
             }
         }
-        if (!ds) { img.classList.remove('lazy'); return; }
+        if (!ds) { img.classList.remove('lazy', 'loading'); return; }
         
         let base = ds, query = '';
         const qm = base.match(/^(.*?)(\?.*)$/);
@@ -714,12 +717,12 @@ function initLazyLoad(container = document) {
             // 降级到原始加载方式
             const onLoad = () => { 
                 img.classList.add('loaded'); 
-                img.classList.remove('lazy'); 
+                img.classList.remove('lazy', 'loading'); 
                 img.removeEventListener('load', onLoad); 
             };
             const onError = () => { 
                 img.classList.add('loaded'); 
-                img.classList.remove('lazy'); 
+                img.classList.remove('lazy', 'loading'); 
                 img.removeAttribute('loading'); 
                 img.removeEventListener('error', onError); 
                 if (img.getAttribute('src') !== fixed) img.setAttribute('src', fixed); 
@@ -730,9 +733,28 @@ function initLazyLoad(container = document) {
         }
     };
     
-    const forceLoadAll = () => {
-        document.querySelectorAll('img.lazy').forEach(loadImage);
-    };
+    // 添加防抖函数，避免频繁调用
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    const forceLoadAll = debounce(() => {
+        document.querySelectorAll('img.lazy').forEach(img => {
+            // 只加载视口附近的图片，避免一次性加载所有图片
+            const rect = img.getBoundingClientRect();
+            if (rect.top < window.innerHeight + 300) {
+                loadImage(img);
+            }
+        });
+    }, 500);
     
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -761,15 +783,19 @@ function initLazyLoad(container = document) {
         });
         
         mo.observe(document.body, { childList: true, subtree: true });
-        setTimeout(forceLoadAll, 2000);
+        
+        // 只在页面加载完成后调用一次forceLoadAll，移除不必要的定时器
         window.addEventListener('load', forceLoadAll, { once: true });
         
-        window.addEventListener('scroll', () => {
+        // 为scroll事件添加防抖，避免频繁触发
+        const debouncedScroll = debounce(() => {
             document.querySelectorAll('img.lazy').forEach(img => {
                 const rect = img.getBoundingClientRect();
                 if (rect.top < window.innerHeight + 300) loadImage(img);
             });
-        });
+        }, 200);
+        
+        window.addEventListener('scroll', debouncedScroll);
     } else {
         lazyImages.forEach(loadImage);
     }
@@ -928,8 +954,9 @@ class ShirokiImageLoader {
             return;
         }
         
-        // 添加加载完成的类
+        // 添加加载完成的类，移除正在加载标记
         imgElement.classList.add('loaded');
+        imgElement.classList.remove('loading');
         
         // 确保图片有正确的显示状态
         imgElement.style.opacity = '1';
@@ -1084,6 +1111,9 @@ function initBannerRandomSwitch() {
     // 检查Banner模式
     if (!window.shirokiBannerMode) return;
     
+    // 检查是否关闭自动换图功能
+    if (window.shirokiBannerAutoSwitch) return;
+    
     // 确保原始图片有正确的初始样式
     originalImg.style.position = 'absolute';
     originalImg.style.top = '0';
@@ -1096,14 +1126,19 @@ function initBannerRandomSwitch() {
     let isSwitching = false;
     let currentImg = originalImg;
     let nextImageLoader = null;
+    let currentImageUrl = null; // 保存当前图片URL，避免重复请求
     const switchInterval = 8000; // 8秒切换一次Banner图片
+    let intervalId = null; // 保存定时器ID，以便正确清除
     
     // 获取下一张图片URL
     function getNextImageUrl() {
         if (window.shirokiBannerMode === 'api') {
-            // API模式：每次请求API URL（添加时间戳避免缓存）
+            // API模式：请求API URL
             const apiUrl = window.shirokiBannerData.apiUrl || '';
             if (apiUrl) {
+                // 只在首次或API URL变化时添加时间戳，避免重复请求
+                // 注意：这里仍然添加时间戳是为了获取新图片，但不会导致浏览器缓存问题
+                // 实际应用中可以根据API返回的Cache-Control头来决定是否需要时间戳
                 const separator = apiUrl.includes('?') ? '&' : '?';
                 return apiUrl + separator + 't=' + Date.now();
             }
@@ -1128,6 +1163,11 @@ function initBannerRandomSwitch() {
         
         const nextImageUrl = getNextImageUrl();
         if (!nextImageUrl) return null;
+        
+        // 避免重复加载相同的图片
+        if (nextImageUrl === currentImageUrl) {
+            return nextImageUrl;
+        }
         
         nextImageLoader = new Image();
         nextImageLoader.src = nextImageUrl;
@@ -1169,6 +1209,7 @@ function initBannerRandomSwitch() {
                     currentImg.remove();
                 }
                 currentImg = newImg;
+                currentImageUrl = nextImageUrl; // 更新当前图片URL
                 isSwitching = false;
             }, 800); // 等待淡出动画完成
         };
@@ -1184,14 +1225,17 @@ function initBannerRandomSwitch() {
     }
     
     // 启动定时器
-    const intervalId = setInterval(switchToNextImage, switchInterval);
+    intervalId = setInterval(switchToNextImage, switchInterval);
     
     // 页面隐藏时暂停切换，显示时恢复
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            clearInterval(intervalId);
-        } else {
-            setInterval(switchToNextImage, switchInterval);
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        } else if (!intervalId) {
+            intervalId = setInterval(switchToNextImage, switchInterval);
         }
     });
 }
@@ -3903,26 +3947,33 @@ function animateThemeToggle(btn, cur, nxt){
         if (!target) {
             return;
         }
-        
+
         // 🔒 确保元素没有被初始化过
         if (target.__bannerAnimationInitialized) {
             return;
         }
-        
+
         // 🔒 确保元素没有动画标记
         if (target.hasAttribute('data-banner-animation-done')) {
             return;
         }
-        
 
-        
+        // 🛡️ 创建全局停止标志，用于防止多个动画实例同时运行
+        if (!window.hasOwnProperty('__boxmoeBannerAnimationStopped')) {
+            Object.defineProperty(window, '__boxmoeBannerAnimationStopped', {
+                writable: true,
+                configurable: true,
+                value: false
+            });
+        }
+
         // 🔒 设置可修改的元素标记，防止外部脚本干扰
         Object.defineProperty(target, '__bannerAnimationInitialized', {
             writable: true,
             configurable: true,
             value: true
         });
-        
+
         // 🔒 设置动画完成标记
         target.setAttribute('data-banner-animation-done', 'true');
         
@@ -3988,11 +4039,16 @@ function animateThemeToggle(btn, cur, nxt){
         }
         
         function type() {
+            // 🛡️ 检查全局停止标志，如果动画已停止则不执行
+            if (window.__boxmoeBannerAnimationStopped) {
+                return;
+            }
+
             // 🔒 防止动画函数被多次调用
             if (animationRunning) {
                 return;
             }
-            
+
             animationRunning = true;
             
             try {
@@ -4133,29 +4189,39 @@ function animateThemeToggle(btn, cur, nxt){
         
         // 🔒 停止并清空动画
         stop: function() {
+            // 🛡️ 设置全局停止标志，阻止所有正在运行的动画实例
+            if (window.hasOwnProperty('__boxmoeBannerAnimationStopped')) {
+                window.__boxmoeBannerAnimationStopped = true;
+            }
+
             if (this.target) {
                 // 清空容器
                 this.target.innerHTML = '';
-                
+
                 // 重置状态
                 this.target.__bannerAnimationInitialized = false;
                 this.target.removeAttribute('data-banner-animation-done');
             }
-            
+
             // 清除任何挂起的超时
             if (this.animationTimeout) {
                 clearTimeout(this.animationTimeout);
                 this.animationTimeout = null;
             }
-            
+
             // 重置全局状态
             window.boxmoeCurrentAnimationInstance = false;
             this.isRunning = false;
         },
-        
+
         // 🔒 启动动画
         start: function() {
             if (!this.isRunning) {
+                // 🛡️ 重置全局停止标志，允许新的动画实例运行
+                if (window.hasOwnProperty('__boxmoeBannerAnimationStopped')) {
+                    window.__boxmoeBannerAnimationStopped = false;
+                }
+
                 // 重置全局状态
                 window.boxmoeCurrentAnimationInstance = false;
                 // 初始化动画
