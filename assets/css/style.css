@@ -18,15 +18,15 @@ Author URI:https://www.boxmoe.com
   *{scrollbar-color:var(--scrollbar-thumb-color) var(--scrollbar-track);scrollbar-width:auto}
 /* 🎨 全局变量定义 */
 :root {
-    --bs-body-pre: linear-gradient(15deg, #05abf86c, #05f8ec3f);
+    --bs-body-pre: linear-gradient(15deg, #ffb6c180, #ffc0cb80);
     --bs-hui: #272727bf;
-    --bs-primary-bg-subtle: linear-gradient(180deg, #72e5f4, #3c59fb, #daeaff);
+    --bs-primary-bg-subtle: linear-gradient(180deg, #ffb6c1, #ff69b4, #ff1493);
     --scrollbar-track: transparent; /* ◀️ 优化滚动条样式，去掉背景框 */
-    --scrollbar-thumb-gradient: linear-gradient(180deg, #72e5f4, #3c59fb, #daeaff);
-    --scrollbar-thumb-color: linear-gradient(180deg, #72e5f4, #3c59fb, #daeaff);
-    --nav-shine-color: rgba(255, 192, 203, 0.6); /* ◀️ 亮色模式下导航扫光颜色：浅粉色 */
+    --scrollbar-thumb-gradient: linear-gradient(180deg, #ffb6c1, #ff69b4, #ff1493);
+    --scrollbar-thumb-color: linear-gradient(180deg, #ffb6c1, #ff69b4, #ff1493);
+    --nav-shine-color: rgba(255, 192, 203, 0.8); /* ◀️ 亮色模式下导航扫光颜色 */
     --pure-white: #fff;
-    --nav-hover-gradient: linear-gradient(135deg, #8b5cf6, #ec4899); /* ◀️ 导航悬停紫色渐变 */
+    --nav-hover-gradient: linear-gradient(135deg, #ff69b4, #ff1493); /* ◀️ 导航悬停颜色渐变 */
     --nav-hover-shine-color: rgba(255, 255, 255, 0.8); /* ◀️ 导航悬停扫光颜色 */
 }
 /* 🌆 暗色模式变量 */
@@ -41,9 +41,9 @@ Author URI:https://www.boxmoe.com
     --bs-hui: #fff;
     --pure-white: #fff; /* ◀️ 移动端导航栏上的汉堡菜单线条颜色 */
     --scrollbar-track: transparent; /* ◀️ 优化滚动条样式，去掉背景框 */
-    --scrollbar-thumb-gradient: linear-gradient(180deg, #00EAFF, #FF00D4); /* ◀️ 青色到洋红色的渐变，匹配图片样式 */
-    --scrollbar-thumb-color: linear-gradient(180deg, #00EAFF, #FF00D4);
-    --nav-shine-color: rgba(255, 255, 255, 0.6); /* ◀️ 暗色模式下导航扫光颜色 */
+    --scrollbar-thumb-gradient: linear-gradient(180deg, #ff69b4, #ff1493, #c71585);
+    --scrollbar-thumb-color: linear-gradient(180deg, #ff69b4, #ff1493, #c71585);
+    --nav-shine-color: rgba(255, 192, 203, 0.6); /* ◀️ 暗色模式下导航扫光颜色 */
     /* 📌 确保暗色模式下导航链接没有气泡效果 */
     --bs-nav-link-bg: transparent;
     /* 🌆 暗色模式下的图片占位符 */
@@ -718,7 +718,17 @@ img, video, iframe {
 img.lazy {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0.3, 1);will-change: opacity, transform;}
 img.lazy.loaded {opacity:1;transform: scale(1);}
 /* 移除background-image规则，避免与src属性重复加载loading.gif */
-.lazy {min-height:60px;}
+/* 移除min-height，避免头像等小图片显示白色方块 */
+.lazy {min-height:0;}
+/* 🎨 头像区域懒加载占位图保持可见 */
+.boxmoe_header .user-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
+/* 🎨 文章卡片头像懒加载占位图保持可见 */
+.post-list-avatar img.lazy,
+.post-list-avatar-img.lazy,
+.list-one .avatar.lazy,
+.list-three .avatar.lazy,
+.layout-single .avatar.lazy,
+.layout-three .avatar.lazy {opacity:1;transform:scale(1);background:transparent;}
 
 /* 🎨 文章封面图片加载效果 - 优化无限加载 */
 .post-list-img img {opacity:0;transform: scale(0.8);transition: all 0.6s cubic-bezier(0.5, 0, 0. 3, 1);will-change: opacity, transform;}
@@ -808,7 +818,7 @@ img.lazy.loaded {opacity:1;transform: scale(1);}
 }
 
 /* 🎨 确保占位图不应用缩放效果 */
-.post-list-img img[src*="loadz.svg"] {opacity:1;transform: scale(1);}
+.post-list-img img[src*=""] {opacity:1;transform: scale(1);}
 .boxmoe_header .navbar {background-color:transparent;position:absolute;top:0;left:0;right:0;z-index:1;box-shadow:none;padding-top:5px;}
 .boxmoe_header .navbar {transition:all 0.3s ease;}
 .boxmoe_header .navbar.nav-down {transform:translateY(0);}
@@ -1151,7 +1161,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .logged-user-wrapper {position:relative;overflow:visible;z-index:5;}
 .boxmoe_header .user-info-wrap {padding:5px 10px;background:rgba(255,255,255,0.1);border-radius:8px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s ease;transform:translateZ(0);will-change:transform,backdrop-filter;position:relative;z-index:1;}
 .boxmoe_header .user-info-wrap:hover {background:rgba(255,255,255,0.2);}
-.boxmoe_header .user-avatar {width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;position:relative;z-index:2;}
+.boxmoe_header .user-avatar {width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;position:relative;z-index:2;background:rgba(255,255,255,0.1);}
 .boxmoe_header .user-avatar img {width:100%;height:100%;object-fit:cover;}
 .boxmoe_header .user-info {display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
 .boxmoe_header .user-name {color:var(--bs-dark);font-size:14px;font-weight:500;line-height:1.2;}
@@ -1194,7 +1204,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .mobile-logged-user-wrapper {padding:15px 2rem;}
 .boxmoe_header .mobile-logged-user-wrapper .user-info-wrap {width:100%;padding:10px;background:rgba(0,0,0,0.05);border-radius:8px;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease;text-decoration:none;transform:translateZ(0);will-change:transform,background;contain:layout style paint;isolation:isolate;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
 .boxmoe_header .mobile-logged-user-wrapper .user-info-wrap:active {transform:scale(0.98);}
-.boxmoe_header .mobile-logged-user-wrapper .user-avatar {width:40px;height:40px;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;}
+.boxmoe_header .mobile-logged-user-wrapper .user-avatar {width:40px;height:40px;border-radius:6px;overflow:hidden;border:2px solid rgba(255,255,255,0.3);margin-right:10px;background:rgba(255,255,255,0.1);}
 .boxmoe_header .mobile-logged-user-wrapper .user-avatar img {width:100%;height:100%;object-fit:cover;}
 .boxmoe_header .mobile-logged-user-wrapper .user-info {display:flex;flex-direction:column;justify-content:center;}
 .boxmoe_header .mobile-logged-user-wrapper .user-name {color:var(--bs-dark);font-size:14px;font-weight:500;line-height:1.2;}
@@ -1206,11 +1216,51 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .mobile-logged-menu .mobile-menu-item i {margin-right:12px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.04);border-radius:8px;font-size:14px;color:var(--bs-primary);}
 .boxmoe_header .mobile-logged-menu .mobile-menu-item span {font-size:15px;font-weight:500;letter-spacing:0.3px;}
 .boxmoe_header .mobile-user-panel.closing {transform:translateY(-10%);opacity:0;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);}
-.boxmoe_header .lighting {background-color:#fff;padding:2px;border-radius:50px;border:1px solid #8183ff;transition:background-color .4s cubic-bezier(0.345,0.045,0.345,1);margin:0 3.5rem;}
-.boxmoe_header .lighting ul {list-style:none;padding:0;margin:0;display:flex;gap:15px;}
-.boxmoe_header .lighting li {padding:4px 15px;border-radius:6px;cursor:pointer;font-size:12px;transition:all 0.3s ease;border-radius:50px}
+.boxmoe_header .lighting {background-color:#fff;padding:2px;border-radius:50px;border:1px solid #8183ff;transition:background-color .4s cubic-bezier(0.345,0.045,0.345,1);margin:0 3.5rem;white-space:nowrap;}
+.boxmoe_header .lighting ul {list-style:none;padding:0;margin:0;display:flex;gap:10px;align-items:center;}
+.boxmoe_header .lighting li {padding:4px 12px;border-radius:6px;cursor:pointer;font-size:12px;transition:all 0.3s ease;border-radius:50px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .boxmoe_header .lighting li.active {background-color:var(--bs-primary);color:#fff;}
-[data-bs-theme="dark"] .boxmoe_header .lighting li:not(.active) {color:var(--bs-gray-500);}
+[data-bs-theme="dark"] .boxmoe_header .lighting {background-color:#1f2937;border-color:rgba(255,255,255,0.2);}
+[data-bs-theme="dark"] .boxmoe_header .lighting li:not(.active) {color:var(--bs-gray-400);}
+
+/* 📱 移动端主题切换按钮优化 */
+@media (max-width: 767px) {
+  .boxmoe_header .lighting {
+    margin:0 0.5rem;
+    padding:2px 3px;
+    max-width:220px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .boxmoe_header .lighting ul {
+    gap:5px;
+  }
+  .boxmoe_header .lighting li {
+    padding:3px 8px;
+    font-size:10px;
+    min-width:55px;
+    text-align:center;
+    border-radius:40px !important;
+  }
+  .boxmoe_header .lighting li[data-bs-theme-value="auto"] {
+    min-width:65px;
+  }
+}
+
+/* 📱 超小屏幕优化 */
+@media (max-width: 375px) {
+  .boxmoe_header .lighting {
+    max-width:200px;
+  }
+  .boxmoe_header .lighting li {
+    padding:3px 6px;
+    font-size:9px;
+    min-width:50px;
+  }
+  .boxmoe_header .lighting li[data-bs-theme-value="auto"] {
+    min-width:60px;
+  }
+}
 .boxmoe_header_banner {height:80vh;background:transparent;background-position:30% 30%;position:relative;overflow:hidden}
 .boxmoe_header_banner_img {width:100%;height:100%;position:relative;transform:scale(1.4);opacity:0;visibility:hidden;transition:all 1.8s cubic-bezier(0.5,0,0,1);}
 .boxmoe_header_banner_img:before {content:'';position:absolute;top:0;left:0;width:100%;height:15%;min-height:60px;background:linear-gradient(to bottom,var(--bs-white),#00000000);user-select:none;pointer-events:none;z-index:2;}
@@ -1262,9 +1312,9 @@ background: rgba(0, 0, 0, .25);}
     
     /* 超小屏幕下三列布局优化 */
     .list-three .post-meta {
-        flex-direction:column;
-        align-items:flex-start;
-        gap:5px;
+        flex-direction:row;
+        align-items:center;
+        gap:8px;
         padding-top:5px;
     }
     
@@ -1298,7 +1348,8 @@ background: rgba(0, 0, 0, .25);}
     
     /* 调整超小屏幕下post-meta-info布局 */
     .list-three .post-meta-info {
-        width:100%;
+        flex:1;
+        min-width:0;
     }
     
     /* 确保作者和日期在同一行 */
@@ -1964,7 +2015,7 @@ to {transform:translateY(0);opacity:1;}
 .list-one .post-content {font-size:0.82rem;font-weight:400;color: var(--bs-gray-700);letter-spacing: 0.5px;margin-bottom:15px;}
 .list-one .post-list-img figure {margin:0;height:100%;}
 .list-one .post-list-img img {width:100%;height:220px;object-fit:cover;border-radius:8px;transition:all .4s cubic-bezier(.7,0,.3,1);}
-.list-one .post-list-img img[src*="loadz.svg"] {width:100%;height:220px;object-fit:contain;padding:60px;}
+.list-one .post-list-img img[src*=""] {width:100%;height:220px;object-fit:contain;padding:60px;}
 .list-one .category {display:-webkit-box;display:-ms-flexbox;display:flex;width:100%;-webkit-box-align:center;-ms-flex-align:center;align-items:center;margin-bottom:12px;}
 .list-one .category .tags {display:block;font-weight:400;font-size:13px;letter-spacing:0.5px}
 .list-one .category .tags a {color:var(--bs-dark);display:inline-block;padding:3px 10px;line-height:1;margin-right:10px;background:var(--bs-white);border:1px solid var(--bs-hui);border-radius:25px;-webkit-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);-o-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);transition:all 300ms cubic-bezier(.5,2.5,.7,.7);font-size:0.65rem}
@@ -1982,6 +2033,10 @@ to {transform:translateY(0);opacity:1;}
 .list-one .post-list-avatar {width:50px;height:50px;z-index:0;position:relative;text-align:right}
 .list-one .post-list-avatar:after {width:80%;height:80%;content:"";position:absolute;top:7px;left:3px;transform:rotate(45deg);z-index:-1;border-radius:4px;border:2px solid #ff00009c}
 .list-one .post-list-avatar-img,.list-one .avatar {width:55px;height:55px;-o-object-fit:cover;object-fit:cover;-webkit-clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);border:1px solid transparent}
+
+/* 🎨 单排布局头像懒加载占位图保持可见 */
+.list-one .post-list-avatar img.lazy,
+.list-one .avatar.lazy {opacity:1;transform:scale(1);background:transparent;}
 .dot {content:'';display:inline-block;width:5px;height:5px;background:#ff4c60;vertical-align:middle;margin-right:10px;margin-left:10px;border-radius:100%;margin-top:-2px}
 
 /* 📱 三列布局样式 */
@@ -2556,7 +2611,7 @@ to {transform:translateY(0);opacity:1;}
 }
 .list-three .post-list-img figure {margin:0;}
 .list-three .post-list-img img {width:100%;height:180px;object-fit:cover;border-radius:8px;transition:all .4s cubic-bezier(.7,0,.3,1);}
-.list-three .post-list-img img[src*="loadz.svg"] {width:100%;height:180px;object-fit:contain;padding:40px;}
+.list-three .post-list-img img[src*=""] {width:100%;height:180px;object-fit:contain;padding:40px;}
 .list-three .category {display:-webkit-box;display:-ms-flexbox;display:flex;width:100%;-webkit-box-align:center;-ms-flex-align:center;align-items:center;margin-bottom:8px;}
 .list-three .category .tags {display:block;font-weight:400;font-size:13px;letter-spacing:0.5px}
 .list-three .category .tags a {color:var(--bs-dark);display:inline-block;padding:3px 10px;line-height:1;margin-right:10px;background:var(--bs-white);border:1px solid var(--bs-hui);border-radius:25px;-webkit-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);-o-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);transition:all 300ms cubic-bezier(.5,2.5,.7,.7);font-size:0.65rem}
@@ -2589,6 +2644,10 @@ to {transform:translateY(0);opacity:1;}
 .list-three .post-list-avatar-img,.list-three .avatar {width:45px;height:45px;-o-object-fit:cover;object-fit:cover;-webkit-clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);border:1px solid transparent}
 .list-three .post-list-avatar {width:40px;height:40px;z-index:0;float:left;position:relative;text-align:right}
 .list-three .post-list-avatar:after {width:80%;height:80%;content:"";position:absolute;top:5px;left:3px;transform:rotate(45deg);z-index:-1;border-radius:4px;border:2px solid #ff00009c}
+
+/* 🎨 三列布局头像懒加载占位图保持可见 */
+.list-three .post-list-avatar img.lazy,
+.list-three .avatar.lazy {opacity:1;transform:scale(1);background:transparent;}
 
 @media (max-width:991px) {
     .list-three.post-list {margin:0 5px;margin-bottom:1.5rem;padding:15px;background-image:none;
@@ -2714,7 +2773,7 @@ hr:not([size]) {height:1px}
 /* sidebar */
 .blog-sidebar .logo {height:35px;}
 .blog-sidebar .position-sticky.top {position:sticky !important;top:2% !important;padding-bottom:3rem !important;z-index:10 !important;height:fit-content !important;}
-.blog-sidebar .widget {padding:30px 25px;padding-top:45px;position:relative;border-radius:var(--bs-border-radius-lg) !important;margin-bottom:50px;width:auto;float:none;background-color:transparent;transition:all 0.3s ease;}
+.blog-sidebar .widget {padding:30px 25px;padding-top:45px;position:relative;border-radius:var(--bs-border-radius-lg) !important;margin-bottom:50px;width:auto;float:none;background-color:transparent;transition:all 0.3s ease;overflow:visible;}
 .blog-sidebar .widget:before {content:"";display:block;position:absolute;top:0;left:0;width:100%;height:100%;background-color:var(--bs-white);border-radius:var(--bs-border-radius-lg) !important;z-index:-1;}
 .blog-sidebar .widget:hover {transform:translateY(-10px);}
 .blog-sidebar .widget-title {letter-spacing:0.25px;position:absolute;left:25px;top:-15px;z-index:2;padding:4px 20px;background:var(--bs-white);border:2px solid var(--bs-dark);border-radius:100px;font-size:0.75rem}
@@ -2739,6 +2798,10 @@ hr:not([size]) {height:1px}
 .blog-sidebar .widget-latest-comment .comment-listitem {list-style:none;padding:8px 0 !important}
 .blog-sidebar .widget-latest-comment .comment-user {font-size:0.75rem}
 .blog-sidebar .widget-latest-comment .comment-avatar img {min-width:40px;min-height:40px;margin-right:12px;border-radius:50%;padding:3px;-webkit-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);-o-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);transition:all 300ms cubic-bezier(.5,2.5,.7,.7)}
+
+/* 🎨 侧边栏最新评论小部件头像懒加载占位图保持可见 */
+.blog-sidebar .widget-latest-comment .comment-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
+
 .blog-sidebar .widget-latest-comment .comment-avatar {float:left; border: 2px solid var(--bs-dark);margin-right: 5px;}
 .blog-sidebar .widget-latest-comment .comment-author {float:left;margin-right:10px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;max-width:95px}
 .blog-sidebar .comment-content-link a {font-size:13px;transition:all .3s;color:#4c6280;font-weight:400;max-height:60px;text-overflow:-o-ellipsis-lastline;overflow:hidden;text-overflow:ellipsis;line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal}
@@ -2842,11 +2905,7 @@ hr:not([size]) {height:1px}
     box-shadow:0 0px 0px 1px rgba(7,10,25,0.1);
 }
 
-/* 线条边框效果 */
-.search-form.blog-lines .search-input,
-.widget.blog-lines .search-form .search-input {
-    border:1px dashed rgba(39,39,39,0.2);
-}
+/* 🎨 原线条边框效果 已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 
 /* 导航栏搜索框主题边框样式 - 漫画风效果 */
 .boxmoe_header .search-form .search-input {
@@ -2926,6 +2985,10 @@ hr:not([size]) {height:1px}
 .blog-sidebar .widget-profile {text-align:center;}
 .blog-sidebar .widget-profile .profile-avatar {width:100px;height:100px;margin:0 auto 15px;position:relative;z-index:1;}
 .blog-sidebar .widget-profile .profile-avatar img {width:100%;height:100%;object-fit:cover;border-radius:50%;border:2px solid var(--bs-hui);padding:3px;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);}
+
+/* 🎨 侧边栏用户信息小部件头像懒加载占位图保持可见 */
+.blog-sidebar .widget-profile .profile-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
+
 .blog-sidebar .widget-profile .profile-avatar:after {content:"";position:absolute;width:85%;height:85%;border:2px solid #ff00009c;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);z-index:-1;}
 .blog-sidebar .widget-profile .profile-name {font-size:1.1rem;font-weight:600;margin-bottom:5px;color:var(--bs-dark);}
 .blog-sidebar .widget-profile .profile-desc {font-size:0.75rem;color:var(--bs-gray-600);margin-bottom:15px;}
@@ -2988,6 +3051,9 @@ hr:not([size]) {height:1px}
 .single-meta-box{align-items:center;flex-direction:row;justify-content:space-between;display:flex;margin-bottom:10px}
 .single-info-left,.single-meta{display:flex;align-items:center}
 .single-meta img{width:3rem;height:3rem;object-fit:cover;min-width:40px;min-height:40px;border-radius:50%;border: 2px solid rgba(39, 39, 39, 0.75);padding:3px;-webkit-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);-o-transition:all 300ms cubic-bezier(.5,2.5,.7,.7);transition:all 300ms cubic-bezier(.5,2.5,.7,.7)}
+
+/* 🎨 单篇文章页面头像懒加载占位图保持可见 */
+.single-meta img.lazy {opacity:1;transform:scale(1);background:transparent;}
 .single-author-name{margin-left:1rem}
 .single-author-info,.single-author-info a{font-size:12px;color:var(--bs-dark)}
 .single-author-info i{padding-right:5px}
@@ -3640,6 +3706,7 @@ hr:not([size]) {height:1px}
   float: none;
   background-color: transparent;
   transition: all 0.3s ease;
+  overflow: visible;
 }
 
 .footer-widgets .widget:before {
@@ -3655,95 +3722,11 @@ hr:not([size]) {height:1px}
   z-index: -1;
 }
 
-/* 重置底部栏漫画风边框样式，使其与侧边栏完全一致 */
-.footer-widgets .blog-lines {
-  background-color: var(--bs-white);
-  border-radius: var(--bs-border-radius-lg) !important;
-  margin-bottom: 25px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  border: none;
-}
-
-/* 添加动态边框效果 */
-.footer-widgets .blog-lines::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 1.5px solid var(--bs-dark);
-  border-radius: var(--bs-border-radius-lg) !important;
-  pointer-events: none;
-  z-index: 1;
-  border-style: solid;
-  animation: borderFlow 3s linear infinite;
-  background: linear-gradient(90deg, transparent 25%, rgba(var(--bs-primary-rgb), 0.1) 50%, transparent 75%);
-  background-size: 200% 100%;
-}
-
-/* 非悬停状态下的底座样式 */
-.footer-widgets .blog-lines::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 1.5px solid var(--bs-dark);
-  border-radius: var(--bs-border-radius-lg) !important;
-  pointer-events: none;
-  z-index: -2;
-  /* 底座效果 */
-  width: 95% !important;
-  height: 100% !important;
-  bottom: -9px !important;
-  left: calc(50% - 47.5%) !important;
-  border: 2px solid var(--bs-dark) !important;
-  background-color: transparent !important;
-  transition: 0.15s ease !important;
-}
-
-/* 悬停状态下的底座样式变化 */
-.footer-widgets .blog-lines:hover::after {
-  width: 97% !important;
-  bottom: -7px !important;
-}
-
-/* 🌆 暗色模式适配 */
-[data-bs-theme="dark"] .footer-widgets .blog-lines {
-  background-color: #ffffff4a !important;
-}
-
-[data-bs-theme="dark"] .footer-widgets .blog-lines::before,
-[data-bs-theme="dark"] .footer-widgets .blog-lines::after {
-  border-color: var(--bs-white) !important;
-}
-
-[data-bs-theme="dark"] .footer-widgets .blog-lines:hover {
-  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1) !important;
-}
-
 .footer-widgets .widget:hover {
   transform: translateY(-10px);
 }
 
-/* 确保漫画风边框的卡片和底座同步上移 */
-.footer-widgets .blog-lines:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* 悬停时动态边框动画加速 */
-.footer-widgets .blog-lines:hover::before {
-  animation-duration: 1.5s !important;
-}
-
-/* 悬停时底座同步上移 */
-.footer-widgets .blog-lines:hover::after {
-  transform: translateY(3px) !important;
-}
+/* 🎨 原线条边框效果 - 底部栏 blog-lines 样式已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 
 .footer-widgets .widget-title {
   letter-spacing: 0.25px;
@@ -3799,9 +3782,7 @@ hr:not([size]) {height:1px}
   box-shadow: 0 0px 0px 1px rgba(7,10,25,0.1);
 }
 
-.footer-widgets .blog-lines .widget-title {
-  border: 1px dashed rgba(39,39,39,0.2);
-}
+/* 🎨 原线条边框效果 - footer-widgets blog-lines 标题样式已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 
 /* 底部栏小部件响应式设计 */
 @media (max-width: 768px) {
@@ -3813,6 +3794,7 @@ hr:not([size]) {height:1px}
   .footer-widgets .widget {
     padding: 25px 20px;
     padding-top: 40px;
+    overflow: visible;
   }
   
   .footer-widgets .widget-title {
@@ -3833,6 +3815,10 @@ hr:not([size]) {height:1px}
   color: var(--bs-body-color);
 }
 
+[data-bs-theme="dark"] .footer-widgets .widget:hover {
+  transform: translateY(-10px);
+}
+
 [data-bs-theme="dark"] .footer-widgets .widget ul li a {
   color: var(--bs-gray-300);
 }
@@ -3845,9 +3831,7 @@ hr:not([size]) {height:1px}
   box-shadow: 0 0px 0px 1px rgba(255,255,255,0.1);
 }
 
-[data-bs-theme="dark"] .footer-widgets .blog-lines .widget-title {
-  border-color: rgba(255,255,255,0.2);
-}
+/* 🎨 原线条边框效果 - footer-widgets blog-lines 暗色模式标题样式已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 
 /* 底部栏用户信息小部件样式 */
 .footer-widgets .widget-profile {
@@ -3871,6 +3855,9 @@ hr:not([size]) {height:1px}
     padding: 3px;
     transition: all 0.3s cubic-bezier(.5,2.5,.7,.7);
 }
+
+/* 🎨 底部栏用户信息小部件头像懒加载占位图保持可见 */
+.footer-widgets .widget-profile .profile-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
 
 .footer-widgets .widget-profile .profile-avatar:after {
     content: "";
@@ -4025,6 +4012,9 @@ hr:not([size]) {height:1px}
     height: 40px;
     object-fit: cover;
 }
+
+/* 🎨 底部栏最新评论小部件头像懒加载占位图保持可见 */
+.footer-widgets .widget-latest-comment .comment-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
 
 .footer-widgets .widget-latest-comment .comment-author {
     flex-shrink: 0;
@@ -4435,6 +4425,9 @@ to {opacity:1;transform:translateY(0);}
 .comments-toggle.active i {transform:rotate(180deg);}
 .comment-avatar {flex-shrink:0;width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid rgba(var(--bs-primary-rgb),0.2);}
 .comment-avatar img {width:100%;height:100%;object-fit:cover;border-radius:50%;padding:3px;}
+
+/* 🎨 评论头像懒加载占位图保持可见 */
+.comment-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
 .comment-content {flex-grow:1;min-width:0;}
 .comment-meta {margin-bottom:0.5rem;display:flex;align-items:center;flex-wrap:wrap;gap:0.5rem;}
 .comment-author,.comment-author a {font-weight:500;color:var(--bs-dark);}
@@ -4634,19 +4627,7 @@ footer .logo {height:35px;}
 }
 .favorite-btn.processing {opacity:0.7;cursor:progress;}
 [data-bs-theme="dark"] .favorite-btn.favorited {background-color:#ffd700;color:var(--bs-dark);}
-.blog-lines {background-color:var(--bs-white);border-radius:var(--bs-border-radius-lg) !important;margin-bottom:25px;transition:none;}
-.blog-lines::before {display: none !important;}
-.blog-lines::after {display: none !important;}
-.blog-lines:hover {transform:none;box-shadow:none;}
-.blog-lines:hover::before {animation:none;}
-@keyframes borderFlow {0% {background-position:200% 0;}
-100% {background-position:-200% 0;}
-}
-[data-bs-theme="dark"] .blog-lines {background-color:#ffffff4a;}
-[data-bs-theme="dark"] .blog-lines::before,[data-bs-theme="dark"] .blog-lines::after {border-color:var(--bs-white);}
-[data-bs-theme="dark"] .blog-lines:hover {box-shadow:0 5px 15px rgba(255,255,255,0.1);}
-@media (max-width:991px) {.blog-lines {padding:15px;margin-bottom:20px;}
-.blog-lines:hover {transform:none;}}
+/* 🎨 原线条边框效果 - blog-lines 样式已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 .deng-box{position:fixed;top:-40px;right:150px;z-index:9999;pointer-events:none}
 .deng-box1{position:fixed;top:-30px;right:10px;z-index:9999;pointer-events:none}
 .deng-box2{position:fixed;top:-40px;left:150px;z-index:9999;pointer-events:none}
@@ -4759,6 +4740,7 @@ footer .logo {height:35px;}
     transition: all 0.3s ease;
     background-color: transparent;
     margin-bottom: 0;
+    overflow: visible;
 }
 
 .footer-bar .widget:before {
@@ -4872,82 +4854,22 @@ footer .logo {height:35px;}
     box-shadow: 0 8px 25px -5px rgba(7,10,25,0.15), 0 30px 40px -10px rgba(7,10,25,0.2);
 }
 
-/* 跟随主题的动态线条边框效果 */
-.footer-bar .blog-lines::before,
-.footer-bar .blog-lines::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 1.5px solid var(--bs-dark);
-    border-radius: var(--bs-border-radius-lg);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.footer-bar .blog-lines::before {
-    border-style: solid;
-    animation: borderFlow 3s linear infinite;
-    background: linear-gradient(90deg, transparent 25%, rgba(var(--bs-primary-rgb), 0.1) 50%, transparent 75%);
-    background-size: 200% 100%;
-}
-
-.footer-bar .blog-lines::after {
-    /* 非悬停状态下的底座样式 */
-    content: "";
-    display: block !important;
-    position: absolute;
-    z-index: -2;
-    width: 95%;
-    height: 100%;
-    bottom: -9px;
-    left: calc(50% - 47.5%);
-    border-radius: 20px;
-    border: 2px solid var(--bs-dark);
-    background-color: transparent;
-    transition: 0.15s ease;
-}
-
-.footer-bar .blog-lines:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.footer-bar .blog-lines:hover::before {
-    animation-duration: 1.5s;
-}
-
-.footer-bar .blog-lines:hover::after {
-    /* 悬停状态下的底座样式变化 */
-    width: 97%;
-    bottom: -7px;
-}
-
-/* 🌆 暗色模式下的动态线条边框效果 */
-[data-bs-theme="dark"] .footer-bar .blog-lines::before,
-[data-bs-theme="dark"] .footer-bar .blog-lines::after {
-    border-color: var(--bs-white);
-}
-
-[data-bs-theme="dark"] .footer-bar .blog-lines:hover {
-    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-}
+/* 🎨 原线条边框效果 - footer-bar blog-lines 样式已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 
 /* 🌆 暗色模式适配 */
 [data-bs-theme="dark"] .footer-bar .widget {
-    background-color: transparent;
+  background-color: transparent;
+  overflow: visible;
 }
 
 [data-bs-theme="dark"] .footer-bar .widget:before {
-    background-color: #ffffff4a;
+  background-color: #ffffff4a;
 }
 
 [data-bs-theme="dark"] .footer-bar .widget-title {
-    background-color: #ffffff4a;
-    border-color: var(--bs-white);
-    color: var(--bs-white);
+  background-color: #ffffff4a;
+  border-color: var(--bs-white);
+  color: var(--bs-white);
 }
 
 /* 底部栏小部件内容样式同步 */
@@ -5280,6 +5202,9 @@ footer .logo {height:35px;}
     padding: 3px;
     transition: all 0.3s cubic-bezier(.5,2.5,.7,.7);
 }
+
+/* 🎨 底部栏用户信息小部件头像懒加载占位图保持可见 */
+.footer-bar .widget-profile .profile-avatar img.lazy {opacity:1;transform:scale(1);background:transparent;}
 
 .footer-bar .widget-profile .profile-avatar:after {
     content: "";
@@ -5709,6 +5634,7 @@ footer .logo {height:35px;}
         max-width: 100%;
         padding: 20px 15px;
         padding-top: 35px;
+        overflow: visible;
     }
     
     /* 优化移动端导航栏搜索框 */

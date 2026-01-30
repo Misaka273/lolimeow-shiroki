@@ -69,6 +69,16 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     echo preg_replace('/\n/', "\n    ", trim($wp_footer_output))."\n    ";
     ?>
     <?php echo get_boxmoe('boxmoe_diy_code_footer'); ?>
+    <!-- 📋 文章目录容器 -->
+    <div class="post-toc-container">
+        <div class="post-toc-btn">
+            <i class="fa fa-list"></i>
+        </div>
+        <div class="post-toc">
+            <div class="toc-title">文章导读</div>
+            <div class="toc-list"></div>
+        </div>
+    </div>
   </body>
 </html>
 <style>

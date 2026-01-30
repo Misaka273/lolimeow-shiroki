@@ -1,0 +1,1470 @@
+/* 🎨 独立的拟态玻璃效果样式文件 - 圆角拟态玻璃效果 */
+
+/* ☀️ 亮色模式 - 拟态玻璃效果 */
+.blog-glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.blog-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.6) 100%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 📄 移除文章内容区域的伪元素边框 */
+.blog-single.blog-glass::before {
+    display: none;
+    content: none;
+}
+
+/* 📄 移除文章列表卡片的伪元素边框，让看板娘图片正常显示 */
+.post-list.blog-glass::before {
+    display: none;
+    content: none;
+}
+
+/* 🎀 看板娘图片样式 */
+.post-list.blog-glass::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 162px;
+    height: 75px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 10;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+    animation: kanban-float 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.post-list.blog-glass:hover::after {
+    opacity: 1;
+    transform: scale(1.05) translateY(-2px);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes kanban-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* 📄 移除文章内容区域的伪元素遮罩层 */
+.blog-single.blog-glass::after {
+    display: none;
+    content: none;
+}
+
+/* 📄 移除文章列表卡片的伪元素遮罩层 */
+.post-list.blog-glass .post-card-after {
+    display: none;
+    content: none;
+}
+
+/* 📄 移除作者信息区域的伪元素遮罩层 */
+.blog-single.blog-glass .single-meta::before {
+    display: none;
+    content: none;
+}
+
+/* 📄 移除作者信息区域的伪元素遮罩层 */
+.blog-single.blog-glass .single-meta::after {
+    display: none;
+    content: none;
+}
+
+
+.navbar.blog-glass .nav-link::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.navbar.blog-glass .nav-link:hover::after {
+    animation: nav-link-shimmer 1.5s ease-in-out;
+    opacity: 1;
+}
+
+@keyframes nav-link-shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* 🌆 暗色模式 - 拟态玻璃效果 */
+[data-bs-theme="dark"] .blog-glass {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .blog-glass::before {
+    background: linear-gradient(
+        135deg,
+        rgba(139, 92, 246, 0.4) 0%,
+        rgba(236, 72, 153, 0.3) 25%,
+        rgba(59, 130, 246, 0.4) 50%,
+        rgba(236, 72, 153, 0.3) 75%,
+        rgba(139, 92, 246, 0.4) 100%
+    );
+}
+
+[data-bs-theme="dark"] .blog-glass::after {
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(139, 92, 246, 0.2),
+        transparent
+    );
+}
+
+/* 📱 文章卡片拟态玻璃效果 */
+.post-list.blog-glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 24px;
+    border: 2px solid rgba(135, 206, 250, 0.5);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 0 15px 0 rgba(135, 206, 250, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+/* ✨ 亮色模式 - 悬停光晕效果 */
+.post-list.blog-glass .card-glow-effect {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at left center,
+        rgba(10, 118, 185, 0.6) 0%,
+        rgba(46, 134, 189, 0.3) 30%,
+        rgba(36, 118, 168, 0.1) 60%,
+        transparent 100%
+    );
+    opacity: 0;
+    transform: translateX(-100%) scaleX(0.5);
+    transform-origin: left center;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.post-list.blog-glass:hover .card-glow-effect {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+}
+
+.post-list.blog-glass:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 0 20px 0 rgba(135, 206, 250, 0.6);
+    border-color: rgba(135, 206, 250, 0.8);
+}
+
+[data-bs-theme="dark"] .post-list.blog-glass {
+    position: relative;
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 2px solid rgba(135, 206, 250, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 0 15px 0 rgba(135, 206, 250, 0.2);
+    overflow: hidden;
+}
+
+/* 🌆 暗色模式 - 悬停浅粉色光晕效果 */
+[data-bs-theme="dark"] .post-list.blog-glass .card-glow-effect {
+    background: radial-gradient(
+        circle at left center,
+        rgba(252, 122, 230, 0.7) 0%,
+        rgba(252, 122, 245, 0.37) 30%,
+        rgba(248, 122, 252, 0.11)60%,
+        transparent 100%
+    );
+}
+
+[data-bs-theme="dark"] .post-list.blog-glass:hover {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 20px 0 rgba(255, 182, 193, 0.5);
+    border-color: rgba(255, 182, 193, 0.6);
+}
+
+/* 🌆 暗色模式下移除文章列表卡片的伪元素边框，让看板娘图片正常显示 */
+[data-bs-theme="dark"] .post-list.blog-glass::before {
+    display: none;
+    content: none;
+}
+
+/* 🌆 暗色模式下的看板娘图片样式 */
+[data-bs-theme="dark"] .post-list.blog-glass::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 162px;
+    height: 75px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 10;
+    filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.3));
+    animation: kanban-float 3s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="dark"] .post-list.blog-glass:hover::after {
+    opacity: 1;
+    transform: scale(1.05) translateY(-2px);
+    filter: drop-shadow(0 6px 16px rgba(139, 92, 246, 0.5));
+}
+
+/* 🌆 暗色模式下移除文章列表卡片的伪元素遮罩层 */
+[data-bs-theme="dark"] .post-list.blog-glass .post-card-after {
+    display: none;
+    content: none;
+}
+
+/* 📄 文章内容区域保持清晰背景 */
+.blog-single.blog-glass {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--bs-border-radius-lg, 12px);
+    border: 2px solid rgba(135, 206, 250, 0.5);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.12),
+        0 0 15px 0 rgba(135, 206, 250, 0.4);
+}
+
+[data-bs-theme="dark"] .blog-single.blog-glass {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(135, 206, 250, 0.5);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        0 0 15px 0 rgba(135, 206, 250, 0.4);
+}
+
+/* 📄 移除可能的双重边框 */
+.blog-single.blog-glass {
+    outline: none;
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.12),
+        0 0 15px 0 rgba(135, 206, 250, 0.4);
+}
+
+[data-bs-theme="dark"] .blog-single.blog-glass {
+    outline: none;
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        0 0 15px 0 rgba(135, 206, 250, 0.4);
+}
+
+/* 📄 文章内容保持清晰 */
+.blog-single.blog-glass .post-single {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: inherit;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] .blog-single.blog-glass .post-single {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 📄 暗色模式下文章内容区域背景 */
+[data-bs-theme="dark"] .blog-single {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+[data-bs-theme="dark"] .post-single {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+/* 📄 作者信息区域玻璃效果 */
+.single-meta {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 12px;
+    border: 1px solid rgba(135, 206, 250, 0.3);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+[data-bs-theme="dark"] .single-meta {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(135, 206, 250, 0.3);
+}
+
+/* 📄 分页链接区域玻璃效果 */
+.page-links {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 12px;
+    border: 1px solid rgba(135, 206, 250, 0.3);
+    padding: 15px;
+    margin: 20px 0;
+}
+
+[data-bs-theme="dark"] .page-links {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(135, 206, 250, 0.3);
+}
+
+/* 📄 评论按钮玻璃效果 */
+.single-comnum a {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 12px;
+    border: 1px solid rgba(135, 206, 250, 0.3);
+    padding: 12px 20px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.single-comnum a:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(135, 206, 250, 0.5);
+    transform: translateY(-2px);
+}
+
+[data-bs-theme="dark"] .single-comnum a {
+    background: rgba(30, 30, 40, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(135, 206, 250, 0.3);
+}
+
+[data-bs-theme="dark"] .single-comnum a:hover {
+    background: rgba(40, 40, 55, 0.4);
+    border-color: rgba(135, 206, 250, 0.5);
+}
+
+/* 📄 暗色模式下确保文本可读性 */
+[data-bs-theme="dark"] .blog-single {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .post-single * {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .single-content {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .single-content p,
+[data-bs-theme="dark"] .single-content h1,
+[data-bs-theme="dark"] .single-content h2,
+[data-bs-theme="dark"] .single-content h3,
+[data-bs-theme="dark"] .single-content h4,
+[data-bs-theme="dark"] .single-content h5,
+[data-bs-theme="dark"] .single-content h6,
+[data-bs-theme="dark"] .single-content ul,
+[data-bs-theme="dark"] .single-content ol,
+[data-bs-theme="dark"] .single-content blockquote {
+    color: #ffffff;
+}
+
+/* 📄 暗色模式下链接文本颜色 */
+[data-bs-theme="dark"] .blog-single a {
+    color: #ff0080;
+}
+
+[data-bs-theme="dark"] .blog-single a:hover {
+    color: #ba68c8;
+}
+
+/* 📄 暗色模式下所有链接文本颜色 */
+[data-bs-theme="dark"] a {
+    color: #ff0080;
+}
+
+[data-bs-theme="dark"] a:hover {
+    color: #ba68c8;
+}
+
+/* 📄 暗色模式下标题文本颜色 */
+[data-bs-theme="dark"] .single-title {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .single-author-info {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .single-author-info a {
+    color: #9c27b0;
+}
+
+/* 📄 暗色模式下分类标签颜色 */
+[data-bs-theme="dark"] .single-category a {
+    color: #9c27b0;
+    background-color: rgba(156, 39, 176, 0.1);
+    border: 1px solid rgba(156, 39, 176, 0.2);
+}
+
+/* 🌆 暗色模式下标签云链接颜色 */
+[data-bs-theme="dark"] .tag-cloud {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .tag-cloud:hover {
+    color: #ffffff;
+}
+
+/* 🌆 暗色模式下文章内容区域标签云链接颜色 */
+[data-bs-theme="dark"] .blog-single a.tag-cloud {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .blog-single a.tag-cloud:hover {
+    color: #ffffff;
+}
+
+/* 🌆 暗色模式下标签区域标签云链接颜色 */
+[data-bs-theme="dark"] .single-tags a.tag-cloud {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .single-tags a.tag-cloud:hover {
+    color: #ffffff;
+}
+
+/* 📄 暗色模式下按钮链接颜色 */
+[data-bs-theme="dark"] .links_btn {
+    color: #ff0080;
+}
+
+[data-bs-theme="dark"] .links_btn:hover {
+    color: #ff0080;
+}
+
+/* 📄 暗色模式下退出登录按钮颜色 */
+[data-bs-theme="dark"] .switch-account-btn {
+    color: #ff0080;
+}
+
+[data-bs-theme="dark"] .switch-account-btn:hover {
+    color: #ba68c8;
+}
+
+/*  暗色模式下所有其他链接颜色 */
+[data-bs-theme="dark"] .single-content a,
+[data-bs-theme="dark"] .toc-list a,
+[data-bs-theme="dark"] .comment-text p a,
+[data-bs-theme="dark"] .page-links a,
+[data-bs-theme="dark"] .post-navigation a,
+[data-bs-theme="dark"] .footer-widgets .widget ul li a,
+[data-bs-theme="dark"] .comments-pagination a,
+[data-bs-theme="dark"] .footer-bar .widget_categories ul li a,
+[data-bs-theme="dark"] .footer-bar .widget_recent_entries ul li a,
+[data-bs-theme="dark"] .footer-bar .widget_tag_cloud .tagcloud a,
+[data-bs-theme="dark"] .widget_links ul li a {
+    color: #ff0080;
+}
+
+[data-bs-theme="dark"] .single-content a:hover,
+[data-bs-theme="dark"] .toc-list a:hover,
+[data-bs-theme="dark"] .toc-list a.active,
+[data-bs-theme="dark"] .comment-text p a:hover,
+[data-bs-theme="dark"] .page-links a:hover,
+[data-bs-theme="dark"] .post-navigation a:hover,
+[data-bs-theme="dark"] .footer-widgets .widget ul li a:hover,
+[data-bs-theme="dark"] .comments-pagination a:hover,
+[data-bs-theme="dark"] .footer-bar .widget_categories ul li a:hover,
+[data-bs-theme="dark"] .footer-bar .widget_recent_entries ul li a:hover,
+[data-bs-theme="dark"] .footer-bar .widget_tag_cloud .tagcloud a:hover,
+[data-bs-theme="dark"] .widget_links ul li a:hover {
+    color: #ff0080;
+}
+
+/* 📄 暗色模式下导航链接颜色 */
+[data-bs-theme="dark"] .boxmoe_header .navbar .navbar-nav .nav-item .nav-link {
+    color: #ff0080;
+}
+
+[data-bs-theme="dark"] .boxmoe_header .navbar .navbar-nav .nav-item .nav-link:hover {
+    color: #ba68c8;
+}
+
+/* 📄 暗色模式下Markdown卡片链接颜色 */
+[data-bs-theme="dark"] .single-content .md-card-link-wrap a {
+    color: #9c27b0;
+}
+
+[data-bs-theme="dark"] .single-content .md-card-link-wrap a:hover {
+    color: #ba68c8;
+}
+
+/* 📄 暗色模式下分隔线颜色 */
+[data-bs-theme="dark"] .single-content hr {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 🧭 导航栏拟态玻璃效果 */
+.navbar.blog-glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 4px 16px 0 rgba(31, 38, 135, 0.1),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+/* ☀️ 导航栏链接白色文本 */
+.boxmoe_header .navbar .navbar-nav .nav-item .nav-link {
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .navbar.blog-glass {
+    background: rgba(20, 20, 30, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 4px 16px 0 rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 🌆 导航栏链接白色文本 */
+[data-bs-theme="dark"] .boxmoe_header .navbar .navbar-nav .nav-item .nav-link {
+    color: #ffffff;
+}
+
+/* 📊 侧边栏拟态玻璃效果 */
+.blog-sidebar .widget.blog-glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible;
+}
+
+.blog-sidebar .widget.blog-glass:hover {
+    transform: translateY(-12px);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.blog-sidebar .widget.blog-glass .widget-title {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 2px 8px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+[data-bs-theme="dark"] .blog-sidebar .widget.blog-glass {
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    overflow: visible;
+}
+
+[data-bs-theme="dark"] .blog-sidebar .widget.blog-glass .widget-title {
+    background: rgba(40, 40, 55, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 2px 8px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* 🦶 底部栏拟态玻璃效果 */
+footer.blog-glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 -4px 16px 0 rgba(31, 38, 135, 0.1),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-bs-theme="dark"] footer.blog-glass {
+    background: rgba(20, 20, 30, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 -4px 16px 0 rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* � 底部栏小部件拟态玻璃效果 */
+.footer-widgets .widget.blog-glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible;
+}
+
+.footer-widgets .widget.blog-glass:hover {
+    transform: translateY(-12px);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.footer-widgets .widget.blog-glass .widget-title {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 2px 8px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+[data-bs-theme="dark"] .footer-widgets .widget.blog-glass {
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    overflow: visible;
+}
+
+[data-bs-theme="dark"] .footer-widgets .widget.blog-glass .widget-title {
+    background: rgba(40, 40, 55, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 2px 8px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* 📊 底部栏小部件拟态玻璃效果 */
+.footer-bar .widget.blog-glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible;
+}
+
+.footer-bar .widget.blog-glass:hover {
+    transform: translateY(-12px);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.footer-bar .widget.blog-glass .widget-title {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 2px 8px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+[data-bs-theme="dark"] .footer-bar .widget.blog-glass {
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    overflow: visible;
+}
+
+[data-bs-theme="dark"] .footer-bar .widget.blog-glass .widget-title {
+    background: rgba(40, 40, 55, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 2px 8px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* 🎯 搜索框拟态玻璃效果 */
+.search-form.blog-glass .search-input {
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: text;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    outline: none;
+}
+
+.search-form.blog-glass .search-input:focus {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.search-form.blog-glass .search-input::placeholder {
+    color: rgba(51, 51, 51, 0.6);
+}
+
+[data-bs-theme="dark"] .search-form.blog-glass .search-input {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .search-form.blog-glass .search-input:focus {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] .search-form.blog-glass .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* 🎯 导航栏搜索框拟态玻璃效果 */
+.boxmoe_header .search-form.blog-glass {
+    position: relative;
+}
+
+.boxmoe_header .search-form.blog-glass .search-input {
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    padding: 12px 48px 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: text;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    outline: none;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 240px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.boxmoe_header .search-form.blog-glass .search-input:focus {
+    transform: translateY(-52%);
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.boxmoe_header .search-form.blog-glass .search-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.boxmoe_header .search-form.blog-glass .search-btn:hover {
+    transform: translateY(-52%);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-input {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-input:focus {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-btn {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-btn:hover {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 📄 分页按钮拟态玻璃效果 */
+.pagenav.blog-glass .page-item .page-link {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    box-shadow: 
+        0 2px 8px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.pagenav.blog-glass .page-item .page-link:hover {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 12px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+[data-bs-theme="dark"] .pagenav.blog-glass .page-item .page-link {
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 2px 8px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+[data-bs-theme="dark"] .pagenav.blog-glass .page-item .page-link:hover {
+    background: rgba(40, 40, 55, 0.6);
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow: 
+        0 4px 12px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* 🏷️ 标签云拟态玻璃效果 */
+.tag-cloud.blog-glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    box-shadow: 
+        0 2px 8px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.tag-cloud.blog-glass:hover {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 12px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+[data-bs-theme="dark"] .tag-cloud.blog-glass {
+    background: rgba(30, 30, 40, 0.5);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 2px 8px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+[data-bs-theme="dark"] .tag-cloud.blog-glass:hover {
+    background: rgba(40, 40, 55, 0.6);
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow: 
+        0 4px 12px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* 📱 响应式优化 */
+@media (max-width: 768px) {
+    .blog-glass {
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+    }
+    
+    .post-list.blog-glass {
+        border-radius: 18px;
+    }
+    
+    .blog-sidebar .widget.blog-glass {
+        border-radius: 16px;
+    }
+    
+    /* 📱 移动端作者信息区域优化 */
+    .single-meta {
+        flex-wrap: wrap;
+        padding: 12px;
+    }
+    
+    .single-meta img {
+        width: 2.5rem;
+        height: 2.5rem;
+        min-width: 40px;
+        min-height: 40px;
+    }
+    
+    .single-author-name {
+        margin-left: 0.75rem;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .single-author-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+    
+    .single-author-info .data,
+    .single-author-info .name,
+    .single-author-info .modified,
+    .single-author-info .view {
+        margin-right: 0;
+        padding-right: 0;
+        border-right: none;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+    
+    .single-author-info .post-edit-link {
+        font-size: 11px;
+        white-space: nowrap;
+    }
+}
+
+/* 📱 小屏幕移动端优化 */
+@media (max-width: 576px) {
+    .single-meta {
+        padding: 10px;
+    }
+    
+    .single-meta img {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+    
+    .single-author-name {
+        margin-left: 0.6rem;
+    }
+    
+    .single-author-info {
+        gap: 6px;
+    }
+    
+    .single-author-info .data,
+    .single-author-info .name,
+    .single-author-info .modified,
+    .single-author-info .view,
+    .single-author-info .post-edit-link {
+        font-size: 10px;
+    }
+}
+
+/* 🎨 按钮玻璃拟态效果 */
+button.blog-glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+button.blog-glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+button.blog-glass:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 4px 16px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+button.blog-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.6) 100%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 🌆 暗色模式 - 按钮玻璃拟态效果 */
+[data-bs-theme="dark"] button.blog-glass {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] button.blog-glass:hover {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] button.blog-glass::before {
+    background: linear-gradient(
+        135deg,
+        rgba(139, 92, 246, 0.4) 0%,
+        rgba(236, 72, 153, 0.3) 25%,
+        rgba(59, 130, 246, 0.4) 50%,
+        rgba(236, 72, 153, 0.3) 75%,
+        rgba(139, 92, 246, 0.4) 100%
+    );
+}
+
+/* 🎯 链接玻璃拟态效果 */
+a.blog-glass {
+    position: relative;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+a.blog-glass:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #333;
+    text-decoration: none;
+}
+
+a.blog-glass:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 4px 16px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+a.blog-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px;
+    padding: 2px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.1) 25%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0.1) 75%,
+        rgba(255, 255, 255, 0.6) 100%
+    );
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 🌆 暗色模式 - 链接玻璃拟态效果 */
+[data-bs-theme="dark"] a.blog-glass {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] a.blog-glass:hover {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] a.blog-glass::before {
+    background: linear-gradient(
+        135deg,
+        rgba(139, 92, 246, 0.4) 0%,
+        rgba(236, 72, 153, 0.3) 25%,
+        rgba(59, 130, 246, 0.4) 50%,
+        rgba(236, 72, 153, 0.3) 75%,
+        rgba(139, 92, 246, 0.4) 100%
+    );
+}
+
+/* 🎯 输入框玻璃拟态效果 */
+input.blog-glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: text;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    outline: none;
+}
+
+input.blog-glass:focus {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px 0 rgba(31, 38, 135, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+input.blog-glass::placeholder {
+    color: rgba(51, 51, 51, 0.6);
+}
+
+/* 🌠 暗色模式 - 输入框玻璃拟态效果 */
+[data-bs-theme="dark"] input.blog-glass {
+    background: rgba(30, 30, 40, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+        0 8px 32px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] input.blog-glass:focus {
+    box-shadow: 
+        0 12px 40px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme="dark"] input.blog-glass::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* 🚀 性能优化 - 减少模糊半径以提升性能 */
+@media (prefers-reduced-motion: reduce) {
+    .blog-glass::after {
+        animation: none;
+    }
+    
+    .blog-glass,
+    .post-list.blog-glass,
+    .blog-sidebar .widget.blog-glass,
+    button.blog-glass,
+    a.blog-glass,
+    input.blog-glass {
+        transition: none;
+    }
+}
+
+/* 🌆 暗色模式下用户信息区域退出登录按钮 */
+[data-bs-theme="dark"] .user-info-ck .switch-account-btn {
+    color: #ff4444;
+}
+
+[data-bs-theme="dark"] .user-info-ck .switch-account-btn:hover {
+    color: #ff6666;
+}
+
+/* 🎀 文章列表 widget 链接样式 */
+.blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a {
+    color: #ff69b4;
+    text-decoration: none;
+    position: relative;
+    background-image: none;
+    background-size: 0;
+    transition: color 0.3s ease;
+}
+
+.blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a::before,
+.blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a::after {
+    display: block;
+}
+
+.blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+}
+
+.blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a:hover {
+    color: #ffffff;
+    background-size: 0;
+}
+
+.blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a:hover::after {
+    width: 100%;
+}
+
+/* 🌆 暗色模式下文章列表 widget 链接样式 */
+[data-bs-theme="dark"] .blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a {
+    color: #ff69b4;
+    text-decoration: none;
+    position: relative;
+    background-image: none;
+    background-size: 0;
+    transition: color 0.3s ease;
+}
+
+[data-bs-theme="dark"] .blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a::before,
+[data-bs-theme="dark"] .blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a::after {
+    display: block;
+}
+
+[data-bs-theme="dark"] .blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+}
+
+[data-bs-theme="dark"] .blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a:hover {
+    color: #ffffff;
+    background-size: 0;
+}
+
+[data-bs-theme="dark"] .blog-sidebar .widget-postlist.blog-glass .widget-post .right .title a:hover::after {
+    width: 100%;
+}

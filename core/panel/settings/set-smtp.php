@@ -11,7 +11,7 @@ if(!defined('ABSPATH')){
 }
 
 $options[] = array(
-    'name' => __('SMTP设置', 'ui_boxmoe_com'),
+    'name' => __('SMTP邮局设置', 'ui_boxmoe_com'),
     'icon' => 'dashicons-email',
     'type' => 'heading'); 
     $options[] = array(

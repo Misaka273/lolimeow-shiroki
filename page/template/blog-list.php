@@ -64,10 +64,13 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
             }
         }
         
-        // 动态生成看板娘CSS
+        // 📌 动态生成看板娘CSS
         if ($show_kanban) {
             echo '<style>';
             echo '.list-one.post-list:before, .list-three.post-list:before {';
+            echo 'background-image: url('.esc_url($kanban_image).');';
+            echo '}';
+            echo '.post-list.blog-glass:after {';
             echo 'background-image: url('.esc_url($kanban_image).');';
             echo '}';
             echo '</style>';
@@ -101,6 +104,9 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
           <article class="post-list <?php echo ($article_layout_style == 'three') ? 'list-three' : 'list-one'; ?> <?php echo boxmoe_border_setting(); ?>">
             <!-- 😏一个巨无霸的透明伪容器，实现点击整个卡片跳转 -->
             <a class="post-card-link" <?php echo boxmoe_article_new_window(); ?> rel="noopener noreferrer" href="<?php echo get_the_permalink(); ?>" title="<?php echo get_the_title().get_the_subtitle(false).boxmoe_title_link().get_bloginfo('name')?>"></a>
+            
+            <!-- ✨ 悬停光晕效果 - 从左侧边缘扩散 -->
+            <div class="card-glow-effect"></div>
             
             <?php if ( post_password_required() ) : ?>
             <span class="post-protected-badge">密码保护</span>

@@ -47,26 +47,87 @@ add_filter('post_thumbnail_size', 'boxmoe_article_thumbnail_size');
 function boxmoe_article_thumbnail_src() {
     global $post;
     $src='';
+    
     if ($thumbnail_id = get_post_thumbnail_id()) {
         $src=wp_get_attachment_image_url($thumbnail_id, 'full');
-    }elseif ($thumbnail_url = get_post_meta(get_the_ID(), '_thumbnail', true)) {
-        $src=$thumbnail_url;
-    }elseif (preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches)) {
-        $src=$matches[1][0]; 
-    }else{
+        // 检查返回的URL是否有效
+        if (empty($src) || strpos($src, 'http') !== 0) {
+            $src = '';
+        }
+    }
+    
+    if (empty($src)) {
+        if ($thumbnail_url = get_post_meta(get_the_ID(), '_thumbnail', true)) {
+            $src=$thumbnail_url;
+        }
+    }
+    
+    if (empty($src)) {
+        if (preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches)) {
+            // 遍历所有找到的图片，排除用户头像
+            foreach ($matches[1] as $img_src) {
+                // 排除包含 avatar、gravatar 等关键词的图片
+                if (strpos($img_src, 'avatar') === false && 
+                    strpos($img_src, 'gravatar') === false &&
+                    strpos($img_src, 'wp-content/uploads/avatar') === false) {
+                    $src = $img_src;
+                    break;
+                }
+            }
+        }
+    }
+    
+    if (empty($src)) {
         if(get_boxmoe('boxmoe_article_thumbnail_random_api')){
             $src=get_boxmoe('boxmoe_article_thumbnail_random_api_url');
         }else{
-            $random_images = glob(get_template_directory().'/assets/images/random/*.{jpg,jpeg,png,gif}', GLOB_BRACE);   
+            // 改进的随机图片获取逻辑
+            $random_dir = get_template_directory() . '/assets/images/random';
+            $random_images = array();
+            
+            // 尝试使用 glob
+            $glob_pattern = $random_dir . '/*.{jpg,jpeg,png,gif}';
+            $glob_images = glob($glob_pattern, GLOB_BRACE);
+            
+            if (!empty($glob_images)) {
+                $random_images = $glob_images;
+            } else {
+                // 如果 glob 失败，尝试手动扫描目录
+                if (is_dir($random_dir)) {
+                    $dir = opendir($random_dir);
+                    if ($dir) {
+                        while (($file = readdir($dir)) !== false) {
+                            if ($file != '.' && $file != '..') {
+                                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                                if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) {
+                                    $random_images[] = $random_dir . '/' . $file;
+                                }
+                            }
+                        }
+                        closedir($dir);
+                    }
+                }
+            }
+            
             if (!empty($random_images)) {
                 $random_key = array_rand($random_images);
-                $src = str_replace(get_template_directory(), get_template_directory_uri(), $random_images[$random_key]);
+                $img_path = $random_images[$random_key];
+                // 确保路径替换正确
+                $src = str_replace(get_template_directory(), get_template_directory_uri(), $img_path);
+                // 修复路径分隔符
+                $src = str_replace('\\', '/', $src);
             } else {
                 $src = boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
             }
         }
     }
-    return $src ?: boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+    
+    // 最终检查，确保返回有效的URL
+    if (empty($src) || strpos($src, 'http') !== 0) {
+        $src = boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+    }
+    
+    return $src;
 }
 
 //文章点击数换算K--------------------------boxmoe.com--------------------------

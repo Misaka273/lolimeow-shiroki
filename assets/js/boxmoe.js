@@ -699,12 +699,31 @@ function initLazyLoad(container = document) {
         if (img.hasAttribute('srcset')) img.removeAttribute('srcset');
         if (img.hasAttribute('sizes')) img.removeAttribute('sizes');
         
-        // 添加占位符
+        // 添加占位符 - 只在图片容器中添加
         const imgContainer = img.parentElement;
         if (imgContainer && !imgContainer.querySelector('.shiroki-image-placeholder')) {
-            const placeholder = document.createElement('div');
-            placeholder.className = 'shiroki-image-placeholder';
-            imgContainer.appendChild(placeholder);
+            // 只在特定的图片容器中添加占位符，避免在其他元素中创建
+            const allowedContainers = ['.shiroki-image-container', '.post-list-img', '.zoom-img', 'figure.zoom-img', '.boxmoe_header_banner_img'];
+            const isAllowedContainer = allowedContainers.some(selector => 
+                imgContainer.matches(selector) || 
+                imgContainer.classList.contains(selector.replace('.', ''))
+            );
+            
+            // 排除头像容器，避免在头像上显示占位符
+            const isAvatarContainer = imgContainer.matches('.post-list-avatar') || 
+                imgContainer.classList.contains('post-list-avatar');
+            
+            // 如果是图片容器或者父元素是图片容器，且不是头像容器，才添加占位符
+            if ((isAllowedContainer || imgContainer.querySelector('img') === img) && !isAvatarContainer) {
+                // 确保容器有定位
+                if (getComputedStyle(imgContainer).position === 'static') {
+                    imgContainer.style.position = 'relative';
+                }
+                
+                const placeholder = document.createElement('div');
+                placeholder.className = 'shiroki-image-placeholder';
+                imgContainer.appendChild(placeholder);
+            }
         }
         
         // 使用静默预加载器
@@ -1795,7 +1814,7 @@ const LoginStatusManager = (() => {
                                 ${userCenterExists ? `<a href="${getUserCenterLink()}" class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">` : `<div class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">`}
                                     ${avatarUrl ? `
                                     <div class="user-avatar">
-                                    <img src="${themeUrl}/assets/images/loading.gif" data-src="${avatarUrl}" alt="avatar" class="img-fluid rounded-3 lazy">
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="${avatarUrl}" alt="avatar" class="img-fluid rounded-3 lazy">
                                 </div>` : ''}
                                     <div class="user-info">
                                         <div class="user-name">${userInfo.display_name || '用户'}</div>
@@ -1925,19 +1944,18 @@ const LoginStatusManager = (() => {
             const themeUrl = window.ajax_object && window.ajax_object.themeurl ? window.ajax_object.themeurl : '';
             
             // 优先使用传入的userInfo中的头像信息
-            if (userInfo && userInfo.user_avatar) {
+            if (userInfo && userInfo.user_avatar && userInfo.user_avatar.trim()) {
                 return userInfo.user_avatar;
             }
             
             // 检查localStorage中是否有用户信息
-            const storedUserInfo = JSON.parse(localStorage.getItem('user_info'));
-            if (storedUserInfo && storedUserInfo.user_avatar) {
-                return storedUserInfo.user_avatar;
-            }
-            
-            // 直接调用PHP函数生成头像URL，确保与文章头头像一致
-            if (typeof boxmoe_get_avatar_url === 'function') {
-                return boxmoe_get_avatar_url(userId, 100);
+            try {
+                const storedUserInfo = JSON.parse(localStorage.getItem('user_info'));
+                if (storedUserInfo && storedUserInfo.user_avatar && storedUserInfo.user_avatar.trim()) {
+                    return storedUserInfo.user_avatar;
+                }
+            } catch (error) {
+                console.warn('解析localStorage用户信息失败:', error);
             }
             
             // 检查是否有默认头像URL

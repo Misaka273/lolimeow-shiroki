@@ -9,8 +9,9 @@ function boxmoe_integrate_submenus() {
         add_action('admin_menu', 'boxmoe_add_erphpdown_submenu', 99);
     }
     
-    // 移除原有小部件菜单并添加为主题设置子菜单
+    // 移除原有小部件菜单和菜单（导航栏）并添加为主题设置子菜单
     remove_submenu_page('themes.php', 'widgets.php');
+    remove_submenu_page('themes.php', 'nav-menus.php');
     
     // 首先添加主题设置的主页面作为子菜单
     add_submenu_page(
@@ -21,13 +22,22 @@ function boxmoe_integrate_submenus() {
         'boxmoe_options' // ⬅️ 菜单 slug，指向主题配置页面
     );
     
-    // 添加页面小部件作为主题设置子菜单
+    // 添加右侧/底部栏卡片作为主题设置子菜单
     add_submenu_page(
         'boxmoe_options', // ⬅️ 主题设置菜单 slug
         __('Widgets', 'textdomain'), // ⬅️ 页面标题
-        __('页面小部件', 'textdomain'), // ⬅️ 菜单标题
+        __('右侧/底部栏卡片', 'textdomain'), // ⬅️ 菜单标题
         'edit_theme_options', // ⬅️ 权限
         'widgets.php' // ⬅️ 菜单 slug
+    );
+    
+    // 添加导航栏设置作为主题设置子菜单
+    add_submenu_page(
+        'boxmoe_options', // ⬅️ 主题设置菜单 slug
+        __('导航栏设置', 'textdomain'), // ⬅️ 页面标题
+        __('导航栏设置', 'textdomain'), // ⬅️ 菜单标题
+        'edit_theme_options', // ⬅️ 权限
+        'nav-menus.php' // ⬅️ 菜单 slug
     );
     
 

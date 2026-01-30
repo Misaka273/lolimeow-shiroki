@@ -48,7 +48,8 @@ $options[] = array(
 			'default' => __('无边框效果', 'ui_boxmoe_com'),
 			'border' => __('漫画边框效果', 'ui_boxmoe_com'),
 			'shadow' => __('阴影边框效果', 'ui_boxmoe_com'),
-			'lines' => __('线条边框效果', 'ui_boxmoe_com')
+			'lines' => __('线条边框效果', 'ui_boxmoe_com'),
+			'glass' => __('圆角拟态玻璃效果', 'ui_boxmoe_com')
 		));
     $options[] = array(
         'name' => __('懒加载自定义占位图', 'ui_boxmoe_com'), 

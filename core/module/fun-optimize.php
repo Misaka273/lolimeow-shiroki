@@ -324,3 +324,33 @@ function boxmoe_disable_pingbacks() {
 }
 add_action('init', 'boxmoe_disable_pingbacks');
 }
+
+// 📤 媒体库上传大小限制设置--------------------------boxmoe.com--------------------------
+function boxmoe_set_upload_limits() {
+    // 获取上传大小限制设置，默认为10MB
+    $upload_max_filesize = get_boxmoe('boxmoe_upload_max_filesize', 10);
+    // 获取执行时间限制设置，默认为30秒
+    $max_execution_time = get_boxmoe('boxmoe_max_execution_time', 30);
+    
+    // 转换为字节单位
+    $upload_max_filesize_bytes = $upload_max_filesize * 1024 * 1024;
+    $post_max_size_bytes = $upload_max_filesize_bytes * 1.5; // POST大小设置为上传大小的1.5倍
+    
+    // 设置PHP上传限制参数
+    ini_set('upload_max_filesize', $upload_max_filesize . 'M');
+    ini_set('post_max_size', ceil($post_max_size_bytes / (1024 * 1024)) . 'M');
+    ini_set('max_execution_time', $max_execution_time);
+    ini_set('max_input_time', $max_execution_time);
+}
+add_action('init', 'boxmoe_set_upload_limits');
+
+// 📤 WordPress媒体库上传大小限制设置--------------------------boxmoe.com--------------------------
+function boxmoe_filter_upload_size_limit($size) {
+    // 获取上传大小限制设置，默认为10MB
+    $upload_max_filesize = get_boxmoe('boxmoe_upload_max_filesize', 10);
+    // 转换为字节单位
+    $limit_bytes = $upload_max_filesize * 1024 * 1024;
+    // 返回较小的值（PHP限制和WordPress限制中的较小值）
+    return min($size, $limit_bytes);
+}
+add_filter('upload_size_limit', 'boxmoe_filter_upload_size_limit');

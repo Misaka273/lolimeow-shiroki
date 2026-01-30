@@ -102,7 +102,7 @@ function boxmoe_get_avatar_url($id_or_email, $size = 100) {
     $wp_avatar_url = get_avatar_url($id_or_email, array('size' => $size));
     
     // 如果获取成功且不是gravatar.com的头像，直接返回
-    if (!empty($wp_avatar_url) && strpos($wp_avatar_url, 'gravatar.com') === false) {
+    if (!empty($wp_avatar_url) && stripos($wp_avatar_url, 'gravatar.com') === false) {
         return $wp_avatar_url;
     }
     

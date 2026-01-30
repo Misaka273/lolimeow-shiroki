@@ -143,3 +143,20 @@ $options[] = array(
         'type' => "checkbox",
         'std' => false,
         );
+    $options[] = array(
+        'group' => 'start',
+        'group_title' => '服务器相关设置',
+        'name' => __('媒体库上传大小限制', 'ui_boxmoe_com'),
+        'desc' => __('设置媒体库资源上传的最大文件大小（单位：MB）', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_upload_max_filesize',
+        'type' => "text",
+        'std' => 10,
+        );
+    $options[] = array(
+        'group' => 'end',
+        'name' => __('执行时间限制', 'ui_boxmoe_com'),
+        'desc' => __('设置PHP执行时间限制（单位：秒）', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_max_execution_time',
+        'type' => "text",
+        'std' => 30,
+        );

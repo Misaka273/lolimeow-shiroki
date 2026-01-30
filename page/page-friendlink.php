@@ -16,6 +16,14 @@ define('FL_EMAIL_SUBJECT_APPLY', '【新友链申请通知-YIKAN出品】'); // 
 define('FL_EMAIL_SUBJECT_APPROVE', '【%s】你的友情链接申请已通过！'); // 审核通过邮件标题 | YI KAN搜索导航yy4y.com博客44y4.com
 define('FL_COPYRIGHT_TEXT', 'YI KAN博客44y4.com'); // 版权信息配置项 | YI KAN搜索导航yy4y.com博客44y4.com
 
+// 检查页面是否受密码保护
+if (post_password_required()) {
+    get_header();
+    echo get_the_password_form();
+    get_footer();
+    exit;
+}
+
 // 启用WP原生链接管理功能 | YI KAN搜索导航yy4y.com博客44y4.com
 add_filter('pre_option_link_manager_enabled', '__return_true');
 

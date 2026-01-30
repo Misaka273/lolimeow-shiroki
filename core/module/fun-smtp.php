@@ -18,8 +18,8 @@ function boxmoe_smtp_menu() {
     // 将SMTP设置添加为盒子萌主题设置的子菜单
     add_submenu_page(
         'boxmoe_options', // ⬅️ 父菜单slug（盒子萌主题设置）
-        'SMTP设置', // ⬅️ 页面标题
-        'SMTP设置', // ⬅️ 菜单标题
+        'SMTP邮局设置', // ⬅️ 页面标题
+        'SMTP邮局设置', // ⬅️ 菜单标题
         'manage_options', // ⬅️ 权限
         'boxmoe-smtp-settings', // ⬅️ 菜单slug
         'boxmoe_smtp_settings_page', // ⬅️ 回调函数
@@ -77,7 +77,7 @@ function boxmoe_smtp_settings_page() {
     }
     ?>
     <div class="wrap">
-        <h2>SMTP邮件设置</h2>
+        <h2>SMTP邮局设置</h2>
         <form method="post">
             <table class="form-table">
                 <tr>

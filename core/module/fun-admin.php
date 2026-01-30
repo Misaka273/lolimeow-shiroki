@@ -448,7 +448,7 @@ function boxmoe_admin_profile_enqueue($hook){
 add_action('admin_enqueue_scripts', 'boxmoe_admin_profile_enqueue');
 
 function boxmoe_admin_flat_rounded_enqueue($hook){
-    wp_enqueue_style('lolimeow-admin-flat-rounded', get_template_directory_uri() . '/assets/css/admin-flat-rounded.css', array(), '1.2');
+    wp_enqueue_style('lolimeow-admin-flat-rounded', get_template_directory_uri() . '/assets/css/admin-flat-rounded.css', array(), '1.6');
     // 使用文件修改时间作为版本号，确保缓存更新
     $js_version = file_exists(get_template_directory() . '/assets/js/admin-select-ui.js') ? filemtime(get_template_directory() . '/assets/js/admin-select-ui.js') : '1.2';
     wp_enqueue_script('boxmoe-admin-select-ui', get_template_directory_uri() . '/assets/js/admin-select-ui.js', array('jquery'), $js_version, true);
@@ -623,29 +623,35 @@ function boxmoe_duplicate_post_as_draft() {
 }
 add_action('admin_action_boxmoe_duplicate_post_as_draft', 'boxmoe_duplicate_post_as_draft');
 
-// 📦 修改后台外观菜单中的小工具名称为页面小部件
-function boxmoe_rename_widgets_to_page_widgets() {
+// 📦 修改后台外观菜单中的小工具名称为右侧/底部栏卡片和菜单为导航栏
+function boxmoe_rename_widgets_and_menu() {
     global $submenu;
-    // 找到外观菜单下的小工具子菜单并修改名称
+    // 找到外观菜单下的子菜单并修改名称
     if (isset($submenu['themes.php'])) {
         foreach ($submenu['themes.php'] as $key => $item) {
             if ($item[0] == '小部件' || $item[2] == 'widgets.php') {
-                $submenu['themes.php'][$key][0] = '页面小部件';
+                $submenu['themes.php'][$key][0] = '右侧/底部栏卡片';
+            }
+            if ($item[0] == '菜单' || $item[2] == 'nav-menus.php') {
+                $submenu['themes.php'][$key][0] = '导航栏设置';
             }
         }
     }
 }
-add_action('admin_menu', 'boxmoe_rename_widgets_to_page_widgets', 999);
+add_action('admin_menu', 'boxmoe_rename_widgets_and_menu', 999);
 
-// 📦 修改后台菜单标签中的小工具名称
-function boxmoe_rename_widgets_label($translated_text, $text, $domain) {
+// 📦 修改后台菜单标签中的小工具名称和菜单名称
+function boxmoe_rename_widgets_and_menu_label($translated_text, $text, $domain) {
     if ($text == '小部件' && $domain == 'default') {
-        return '页面小部件';
+        return '右侧/底部栏卡片';
+    }
+    if ($text == '菜单' && $domain == 'default') {
+        return '导航栏设置';
     }
     return $translated_text;
 }
-add_filter('gettext', 'boxmoe_rename_widgets_label', 10, 3);
-add_filter('ngettext', 'boxmoe_rename_widgets_label', 10, 3);
+add_filter('gettext', 'boxmoe_rename_widgets_and_menu_label', 10, 3);
+add_filter('ngettext', 'boxmoe_rename_widgets_and_menu_label', 10, 3);
 
 // 🎨 允许在主题设置描述中使用span标签
 function boxmoe_allow_span_tags_in_options($allowedtags) {

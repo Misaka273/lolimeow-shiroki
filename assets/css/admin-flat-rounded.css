@@ -1,188 +1,288 @@
-/* Admin Flat Rounded Theme */
-#wpadminbar{background:linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;border-bottom:1px solid rgba(255,255,255,0.2) !important}
-#wpadminbar .ab-item, #wpadminbar a.ab-item{color:#ffffff !important}
-#wpadminbar .ab-item:hover, #wpadminbar a.ab-item:hover{background:rgba(255,255,255,0.1) !important;color:#ffffff !important}
+/* 引入配色管理css */
+@import url('admin/admin-shiroki.css');
+
+#wpadminbar{background:var(--shiroki-gradient-black-transparent) ;border-bottom:1px solid rgba(255,255,255,0.2) }
+#wpadminbar .ab-item, #wpadminbar a.ab-item{color:var(--shiroki-white) }
+#wpadminbar .ab-item:hover, #wpadminbar a.ab-item:hover{background:rgba(255,255,255,0.1) ;color:var(--shiroki-white) }
 
 #adminmenuback {
-    background: transparent !important;
-    box-shadow: none !important;
+    background: transparent ;
+    box-shadow: none ;
 }
 
 #adminmenuwrap {
-    background: linear-gradient(180deg, rgba(0, 60, 255, 0.8) 0%, rgba(144, 124, 255, 0.8) 100%) !important; /* ⬅️ 半透明霓虹渐变 */
-    backdrop-filter: blur(20px) !important; /* ⬅️ 玻璃拟态模糊 */
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.2) !important; /* ⬅️ 玻璃质感边框 */
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1) !important; /* ⬅️ 柔和投影 */
-    border-top-right-radius: 20px !important; /* ⬅️ 右上圆角 */
-    border-bottom-right-radius: 20px !important; /* ⬅️ 右下圆角 */
-    margin-right: 10px !important; /* ⬅️ 给圆角和投影留出空间 */
+    background: var(--shiroki-gradient-black-transparent) ;
+    backdrop-filter: blur(20px) ; /* ⬅️ 玻璃拟态模糊 */
+    -webkit-backdrop-filter: blur(20px) ;
+    border-right: 1px solid rgba(255, 255, 255, 0.2) ; /* ⬅️ 玻璃质感边框 */
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1) ; /* ⬅️ 柔和投影 */
+    border-top-right-radius: 20px ; /* ⬅️ 右上圆角 */
+    border-bottom-right-radius: 20px ; /* ⬅️ 右下圆角 */
+    margin-right: 10px ; /* ⬅️ 给圆角和投影留出空间 */
 }
-#adminmenu, #adminmenu .wp-submenu{background:transparent !important}
+#adminmenu, #adminmenu .wp-submenu{background:transparent }
 #adminmenu .wp-submenu {
-    background: linear-gradient(180deg, rgba(63, 94, 251, 0.95) 0%, rgba(144, 124, 255, 0.95) 100%) !important;
-    border-radius: 12px !important; /* ⬅️ 子菜单圆角 */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
-    margin-top: 5px !important; /* ⬅️ 微调位置避免贴合过紧 */
+    background: var(--shiroki-gradient-gray-transparent) ;
+    border-radius: 12px ; /* ⬅️ 子菜单圆角 */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) ;
+    margin-top: 5px ; /* ⬅️ 微调位置避免贴合过紧 */
 }
-#adminmenu a{color:#ffffff !important}
-#adminmenu li.menu-top:hover, #adminmenu li.opensub > a.menu-top, #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu{background:rgba(255,255,255,0.2) !important;color:#4b0082 !important}
-#adminmenu .wp-submenu a:hover, #adminmenu .wp-submenu li.current a{color:#4b0082 !important}
+#adminmenu a{color:var(--shiroki-white) }
+#adminmenu li.menu-top:hover, #adminmenu li.opensub > a.menu-top, #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu{background:rgba(255,255,255,0.1) ;color:var(--shiroki-white) }
+#adminmenu .wp-submenu a:hover, #adminmenu .wp-submenu li.current a{color:var(--shiroki-white) }
 
-.wrap h1, .wrap h2, .wrap h3{color:#0ea5e9}
+.wrap h1, .wrap h2, .wrap h3{color:#333333}
 
-.postbox, .metabox-holder .postbox{border-radius:12px !important;border:1px solid #93c5fd !important;box-shadow:none !important}
-.postbox .hndle{border-bottom:1px solid #bfdbfe !important}
-.metabox-holder .stuffbox{border-radius:12px !important;border-color:#93c5fd !important}
+.postbox, .metabox-holder .postbox{border-radius:12px ;border:1px solid var(--shiroki-gray-medium) ;box-shadow:none }
+.postbox .hndle{border-bottom:1px solid var(--shiroki-gray-dark) ;background:var(--shiroki-gradient-gray) ;color:var(--shiroki-black-medium) }
+.metabox-holder .stuffbox{border-radius:12px ;border-color:var(--shiroki-gray-medium) }
+.metabox-holder .stuffbox .hndle{background:var(--shiroki-gradient-gray) ;color:var(--shiroki-black-medium) }
 
-.notice, .updated, .error, .update-nag{border-radius:10px !important;border:1px solid #93c5fd !important;background:#e0f2fe !important;color:#0c4a6e !important}
-.notice-success{background:#dbeafe !important;border-color:#93c5fd !important;color:#0c4a6e !important}
-.notice-error{background:#fee2e2 !important;border-color:#fca5a5 !important;color:#7f1d1d !important}
+.notice, .updated, .error, .update-nag{border-radius:10px ;border:1px solid var(--shiroki-gray-medium) ;background:var(--shiroki-gray-light) ;color:var(--shiroki-black-medium) }
+.notice-success{background:var(--shiroki-gray-light) ;border-color:var(--shiroki-gray-medium) ;color:var(--shiroki-black-medium) }
+.notice-error{background:#fee2e2 ;border-color:#fca5a5 ;color:#7f1d1d }
 
-.wp-core-ui .button{border-radius:8px !important;border:1px solid #93c5fd !important;background:#e0f2fe !important;color:#1e40af !important;box-shadow:none !important}
-.wp-core-ui .button:hover{background:#bfdbfe !important;border-color:#93c5fd !important;color:#1e3a8a !important}
-.wp-core-ui .button-primary{border-radius:8px !important;background:#2563eb !important;border-color:#1d4ed8 !important;color:#ffffff !important}
-.wp-core-ui .button-primary:hover{background:#1d4ed8 !important;border-color:#1e40af !important}
+.wp-core-ui .button{border-radius:8px ;border:1px solid var(--shiroki-gray-medium) ;background:var(--shiroki-white) ;color:var(--shiroki-black-medium) ;box-shadow:none }
+.wp-core-ui .button:hover{background:var(--shiroki-pink-light) ;border-color:var(--shiroki-pink-dark) ;color:var(--shiroki-black-medium) }
+.wp-core-ui .button-primary{border-radius:8px ;background:var(--shiroki-gradient-pink) ;border-color:var(--shiroki-pink-dark) ;color:var(--shiroki-white) }
+.wp-core-ui .button-primary:hover{background:var(--shiroki-gradient-pink-deep) ;border-color:var(--shiroki-pink-dark) }
 
 /* 🔘 页面标题旁的动作按钮 (如"写文章") */
 .wrap .page-title-action,
 .wrap .add-new-h2 {
-    border-radius: 8px !important;
-    border: 1px solid #93c5fd !important;
-    background: #e0f2fe !important;
-    color: #1e40af !important;
-    padding: 4px 12px !important;
-    font-size: 13px !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease !important;
-    box-shadow: none !important;
+    border-radius: 8px ;
+    background: var(--shiroki-gradient-pink) ;
+    border: 1px solid var(--shiroki-pink-dark) ;
+    color: var(--shiroki-white) ;
+    padding: 4px 12px ;
+    font-size: 13px ;
+    text-decoration: none ;
+    transition: all 0.2s ease ;
+    box-shadow: none ;
 }
 
 .wrap .page-title-action:hover,
 .wrap .add-new-h2:hover {
-    background: #bfdbfe !important;
-    border-color: #2563eb !important;
-    color: #1e3a8a !important;
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4) ;
+    border-color: #ff69b4 ;
+    color: #ffffff ;
 }
 
-input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="search"], input[type="number"], textarea, select{border-radius:8px !important;border:1px solid #93c5fd !important;box-shadow:none !important}
-input:focus, textarea:focus, select:focus{border-color:#2563eb !important;box-shadow:0 0 0 3px rgba(37,99,235,0.15) !important}
+/* 📝 文本输入框扁平圆角化 */
+input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="search"], input[type="number"], textarea, select{border-radius:8px ;border:1px solid var(--shiroki-gray-medium) ;box-shadow:none }
 
-.theme-browser .theme{border-radius:12px !important;border:1px solid #93c5fd !important}
-.theme-browser .theme .theme-actions .button-primary{background:#2563eb !important;border-color:#1d4ed8 !important}
+/* 📝 Textarea 专属圆角样式 */
+textarea {
+    border-radius: 12px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    background: #ffffff ;
+    transition: all 0.2s ease ;
+}
 
-.tablenav .tablenav-pages .button, .tablenav .actions .button{border-radius:8px !important}
+/* 📝 Textarea 悬停效果 */
+textarea:hover {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+}
 
-.quicktags-toolbar{background:#e0f2fe !important;border-radius:8px !important}
-.quicktags-toolbar input[type="button"]{border-radius:8px !important;border:1px solid #93c5fd !important;background:#e0f2fe !important;color:#1e40af !important}
-.quicktags-toolbar input[type="button"]:hover{background:#bfdbfe !important;color:#1e3a8a !important}
+/* 📝 Textarea 聚焦效果 */
+textarea:focus {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    outline: none ;
+}
 
-.media-frame-title, .media-frame-toolbar, .attachments-browser .media-toolbar{background:#e0f2fe !important;border-radius:8px !important}
-.media-modal-content{border-radius:12px !important}
+/* 📝 WordPress 编辑器区域圆角化 */
+.wp-editor-area {
+    border-radius: 12px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    background: #ffffff ;
+    transition: all 0.2s ease ;
+}
 
-.notice-info{background:#dbeafe !important;border-color:#93c5fd !important}
-.notice-warning{background:#fde68a !important;border-color:#f59e0b !important}
+/* 📝 WordPress 编辑器区域悬停效果 */
+.wp-editor-area:hover {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+}
 
-#screen-meta{border-radius:8px !important;border-color:#93c5fd !important}
+/* 📝 WordPress 编辑器区域聚焦效果 */
+.wp-editor-area:focus {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    outline: none ;
+}
+
+input:focus, textarea:focus, select:focus{border-color:var(--shiroki-black-light) ;box-shadow:0 0 0 3px rgba(0,0,0,0.15) }
+
+.theme-browser .theme{border-radius:12px ;border:1px solid var(--shiroki-gray-medium) }
+.theme-browser .theme .theme-actions .button-primary{background:var(--shiroki-gradient-pink) ;border-color:var(--shiroki-pink-dark) }
+
+.tablenav .tablenav-pages .button, .tablenav .actions .button{border-radius:8px }
+
+.quicktags-toolbar,#ed_toolbar{background:var(--shiroki-gradient-gray) ;border-radius:8px ;border:1px solid var(--shiroki-gray-medium) ;position:sticky ;top:0 ;z-index:1000 ;margin-bottom:0 ;padding:5px ;height:auto ;box-shadow:var(--shiroki-shadow-black) }
+.quicktags-toolbar input[type="button"],#ed_toolbar input[type="button"]{border-radius:8px ;border:1px solid var(--shiroki-gray-medium) ;background:var(--shiroki-white) ;color:var(--shiroki-black-medium) }
+.quicktags-toolbar input[type="button"]:hover,#ed_toolbar input[type="button"]:hover{background:var(--shiroki-pink-light) ;color:var(--shiroki-black-medium) }
+.quicktags-toolbar .separator,#ed_toolbar .separator{background-color:var(--shiroki-black-light) ;height:16px ;margin:0 8px ;opacity:0.5 }
+
+.media-frame-title, .media-frame-toolbar, .attachments-browser .media-toolbar{background:var(--shiroki-gradient-gray) ;border-radius:8px }
+.media-modal-content{border-radius:12px }
+
+.notice-info{background:var(--shiroki-gray-light) ;border-color:var(--shiroki-gray-medium) }
+.notice-warning{background:#fde68a ;border-color:#f59e0b }
+
+#screen-meta{border-radius:8px ;border-color:var(--shiroki-gray-medium) }
 
 ::-webkit-scrollbar{width:10px;height:10px}
-::-webkit-scrollbar-track{background:#e0f2fe}
-::-webkit-scrollbar-thumb{background:#93c5fd;border-radius:10px}
-::-webkit-scrollbar-thumb:hover{background:#60a5fa}
+::-webkit-scrollbar-track{background:var(--shiroki-gray-light)}
+::-webkit-scrollbar-thumb{background:var(--shiroki-gradient-black);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--shiroki-gradient-black-deep)}
 
-.avatar{border-radius:50% !important;object-fit:cover !important}
-.user-profile-picture img{border-radius:50% !important;object-fit:cover !important}
-.profile-php .avatar, .user-edit-php .avatar{border-radius:50% !important}
+.avatar{border-radius:50% ;object-fit:cover }
+.user-profile-picture img{border-radius:50% ;object-fit:cover }
+.profile-php .avatar, .user-edit-php .avatar{border-radius:50% }
 
 /* 🏷️ 列表表格扁平圆角化 */
 .wp-list-table.widefat {
-    border-radius: 12px !important;
-    border: 1px solid #93c5fd !important;
-    box-shadow: none !important;
-    overflow: hidden !important; /* ⬅️ 确保圆角不被内部内容溢出遮挡 */
-    background: #ffffff !important;
-    border-spacing: 0 !important; /* ⬅️ 修复圆角 */
+    border-radius: 12px ;
+    border: 1px solid #ffb6c1 ;
+    box-shadow: none ;
+    overflow: hidden ; /* ⬅️ 确保圆角不被内部内容溢出遮挡 */
+    background: #ffffff ;
+    border-spacing: 0 ; /* ⬅️ 修复圆角 */
 }
 
 .wp-list-table.widefat thead th,
 .wp-list-table.widefat tfoot th {
-    background: #e0f2fe !important; /* ⬅️ 浅蓝背景 */
-    color: #1e40af !important;
-    border-bottom: 1px solid #93c5fd !important;
-    font-weight: 600 !important;
+    background: var(--shiroki-gradient-black) ; /* ⬅️ 渐变色 */
+    color: var(--shiroki-white) ;
+    border-bottom: 1px solid var(--shiroki-black-medium) ;
+    font-weight: 600 ;
 }
 
 .wp-list-table.widefat tfoot th {
-    border-top: 1px solid #93c5fd !important;
-    border-bottom: none !important;
+    border-top: 1px solid var(--shiroki-gray-medium) ;
+    border-bottom: none ;
 }
 
 .wp-list-table.widefat tbody td,
 .wp-list-table.widefat tbody th {
-    border-bottom: 1px solid #f1f5f9 !important; /* ⬅️ 极淡的分隔线 */
+    border-bottom: 1px solid var(--shiroki-gray-medium) ; /* ⬅️ 极淡的分隔线 */
 }
 
 .wp-list-table.widefat tbody tr:hover {
-    background: #f0f9ff !important; /* ⬅️ 悬停浅蓝 */
+    background: var(--shiroki-pink-light) ; /* ⬅️ 悬停色*/
 }
 
 /* 📄 分页导航扁平化 */
 .tablenav .tablenav-pages {
-    font-weight: normal !important;
+    font-weight: normal ;
 }
 
 .tablenav .tablenav-pages .pagination-links .page-numbers {
-    border-radius: 6px !important;
-    border: 1px solid #93c5fd !important;
-    background: #ffffff !important;
-    color: #1e40af !important;
-    margin-left: 2px !important;
-    padding: 4px 8px !important;
-    font-size: 13px !important;
+    border-radius: 6px ;
+    border: 1px solid var(--shiroki-gray-medium) ;
+    background: var(--shiroki-white) ;
+    color: var(--shiroki-black-medium) ;
+    margin-left: 2px ;
+    padding: 4px 8px ;
+    font-size: 13px ;
 }
 
 .tablenav .tablenav-pages .pagination-links .page-numbers.current {
-    background: #2563eb !important;
-    border-color: #1d4ed8 !important;
-    color: #ffffff !important;
+    background: var(--shiroki-gradient-pink) ;
+    border-color: var(--shiroki-pink-dark) ;
+    color: var(--shiroki-white) ;
 }
 
 .tablenav .tablenav-pages .pagination-links .page-numbers:hover:not(.current) {
-    background: #bfdbfe !important;
+    background: var(--shiroki-pink-light) ;
 }
 
 /* 🖼️ 媒体库网格视图优化 */
 .media-frame-content {
-    border-radius: 0 0 12px 12px !important;
-    border: 1px solid #93c5fd !important;
-    border-top: none !important;
+    border-radius: 0 0 12px 12px ;
+    border: 1px solid var(--shiroki-gray-medium) ;
+    border-top: none ;
 }
 
 .media-frame-router {
-    border-radius: 12px 12px 0 0 !important;
-    border: 1px solid #93c5fd !important;
-    border-bottom: none !important;
-    background: #e0f2fe !important;
+    border-radius: 12px 12px 0 0 ;
+    border: 1px solid var(--shiroki-gray-medium) ;
+    border-bottom: none ;
+    background: var(--shiroki-gradient-gray) ;
 }
 
 .media-frame-title {
-    border-radius: 12px 12px 0 0 !important;
+    border-radius: 12px 12px 0 0 ;
 }
 
 /* 🧩 仪表盘小工具内部优化 */
 .postbox .inside {
-    background: #ffffff !important;
-    border-bottom-left-radius: 12px !important;
-    border-bottom-right-radius: 12px !important;
+    background: var(--shiroki-white) ;
+    border-bottom-left-radius: 12px ;
+    border-bottom-right-radius: 12px ;
 }
 
-.postbox .hndle {
-    background: #f1f5f9 !important; /* ⬅️ 极淡灰标题栏 */
-    border-top-left-radius: 12px !important;
-    border-top-right-radius: 12px !important;
+/* 确保postbox标题栏样式统一 */
+.postbox .hndle, .postbox-header {
+    background: var(--shiroki-gradient-gray) ;
+    border-bottom: 1px solid var(--shiroki-gray-dark) ;
+    border-top-left-radius: 12px ;
+    border-top-right-radius: 12px ;
+    color: var(--shiroki-black-medium) ;
 }
 
-/* 🔽 下拉选择框 (Select) 扁平圆角化 - 紫色主题增强版 */
+/* 修复postbox折叠按钮背景色 */
+.postbox .handlediv {
+    background: var(--shiroki-gradient-gray) ;
+    border-top-right-radius: 12px ;
+    color: var(--shiroki-black-medium) ;
+}
+
+/* 修复stuffbox折叠按钮背景色 */
+.metabox-holder .stuffbox .handlediv {
+    background: var(--shiroki-gradient-gray) ;
+    border-top-right-radius: 12px ;
+    color: var(--shiroki-black-medium) ;
+}
+
+/* 确保折叠按钮图标颜色 */
+.postbox .handlediv .toggle-indicator {
+    color: var(--shiroki-black-medium) ;
+}
+
+.metabox-holder .stuffbox .handlediv .toggle-indicator {
+    color: var(--shiroki-black-medium) ;
+}
+
+/* 修复postbox-header背景色，确保与h2.hndle一致 */
+.postbox-header {
+    border-bottom: none ;
+    overflow: hidden ;
+}
+
+/* 修复handle-actions按钮背景色 */
+.postbox-header .handle-actions button {
+    background: transparent ;
+    color: var(--shiroki-black-medium) ;
+    border: none ;
+}
+
+/* 修复handle-actions按钮悬停效果 */
+.postbox-header .handle-actions button:hover {
+    background: rgba(0, 0, 0, 0.1) ;
+    color: var(--shiroki-black-medium) ;
+    border-radius: 4px ;
+}
+
+/* 修复handle-actions按钮图标颜色 */
+.postbox-header .handle-actions button .order-higher-indicator,
+.postbox-header .handle-actions button .order-lower-indicator {
+    border-color: var(--shiroki-black-medium) ;
+}
+
+/* 🔽 下拉选择框 (Select) 扁平圆角化 - 粉色主题增强版 */
 body select:not(.mm):not(.jj):not(.aa),
 .wrap select:not(.mm):not(.jj):not(.aa),
 .form-table select:not(.mm):not(.jj):not(.aa),
@@ -194,24 +294,24 @@ body select:not(.mm):not(.jj):not(.aa),
 [data-show_if] select,
 [name="gravatar"],
 [name="google_fonts"] {
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
+    appearance: none ;
+    -webkit-appearance: none ;
+    -moz-appearance: none ;
     
     /* 背景图：自定义箭头 + 纯白背景色 */
-    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%238b5cf6%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center !important;
-    background-size: 16px 16px !important;
+    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff69b4%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background-size: 16px 16px ;
     
-    padding: 0 32px 0 12px !important; /* ⬅️ 明确内边距 */
-    border-radius: 8px !important;
-    border: 1px solid #a78bfa !important;
-    color: #6d28d9 !important;
-    line-height: 2 !important;
-    min-height: 36px !important;
-    height: auto !important; /* ⬅️ 防止被定高 */
-    vertical-align: middle !important;
-    max-width: 100% !important; /* ⬅️ 防止溢出 */
-    transition: all 0.2s ease !important;
+    padding: 0 32px 0 12px ; /* ⬅️ 明确内边距 */
+    border-radius: 8px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    color: var(--shiroki-black-medium) ;
+    line-height: 2 ;
+    min-height: 36px ;
+    height: auto ; /* ⬅️ 防止被定高 */
+    vertical-align: middle ;
+    max-width: 100% ; /* ⬅️ 防止溢出 */
+    transition: all 0.2s ease ;
 }
 
 /* 悬停 */
@@ -224,10 +324,10 @@ body select:not(.mm):not(.jj):not(.aa):hover,
 [data-show_if] select:hover,
 [name="gravatar"]:hover,
 [name="google_fonts"]:hover {
-    border-color: #8b5cf6 !important;
-    background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%236d28d9%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center !important;
-    background-size: 16px 16px !important;
-    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15) !important;
+    border-color: var(--shiroki-black-light) ;
+    background: var(--shiroki-gradient-gray) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23333333%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background-size: 16px 16px ;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) ;
 }
 
 /* 聚焦 */
@@ -240,11 +340,11 @@ body select:not(.mm):not(.jj):not(.aa):focus,
 [data-show_if] select:focus,
 [name="gravatar"]:focus,
 [name="google_fonts"]:focus {
-    border-color: #8b5cf6 !important;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
-    outline: none !important;
-    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%236d28d9%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center !important;
-    background-size: 16px 16px !important;
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    outline: none ;
+    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff1493%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background-size: 16px 16px ;
 }
 
 /* 🔽 WordPress 日期选择器样式 - 扁平圆角风 */
@@ -258,28 +358,28 @@ body select.pt_month, body select.pt_day, body select.pt_year,
 .wp-core-ui select.mm, .wp-core-ui select.jj, .wp-core-ui select.aa,
 .wp-core-ui select.pt_month, .wp-core-ui select.pt_day, .wp-core-ui select.pt_year {
     /* 扁平设计核心 */
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
+    appearance: none ;
+    -webkit-appearance: none ;
+    -moz-appearance: none ;
     
     /* 背景和箭头 */
-    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%231e40af%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center !important;
-    background-size: 14px 14px !important;
+    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff69b4%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background-size: 14px 14px ;
     
     /* 内边距和尺寸 */
-    padding: 6px 30px 6px 12px !important;
-    min-height: 36px !important;
-    line-height: 1.5 !important;
+    padding: 6px 30px 6px 12px ;
+    min-height: 36px ;
+    line-height: 1.5 ;
     
     /* 圆角边框 */
-    border-radius: 8px !important;
-    border: 1px solid #93c5fd !important;
-    box-shadow: none !important;
+    border-radius: 8px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    box-shadow: none ;
     
     /* 颜色和过渡 */
-    color: #1e40af !important;
-    width: auto !important;
-    transition: all 0.2s ease !important;
+    color: var(--shiroki-black-medium) ;
+    width: auto ;
+    transition: all 0.2s ease ;
 }
 
 /* 日期选择器悬停样式 */
@@ -292,9 +392,9 @@ body select.pt_month:hover, body select.pt_day:hover, body select.pt_year:hover,
 .form-table select.pt_month:hover, .form-table select.pt_day:hover, .form-table select.pt_year:hover,
 .wp-core-ui select.mm:hover, .wp-core-ui select.jj:hover, .wp-core-ui select.aa:hover,
 .wp-core-ui select.pt_month:hover, .wp-core-ui select.pt_day:hover, .wp-core-ui select.pt_year:hover {
-    border-color: #a78bfa !important;
-    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%231e40af%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center !important;
-    background-size: 14px 14px !important;
+    border-color: var(--shiroki-black-light) ;
+    background: var(--shiroki-gradient-gray) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23333333%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background-size: 14px 14px ;
 }
 
 /* 日期选择器聚焦样式 */
@@ -307,9 +407,9 @@ body select.pt_month:focus, body select.pt_day:focus, body select.pt_year:focus,
 .form-table select.pt_month:focus, .form-table select.pt_day:focus, .form-table select.pt_year:focus,
 .wp-core-ui select.mm:focus, .wp-core-ui select.jj:focus, .wp-core-ui select.aa:focus,
 .wp-core-ui select.pt_month:focus, .wp-core-ui select.pt_day:focus, .wp-core-ui select.pt_year:focus {
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
-    outline: none !important;
+    border-color: var(--shiroki-black-light) ;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15) ;
+    outline: none ;
 }
 
 /* 日期选择器文本输入框样式 - 扁平圆角风 */
@@ -317,52 +417,52 @@ body input[name="hh"], body input[name="mn"], body input[name="ss"],
 body input.pt_hour, body input.pt_minute, body input.pt_second,
 #timestampdiv input[name="hh"], #timestampdiv input[name="mn"], #timestampdiv input[name="ss"] {
     /* 适配 WordPress 默认时间输入框尺寸 */
-    border-radius: 6px !important;
-    border: 1px solid #93c5fd !important;
-    color: #1e40af !important;
-    padding: 2px 4px !important; /* 减小内边距 */
-    height: auto !important; /* 自动高度 */
-    min-height: auto !important; /* 移除最小高度限制 */
-    line-height: normal !important; /* 正常行高 */
-    width: auto !important; /* 自动宽度 */
-    min-width: 30px !important; /* 最小宽度适配时间输入 */
-    max-width: 50px !important; /* 最大宽度限制 */
-    transition: all 0.2s ease !important;
-    background-color: #ffffff !important;
-    box-shadow: none !important;
-    font-size: 14px !important; /* 合适的字体大小 */
+    border-radius: 6px ;
+    border: 1px solid #e0e0e0 ;
+    color: #333333 ;
+    padding: 2px 4px ; /* 减小内边距 */
+    height: auto ; /* 自动高度 */
+    min-height: auto ; /* 移除最小高度限制 */
+    line-height: normal ; /* 正常行高 */
+    width: auto ; /* 自动宽度 */
+    min-width: 30px ; /* 最小宽度适配时间输入 */
+    max-width: 50px ; /* 最大宽度限制 */
+    transition: all 0.2s ease ;
+    background-color: #ffffff ;
+    box-shadow: none ;
+    font-size: 14px ; /* 合适的字体大小 */
 }
 
 body input[name="hh"]:hover, body input[name="mn"]:hover, body input[name="ss"]:hover,
 body input.pt_hour:hover, body input.pt_minute:hover, body input.pt_second:hover,
 #timestampdiv input[name="hh"]:hover, #timestampdiv input[name="mn"]:hover, #timestampdiv input[name="ss"]:hover {
-    border-color: #3b82f6 !important;
-    background-color: #f0f9ff !important;
+    border-color: var(--shiroki-black-light) ;
+    background-color: var(--shiroki-gray-light) ;
 }
 
 body input[name="hh"]:focus, body input[name="mn"]:focus, body input[name="ss"]:focus,
 body input.pt_hour:focus, body input.pt_minute:focus, body input.pt_second:focus,
 #timestampdiv input[name="hh"]:focus, #timestampdiv input[name="mn"]:focus, #timestampdiv input[name="ss"]:focus {
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
-    outline: none !important;
+    border-color: var(--shiroki-black-light) ;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15) ;
+    outline: none ;
 }
 
 /* 移除多选下拉框的默认箭头 */
 body select[multiple] {
-    background-image: none !important;
-    padding-right: 8px !important;
-    height: auto !important;
+    background-image: none ;
+    padding-right: 8px ;
+    height: auto ;
 }
 
 /* 修复部分 WP 原生样式覆盖 */
 .actions select {
-    vertical-align: middle !important;
+    vertical-align: middle ;
 }
 
 /* 🎨 Boxmoe 自定义选择框 UI - 白木定制 */
 .boxmoe-select-hidden {
-    display: none !important;
+    display: none ;
 }
 
 .boxmoe-select-wrapper {
@@ -377,9 +477,9 @@ body select[multiple] {
     display: block;
     padding: 0 32px 0 12px;
     background: #ffffff;
-    border: 1px solid #93c5fd;
+    border: 1px solid #ffb6c1;
     border-radius: 8px;
-    color: #1e40af;
+    color: #8b008b;
     line-height: 28px; /* ⬅️ 文字大小 */
     height: 30px;      /* ⬅️ 容器高度 */
     cursor: pointer;
@@ -398,15 +498,15 @@ body select[multiple] {
     transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%231e40af%22%2F%3E%3C%2Fsvg%3E");
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff69b4%22%2F%3E%3C%2Fsvg%3E");
     background-size: contain;
     background-repeat: no-repeat;
     transition: transform 0.2s ease;
 }
 
 .boxmoe-select-wrapper.open .boxmoe-select-trigger {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -421,11 +521,11 @@ body select[multiple] {
     left: 0;
     right: 0;
     background: #ffffff;
-    border: 1px solid #2563eb;
+    border: 1px solid #ff69b4;
     border-top: none;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
     z-index: 9999;
     display: none;
     max-height: 200px;
@@ -443,9 +543,9 @@ body select[multiple] {
 }
 
 .boxmoe-select-dropdown ul {
-    list-style: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
+    list-style: none ;
+    padding: 0 ;
+    margin: 0 ;
 }
 
 .boxmoe-select-dropdown li {
@@ -454,22 +554,22 @@ body select[multiple] {
     color: #334155;
     cursor: pointer;
     transition: background 0.1s;
-    margin: 0 !important;
+    margin: 0 ;
 }
 
 .boxmoe-select-trigger:hover {
-    border-color: #a78bfa !important;
-    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%) !important;
+    border-color: #ff69b4 ;
+    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) ;
 }
 
 .boxmoe-select-dropdown li:hover {
-    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-    color: #1e40af;
+    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+    color: #8b008b;
 }
 
 .boxmoe-select-dropdown li.selected {
-    background: #e0f2fe;
-    color: #1e3a8a;
+    background: #ffe4e1;
+    color: #8b008b;
     font-weight: 600;
 }
 
@@ -478,106 +578,301 @@ body select[multiple] {
     width: 6px;
 }
 .boxmoe-select-dropdown::-webkit-scrollbar-thumb {
-    background: #ff00ea;
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
     border-radius: 3px;
 }
 .boxmoe-select-dropdown::-webkit-scrollbar-thumb:hover {
-    background: #002e6e;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
 }
 
 /* ⏬ Admin Bar at Bottom */
 #wpadminbar {
-    top: auto !important;
-    bottom: 0 !important;
-    border-bottom: none !important;
-    border-top: 1px solid rgba(255,255,255,0.2) !important;
+    top: auto ;
+    bottom: 0 ;
+    border-bottom: none ;
+    border-top: 1px solid rgba(255,255,255,0.2) ;
 }
 
 /* Fix body/html padding */
 html.wp-toolbar {
-    padding-top: 0 !important;
-    padding-bottom: 32px !important;
+    padding-top: 0 ;
+    padding-bottom: 32px ;
 }
 
 /* Fix admin menu position */
 #adminmenuwrap, #adminmenuback {
-    top: 0 !important;
-    bottom: 32px !important; /* Make space for admin bar at bottom */
+    top: 0 ;
+    bottom: 32px ; /* Make space for admin bar at bottom */
 }
 
 /* Fix admin menu height to not overlap */
 #adminmenu {
-    margin-bottom: 32px !important;
+    margin-bottom: 32px ;
 }
 
 /* Dropdowns opening upwards */
 #wpadminbar .ab-top-secondary .menupop .ab-sub-wrapper, 
 #wpadminbar .quicklinks .menupop .ab-sub-wrapper {
-    top: auto !important;
-    bottom: 32px !important;
-    box-shadow: 0 -4px 8px rgba(0,0,0,0.1) !important;
+    top: auto ;
+    bottom: 32px ;
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.1) ;
 }
 
 /* Responsive fixes */
 @media screen and (max-width: 782px) {
     html.wp-toolbar {
-        padding-bottom: 46px !important;
+        padding-bottom: 46px ;
     }
     #wpadminbar {
-        position: fixed !important;
+        position: fixed ;
     }
     #wpadminbar .ab-top-secondary .menupop .ab-sub-wrapper, 
     #wpadminbar .quicklinks .menupop .ab-sub-wrapper {
-        bottom: 46px !important;
+        bottom: 46px ;
     }
     #adminmenuwrap, #adminmenuback {
-        bottom: 46px !important;
+        bottom: 46px ;
     }
 }
 
 /* ⏫ 主题设置面板位置修正 */
 #optionsframework-wrap {
-    margin-top: 10px !important; /* ⬅️ 上移面板利用顶部空间 */
+    margin-top: 10px ; /* ⬅️ 上移面板利用顶部空间 */
 }
 
 #optionsframework-submit {
-    bottom: 42px !important; /* ⬅️ 悬浮抬高 */
-    margin: 0 20px 10px 20px !important; /* ⬅️ 左右留白形成悬浮感 */
-    border-radius: 20px !important; /* ⬅️ 大圆角 */
-    background: rgba(0, 25, 245, 0.212) !important; /* ⬅️ 半透明背景 */
-    backdrop-filter: blur(5px) !important; /* ⬅️ 玻璃拟态模糊 */
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important; /* ⬅️ 玻璃质感边框 */
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1) !important; /* ⬅️ 柔和投影 */
+    bottom: 42px ; /* ⬅️ 悬浮抬高 */
+    margin: 0 20px 10px 20px ; /* ⬅️ 左右留白形成悬浮感 */
+    border-radius: 20px ; /* ⬅️ 大圆角 */
+    background: rgba(255, 105, 180, 0.212) ; /* ⬅️ 半透明粉色背景 */
+    backdrop-filter: blur(5px) ; /* ⬅️ 玻璃拟态模糊 */
+    -webkit-backdrop-filter: blur(20px) ;
+    border: 1px solid rgba(255, 255, 255, 0.4) ; /* ⬅️ 玻璃质感边框 */
+    box-shadow: 0 8px 32px rgba(255, 105, 180, 0.1) ; /* ⬅️ 柔和投影 */
 }
 
 @media screen and (max-width: 782px) {
     #optionsframework-submit {
-        bottom: 56px !important;
+        bottom: 56px ;
     }
 }
 
 /* 🌈 主题设置侧边栏同步霓虹渐变 */
 #optionsframework-wrap .set-main-menu,
 #optionsframework-wrap .nav-tab-wrapper {
-    background: linear-gradient(180deg, #4667fc 0%, #fb3fa6 100%) !important; /* ⬅️ 同步霓虹渐变背景 */
+    background: var(--shiroki-gradient-black-deep) ; /* ⬅️ 渐变色 */
 }
 
 /* 📝 Markdown编辑器按钮适配 */
 .boxmoe-md-toolbar .md-btn {
-    border-radius: 8px !important;
-    border: 1px solid #93c5fd !important;
-    background: #e0f2fe !important;
-    color: #1e40af !important;
-    box-shadow: none !important;
+    border-radius: 8px ;
+    border: 1px solid var(--shiroki-gray-medium) ;
+    background: var(--shiroki-white) ;
+    color: var(--shiroki-black-medium) ;
+    box-shadow: none ;
 }
 .boxmoe-md-toolbar .md-btn:hover {
-    background: #bfdbfe !important;
-    border-color: #93c5fd !important;
-    color: #1e3a8a !important;
+    background: var(--shiroki-pink-light) ;
+    border-color: var(--shiroki-pink-dark) ;
+    color: var(--shiroki-black-medium) ;
 }
 .boxmoe-md-toolbar .md-btn.active {
-    background: #2563eb !important;
-    border-color: #1d4ed8 !important;
-    color: #ffffff !important;
+    background: var(--shiroki-gradient-pink) ;
+    border-color: var(--shiroki-pink-dark) ;
+    color: var(--shiroki-white) ;
 }
+
+/* 📦 编辑器容器边框移除 */
+#wp-content-editor-container {
+    border: none ;
+    border-radius: 12px ;
+    box-shadow: none ;
+    overflow: visible ;
+}
+
+/* 📝 移除WordPress默认编辑器容器的灰色分隔线 */
+.wp-editor-container {
+    border: none ;
+    box-shadow: none ;
+    overflow: visible ;
+}
+
+/* 📝 移除编辑器容器的边框和阴影 */
+.wp-editor-container iframe,
+.wp-editor-container textarea {
+    border-top: none ;
+}
+
+/* 📝 确保编辑器容器内部没有分隔线 */
+#wp-content-editor-container {
+    background: transparent ;
+}
+
+/* 📝 移除WordPress默认的编辑器工具分隔线 */
+.wp-editor-tools {
+    border-bottom: none ;
+    overflow: visible ;
+}
+
+/* 📝 移除编辑器工具栏的底部边框 */
+.quicktags-toolbar {
+    border-bottom: none ;
+}
+
+/* 📝 移除编辑器内容区域的顶部边框 */
+.wp-editor-area {
+    border-top: none ;
+    margin-top: 0 ;
+}
+
+/* 📝 固定顶部的媒体按钮和短代码选择器 */
+#wp-content-media-buttons {
+    position: sticky ;
+    top: 0 ;
+    z-index: 1003 ;
+    margin: 0 ;
+    padding: 5px ;
+    background: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) ;
+    border: 1px solid var(--shiroki-gray-medium) ;
+    border-radius: 8px 8px 0 0 ;
+    width: 100% ;
+    box-sizing: border-box ;
+    clear: both ;
+    display: flex ;
+    align-items: center ;
+    box-shadow: var(--shiroki-shadow-black) ;
+}
+
+/* 📝 固定短代码选择器 */
+.boxmoe-md-shortcodes {
+    position: sticky ;
+    top: 48px ;
+    z-index: 1002 ;
+    margin: 0 ;
+    padding: 5px ;
+    background: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) ;
+    border: 1px solid var(--shiroki-gray-medium) ;
+    border-radius: 8px 8px 0 0 ;
+    width: 100% ;
+    box-sizing: border-box ;
+    clear: both ;
+    display: flex ;
+    align-items: center ;
+    box-shadow: var(--shiroki-shadow-black) ;
+}
+
+/* 📝 调整WordPress默认工具栏位置 */
+.quicktags-toolbar,#ed_toolbar {
+    position: sticky ;
+    top: 144px ;
+    z-index: 1001 ;
+}
+
+/* 📝 调整Markdown工具栏位置 */
+.boxmoe-md-toolbar {
+    position: sticky ;
+    top: 48px ;
+    z-index: 1002 ;
+}
+
+/* 📝 优化编辑器内容区域间距 */
+#wp-content-editor-container textarea#content {
+    margin-top: 5px ;
+    padding-top: 5px ;
+}
+
+/* 📝 优化编辑器内容区域间距 - 分屏模式 */
+#wp-content-editor-container.mode-split textarea#content {
+    margin-top: 5px ;
+    padding-top: 5px ;
+}
+
+/* 📝 优化编辑器内容区域间距 - 编辑模式 */
+#wp-content-editor-container.mode-edit textarea#content {
+    margin-top: 5px ;
+    padding-top: 5px ;
+}
+
+/* ============================================
+   🎨 编辑器圆角样式完整修复
+   ============================================ */
+
+/* 📊 编辑器底部状态信息栏圆角化 */
+#post-status-info {
+    border-radius: 12px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    background: #ffffff ;
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+    margin-top: 10px ;
+}
+
+/* 📊 状态信息栏单元格样式 */
+#post-status-info td {
+    border: none ;
+    padding: 8px 12px ;
+    color: var(--shiroki-black-medium) ;
+    font-size: 13px ;
+}
+
+/* 📊 状态信息栏悬停效果 */
+#post-status-info:hover {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) ;
+}
+
+/* 🎯 WordPress 编辑器展开模式下的状态信息栏圆角 */
+.wp-editor-expand #post-status-info {
+    border-radius: 12px ;
+    background: #ffffff ;
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+}
+
+/* 🎯 WordPress 编辑器展开模式下的编辑器容器圆角 */
+.wp-editor-expand #wp-content-editor-container {
+    border-radius: 12px ;
+    /* 原生内容编辑区域及工具栏的边框色 */
+    border: 1px solid #fbfbfb;
+    box-shadow: none ;
+    margin-top: 0 ;
+    overflow: visible ;
+}
+
+/* 🎯 WordPress 编辑器展开模式下的编辑器工具栏圆角 */
+.wp-editor-expand #wp-content-editor-tools {
+    border-radius: 12px 12px 0 0 ;
+    border-bottom: none ;
+    z-index: 1000 ;
+}
+
+/* 🎯 WordPress 编辑器展开模式下的编辑器区域圆角 */
+.wp-editor-expand #wp-content-editor-container .wp-editor-area,
+.wp-editor-expand textarea.wp-editor-area {
+    border-radius: 12px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    background: #ffffff ;
+    transition: all 0.2s ease ;
+}
+
+/* 🎯 WordPress 编辑器展开模式下的编辑器区域悬停效果 */
+.wp-editor-expand #wp-content-editor-container .wp-editor-area:hover,
+.wp-editor-expand textarea.wp-editor-area:hover {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+}
+
+/* 🎯 WordPress 编辑器展开模式下的编辑器区域聚焦效果 */
+.wp-editor-expand #wp-content-editor-container .wp-editor-area:focus,
+.wp-editor-expand textarea.wp-editor-area:focus {
+    border-color: var(--shiroki-pink-dark) ;
+    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    outline: none ;
+}
+
+/* 📦 编辑器容器圆角化 */
+.wp-editor-container {
+    border-radius: 12px ;
+    border: 1px solid var(--shiroki-pink-light) ;
+    box-shadow: none ;
+    overflow: visible ;
+}
+

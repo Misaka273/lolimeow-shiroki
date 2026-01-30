@@ -144,6 +144,7 @@ require_once  get_stylesheet_directory() . '/core/module/fun-context-menu.php'; 
 require_once  get_stylesheet_directory() . '/core/module/fun-user-center.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-comments.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-seo.php';
+require_once  get_stylesheet_directory() . '/core/module/fun-geo.php'; // ⬅️ 引入Geo生成式搜索引擎优化功能
 require_once  get_stylesheet_directory() . '/core/module/fun-article.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-smtp.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-msg.php';
@@ -801,6 +802,139 @@ function boxmoe_allow_svg_upload($mimes) {
 }
 add_filter('upload_mimes', 'boxmoe_allow_svg_upload', 10, 1);
 
+// 🎨 扩展媒体库支持的文件格式
+function boxmoe_extend_media_library_formats($mimes) {
+    // 🖼️ 图片格式扩展
+    $mimes['webp'] = 'image/webp'; // ◀️ WebP图片格式
+    $mimes['avif'] = 'image/avif'; // ◀️ AVIF图片格式
+    $mimes['bmp'] = 'image/bmp'; // ◀️ BMP图片格式
+    $mimes['tif'] = 'image/tiff'; // ◀️ TIFF图片格式
+    $mimes['tiff'] = 'image/tiff'; // ◀️ TIFF图片格式
+    $mimes['psd'] = 'image/vnd.adobe.photoshop'; // ◀️ PSD图片格式
+    $mimes['ai'] = 'application/postscript'; // ◀️ AI矢量图格式
+    $mimes['eps'] = 'application/postscript'; // ◀️ EPS矢量图格式
+    $mimes['raw'] = 'image/x-adobe-dng'; // ◀️ RAW相机格式
+    $mimes['dng'] = 'image/x-adobe-dng'; // ◀️ DNG相机格式
+    $mimes['heic'] = 'image/heic'; // ◀️ HEIC苹果相机格式
+    $mimes['heif'] = 'image/heif'; // ◀️ HEIF图片格式
+    
+    // 📹 视频格式扩展
+    $mimes['mp4'] = 'video/mp4'; // ◀️ MP4视频格式
+    $mimes['webm'] = 'video/webm'; // ◀️ WebM视频格式
+    $mimes['ogg'] = 'video/ogg'; // ◀️ OGG视频格式
+    $mimes['avi'] = 'video/avi'; // ◀️ AVI视频格式
+    $mimes['wmv'] = 'video/x-ms-wmv'; // ◀️ WMV视频格式
+    $mimes['mov'] = 'video/quicktime'; // ◀️ MOV视频格式
+    $mimes['flv'] = 'video/x-flv'; // ◀️ FLV视频格式
+    $mimes['mkv'] = 'video/x-matroska'; // ◀️ MKV视频格式
+    $mimes['mpg'] = 'video/mpeg'; // ◀️ MPG视频格式
+    $mimes['mpeg'] = 'video/mpeg'; // ◀️ MPEG视频格式
+    $mimes['m4v'] = 'video/x-m4v'; // ◀️ M4V视频格式
+    $mimes['3gp'] = 'video/3gpp'; // ◀️ 3GP视频格式
+    
+    // 🎵 音频格式扩展
+    $mimes['mp3'] = 'audio/mpeg'; // ◀️ MP3音频格式
+    $mimes['wav'] = 'audio/wav'; // ◀️ WAV音频格式
+    $mimes['ogg'] = 'audio/ogg'; // ◀️ OGG音频格式
+    $mimes['flac'] = 'audio/flac'; // ◀️ FLAC音频格式
+    $mimes['m4a'] = 'audio/mp4'; // ◀️ M4A音频格式
+    $mimes['wma'] = 'audio/x-ms-wma'; // ◀️ WMA音频格式
+    $mimes['aac'] = 'audio/aac'; // ◀️ AAC音频格式
+    
+    // 📁 文档格式扩展
+    $mimes['doc'] = 'application/msword'; // ◀️ Word文档格式
+    $mimes['docx'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'; // ◀️ Word文档格式
+    $mimes['xls'] = 'application/vnd.ms-excel'; // ◀️ Excel表格格式
+    $mimes['xlsx'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; // ◀️ Excel表格格式
+    $mimes['ppt'] = 'application/vnd.ms-powerpoint'; // ◀️ PowerPoint演示格式
+    $mimes['pptx'] = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'; // ◀️ PowerPoint演示格式
+    $mimes['pdf'] = 'application/pdf'; // ◀️ PDF文档格式
+    $mimes['txt'] = 'text/plain'; // ◀️ 文本文件格式
+    $mimes['rtf'] = 'application/rtf'; // ◀️ RTF文档格式
+    $mimes['md'] = 'text/markdown'; // ◀️ Markdown文档格式
+    $mimes['json'] = 'application/json'; // ◀️ JSON文件格式
+    $mimes['xml'] = 'application/xml'; // ◀️ XML文件格式
+    $mimes['yaml'] = 'text/yaml'; // ◀️ YAML文件格式
+    $mimes['yml'] = 'text/yaml'; // ◀️ YAML文件格式
+    $mimes['csv'] = 'text/csv'; // ◀️ CSV表格格式
+    
+    // 🖥️ 程序格式扩展
+    $mimes['zip'] = 'application/zip'; // ◀️ ZIP压缩格式
+    $mimes['rar'] = 'application/x-rar-compressed'; // ◀️ RAR压缩格式
+    $mimes['7z'] = 'application/x-7z-compressed'; // ◀️ 7Z压缩格式
+    $mimes['tar'] = 'application/x-tar'; // ◀️ TAR压缩格式
+    $mimes['gz'] = 'application/gzip'; // ◀️ GZ压缩格式
+    $mimes['bz2'] = 'application/x-bzip2'; // ◀️ BZ2压缩格式
+    $mimes['exe'] = 'application/x-msdownload'; // ◀️ EXE可执行文件格式
+    $mimes['dll'] = 'application/x-msdownload'; // ◀️ DLL动态链接库格式
+    $mimes['msi'] = 'application/x-msi'; // ◀️ MSI安装包格式
+    $mimes['deb'] = 'application/x-deb'; // ◀️ DEB安装包格式
+    $mimes['rpm'] = 'application/x-rpm'; // ◀️ RPM安装包格式
+    $mimes['dmg'] = 'application/x-apple-diskimage'; // ◀️ DMG磁盘镜像格式
+    $mimes['iso'] = 'application/x-iso9660-image'; // ◀️ ISO磁盘镜像格式
+    $mimes['img'] = 'application/x-img'; // ◀️ IMG磁盘镜像格式
+    
+    // 🔧 代码文件格式
+    $mimes['php'] = 'application/x-httpd-php'; // ◀️ PHP代码文件格式
+    $mimes['js'] = 'application/javascript'; // ◀️ JavaScript代码文件格式
+    $mimes['jsx'] = 'text/jsx'; // ◀️ JSX代码文件格式
+    $mimes['ts'] = 'text/typescript'; // ◀️ TypeScript代码文件格式
+    $mimes['tsx'] = 'text/tsx'; // ◀️ TSX代码文件格式
+    $mimes['css'] = 'text/css'; // ◀️ CSS样式文件格式
+    $mimes['scss'] = 'text/scss'; // ◀️ SCSS样式文件格式
+    $mimes['sass'] = 'text/sass'; // ◀️ SASS样式文件格式
+    $mimes['less'] = 'text/less'; // ◀️ LESS样式文件格式
+    $mimes['html'] = 'text/html'; // ◀️ HTML文件格式
+    $mimes['htm'] = 'text/html'; // ◀️ HTML文件格式
+    $mimes['php5'] = 'application/x-httpd-php5'; // ◀️ PHP5代码文件格式
+    $mimes['php7'] = 'application/x-httpd-php7'; // ◀️ PHP7代码文件格式
+    $mimes['py'] = 'text/x-python'; // ◀️ Python代码文件格式
+    $mimes['pyc'] = 'application/x-python-code'; // ◀️ Python编译文件格式
+    $mimes['java'] = 'text/x-java-source'; // ◀️ Java代码文件格式
+    $mimes['class'] = 'application/java-vm'; // ◀️ Java编译文件格式
+    $mimes['jar'] = 'application/java-archive'; // ◀️ Java归档文件格式
+    $mimes['c'] = 'text/x-c'; // ◀️ C代码文件格式
+    $mimes['h'] = 'text/x-c-header'; // ◀️ C头文件格式
+    $mimes['cpp'] = 'text/x-c++'; // ◀️ C++代码文件格式
+    $mimes['hpp'] = 'text/x-c++-header'; // ◀️ C++头文件格式
+    $mimes['cs'] = 'text/x-csharp'; // ◀️ C#代码文件格式
+    $mimes['vb'] = 'text/x-vb'; // ◀️ VB代码文件格式
+    $mimes['go'] = 'text/x-go'; // ◀️ Go代码文件格式
+    $mimes['rust'] = 'text/x-rust'; // ◀️ Rust代码文件格式
+    $mimes['swift'] = 'text/x-swift'; // ◀️ Swift代码文件格式
+    $mimes['kotlin'] = 'text/x-kotlin'; // ◀️ Kotlin代码文件格式
+    $mimes['lua'] = 'text/x-lua'; // ◀️ Lua代码文件格式
+    $mimes['ruby'] = 'text/x-ruby'; // ◀️ Ruby代码文件格式
+    $mimes['rb'] = 'text/x-ruby'; // ◀️ Ruby代码文件格式
+    $mimes['perl'] = 'text/x-perl'; // ◀️ Perl代码文件格式
+    $mimes['pl'] = 'text/x-perl'; // ◀️ Perl代码文件格式
+    $mimes['sh'] = 'text/x-sh'; // ◀️ Shell脚本文件格式
+    $mimes['bash'] = 'text/x-bash'; // ◀️ Bash脚本文件格式
+    $mimes['bat'] = 'text/x-bat'; // ◀️ Batch脚本文件格式
+    $mimes['cmd'] = 'text/x-cmd'; // ◀️ Command脚本文件格式
+    $mimes['powershell'] = 'text/x-powershell'; // ◀️ PowerShell脚本文件格式
+    $mimes['ps1'] = 'text/x-powershell'; // ◀️ PowerShell脚本文件格式
+    
+    // 🎮 游戏相关格式
+    $mimes['unity3d'] = 'application/unity'; // ◀️ Unity3D项目格式
+    $mimes['blend'] = 'application/x-blender'; // ◀️ Blender模型格式
+    $mimes['obj'] = 'application/x-wavefront-obj'; // ◀️ OBJ模型格式
+    $mimes['fbx'] = 'application/x-fbx'; // ◀️ FBX模型格式
+    $mimes['gltf'] = 'model/gltf+json'; // ◀️ GLTF模型格式
+    $mimes['glb'] = 'model/gltf-binary'; // ◀️ GLB模型格式
+    $mimes['3ds'] = 'application/x-3ds'; // ◀️ 3DS模型格式
+    $mimes['max'] = 'application/x-3ds-max'; // ◀️ 3DS Max模型格式
+    
+    // 📱 移动设备相关格式
+    $mimes['apk'] = 'application/vnd.android.package-archive'; // ◀️ Android应用格式
+    $mimes['ipa'] = 'application/x-itunes-ipa'; // ◀️ iOS应用格式
+    $mimes['app'] = 'application/x-macos-app'; // ◀️ macOS应用格式
+    $mimes['dylib'] = 'application/x-mach-o-dylib'; // ◀️ macOS动态库格式
+    
+    return $mimes;
+}
+add_filter('upload_mimes', 'boxmoe_extend_media_library_formats', 10, 1);
+
 // 🛡️ 修复SVG文件安全检查
 function boxmoe_fix_svg_safety($file) {
     if (isset($file['type']) && $file['type'] === 'image/svg+xml') {
@@ -961,16 +1095,28 @@ function shiroki_convert_markdown_divider($content) {
 add_filter('the_content', 'shiroki_convert_divider_comment');
 add_filter('the_content', 'shiroki_convert_markdown_divider');
 
-//自定义文章密码保护表单
+//自定义密码保护表单（区分页面和文章）
 function custom_password_protected_form($form) {
     global $post;
     $label = 'pwbox-' . ( empty( $post->ID ) ? rand() : $post->ID );
+    
+    // 根据post类型显示不同的文本
+    if ($post && $post->post_type === 'page') {
+        // 页面类型
+        $title = '该页面受密码保护';
+        $label_text = '请输入密码查看本页面';
+    } else {
+        // 文章类型
+        $title = '该文章受密码保护';
+        $label_text = '请输入密码查看本文内容';
+    }
+    
     $output = '<div class="password-protected-form">';
-    $output .= '<h3 class="password-form-title">该文章受密码保护</h3>';
+    $output .= '<h3 class="password-form-title">' . $title . '</h3>';
     $output .= '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" method="post">';
     $output .= '<div class="form-group password-form-group">';
     $output .= '<input name="post_password" id="' . $label . '" type="password" class="form-control password-input" size="20" maxlength="20" placeholder="" />';
-    $output .= '<label for="' . $label . '" class="password-input-label">请输入密码查看本文内容</label>';
+    $output .= '<label for="' . $label . '" class="password-input-label">' . $label_text . '</label>';
     $output .= '</div>';
     $output .= '<button type="submit" name="Submit" class="btn btn-primary password-submit"><i class="fa fa-lock"></i> 确认</button>';
     $output .= '</form>';

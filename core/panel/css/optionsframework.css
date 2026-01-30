@@ -163,7 +163,7 @@ input[type="number"].number-text-d {width:70px;}
 #optionsframework-wrap h3 {cursor:default;background-color:#fff;line-height:1.4;padding:1.3em 20px;border-bottom:none;padding-bottom:10px;color:#1d2327;font-size:1.3em;}
 #optionsframework-wrap .postbox,#optionsframework-wrap .stuffbox {margin-bottom:0;border:0;border-right:solid 1px #f9f9ff;border-left:solid 1px #f9f9ff;background-color:#fff;min-height:800px;}
 #optionsframework-wrap .postbox {border-radius:0;}
-/**保存/重置**/#optionsframework-submit {padding:10px;box-sizing:border-box;text-align:right;background-color:#f9fafb;border-top:1px solid #e9e9ea;position:fixed;border-radius:0;width:calc(80% - 250px);right:10%;bottom:0;left:auto;}
+/**保存/重置**/#optionsframework-submit {padding:10px;box-sizing:border-box;text-align:right;background-color:var(--shiroki-submit-bg);border-top:1px solid rgba(233, 233, 234, 0.3);position:fixed;border-radius:12px;width:calc(80% - 250px);right:10%;bottom:40px;left:auto;z-index:9999;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);box-shadow:0 4px 12px rgba(0, 0, 0, 0.1);}
 input.reset-button.button-secondary {float:left;background:#be3838;color:#fff;border-color:#be3838;}
 /* 🚀 重置按钮样式 */
 #super-fast-reset-button {
@@ -194,7 +194,7 @@ h1 .nav-tab,h2 .nav-tab,h3 .nav-tab,nav .nav-tab {margin:0;border-bottom:0;}
 #optionsframework-wrap .header-set-title {padding-left:0px;}
 #optionsframework-submit {width:calc(100% - 20px) !important;right:10px !important;left:10px !important;}
 }
-.boxmoe-options-site-name {font-size:1.3rem;position:relative;margin:3rem 0 2rem 0;padding:0 2.5rem 0.5rem 2rem;width:calc(100% - 3rem);display:flex;align-items:center;color:#fff;FONT-WEIGHT:600;transition-duration:0.2s;}
+.boxmoe-options-site-name {font-size:1.3rem;position:relative;margin:3rem 0 2rem 0;padding:0 1.5rem 0.1rem 1rem;width:calc(100% - 3rem);display:flex;align-items:center;color:#fff;FONT-WEIGHT:600;transition-duration:0.2s;}
 .boxmoe-options-site-name svg {position:absolute;fill:#333;width:16px;height:16px;right:55px;top:50%;transform:translateY(-50%);display:none;}
 .boxmoe-options-site-name::after {content:"";width:8px;height:8px;background:#4777ce;border-radius:20px;position:absolute;right:53px;display:none;}
 .nav-tab-wrapper a {text-decoration:none;}

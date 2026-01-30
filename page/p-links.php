@@ -4,6 +4,15 @@
  * @link https://www.boxmoe.com
  * @package lolimeow
  */
+
+// 检查页面是否受密码保护
+if (post_password_required()) {
+    get_header();
+    echo get_the_password_form();
+    get_footer();
+    exit;
+}
+
 get_header();
 ?>
             <div class="col-md-12 mx-auto">

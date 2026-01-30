@@ -2,6 +2,10 @@
 if(!defined('ABSPATH')){echo 'Look your sister';exit;}
 
 function boxmoe_markdown_to_html($text){
+    // 检查内容是否为密码保护表单，如果是则不进行Markdown转换
+    if(strpos($text, 'password-protected-form') !== false || strpos($text, 'post_password') !== false || strpos($text, 'wp-login.php?action=postpass') !== false){
+        return $text;
+    }
     $text = str_replace(["\r\n","\r"],"\n",$text);
     $blocks = [];
     // 代码块解析，确保与主题自带语法兼容
@@ -220,6 +224,10 @@ function boxmoe_markdown_to_html($text){
 }
 
 function boxmoe_md_the_content($content){
+    // 检查内容是否为密码保护表单，如果是则不进行Markdown转换
+    if(strpos($content, 'password-protected-form') !== false || strpos($content, 'post_password') !== false){
+        return $content;
+    }
     // 只在前端显示时转换为HTML，后台编辑器中保持原始Markdown语法
     if(get_boxmoe('boxmoe_md_editor_switch') && !is_admin()){
         return boxmoe_markdown_to_html($content);

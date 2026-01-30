@@ -347,6 +347,9 @@ function boxmoe_load_assets_header(){
     wp_enqueue_style('boxmoe-style', boxmoe_theme_url() . '/assets/css/style.css', array(), THEME_VERSION);
     wp_enqueue_style('image-viewer-style', boxmoe_theme_url() . '/assets/css/image-viewer.css', array(), THEME_VERSION);
     wp_enqueue_style('shiroki-md-card', boxmoe_theme_url() . '/assets/css/shiroki-md-card.css', array(), THEME_VERSION);
+    if(get_boxmoe('boxmoe_blog_border') == 'glass'){
+        wp_enqueue_style('glassmorphism-style', boxmoe_theme_url() . '/assets/css/glassmorphism.css', array(), THEME_VERSION);
+    }
     if(get_boxmoe('boxmoe_jquery_switch')){
         wp_enqueue_script('jquery-script', boxmoe_theme_url() . '/assets/js/jquery.min.js', array(), THEME_VERSION, true);
     }
@@ -516,6 +519,8 @@ if (function_exists('register_sidebar')){
 		$boxmoe_border='blog-shadow';
         }elseif(get_boxmoe('boxmoe_blog_border') == 'lines'){
         $boxmoe_border='blog-lines';
+        }elseif(get_boxmoe('boxmoe_blog_border') == 'glass'){
+        $boxmoe_border='blog-glass';
         }
         // 始终注册所有侧边栏，无论当前布局设置如何
         // 这样可以避免更新主题时主题选项数据暂时不可用导致侧边栏丢失
@@ -579,6 +584,8 @@ function boxmoe_border_setting(){
             return 'blog-shadow';
         }elseif($border == 'lines'){
             return 'blog-lines';
+        }elseif($border == 'glass'){
+            return 'blog-glass';
         }
     }else{
         return 'blog-border';

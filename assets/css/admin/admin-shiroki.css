@@ -1,0 +1,41 @@
+/**
+ * Template Name: 配色管理css
+ * Description: 🎨 WordPress后台主题配色变量定义
+ * Copyright: 白木 https://gl.baimu.live/
+ */
+
+:root {
+    /* 🌸 粉色系 */
+    --shiroki-pink-light: #ffb6c1;
+    --shiroki-pink-medium: #ffc0cb;
+    --shiroki-pink-dark: #ff69b4;
+    --shiroki-pink-deep: #ff1493;
+    
+    /* 🌑 灰色系 */
+    --shiroki-gray-light: #f5f5f5;
+    --shiroki-gray-medium: #e0e0e0;
+    --shiroki-gray-dark: #d0d0d0;
+    
+    /* ⚫ 黑色系 */
+    --shiroki-black-light: #666666;
+    --shiroki-black-medium: #333333;
+    --shiroki-black-dark: #1a1a1a;
+    
+    /* 🤍 白色系 */
+    --shiroki-white: #ffffff;
+    
+    /* 📝 渐变定义 */
+    --shiroki-gradient-pink: linear-gradient(135deg, var(--shiroki-pink-light), var(--shiroki-pink-medium));
+    --shiroki-gradient-pink-deep: linear-gradient(135deg, var(--shiroki-pink-dark), var(--shiroki-pink-deep));
+    --shiroki-gradient-gray: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium));
+    --shiroki-gradient-black: linear-gradient(135deg, var(--shiroki-black-light), var(--shiroki-black-medium));
+    --shiroki-gradient-black-deep: linear-gradient(135deg, var(--shiroki-black-medium), var(--shiroki-black-dark));
+    
+    /* 🌈 半透明渐变 */
+    --shiroki-gradient-black-transparent: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(19, 18, 18, 0.8));
+    --shiroki-gradient-gray-transparent: linear-gradient(180deg, rgba(54, 53, 53, 0.95), rgba(105, 105, 105, 0.85));
+    
+    /* 📦 阴影 */
+    --shiroki-shadow-pink: 0 2px 10px rgba(255, 182, 193, 0.3);
+    --shiroki-shadow-black: 0 2px 10px rgba(0, 0, 0, 0.3);
+}

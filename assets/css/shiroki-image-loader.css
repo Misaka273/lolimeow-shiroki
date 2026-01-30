@@ -14,9 +14,39 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bs-light, #f8f9fa);
     z-index: 1;
     border-radius: inherit;
+    pointer-events: none;
+}
+
+/* 🎯 确保占位符只在有定位的容器中显示 */
+.shiroki-image-container .shiroki-image-placeholder,
+.post-list-img .shiroki-image-placeholder,
+.zoom-img .shiroki-image-placeholder,
+figure.zoom-img .shiroki-image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 🎯 为没有定位的父元素添加定位 */
+.shiroki-image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 🎯 确保占位符不会溢出容器 */
+.shiroki-image-placeholder {
+    max-width: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
 }
 
 /* 🌆 暗色模式占位符 */
@@ -105,6 +135,56 @@ img.lazy.loaded {
     filter: blur(0);
 }
 
+/* 🎨 头像区域懒加载图片例外 - 保持可见 */
+.boxmoe_header .user-avatar img.lazy {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 🎨 文章卡片头像懒加载图片例外 - 保持可见 */
+.post-list-avatar img.lazy,
+.post-list-avatar-img.lazy,
+.list-one .avatar.lazy,
+.list-three .avatar.lazy,
+.layout-single .avatar.lazy,
+.layout-three .avatar.lazy {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 🎨 评论头像懒加载图片例外 - 保持可见 */
+.comment-avatar img.lazy {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 🎨 单篇文章页面头像懒加载图片例外 - 保持可见 */
+.single-meta img.lazy {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 🎨 侧边栏和底部栏用户信息小部件头像懒加载图片例外 - 保持可见 */
+.blog-sidebar .widget-profile .profile-avatar img.lazy,
+.footer-widgets .widget-profile .profile-avatar img.lazy,
+.footer-bar .widget-profile .profile-avatar img.lazy {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
+/* 🎨 侧边栏和底部栏最新评论小部件头像懒加载图片例外 - 保持可见 */
+.blog-sidebar .widget-latest-comment .comment-avatar img.lazy,
+.footer-widgets .widget-latest-comment .comment-avatar img.lazy {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+}
+
 /* ⚡ 高性能模式 */
 @media (prefers-reduced-motion: reduce) {
     .shiroki-image-placeholder,
@@ -122,6 +202,56 @@ img.lazy.loaded {
     
     .post-list-img img,
     img.lazy {
+        transform: scale(1);
+        filter: blur(0);
+    }
+    
+    /* 🎨 头像区域高性能模式例外 */
+    .boxmoe_header .user-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    
+    /* 🎨 文章卡片头像高性能模式例外 */
+    .post-list-avatar img.lazy,
+    .post-list-avatar-img.lazy,
+    .list-one .avatar.lazy,
+    .list-three .avatar.lazy,
+    .layout-single .avatar.lazy,
+    .layout-three .avatar.lazy {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    
+    /* 🎨 评论头像高性能模式例外 */
+    .comment-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    
+    /* 🎨 单篇文章页面头像高性能模式例外 */
+    .single-meta img.lazy {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    
+    /* 🎨 侧边栏和底部栏用户信息小部件头像高性能模式例外 */
+    .blog-sidebar .widget-profile .profile-avatar img.lazy,
+    .footer-widgets .widget-profile .profile-avatar img.lazy,
+    .footer-bar .widget-profile .profile-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    
+    /* 🎨 侧边栏和底部栏最新评论小部件头像高性能模式例外 */
+    .blog-sidebar .widget-latest-comment .comment-avatar img.lazy,
+    .footer-widgets .widget-latest-comment .comment-avatar img.lazy {
+        opacity: 1;
         transform: scale(1);
         filter: blur(0);
     }
@@ -215,36 +345,62 @@ img.shiroki-error {
         transition-duration: 0.5s;
         transform: scale(0.9) translateY(8px);
     }
+    
+    /* 🎨 头像区域移动端例外 */
+    .boxmoe_header .user-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+    
+    /* 🎨 文章卡片头像移动端例外 */
+    .post-list-avatar img.lazy,
+    .post-list-avatar-img.lazy,
+    .list-one .avatar.lazy,
+    .list-three .avatar.lazy,
+    .layout-single .avatar.lazy,
+    .layout-three .avatar.lazy {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+    
+    /* 🎨 评论头像移动端例外 */
+    .comment-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+    
+    /* 🎨 单篇文章页面头像移动端例外 */
+    .single-meta img.lazy {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+    
+    /* 🎨 侧边栏和底部栏用户信息小部件头像移动端例外 */
+    .blog-sidebar .widget-profile .profile-avatar img.lazy,
+    .footer-widgets .widget-profile .profile-avatar img.lazy,
+    .footer-bar .widget-profile .profile-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+    
+    /* 🎨 侧边栏和底部栏最新评论小部件头像移动端例外 */
+    .blog-sidebar .widget-latest-comment .comment-avatar img.lazy,
+    .footer-widgets .widget-latest-comment .comment-avatar img.lazy {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
 }
 
 /* 🌟 悬停效果增强 */
 .shiroki-image-container:hover img.loaded {
     transform: scale(1.02);
     transition: transform 0.3s ease;
-}
-
-/* 🎨 主题色适配 */
-:root {
-    --shiroki-primary: #007bff;
-    --shiroki-secondary: #6c757d;
-    --shiroki-success: #28a745;
-    --shiroki-info: #17a2b8;
-    --shiroki-warning: #ffc107;
-    --shiroki-danger: #dc3545;
-    --shiroki-light: #f8f9fa;
-    --shiroki-dark: #343a40;
-}
-
-/* 🌆 暗色模式完整适配 */
-[data-bs-theme="dark"] {
-    --shiroki-primary: #0d6efd;
-    --shiroki-secondary: #6c757d;
-    --shiroki-success: #198754;
-    --shiroki-info: #0dcaf0;
-    --shiroki-warning: #ffc107;
-    --shiroki-danger: #dc3545;
-    --shiroki-light: #f8f9fa;
-    --shiroki-dark: #212529;
 }
 
 /* 🎯 最终优化：硬件加速 */
@@ -254,4 +410,18 @@ img.shiroki-error {
 img {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
+}
+
+/* 📄 禁用头像元素的图片占位符，避免白色遮罩层淡出效果 */
+.single-meta .shiroki-image-placeholder,
+.post-list-avatar .shiroki-image-placeholder,
+.post-list-avatar-img .shiroki-image-placeholder,
+.comment-avatar .shiroki-image-placeholder,
+.blog-sidebar .widget-profile .profile-avatar .shiroki-image-placeholder,
+.footer-widgets .widget-profile .profile-avatar .shiroki-image-placeholder,
+.footer-bar .widget-profile .profile-avatar .shiroki-image-placeholder,
+.blog-sidebar .widget-latest-comment .comment-avatar .shiroki-image-placeholder,
+.footer-widgets .widget-latest-comment .comment-avatar .shiroki-image-placeholder {
+    display: none !important;
+    opacity: 0 !important;
 }

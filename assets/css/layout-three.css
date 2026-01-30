@@ -105,7 +105,7 @@
     transition: all .4s cubic-bezier(.7,0,.3,1);
 }
 
-.layout-three .post-list-img img[src*="loadz.svg"] {
+.layout-three .post-list-img img[src*=""] {
     width: 100%;
     height: 200px;
     object-fit: contain;
@@ -235,6 +235,14 @@
     -webkit-clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%);
     clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%);
     border: 1px solid transparent;
+}
+
+/* 🎨 文章卡片头像懒加载占位图保持可见 */
+.layout-three .post-list-avatar img.lazy,
+.layout-three .avatar.lazy {
+    opacity: 1;
+    transform: scale(1);
+    background: transparent;
 }
 
 .layout-three .post-list-avatar {width: 40px;height: 40px;z-index: 0;float: left;position: relative;text-align: right;}

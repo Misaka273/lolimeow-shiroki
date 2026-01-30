@@ -2,11 +2,19 @@
 /**
  * Template Name: 友链分类版-纸鸢社
  * Description: 支持按链接分类显示的友链页面模板
- * Copyright: 白木 © 2025 保留所有权利
+ * Copyright: 白木 https://gl.baimu.live/
  */
 
 // 启用WP原生链接管理功能
 add_filter('pre_option_link_manager_enabled', '__return_true');
+
+// 检查页面是否受密码保护
+if (post_password_required()) {
+    get_header();
+    echo get_the_password_form();
+    get_footer();
+    exit;
+}
 
 // 页面前端展示
 get_header();
@@ -73,20 +81,25 @@ get_header();
 /* 🌸 友链卡片样式 */
 .shiroki-link-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 15px;
     margin-top: 20px;
 }
 
 .shiroki-link-card {
-    background: #fff;
+    background: #f8f9fa;
     border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     border: 1px solid #f0f0f0;
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #333;
+    text-shadow: none;
 }
 
 .shiroki-link-card::before {
@@ -95,62 +108,88 @@ get_header();
     top: 0;
     left: 0;
     width: 100%;
-    height: 3px;
-    background: linear-gradient(45deg, #ff6b9d, #fecfef);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(15px);
+    z-index: 1;
+    border-radius: 12px;
+    opacity: 0.3;
+}
+
+.shiroki-link-card > * {
+    position: relative;
+    z-index: 2;
 }
 
 .shiroki-link-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .shiroki-link-card:hover::before {
-    transform: scaleX(1);
+    filter: blur(10px);
+    opacity: 0.4;
+}
+
+/* 🌸 友链图标样式 */
+.shiroki-link-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shiroki-link-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 🌸 在线状态指示器 */
+.shiroki-link-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4caf50;
+    border: 2px solid #fff;
+}
+
+/* 🌸 友链信息样式 */
+.shiroki-link-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .shiroki-link-title {
     font-size: 16px;
     font-weight: 600;
     color: #333;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* 🎨 友链图标自适应样式 */
-.shiroki-link-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    object-fit: contain;
-    flex-shrink: 0;
-}
-
-/* 🎨 网站ICO自适应样式 */
-.shiroki-site-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
-    object-fit: contain;
-    border: 1px solid #e0e0e0;
-    flex-shrink: 0;
-}
-
 .shiroki-link-url {
-    font-size: 13px;
+    font-size: 12px;
     color: #666;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     word-break: break-all;
 }
 
 .shiroki-link-description {
-    font-size: 14px;
+    font-size: 13px;
     color: #777;
-    line-height: 1.5;
-    margin-bottom: 15px;
+    line-height: 1.4;
+    margin-bottom: 10px;
 }
 
 .shiroki-link-meta {
@@ -165,19 +204,30 @@ get_header();
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 5px 12px;
-    background: linear-gradient(45deg, #ff6b9d, #fecfef);
-    color: #fff;
-    border-radius: 15px;
+    padding: 4px 10px;
+    background: #f0f4ff;
+    color: #4a6cf7;
+    border-radius: 12px;
     text-decoration: none;
     font-size: 12px;
     transition: all 0.3s ease;
 }
 
 .shiroki-link-visit:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(255, 107, 157, 0.3);
+    background: #4a6cf7;
     color: #fff;
+    transform: none;
+    box-shadow: none;
+}
+
+/* 🎨 网站ICO自适应样式 */
+.shiroki-site-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    object-fit: contain;
+    border: 1px solid #e0e0e0;
+    flex-shrink: 0;
 }
 
 /* 🌸 响应式设计 */
@@ -236,18 +286,39 @@ get_header();
     .shiroki-link-card {
         background: #2d2d2d !important;
         border-color: #404040 !important;
+        color: #e0e0e0 !important;
+        text-shadow: none !important;
+    }
+    
+    .shiroki-link-card::before {
+        opacity: 0.2 !important;
     }
     
     .shiroki-link-title {
         color: #e0e0e0 !important;
     }
     
-    .shiroki-link-url {
+    .shiroki-link-description {
         color: #b0b0b0 !important;
     }
     
-    .shiroki-link-description {
+    .shiroki-link-category {
         color: #999 !important;
+    }
+    
+    .shiroki-link-visit {
+        background: #3a3a4a !important;
+        color: #b0b0b0 !important;
+    }
+    
+    .shiroki-link-visit:hover {
+        background: #4a6cf7 !important;
+        color: #fff !important;
+    }
+    
+    .shiroki-link-card:hover::before {
+        filter: blur(10px) !important;
+        opacity: 0.3 !important;
     }
     
     /* 🌆 友链申请区域 */
@@ -373,31 +444,36 @@ get_header();
                         // 获取链接图像
                         $link_image = !empty($link->link_image) ? $link->link_image : get_template_directory_uri() . '/assets/images/default-thumbnail.jpg';
                 ?>
-                <div class="shiroki-link-card <?php echo esc_attr($category_class); ?>">
-                    <div class="shiroki-link-title">
+                <div class="shiroki-link-card <?php echo esc_attr($category_class); ?>" data-bg="<?php echo esc_url($link_image); ?>">
+                    <div class="shiroki-link-avatar">
                         <?php if (!empty($link_image)) : ?>
-                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" class="shiroki-link-icon">
+                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                         <?php else : ?>
-                            <span style="font-size: 20px;">- </span>
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                                <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
+                            </div>
                         <?php endif; ?>
-                        <span><?php echo esc_html($link->link_name); ?></span>
+                        <div class="shiroki-link-status"></div>
                     </div>
-                    <div class="shiroki-link-url"><?php echo esc_url($link->link_url); ?></div>
-                    <div class="shiroki-link-description"><?php echo esc_html($description); ?></div>
-                    <div class="shiroki-link-meta">
-                        <span class="shiroki-link-category">
-                            <?php 
-                            if (!empty($link_cats)) {
-                                echo esc_html($link_cats[0]->name);
-                            } else {
-                                echo '未分类';
-                            }
-                            ?>
-                        </span>
-                        <a href="<?php echo esc_url($link->link_url); ?>" target="_blank" class="shiroki-link-visit">
-                            <span>访问</span>
-                            <span>→</span>
-                        </a>
+                    <div class="shiroki-link-info">
+                        <div class="shiroki-link-title">
+                            <span><?php echo esc_html($link->link_name); ?></span>
+                        </div>
+                        <div class="shiroki-link-description"><?php echo esc_html($description); ?></div>
+                        <div class="shiroki-link-meta">
+                            <span class="shiroki-link-category">
+                                <?php 
+                                if (!empty($link_cats)) {
+                                    echo esc_html($link_cats[0]->name);
+                                } else {
+                                    echo '未分类';
+                                }
+                                ?>
+                            </span>
+                            <a href="<?php echo esc_url($link->link_url); ?>" target="_blank" class="shiroki-link-visit">
+                                <span>访问</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <?php
@@ -440,23 +516,28 @@ get_header();
                         // 获取链接图像
                         $link_image = !empty($link->link_image) ? $link->link_image : get_template_directory_uri() . '/assets/images/default-thumbnail.jpg';
                 ?>
-                <div class="shiroki-link-card">
-                    <div class="shiroki-link-title">
+                <div class="shiroki-link-card" data-bg="<?php echo esc_url($link_image); ?>">
+                    <div class="shiroki-link-avatar">
                         <?php if (!empty($link_image)) : ?>
-                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>" class="shiroki-link-icon">
+                            <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                         <?php else : ?>
-                            <span style="font-size: 20px;">- </span>
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                                <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
+                            </div>
                         <?php endif; ?>
-                        <span><?php echo esc_html($link->link_name); ?></span>
+                        <div class="shiroki-link-status"></div>
                     </div>
-                    <div class="shiroki-link-url"><?php echo esc_url($link->link_url); ?></div>
-                    <div class="shiroki-link-description"><?php echo esc_html($description); ?></div>
-                    <div class="shiroki-link-meta">
-                        <span class="shiroki-link-category"><?php echo esc_html($category->name); ?></span>
-                        <a href="<?php echo esc_url($link->link_url); ?>" target="_blank" class="shiroki-link-visit">
-                            <span>访问</span>
-                            <span>→</span>
-                        </a>
+                    <div class="shiroki-link-info">
+                        <div class="shiroki-link-title">
+                            <span><?php echo esc_html($link->link_name); ?></span>
+                        </div>
+                        <div class="shiroki-link-description"><?php echo esc_html($description); ?></div>
+                        <div class="shiroki-link-meta">
+                            <span class="shiroki-link-category"><?php echo esc_html($category->name); ?></span>
+                            <a href="<?php echo esc_url($link->link_url); ?>" target="_blank" class="shiroki-link-visit">
+                                <span>访问</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <?php
@@ -572,9 +653,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 🎯 友链卡片悬停效果增强
+    // 🎯 设置友链卡片背景图片
     const linkCards = document.querySelectorAll('.shiroki-link-card');
     linkCards.forEach(card => {
+        // 获取背景图片URL
+        const bgUrl = card.getAttribute('data-bg');
+        if (bgUrl) {
+            // 创建一个新的样式规则，设置::before伪元素的背景图片
+            const style = document.createElement('style');
+            const uniqueClass = `card-bg-${Math.random().toString(36).substr(2, 9)}`;
+            card.classList.add(uniqueClass);
+            style.textContent = `
+                .${uniqueClass}::before {
+                    background-image: url('${bgUrl}');
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // 🎯 友链卡片悬停效果增强
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-8px) scale(1.02)';
         });
