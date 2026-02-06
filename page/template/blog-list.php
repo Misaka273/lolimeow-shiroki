@@ -151,7 +151,9 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                   </div>
                   <span class="list-post-author">
                     <i class="fa fa-at"></i><?php echo get_the_author(); ?>
+                    <?php if(!get_boxmoe('boxmoe_hide_publish_date_switch')): ?>
                     <span class="dot"></span><?php echo get_the_date(); ?></span>
+                    <?php endif; ?>
                 </div>
               </div>
             </div>

@@ -598,7 +598,8 @@ function boxmoe_duplicate_post_as_draft() {
         }
 
         $post_meta_infos = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id=$post_id");
-        if (count($post_meta_infos)!=0) {
+        // 🛡️ 使用 !empty() 替代 count()，兼容 PHP 8 且避免 null 警告
+        if (!empty($post_meta_infos)) {
             $sql_query = "INSERT INTO $wpdb->postmeta (post_id, meta_key, meta_value) ";
             $sql_query_sel = array();
             foreach ($post_meta_infos as $meta_info) {

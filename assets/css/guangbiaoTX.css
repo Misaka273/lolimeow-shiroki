@@ -1,0 +1,30 @@
+/**
+ * ✨ 鼠标移动流光特效样式
+ * 白木 🔗gl.baimu.live 开发
+ */
+
+/* 🎯 光标动画容器 */
+#guangbiao-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* ◀️ 不阻塞鼠标操作 */
+  z-index: 9999; /* ◀️ 确保在最上层 */
+}
+
+/* ⭐ 流光小星星样式 */
+#guangbiao-container .star {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  color: rgb(4, 0, 255);
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+#guangbiao-container .star::before {
+  content: "✦";
+  color: inherit;
+  inset: 0;
+  position: absolute;
+  text-shadow: 0 0 1em rgba(133, 182, 255, 0.384);
+}

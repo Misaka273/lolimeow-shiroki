@@ -1,0 +1,103 @@
+/**
+ * 🖱️ 自定义鼠标光标样式
+ * 白木 🔗gl.baimu.live 开发
+ */
+
+/* 🎯 基础光标设置 - 默认状态 */
+body.custom-cursor-enabled,
+body.custom-cursor-enabled * {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* ✏️ 文本输入框光标 - input、textarea 等元素 */
+body.custom-cursor-enabled input[type="text"],
+body.custom-cursor-enabled input[type="email"],
+body.custom-cursor-enabled input[type="password"],
+body.custom-cursor-enabled input[type="search"],
+body.custom-cursor-enabled input[type="url"],
+body.custom-cursor-enabled input[type="tel"],
+body.custom-cursor-enabled input[type="number"],
+body.custom-cursor-enabled textarea,
+body.custom-cursor-enabled [contenteditable="true"] {
+  cursor: var(--cursor-handwriting, text) !important;
+}
+
+/* 📖 文本框选光标 - 可选中的文本元素 */
+body.custom-cursor-enabled p,
+body.custom-cursor-enabled span,
+body.custom-cursor-enabled h1,
+body.custom-cursor-enabled h2,
+body.custom-cursor-enabled h3,
+body.custom-cursor-enabled h4,
+body.custom-cursor-enabled h5,
+body.custom-cursor-enabled h6 {
+  cursor: var(--cursor-ibeam, text) !important;
+}
+
+/* 📦 容器元素使用默认箭头光标 */
+body.custom-cursor-enabled div,
+body.custom-cursor-enabled article,
+body.custom-cursor-enabled section,
+body.custom-cursor-enabled main,
+body.custom-cursor-enabled aside,
+body.custom-cursor-enabled header,
+body.custom-cursor-enabled footer,
+body.custom-cursor-enabled nav {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* ⏳ 加载中光标 - 页面加载状态 */
+body.custom-cursor-enabled.custom-cursor-loading,
+body.custom-cursor-enabled.custom-cursor-loading * {
+  cursor: var(--cursor-appstarting, wait) !important;
+}
+
+/* 🔗 链接和按钮保持指针样式，但使用自定义光标 */
+body.custom-cursor-enabled a,
+body.custom-cursor-enabled button,
+body.custom-cursor-enabled [role="button"],
+body.custom-cursor-enabled .btn,
+body.custom-cursor-enabled input[type="submit"],
+body.custom-cursor-enabled input[type="button"] {
+  cursor: var(--cursor-arrow, pointer) !important;
+}
+
+/* 🖼️ 图片和多媒体元素 */
+body.custom-cursor-enabled img,
+body.custom-cursor-enabled video,
+body.custom-cursor-enabled audio,
+body.custom-cursor-enabled canvas,
+body.custom-cursor-enabled iframe {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* 🚫 禁用状态的元素 */
+body.custom-cursor-enabled *[disabled],
+body.custom-cursor-enabled .disabled {
+  cursor: var(--cursor-arrow, not-allowed) !important;
+}
+
+/* 🎯 选中文本时的光标 - 使用默认箭头 */
+body.custom-cursor-enabled ::selection {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* 📌 鼠标按下拖拽选中文本时的光标 */
+body.custom-cursor-enabled:active,
+body.custom-cursor-enabled *:active {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* 📝 在文本元素上按下鼠标时的光标 */
+body.custom-cursor-enabled p:active,
+body.custom-cursor-enabled span:active,
+body.custom-cursor-enabled h1:active,
+body.custom-cursor-enabled h2:active,
+body.custom-cursor-enabled h3:active,
+body.custom-cursor-enabled h4:active,
+body.custom-cursor-enabled h5:active,
+body.custom-cursor-enabled h6:active,
+body.custom-cursor-enabled li:active,
+body.custom-cursor-enabled td:active {
+  cursor: var(--cursor-ibeam, text) !important;
+}

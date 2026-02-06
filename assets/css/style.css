@@ -1886,7 +1886,7 @@ background: rgba(0, 0, 0, .25);}
 @keyframes panelSlideDown {from {transform:translateY(-100%);opacity:0;}
 to {transform:translateY(0);opacity:1;}
 }
-@media screen and (max-width:991px) {.boxmoe_header .navbar-brand img,.boxmoe_header .offcanvas-header img {width:120px;height:auto;}
+@media screen and (max-width:991px) {.boxmoe_header .navbar-brand img,.boxmoe_header .offcanvas-header img {height:auto;}
 }
 @keyframes spin {0% {transform:rotate(0deg)}
 100% {transform:rotate(360deg)}
@@ -1896,6 +1896,16 @@ to {transform:translateY(0);opacity:1;}
 }
 @keyframes gradient {0% {background-position:0% 50%;}
 100% {background-position:100% 50%;}
+}
+/* 🌟 LOGO呼吸动画 - 每8秒轻微放大缩小 */
+@keyframes logo-breathe {
+  0%, 100% {transform: scale(1);}
+  50% {transform: scale(1.08);}
+}
+/* 🌟 LOGO呼吸动画应用类 */
+.boxmoe_header .navbar-brand img.logo-breathe,
+.boxmoe_header .offcanvas-header img.logo-breathe {
+  animation: logo-breathe 8s ease-in-out infinite;
 }
 /* 📋 文章列表布局 */
 .list-one.post-list {position:relative;display:flex;flex-wrap:wrap;align-items:center;padding:10px;border-radius:var(--bs-border-radius-lg) !important;background:none;margin-bottom:2.5rem;transition:all 0.3s ease;}
@@ -3592,30 +3602,288 @@ hr:not([size]) {height:1px}
 /* 文章导读样式 */
 .post-toc-container {position:relative;opacity:0;visibility:hidden;transition:opacity 0.3s ease,visibility 0.3s ease;}
 .post-toc-container.visible {opacity:1;visibility:visible;}
-/* ✨ 目录按钮脉动动画 */
-@keyframes tocBtnPulse {
-    0%, 100% {transform: translateY(-50%) scale(1);}
-    50% {transform: translateY(-50%) scale(1.1);}
+
+/* 📊 SVG 圆形阅读进度指示器按钮 */
+.post-toc-btn {
+    position: fixed;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 56px;
+    height: 56px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 101;
 }
 
-.post-toc-btn {position:fixed;left:30px;top:50%;transform:translateY(-50%);cursor:pointer;width:40px;height:40px;line-height:35px;text-align:center;border: 2px solid var(--bs-dark);border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,0,0.1);transition:all 0.3s ease;opacity:0;visibility:hidden;animation: tocBtnPulse 2s ease-in-out infinite;}
-
-/* 📋 目录打开后暂停按钮动画 */
-.post-toc-container .post-toc.show + .post-toc-btn {
-    animation-play-state: paused;
+.post-toc-btn.visible {
+    opacity: 1;
+    visibility: visible;
 }
-.post-toc-btn.visible {opacity:1;visibility:visible;}
-.post-toc {display:none;position:fixed;left:80px;top:20%;width:400px;max-height:60vh;background:var(--bs-white);border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,0.1);padding:15px;z-index:100;}
-.post-toc.show {display:block;}
-.toc-title {font-size:16px;font-weight:bold;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid #eee;}
-.toc-list {display:flex;flex-direction:column;gap:8px;max-height:calc(60vh - 50px);overflow-y:auto;padding-right:5px;}
 
-/* 🎨 目录文字链接 - 移除圆角粉色下边框，保留文字颜色和悬停效果 */
-.toc-list a {position:relative;color:#0000ff;font-size:0.88rem;font-weight:500;text-decoration:none;transition:all 0.3s ease;padding:2px 6px}
+/* 🎯 进度 SVG 样式 */
+.toc-progress-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+/* ☀️ 背景圆环 */
+.toc-progress-bg {
+    fill: var(--bs-white, #ffffff);
+    stroke: var(--bs-gray-300, #dee2e6);
+    stroke-width: 3;
+}
+
+/* 🌈 进度圆环 */
+.toc-progress-bar {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 276.46;
+    stroke-dashoffset: 276.46;
+    transition: stroke-dashoffset 0.1s ease;
+}
+
+/* 🌆 暗色模式下的进度条「使用 SVG 渐变定义」*/
+[data-bs-theme="dark"] .toc-progress-bar {
+    stroke: url(#toc-gradient-dark);
+}
+
+[data-bs-theme="dark"] .toc-progress-bg {
+    fill: var(--bs-dark, #212529);
+    stroke: var(--bs-gray-600, #6c757d);
+}
+
+/* 📖 中心图标容器 */
+.toc-icon-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bs-dark, #212529);
+    font-size: 18px;
+    transform: rotate(90deg);
+}
+
+[data-bs-theme="dark"] .toc-icon-wrapper {
+    color: var(--bs-light, #f8f9fa);
+}
+
+/* 📈 进度百分比文字 */
+.toc-progress-text {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bs-dark, #212529);
+    background: var(--bs-white, #ffffff);
+    padding: 2px 6px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.post-toc-btn:hover .toc-progress-text,
+.post-toc-btn.active .toc-progress-text {
+    opacity: 1;
+}
+
+[data-bs-theme="dark"] .toc-progress-text {
+    color: var(--bs-light, #f8f9fa);
+    background: var(--bs-dark, #212529);
+}
+
+/* 🎯 轮盘展开式菜单 */
+.toc-wheel-menu {
+    position: fixed;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.toc-wheel-item {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bs-white, #ffffff);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0) translate(0, 0);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: auto;
+    left: 6px;
+    top: 6px;
+}
+
+/* 🎨 轮盘项悬停效果「保持位移同时轻微放大+变色」*/
+.toc-wheel-menu.show .toc-wheel-item[data-action="toc"]:hover {
+    transform: scale(1.1) translate(63px, -45px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.toc-wheel-menu.show .toc-wheel-item[data-action="top"]:hover {
+    transform: scale(1.1) translate(72px, 0);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.toc-wheel-menu.show .toc-wheel-item[data-action="bottom"]:hover {
+    transform: scale(1.1) translate(63px, 45px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+[data-bs-theme="dark"] .toc-wheel-item {
+    background: var(--bs-dark, #212529);
+    color: var(--bs-light, #f8f9fa);
+    box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+}
+
+.wheel-item-text {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* 🎡 轮盘展开动画 - 三个项目呈弧形展开 */
+.toc-wheel-menu.show .toc-wheel-item[data-action="toc"] {
+    opacity: 1;
+    transform: scale(1) translate(70px, -50px);
+}
+
+.toc-wheel-menu.show .toc-wheel-item[data-action="top"] {
+    opacity: 1;
+    transform: scale(1) translate(80px, 0);
+    transition-delay: 0.05s;
+}
+
+.toc-wheel-menu.show .toc-wheel-item[data-action="bottom"] {
+    opacity: 1;
+    transform: scale(1) translate(70px, 50px);
+    transition-delay: 0.1s;
+}
+
+/* 📋 文章目录面板 */
+.post-toc {
+    display: none;
+    position: fixed;
+    left: 120px;
+    top: 15%;
+    width: 380px;
+    max-height: 70vh;
+    background: var(--bs-white, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 99;
+    opacity: 0;
+    transform: translateX(-20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.post-toc.show {
+    display: block;
+    opacity: 1;
+    transform: translateX(0) scale(1);
+}
+
+[data-bs-theme="dark"] .post-toc {
+    background: var(--bs-dark, #212529);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.toc-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* 🎨 标题底部渐变线 */
+.toc-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 1px;
+}
+
+.toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: calc(70vh - 60px);
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* 🎨 目录文字链接样式 */
+.toc-list a {
+    position: relative;
+    color: var(--bs-dark, #212529);
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border-left: 3px solid transparent;
+}
+
+[data-bs-theme="dark"] .toc-list a {
+    color: var(--bs-light, #f8f9fa);
+}
 
 /* 💖 目录链接悬停/活跃效果 */
-.toc-list a:hover,.toc-list a.active{background-color:#ff69b4;color:#ffffff;border-radius:4px;transform:translateX(5px)}
-@media (max-width:991px) {.post-toc-btn,.post-toc {display:none;}
+.toc-list a:hover,
+.toc-list a.active {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    color: #667eea;
+    border-left-color: #667eea;
+    transform: translateX(5px);
+}
+
+[data-bs-theme="dark"] .toc-list a:hover,
+[data-bs-theme="dark"] .toc-list a.active {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+    color: #a78bfa;
+    border-left-color: #a78bfa;
+}
+
+/* 📱 移动端隐藏 */
+@media (max-width: 991px) {
+    .post-toc-btn,
+    .post-toc,
+    .toc-wheel-menu {
+        display: none !important;
+    }
 }
 
 /* 扁平风格滚动条样式 */
@@ -4598,6 +4866,61 @@ footer .logo {height:35px;}
 .single-content code{white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere;max-width:100%}
 .single-content .wp-block-code,.single-content .wp-block-preformatted{max-width:100%;overflow:auto}
 .single-content .wp-block-code code{white-space:pre}
+/* 📦 代码块折叠功能样式 */
+.code-block-collapse-wrapper {
+    position: relative;
+    margin: 15px 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.code-block-collapse-wrapper pre,
+.code-block-collapse-wrapper code,
+.code-block-collapse-wrapper .hljs,
+.code-block-collapse-wrapper .prettyprint,
+.code-block-collapse-wrapper .highlight {
+    transition: max-height 0.3s ease;
+    position: relative;
+}
+.code-block-collapse-wrapper .code-block-collapsed {
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+.code-block-collapse-toggle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+    border: none;
+    color: #fff;
+    padding: 20px 10px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+.code-block-collapse-toggle:hover {
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.9));
+    transform: translateY(-2px);
+}
+.code-block-collapse-toggle i {
+    transition: transform 0.3s ease;
+}
+.code-block-collapse-toggle:hover i {
+    transform: scale(1.2);
+}
+/* 🌆 暗色模式下的代码块折叠按钮 */
+[data-bs-theme="dark"] .code-block-collapse-toggle {
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2));
+    color: #fff;
+}
+[data-bs-theme="dark"] .code-block-collapse-toggle:hover {
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3));
+}
 .boxmoe-container .col-lg-8{min-width:0}
 .copyright .runtime-line .runtime-num {display:inline-block;font-weight:600;}
 .copyright .query-time span {display:inline;}

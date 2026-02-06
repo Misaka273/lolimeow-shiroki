@@ -154,6 +154,7 @@ require_once  get_stylesheet_directory() . '/core/module/fun-fonts.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-markdown.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-submenu.php'; // ⬅️ 引入子菜单整合功能
 require_once  get_stylesheet_directory() . '/core/module/fun-post-follow.php'; // ⬅️ 引入关注文章功能
+require_once  get_stylesheet_directory() . '/core/module/fun-theme-update.php'; // ⬅️ 引入主题更新检查功能
 // 验证码功能模块，由初叶🍂www.chuyel.top构建集成
 require_once get_stylesheet_directory() . '/core/module/fun-captcha.php';
 // 🔽 由初叶🍂www.chuyel.top提供，白木🥰gl.baimu.live集成
@@ -2779,3 +2780,118 @@ function shiroki_enqueue_link_icon_script() {
     );
 }
 add_action('wp_enqueue_scripts', 'shiroki_enqueue_link_icon_script', 25);
+
+// 📦 引入代码块折叠功能
+function shiroki_enqueue_code_block_collapse_script() {
+    // 🔍 检查是否开启代码块折叠功能
+    if (get_boxmoe('boxmoe_code_block_collapse_switch')) {
+        wp_enqueue_script(
+            'shiroki-code-block-collapse',
+            get_template_directory_uri() . '/assets/js/code-block-collapse.js',
+            array(),
+            '1.0.0',
+            true
+        );
+        
+        // 🔗 传递配置参数到前端
+        wp_localize_script('shiroki-code-block-collapse', 'codeBlockCollapseConfig', array(
+            'switch' => get_boxmoe('boxmoe_code_block_collapse_switch') ? 1 : 0,
+            'height' => get_boxmoe('boxmoe_code_block_collapse_height', 80)
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_code_block_collapse_script', 30);
+
+// 🔗 在footer中输出配置参数
+function shiroki_code_block_collapse_config_output() {
+    if (get_boxmoe('boxmoe_code_block_collapse_switch')) {
+        ?>
+        <script>
+        window.boxmoe_code_block_collapse_switch = <?php echo get_boxmoe('boxmoe_code_block_collapse_switch') ? 'true' : 'false'; ?>;
+        window.boxmoe_code_block_collapse_height = <?php echo get_boxmoe('boxmoe_code_block_collapse_height', 80); ?>;
+        </script>
+        <?php
+    }
+}
+add_action('wp_footer', 'shiroki_code_block_collapse_config_output', 5);
+
+// ✨ 加载鼠标移动流光特效
+function shiroki_enqueue_guangbiao_tx_script() {
+    // 🔍 检查是否开启鼠标移动特效
+    if (get_boxmoe('boxmoe_guangbiao_tx_switch')) {
+        // 🎨 加载特效样式
+        wp_enqueue_style(
+            'shiroki-guangbiao-tx',
+            get_template_directory_uri() . '/assets/css/guangbiaoTX.css',
+            array(),
+            '1.0.0'
+        );
+
+        // 📜 加载特效脚本
+        wp_enqueue_script(
+            'shiroki-guangbiao-tx',
+            get_template_directory_uri() . '/assets/js/guangbiaoTX.js',
+            array(),
+            '1.0.0',
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_guangbiao_tx_script', 35);
+
+// 🖱️ 加载自定义鼠标光标样式
+function shiroki_enqueue_custom_cursor_script() {
+    // 🔍 检查是否开启自定义光标
+    if (get_boxmoe('boxmoe_custom_cursor_switch')) {
+        // 🎨 加载光标样式
+        wp_enqueue_style(
+            'shiroki-custom-cursor',
+            get_template_directory_uri() . '/assets/css/custom-cursor.css',
+            array(),
+            '1.0.0'
+        );
+
+        // 📜 加载光标控制脚本
+        wp_enqueue_script(
+            'shiroki-custom-cursor',
+            get_template_directory_uri() . '/assets/js/custom-cursor.js',
+            array(),
+            '1.0.0',
+            true
+        );
+
+        // 🎯 准备光标配置数据
+        $cursor_config = array(
+            'arrow' => get_boxmoe('boxmoe_cursor_arrow') ?: get_template_directory_uri() . '/assets/guangbiao/Arrow.png',
+            'handwriting' => get_boxmoe('boxmoe_cursor_handwriting') ?: get_template_directory_uri() . '/assets/guangbiao/Handwriting.png',
+            'ibeam' => get_boxmoe('boxmoe_cursor_ibeam') ?: get_template_directory_uri() . '/assets/guangbiao/IBeam.png',
+            'appstarting' => get_boxmoe('boxmoe_cursor_appstarting') ?: get_template_directory_uri() . '/assets/guangbiao/AppStarting.png',
+        );
+
+        // 💉 注入配置到前端
+        wp_localize_script('shiroki-custom-cursor', 'shirokiCursorConfig', $cursor_config);
+    }
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_custom_cursor_script', 36);
+
+// 🌟 LOGO呼吸动画 - 输出动态CSS变量和脚本
+function shiroki_logo_breathe_output() {
+    // 🔍 检查是否开启LOGO呼吸动画
+    if (get_boxmoe('boxmoe_logo_breathe_switch')) {
+        // ⏱️ 获取动画周期，默认8秒
+        $duration = get_boxmoe('boxmoe_logo_breathe_duration', '8');
+        // 🛡️ 确保是数字
+        $duration = is_numeric($duration) ? intval($duration) : 8;
+        $duration = max(1, min(60, $duration)); // ◀️ 限制在1-60秒之间
+        ?>
+        <style>
+            /* 🌟 LOGO呼吸动画动态样式 */
+            .boxmoe_header .navbar-brand img,
+            .boxmoe_header .offcanvas-header img {
+                animation: logo-breathe <?php echo $duration; ?>s ease-in-out infinite;
+            }
+        </style>
+        <?php
+    }
+}
+add_action('wp_head', 'shiroki_logo_breathe_output', 20);

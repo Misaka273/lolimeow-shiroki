@@ -5,6 +5,33 @@
 
 jQuery(document).ready(function($) {
 
+	// 后台主题设置的卡片边框样式  🔗 gl.baimu.live 
+	var colors = [
+		{border: '#d56ec7', top: '#50aaee'},
+		{border: '#d56ec7', top: '#d56ec7'},
+		{border: '#e37e55', top: '#e37e55'},
+		{border: '#ebbd41', top: '#ebbd41'},
+		{border: '#6f4869', top: '#6f4869'},
+		{border: '#d510b7', top: '#d510b7'},
+		{border: '#6c69e3', top: '#6c69e3'},
+		{border: '#234521', top: '#234521'},
+		{border: '#2271b1', top: '#2271b1'},
+		{border: '#4f94d4', top: '#4f94d4'},
+		{border: '#a7aaad', top: '#a7aaad'},
+		{border: '#eb2d0c', top: '#eb2d0c'},
+		{border: '#70291d', top: '#70291d'},
+		{border: '#6594db', top: '#6594db'},
+		{border: '#b3d41d', top: '#b3d41d'},
+		{border: '#d352c2', top: '#d352c2'}
+	];
+	$('.section.col').each(function(index) {
+		var color = colors[index % colors.length];
+		$(this).css({
+			'border': '1px solid ' + color.border,
+			'border-top': '4px solid ' + color.top
+		});
+	});
+
 	// Loads the color pickers
 	$('.of-color').wpColorPicker();
 

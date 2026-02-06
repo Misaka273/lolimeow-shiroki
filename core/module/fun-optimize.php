@@ -354,3 +354,95 @@ function boxmoe_filter_upload_size_limit($size) {
     return min($size, $limit_bytes);
 }
 add_filter('upload_size_limit', 'boxmoe_filter_upload_size_limit');
+
+// 🧹 移除前端HTML注释功能--------------------------boxmoe.com--------------------------
+if(get_boxmoe('boxmoe_remove_html_comments_switch')){
+    function boxmoe_remove_html_comments_start() {
+        // 只在非管理后台且不是AJAX请求时启用
+        if (!is_admin() && !wp_doing_ajax()) {
+            ob_start('boxmoe_remove_html_comments_callback');
+        }
+    }
+    add_action('wp', 'boxmoe_remove_html_comments_start', 0);
+
+    function boxmoe_remove_html_comments_callback($buffer) {
+        // 🧹 移除HTML注释，但保留IE条件注释和noindex等特殊注释
+        // 匹配 <!-- ... --> 格式的注释，但保留 <!--[if ...]> 和 <![endif]--> 等条件注释
+        $buffer = preg_replace('/<!--(?![\s]*\[if)(?![\s]*<!)(?![\s]*noindex)(?![\s]*\/noindex)[\s\S]*?-->/i', '', $buffer);
+        
+        // 🧹 移除<script>标签内的JS单行注释 //（保留URL中的//）
+        $buffer = preg_replace_callback('/<script[^>]*>[\s\S]*?<\/script>/i', function($matches) {
+            $script = $matches[0];
+            // 移除 // 开头的注释，但保留 http:// 和 https://
+            $script = preg_replace('/^[\s]*\/\/.*$/m', '', $script);
+            // 移除 /* */ 多行注释
+            $script = preg_replace('/\/\*[\s\S]*?\*\//', '', $script);
+            return $script;
+        }, $buffer);
+        
+        // 🧹 移除<style>标签内的CSS注释 /* */
+        $buffer = preg_replace_callback('/<style[^>]*>[\s\S]*?<\/style>/i', function($matches) {
+            $style = $matches[0];
+            // 移除 /* */ 多行注释
+            $style = preg_replace('/\/\*[\s\S]*?\*\//', '', $style);
+            return $style;
+        }, $buffer);
+        
+        return $buffer;
+    }
+
+    function boxmoe_remove_html_comments_end() {
+        if (!is_admin() && !wp_doing_ajax() && ob_get_level() > 0) {
+            ob_end_flush();
+        }
+    }
+    add_action('shutdown', 'boxmoe_remove_html_comments_end', 0);
+}
+
+// ⌨️ 禁用F12开发者工具和Ctrl+S保存网页功能--------------------------boxmoe.com--------------------------
+if(get_boxmoe('boxmoe_disable_f12_switch') || get_boxmoe('boxmoe_disable_ctrl_s_switch')){
+    function boxmoe_disable_keyboard_shortcuts_script() {
+        // 只在非管理后台且不是AJAX请求时启用
+        if (!is_admin() && !wp_doing_ajax()) {
+            $disable_f12 = get_boxmoe('boxmoe_disable_f12_switch') ? 'true' : 'false';
+            $disable_ctrl_s = get_boxmoe('boxmoe_disable_ctrl_s_switch') ? 'true' : 'false';
+            ?>
+            <script>
+            // ⌨️ 键盘快捷键拦截功能
+            (function() {
+                'use strict';
+                
+                var disableF12 = <?php echo $disable_f12; ?>;
+                var disableCtrlS = <?php echo $disable_ctrl_s; ?>;
+                
+                // 🔒 拦截键盘事件
+                document.addEventListener('keydown', function(e) {
+                    // 🛡️ 禁用F12键
+                    if (disableF12 && e.key === 'F12') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                    
+                    // 🛡️ 禁用Ctrl+S保存网页
+                    if (disableCtrlS && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                }, true);
+                
+                // 🔒 额外防护：拦截右键菜单中的【检查】选项
+                if (disableF12) {
+                    document.addEventListener('contextmenu', function(e) {
+                        // 允许正常的右键菜单，但某些浏览器可以通过右键菜单打开开发者工具
+                        // 这里不做完全禁用，只保留基本功能
+                    });
+                }
+            })();
+            </script>
+            <?php
+        }
+    }
+    add_action('wp_footer', 'boxmoe_disable_keyboard_shortcuts_script', 999);
+}

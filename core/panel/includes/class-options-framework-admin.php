@@ -218,7 +218,7 @@ class Options_Framework_Admin {
 		<div class="el-button" style="padding: 8px 16px; line-height: 1.5; display: inline-block; text-align: center;">
 			<a href="https://www.boxmoe.com/706.html" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: none;">📃在线文档</a>  
 			🚀V<?php echo THEME_VERSION; ?>  
-			🎉更新日期：2026-01-31<br>
+			🎉更新日期：2026-02-07<br>
 			🥰本主题二次创作 <a href="https://gl.baimu.live/864" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: underline;">🕊️白木</a>
 		</div>
 		</div>			
@@ -475,12 +475,14 @@ document.addEventListener('DOMContentLoaded', function() {
 				}
 			}
 
-			// 无论是否有清理过滤器，都要包含该选项
-			if ( has_filter( 'of_sanitize_' . $option['type'] ) ) {
-				$clean[$id] = apply_filters( 'of_sanitize_' . $option['type'], $input[$id], $option );
-			} else {
-				// 对于没有清理过滤器的选项，直接使用输入值
-				$clean[$id] = $input[$id];
+			// 🛡️ 无论是否有清理过滤器，都要包含该选项
+			if ( isset( $input[$id] ) ) {
+				if ( has_filter( 'of_sanitize_' . $option['type'] ) ) {
+					$clean[$id] = apply_filters( 'of_sanitize_' . $option['type'], $input[$id], $option );
+				} else {
+					// ◀️ 对于没有清理过滤器的选项，直接使用输入值
+					$clean[$id] = $input[$id];
+				}
 			}
 		}
 

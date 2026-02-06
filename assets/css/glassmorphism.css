@@ -604,9 +604,9 @@
         inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
 }
 
-/* ☀️ 导航栏链接白色文本 */
+/* ☀️ 导航栏链接 */
 .boxmoe_header .navbar .navbar-nav .nav-item .nav-link {
-    color: #ffffff;
+    color: #000000;
 }
 
 [data-bs-theme="dark"] .navbar.blog-glass {
@@ -619,7 +619,7 @@
         inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
-/* 🌆 导航栏链接白色文本 */
+/* 🌆 导航栏链接 */
 [data-bs-theme="dark"] .boxmoe_header .navbar .navbar-nav .nav-item .nav-link {
     color: #ffffff;
 }

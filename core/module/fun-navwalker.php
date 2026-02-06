@@ -69,11 +69,12 @@ class bootstrap_5_wp_nav_menu_walker extends Walker_Nav_menu
         $icon_html = '<img src="' . esc_url($icon_url) . '" alt="' . esc_attr($item->title) . '" class="shiroki-menu-icon" style="vertical-align: middle;" /> ';
     }
     
-    $item_output = $args->before;
+    // 🛡️ 使用 null 合并运算符确保属性存在，兼容 PHP 8
+    $item_output = $args->before ?? '';
     $item_output .= '<a' . $attributes . '>';
-    $item_output .= $args->link_before . $icon_html . $item->title . $args->link_after;
+    $item_output .= ($args->link_before ?? '') . $icon_html . $item->title . ($args->link_after ?? '');
     $item_output .= '</a>';
-    $item_output .= $args->after;
+    $item_output .= $args->after ?? '';
 
     $output .= $indent . "\t" . apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
   }

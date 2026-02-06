@@ -70,7 +70,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                                  <div class="card-body py-lg-3 px-lg-4">
                                     <div class="mb-5">
                                        <h6>累计评论</h6>
-                                       <h4><?php global $user_ID;echo get_comments('count=true&user_id='.$user_ID);?>条</h4>
+                                       <h4><?php echo get_comments('count=true&user_id='.get_current_user_id());?>条</h4>
                                     </div>
                                     <a href="?items=comment" class="icon-link icon-link-hover text-primary">
                                        查看评论记录

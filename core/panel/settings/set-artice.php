@@ -10,10 +10,10 @@ if(!defined('ABSPATH')){
     exit;
 }
 
-$options[] = array(
-    'name' => __('文章设置', 'ui_boxmoe_com'),
-    'icon' => 'dashicons-admin-post',
-    'type' => 'heading');
+    $options[] = array(
+       'name' => __('文章设置', 'ui_boxmoe_com'),
+       'icon' => 'dashicons-admin-post',
+       'type' => 'heading');
 
     $options[] = array(
         'name' => __('文章新窗口打开开关', 'ui_boxmoe_com'),
@@ -28,6 +28,21 @@ $options[] = array(
         'type' => "checkbox",
         'std' => false,
         'desc' => __('若开启则开启所有文章形式支持', 'ui_boxmoe_com'),
+        );
+    // 🕐 隐藏文章时间功能
+    $options[] = array(
+        'name' => __('隐藏文章发布时间', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_hide_publish_date_switch',
+        'type' => "checkbox",
+        'std' => false,
+        'desc' => __('若开启则隐藏文章发布时间', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'name' => __('隐藏文章更新时间', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_hide_modified_date_switch',
+        'type' => "checkbox",
+        'std' => false,
+        'desc' => __('若开启则隐藏文章最新更新时间', 'ui_boxmoe_com'),
         );
     $options[] = array(
         'name' => __('首页文章显示数量', 'ui_boxmoe_com'),
@@ -60,12 +75,14 @@ $options[] = array(
         'class' => 'mini',
         );
     $options[] = array(
-        'group' => 'end',
         'name' => __('缩略图高度', 'ui_boxmoe_com'),
         'id' => 'boxmoe_article_thumbnail_height',
         'type' => "text",
         'std' => '200',
         'class' => 'mini',
+        );
+    $options[] = array(
+        'group' => 'end',
         );
     $options[] = array(
         'group' => 'start',
@@ -77,18 +94,20 @@ $options[] = array(
         'desc' => __('文章缩略图随机API仅在文章没有设置缩略图时生效', 'ui_boxmoe_com'),
         );  
     $options[] = array(
-        'group' => 'end',
         'name' => __('文章缩略图随机API URL', 'ui_boxmoe_com'),
         'id' => 'boxmoe_article_thumbnail_random_api_url',
         'type' => "text",
         'class' => '',
         'std' => 'https://mu.baimu.live/img/acg/',
         'desc' => __('文章缩略图随机API URL', 'ui_boxmoe_com'),
-        );  
-        $options[] = array(
-            'type' => 'info',
-            'group' => 'start',
-            'group_title' => '文章页左下角看板娘设置',
+        );
+    $options[] = array(
+        'group' => 'end',
+        );
+    $options[] = array(
+        'type' => 'info',
+        'group' => 'start',
+        'group_title' => '文章页左下角看板娘设置',
         );
         $options[] = array(
             'name' => __('文章卡片看板娘图片', 'ui_boxmoe_com'),
@@ -130,7 +149,28 @@ $options[] = array(
         'std' => '无法提供摘要。这是一篇受保护的文章。',
         'desc' => __('用于受密码保护的文章在列表中的摘要说明', 'ui_boxmoe_com'),
     );
-    $options[] = array(    
+    // 📦 代码块折叠功能
+    $options[] = array(
+        'group' => 'start',
+        'group_title' => '代码块折叠设置',
+        'name' => __('代码块折叠开关', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_code_block_collapse_switch',
+        'type' => "checkbox",
+        'std' => true,
+        'desc' => __('若开启则自动折叠超长代码块', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'name' => __('代码块折叠高度', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_code_block_collapse_height',
+        'type' => "text",
+        'std' => '80',
+        'class' => 'mini',
+        'desc' => __('设置代码块折叠的高度，单位px，默认80px', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'group' => 'end',
+        );
+    $options[] = array(
         'group' => 'start',
         'group_title' => '文章打赏&点赞设置',
         'name' => __('点赞开关', 'ui_boxmoe_com'),
@@ -145,7 +185,6 @@ $options[] = array(
         'std' => false,
         'desc' => __('若开启则显示打赏按钮', 'ui_boxmoe_com'),
         );
-
     $options[] = array(
         'name' => __('打赏二维码-微信', 'ui_boxmoe_com'),
         'id' => 'boxmoe_reward_qrcode_weixin',
@@ -154,20 +193,27 @@ $options[] = array(
         'desc' => __('打赏二维码-微信二维码地址', 'ui_boxmoe_com'),
         );
     $options[] = array(
-        'group' => 'end',
         'name' => __('打赏二维码-支付宝', 'ui_boxmoe_com'),
         'id' => 'boxmoe_reward_qrcode_alipay',
         'type' => "text",
         'std' => '',
         'desc' => __('打赏二维码-支付宝二维码地址', 'ui_boxmoe_com'),
         );
+    $options[] = array(
+        'group' => 'end',
+        );
     // 复制带版权功能 - - YI KAN博客提供功能代码
     $options[] = array(
+        'group' => 'start',
+        'group_title' => '复制带版权设置',
         'name' => __('复制带版权开关', 'ui_boxmoe_com'),
         'id' => 'boxmoe_copy_copyright_switch',
         'type' => "checkbox",
         'std' => false,
         'desc' => __('若开启则在用户复制内容时自动添加版权信息', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'group' => 'end',
         );
     
     

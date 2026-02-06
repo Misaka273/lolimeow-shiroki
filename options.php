@@ -63,6 +63,8 @@ require_once get_template_directory() . '/core/panel/settings/set-assets.php';
 require_once get_template_directory() . '/core/panel/settings/set-fonts.php';
 //系统优化-----------------------------------------------------------
 require_once get_template_directory() . '/core/panel/settings/set-optimize.php';
+//站点美化-----------------------------------------------------------
+require_once get_template_directory() . '/core/panel/settings/set-beautify.php';
 //消息通知-----------------------------------------------------------
 require_once get_template_directory() . '/core/panel/settings/set-msg.php';
 //音乐播放器设置-----------------------------------------------------------

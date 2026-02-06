@@ -1325,26 +1325,33 @@ function initStickyHeader() {
 }
 
 // 文章导读初始化
+// 📊 文章导读初始化「带 SVG 阅读进度指示器和轮盘菜单」
 function initTableOfContents() {
     const content = document.querySelector('.single-content');
     const tocContainer = document.querySelector('.post-toc-container');
     const tocBtn = document.querySelector('.post-toc-btn');
     const toc = document.querySelector('.post-toc');
-    const tocList = document.querySelector('.toc-list');   
-    if(!content || !tocBtn || !toc || !tocList) return; 
+    const tocList = document.querySelector('.toc-list');
+    const tocWheelMenu = document.querySelector('.toc-wheel-menu');
+    const progressBar = document.querySelector('.toc-progress-bar');
+    const progressText = document.querySelector('.toc-progress-text');
+
+    if(!content || !tocBtn || !toc || !tocList) return;
+
     const headers = content.querySelectorAll('h1, h2, h3, h4');
     if(headers.length === 0) {
         tocContainer.style.display = 'none';
         return;
     }
+
+    // 🔢 生成目录编号
     let isScrolling;
-    const counters = [0, 0, 0, 0]; 
-    let currentLevel = 0;
+    const counters = [0, 0, 0, 0];
     headers.forEach((header, index) => {
-        const level = parseInt(header.tagName[1]) - 1;     
+        const level = parseInt(header.tagName[1]) - 1;
         counters[level]++;
-        for(let i = level + 1; i < 4; i++) counters[i] = 0; 
-        
+        for(let i = level + 1; i < 4; i++) counters[i] = 0;
+
         const numberParts = [];
         for(let i = 0; i <= level; i++) {
             if(counters[i] > 0) numberParts.push(counters[i]);
@@ -1355,26 +1362,57 @@ function initTableOfContents() {
         const id = `header-${index}`;
         header.id = id;
         link.href = `#${id}`;
-                link.textContent = `${numberStr} ${header.textContent}`;
+        link.textContent = `${numberStr} ${header.textContent}`;
         link.style.paddingLeft = `${level * 10}px`;
         tocList.appendChild(link);
     });
+
+    // 📈 计算阅读进度「基于 SVG 圆周长 276.46」
+    const circumference = 276.46;
+    function updateReadingProgress() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+
+        // 🔄 更新 SVG 进度环
+        if(progressBar) {
+            const offset = circumference - (progress / 100) * circumference;
+            progressBar.style.strokeDashoffset = offset;
+        }
+
+        // 📝 更新百分比文字
+        if(progressText) {
+            progressText.textContent = Math.round(progress) + '%';
+        }
+
+        return progress;
+    }
+
+    // 🎯 显示/隐藏控制
     const showOffset = 350;
+    let wheelMenuOpen = false;
+
     window.addEventListener('scroll', () => {
         const scrollPos = window.scrollY;
+        const progress = updateReadingProgress();
+
         if(scrollPos > showOffset) {
             tocContainer.classList.add('visible');
             tocBtn.classList.add('visible');
         } else {
             tocContainer.classList.remove('visible');
             tocBtn.classList.remove('visible');
-            toc.classList.remove('show'); 
+            toc.classList.remove('show');
+            if(tocWheelMenu) tocWheelMenu.classList.remove('show');
+            wheelMenuOpen = false;
         }
+
+        // 🔍 高亮当前章节
         clearTimeout(isScrolling);
         isScrolling = setTimeout(() => {
             const links = tocList.querySelectorAll('a');
             let currentActive = null;
-            
+
             const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
             const buffer = 20;
             for(let i = 0; i < headers.length; i++) {
@@ -1395,7 +1433,7 @@ function initTableOfContents() {
             }
             if(currentActive && !currentActive.classList.contains('active')) {
                 links.forEach(link => link.classList.remove('active'));
-                currentActive.classList.add('active');       
+                currentActive.classList.add('active');
                 const tocListRect = tocList.getBoundingClientRect();
                 const activeLinkRect = currentActive.getBoundingClientRect();
                 if (activeLinkRect.top < tocListRect.top) {
@@ -1406,27 +1444,22 @@ function initTableOfContents() {
             }
         }, 50);
     });
+
+    // 📖 目录链接点击事件
     tocList.addEventListener('click', (e) => {
         if(e.target.tagName === 'A') {
-            e.preventDefault();     
+            e.preventDefault();
             tocList.querySelectorAll('a').forEach(link => {
                 link.classList.remove('active');
             });
             e.target.classList.add('active');
-            
+
             const targetId = e.target.getAttribute('href').slice(1);
             const targetHeader = document.getElementById(targetId);
-            
+
             if(targetHeader) {
                 const navHeight = document.querySelector('.navbar')?.offsetHeight || 0;
-                const targetPosition = targetHeader.getBoundingClientRect().top + window.scrollY - navHeight - 10;       
-                const tocListRect = tocList.getBoundingClientRect();
-                const clickedLinkRect = e.target.getBoundingClientRect();               
-                if (clickedLinkRect.top < tocListRect.top) {
-                    tocList.scrollTop += clickedLinkRect.top - tocListRect.top;
-                } else if (clickedLinkRect.bottom > tocListRect.bottom) {
-                    tocList.scrollTop += clickedLinkRect.bottom - tocListRect.bottom;
-                }             
+                const targetPosition = targetHeader.getBoundingClientRect().top + window.scrollY - navHeight - 10;
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -1434,22 +1467,70 @@ function initTableOfContents() {
             }
         }
     });
-    tocBtn.addEventListener('click', () => {
-        toc.classList.toggle('show');
-        // 🎯 目录打开/关闭时切换按钮动画状态
-        if (toc.classList.contains('show')) {
-            tocBtn.style.animationPlayState = 'paused';
-        } else {
-            tocBtn.style.animationPlayState = 'running';
+
+    // 🎡 主按钮点击 - 展开/收起轮盘菜单
+    tocBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wheelMenuOpen = !wheelMenuOpen;
+
+        if(tocWheelMenu) {
+            if(wheelMenuOpen) {
+                tocWheelMenu.classList.add('show');
+                tocBtn.classList.add('active');
+            } else {
+                tocWheelMenu.classList.remove('show');
+                tocBtn.classList.remove('active');
+                toc.classList.remove('show');
+            }
         }
     });
+
+    // 🎯 轮盘菜单项点击事件
+    if(tocWheelMenu) {
+        tocWheelMenu.addEventListener('click', (e) => {
+            const wheelItem = e.target.closest('.toc-wheel-item');
+            if(!wheelItem) return;
+
+            const action = wheelItem.dataset.action;
+
+            switch(action) {
+                case 'toc':
+                    // 📋 打开目录面板
+                    toc.classList.add('show');
+                    tocWheelMenu.classList.remove('show');
+                    wheelMenuOpen = false;
+                    tocBtn.classList.remove('active');
+                    break;
+                case 'top':
+                    // ⬆️ 返回顶部
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    tocWheelMenu.classList.remove('show');
+                    wheelMenuOpen = false;
+                    tocBtn.classList.remove('active');
+                    break;
+                case 'bottom':
+                    // ⬇️ 前往底部
+                    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+                    tocWheelMenu.classList.remove('show');
+                    wheelMenuOpen = false;
+                    tocBtn.classList.remove('active');
+                    break;
+            }
+        });
+    }
+
+    // 🌐 点击外部关闭所有菜单
     document.addEventListener('click', (e) => {
-        if(!toc.contains(e.target) && !tocBtn.contains(e.target)) {
+        if(!toc.contains(e.target) && !tocBtn.contains(e.target) && !tocWheelMenu?.contains(e.target)) {
             toc.classList.remove('show');
-            // 🎯 点击外部关闭目录时恢复按钮动画
-            tocBtn.style.animationPlayState = 'running';
+            if(tocWheelMenu) tocWheelMenu.classList.remove('show');
+            tocBtn.classList.remove('active');
+            wheelMenuOpen = false;
         }
     });
+
+    // 🚀 初始化进度
+    updateReadingProgress();
 }
 
 // 标签颜色初始化

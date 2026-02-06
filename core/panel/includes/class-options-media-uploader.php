@@ -89,7 +89,8 @@ class Options_Framework_Media_Uploader {
 				$output .= '<img src="' . $value . '" alt="" />' . $remove;
 			} else {
 				$parts = explode( "/", $value );
-				for( $i = 0; $i < sizeof( $parts ); ++$i ) {
+				// 🛡️ 使用 count() 替代 sizeof()，两者功能相同但 count() 更推荐
+				for( $i = 0; $i < count( $parts ); ++$i ) {
 					$title = $parts[$i];
 				}
 

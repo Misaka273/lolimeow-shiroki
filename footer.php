@@ -71,11 +71,60 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <?php echo get_boxmoe('boxmoe_diy_code_footer'); ?>
     <!-- 📋 文章目录容器 -->
     <div class="post-toc-container">
+        <!-- 📊 SVG 圆形阅读进度指示器 -->
         <div class="post-toc-btn">
-            <i class="fa fa-list"></i>
+            <svg class="toc-progress-svg" viewBox="0 0 100 100">
+                <defs>
+                    <!-- 🌈 渐变定义 -->
+                    <linearGradient id="toc-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                    </linearGradient>
+                    <linearGradient id="toc-gradient-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+                    </linearGradient>
+                    <filter id="toc-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="2"></feGaussianBlur>
+                        <feOffset dx="0" dy="1" result="offsetblur"></feOffset>
+                        <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3"></feFuncA>
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode></feMergeNode>
+                            <feMergeNode in="SourceGraphic"></feMergeNode>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <!-- ☀️ 背景圆环 -->
+                <circle class="toc-progress-bg" cx="50" cy="50" r="44" filter="url(#toc-shadow)"></circle>
+                <!-- 🌈 进度圆环 -->
+                <circle class="toc-progress-bar" cx="50" cy="50" r="44" stroke="url(#toc-gradient)"></circle>
+                <!-- 📖 中心图标 -->
+                <foreignObject x="30" y="30" width="40" height="40">
+                    <div xmlns="http://www.w3.org/1999/xhtml" class="toc-icon-wrapper">
+                        <i class="fa fa-list"></i>
+                    </div>
+                </foreignObject>
+            </svg>
+            <!-- 📈 进度百分比 -->
+            <span class="toc-progress-text">0%</span>
         </div>
+        <!-- 🎯 轮盘展开式目录导读 -->
+        <div class="toc-wheel-menu">
+            <div class="toc-wheel-item" data-action="toc">
+                <span class="wheel-item-text">目录</span>
+            </div>
+            <div class="toc-wheel-item" data-action="top">
+                <span class="wheel-item-text">顶部</span>
+            </div>
+            <div class="toc-wheel-item" data-action="bottom">
+                <span class="wheel-item-text">底部</span>
+            </div>
+        </div>
+        <!-- 📋 文章目录面板 -->
         <div class="post-toc">
-            <div class="toc-title">文章导读</div>
+            <div class="toc-title">📖 文章导读</div>
             <div class="toc-list"></div>
         </div>
     </div>

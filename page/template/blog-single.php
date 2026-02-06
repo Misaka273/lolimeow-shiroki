@@ -30,10 +30,14 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                               <div class="single-author-info">
                                 <a href="#" class="name">
                                   <i class="fa fa-at"></i><?php the_author(); ?></a>
+                                <?php if(!get_boxmoe('boxmoe_hide_publish_date_switch')): ?>
                                 <span class="data">
                                   <i class="fa fa-clock-o"></i><?php the_date(); ?></span>
+                                <?php endif; ?>
+                                <?php if(!get_boxmoe('boxmoe_hide_modified_date_switch')): ?>
                                 <span class="modified">
                                   <i class="fa fa-refresh"></i><?php echo get_the_modified_date(); ?></span>
+                                <?php endif; ?>
                                 <span class="view">
                                   <i class="fa fa-street-view"></i><?php setPostViews(get_the_ID()); ?><?php echo getPostViews(get_the_ID()); ?></span>
                                   <?php edit_post_link( '<i class="fa fa-pencil-square-o"></i>编辑['.__( '仅作者可见', 'boxmoe'). ']'); ?>

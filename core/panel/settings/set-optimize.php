@@ -136,10 +136,24 @@ $options[] = array(
         'std' => false,
         );
     $options[] = array(
-        'group' => 'end',
         'name' => __('禁止Pingback', 'ui_boxmoe_com'),
         'desc' => __('建议开启', 'ui_boxmoe_com'),
         'id' => 'boxmoe_pingbacks_switch',
+        'type' => "checkbox",
+        'std' => false,
+        );
+    $options[] = array(
+        'name' => __('禁用F12开发者工具', 'ui_boxmoe_com'),
+        'desc' => __('若开启，则禁止用户使用F12键打开开发者工具', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_disable_f12_switch',
+        'type' => "checkbox",
+        'std' => false,
+        );
+    $options[] = array(
+        'group' => 'end',
+        'name' => __('禁止Ctrl+S保存网页', 'ui_boxmoe_com'),
+        'desc' => __('若开启，则禁止用户使用Ctrl+S快捷键保存网页', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_disable_ctrl_s_switch',
         'type' => "checkbox",
         'std' => false,
         );
@@ -153,10 +167,17 @@ $options[] = array(
         'std' => 10,
         );
     $options[] = array(
-        'group' => 'end',
         'name' => __('执行时间限制', 'ui_boxmoe_com'),
         'desc' => __('设置PHP执行时间限制（单位：秒）', 'ui_boxmoe_com'),
         'id' => 'boxmoe_max_execution_time',
         'type' => "text",
         'std' => 30,
+        );
+    $options[] = array(
+        'group' => 'end',
+        'name' => __('移除前端HTML注释', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_remove_html_comments_switch',
+        'type' => "checkbox",
+        'std' => false,
+        'desc' => __('若开启，则前台不再渲染代码文件中的所有HTML注释', 'ui_boxmoe_com'),
         );

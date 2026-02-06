@@ -825,7 +825,7 @@ get_header();
                 </button>
 
                 <?php if (isset($_GET['fl_msg'])) : ?>
-                    <div style="margin-top: 15px; font-size: 14px; color: <?php echo $_GET['fl_type'] === 'success' ? '#28a745' : '#dc3545'; ?>;">
+                    <div style="margin-top: 15px; font-size: 14px; color: <?php echo (isset($_GET['fl_type']) && $_GET['fl_type'] === 'success') ? '#28a745' : '#dc3545'; ?>;">
                         <?php echo urldecode($_GET['fl_msg']); ?>
                     </div>
                 <?php endif; ?>
