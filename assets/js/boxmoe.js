@@ -2387,9 +2387,9 @@ function initCodeCopy() {
     });
 }
 
-// Preloader初始化
+/* 🌸 Preloader初始化 - 支持樱花过渡动画 */
 function initPreloader() {
-    const preloader = document.querySelector('.preloader');
+    const preloader = document.querySelector('.preloader-sakura');
     if (!preloader) return;
     preloader.style.display = 'flex';
     window.addEventListener('load', () => {
@@ -2397,7 +2397,7 @@ function initPreloader() {
             preloader.style.opacity = '0';
             setTimeout(() => {
                 preloader.style.display = 'none';
-            }, 500); 
+            }, 500);
         }, 1000);
     });
 }

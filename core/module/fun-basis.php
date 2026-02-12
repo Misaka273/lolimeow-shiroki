@@ -362,8 +362,17 @@ function boxmoe_load_assets_header(){
         'themeurl' => boxmoe_theme_url()
     ));
     wp_enqueue_script('image-viewer-script', boxmoe_theme_url() . '/assets/js/image-viewer.js', array(), THEME_VERSION, true);
-    if(get_boxmoe('boxmoe_sakura_switch')){
+    /* 🎊 网页飘落动画加载 */
+    $falling_animation_type = get_boxmoe('boxmoe_falling_animation_type', 'none');
+    if($falling_animation_type == 'sakura'){
         wp_enqueue_script('sakura-script', boxmoe_theme_url() . '/assets/js/sakura.js', array(), THEME_VERSION, true);
+    }elseif($falling_animation_type == 'redpacket'){
+        wp_enqueue_script('redpacket-script', boxmoe_theme_url() . '/assets/js/redpacket.js', array('boxmoe-script'), THEME_VERSION, true);
+        /* 🧧 传递红包和金币图片路径到JS */
+        wp_localize_script('redpacket-script', 'redpacket_object', array(
+            'redpacket_url' => boxmoe_theme_url() . '/assets/images/svg/redpacket.svg',
+            'coin_url' => boxmoe_theme_url() . '/assets/images/svg/coin.svg'
+        ));
     }
 
     wp_localize_script('boxmoe-script', 'ajax_object', array(

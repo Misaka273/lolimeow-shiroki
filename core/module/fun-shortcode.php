@@ -103,8 +103,8 @@ function yaowan_shortcode( $atts , $content = '') {
     return '<span class="'.$classes.' mb-1 mt-1">'.wp_kses_post($content).'</span>';
 }
 
-//代码高亮
-add_shortcode('precode', 'precode_shortcode');  
+/* 🛡️ 代码高亮短代码 - 自动转义 Markdown 特殊字符 */
+add_shortcode('precode', 'precode_shortcode');
 function precode_shortcode( $attr , $content = '' ) {
     $defaults = array(
         'linenums' => '1',
@@ -121,6 +121,26 @@ function precode_shortcode( $attr , $content = '' ) {
     $code = preg_replace( '~</span>~i', '', $code );
     $code = preg_replace( "/\n{2,}/", "\n", $code );
     $code = trim( $code );
+
+    /* 🔒 转义 Markdown 特殊字符，防止被解析 */
+    $markdown_chars = array(
+        '&#35;' => '#',   /* ◀️ 井号 - 标题 */
+        '&#42;' => '*',   /* ◀️ 星号 - 粗体/斜体/列表 */
+        '&#95;' => '_',   /* ◀️ 下划线 - 粗体/斜体 */
+        '&#96;' => '`',   /* ◀️ 反引号 - 行内代码 */
+        '&#126;' => '~',  /* ◀️ 波浪号 - 删除线 */
+        '&#91;' => '[',   /* ◀️ 左方括号 - 链接/图片 */
+        '&#93;' => ']',   /* ◀️ 右方括号 - 链接/图片 */
+        '&#33;' => '!',   /* ◀️ 感叹号 - 图片 */
+        '&#40;' => '(',   /* ◀️ 左圆括号 */
+        '&#41;' => ')',   /* ◀️ 右圆括号 */
+        '&#62;' => '>',   /* ◀️ 大于号 - 引用 */
+        '&#43;' => '+',   /* ◀️ 加号 - 列表 */
+        '&#45;' => '-',   /* ◀️ 减号 - 列表/分隔线 */
+        '&#124;' => '|',  /* ◀️ 竖线 - 表格 */
+    );
+    $code = str_replace( array_values( $markdown_chars ), array_keys( $markdown_chars ), $code );
+
     $classes = array( 'prettyprint' );
     if ( $attr['linenums'] === '1' || $attr['linenums'] === 'true' ) {
         $classes[] = 'linenums';
@@ -129,7 +149,7 @@ function precode_shortcode( $attr , $content = '' ) {
         $classes[] = 'lang-' . preg_replace( '/[^\w\-\.]/', '', $attr['lang'] );
     }
     $out = '<pre class="' . esc_attr( implode( ' ', $classes ) ) . '"><code>' . esc_html( $code ) . '</code></pre>';
-    return $out;  
+    return $out;
 }
 
 add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {

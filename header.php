@@ -50,8 +50,13 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <?php boxmoe_banner_random_images_list(); ?>
 </head>
   <body <?php if(is_singular()) echo 'data-post-id="' . get_the_ID() . '"'; ?> >
-  <?php if(get_boxmoe('boxmoe_page_loading_switch')): ?>  
-    <div class="preloader">
+  <?php
+  /* 🌸 页面过渡动画类型判断 */
+  $page_loading_type = get_boxmoe('boxmoe_page_loading_type', 'none');
+  if($page_loading_type == 'sakura'):
+  ?>
+    <!-- 🌸 樱花过渡动画 -->
+    <div class="preloader preloader-sakura">
       <svg version="1.1" id="boxmoe-sakura" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="80" height="80" viewBox="0 0 80 80" style="enable-background:new 0 0 80 80;" xml:space="preserve">
          <g id="sakura">
             <path id="hana-01" class="st0" d="M52,16.4c-1-8-8-12-8-12l-4,2l-4-2c0,0-7,4-8,12c-0.4,3.2,1,7,2,9.1c2.1,4.4,6.4,7.9,10,10.9
@@ -95,7 +100,42 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
         🛰️请耐心等待，正在努力加载站点资源🚀
       </p>
    </div>
-   <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity 0.5s ease;}.preloader svg{max-width:80%;max-height:80%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}.preloader{background:#f8c3cd;text-align:center;height:100%;position:fixed;width:100%;top:0;z-index:1031}.preloader .st0{fill:#FCFCFC}.preloader .st1{fill:none;stroke:#FCFCFC;stroke-miterlimit:10;stroke-width:1.1}</style>
+   <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity 0.5s ease;}.preloader svg{max-width:80%;max-height:80%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}.preloader-sakura{background:#f8c3cd;text-align:center;height:100%;position:fixed;width:100%;top:0;z-index:1031}.preloader-sakura .st0{fill:#FCFCFC}.preloader-sakura .st1{fill:none;stroke:#FCFCFC;stroke-miterlimit:10;stroke-width:1.1}</style>
+  <?php elseif($page_loading_type == 'ripple'): ?>
+    <!-- 💧 涟漪式过渡动画容器 -->
+    <div id="page-ripple-transition" class="page-ripple-transition">
+      <div class="page-ripple-transition__overlay"></div>
+      <div class="page-ripple-transition__ripple"></div>
+      <div class="page-ripple-transition__content">
+        <!-- 🔮 横板弹珠加载动画 -->
+        <div class="page-ripple-transition__marbles">
+          <div class="page-ripple-transition__marble"></div>
+          <div class="page-ripple-transition__marble"></div>
+          <div class="page-ripple-transition__marble"></div>
+          <div class="page-ripple-transition__marble"></div>
+          <div class="page-ripple-transition__marble"></div>
+        </div>
+        <div class="page-ripple-transition__loader">
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__dot"></div>
+          <div class="page-ripple-transition__percentage">0%</div>
+        </div>
+        <div class="page-ripple-transition__target" style="display: none;">
+          <div class="page-ripple-transition__target-label">正在前往</div>
+          <div class="page-ripple-transition__target-url"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 💧 涟漪动画CSS -->
+    <link rel="stylesheet" href="<?php echo boxmoe_theme_url(); ?>/assets/css/page-ripple-transition.css">
+    <!-- 💧 涟漪动画JS -->
+    <script src="<?php echo boxmoe_theme_url(); ?>/assets/js/page-ripple-transition.js"></script>
   <?php endif; ?>
 
   <?php boxmoe_festival_lantern(); ?>

@@ -59,17 +59,25 @@ $options[] = array(
         'type' => 'text');   
 
     $options[] = array(
-		'name' => __('页面过度动画', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_page_loading_switch',
-		'type' => "checkbox",
-		'std' => false,
-		);    
+		'name' => __('过渡页面动画', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_page_loading_type',
+		'type' => "radio",
+		'std' => "none",
+		'options' => array(
+			'none' => __('关闭过渡动画', 'ui_boxmoe_com'),
+			'sakura' => __('🌸 樱花过渡动画', 'ui_boxmoe_com'),
+			'ripple' => __('💧 涟漪式过渡动画', 'ui_boxmoe_com')
+		));    
     $options[] = array(
-		'name' => __('网页飘落樱花', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_sakura_switch',
-		'type' => "checkbox",
-		'std' => false,
-		); 
+		'name' => __('网页飘落动画', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_falling_animation_type',
+		'type' => "radio",
+		'std' => "none",
+		'options' => array(
+			'none' => __('关闭飘落动画', 'ui_boxmoe_com'),
+			'sakura' => __('🌸 樱花飘落', 'ui_boxmoe_com'),
+			'redpacket' => __('🧧 红包雨', 'ui_boxmoe_com')
+		)); 
     $options[] = array(
         'name' => __('后台所有链接新窗口打开', 'ui_boxmoe_com'),
         'id' => 'boxmoe_admin_all_links_new_tab',
