@@ -425,3 +425,34 @@ img {
     display: none !important;
     opacity: 0 !important;
 }
+
+/* 🖼️ 侧边栏图片小工具圆角样式 */
+.blog-sidebar .widget_media_image img,
+.blog-sidebar .widget_ads img {
+    border-radius: var(--bs-border-radius-lg, 12px);
+    transition: all 0.3s ease; /* ◀️ 添加过渡动画效果 */
+}
+
+/* 🖼️ 底部栏图片小工具圆角样式 */
+.footer-widgets .widget_media_image img,
+.footer-widgets .widget_ads img {
+    border-radius: var(--bs-border-radius-lg, 12px);
+    transition: all 0.3s ease; /* ◀️ 添加过渡动画效果 */
+}
+
+/* ✨ 图片悬停效果 */
+.blog-sidebar .widget_media_image img:hover,
+.blog-sidebar .widget_ads img:hover,
+.footer-widgets .widget_media_image img:hover,
+.footer-widgets .widget_ads img:hover {
+    transform: scale(1.02); /* ◀️ 悬停时轻微放大 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* ◀️ 添加阴影效果 */
+}
+
+/* 🌆 暗色模式下图片小工具样式 */
+[data-bs-theme="dark"] .blog-sidebar .widget_media_image img,
+[data-bs-theme="dark"] .blog-sidebar .widget_ads img,
+[data-bs-theme="dark"] .footer-widgets .widget_media_image img,
+[data-bs-theme="dark"] .footer-widgets .widget_ads img {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* ◀️ 🌆 暗色模式下更深的阴影 */
+}

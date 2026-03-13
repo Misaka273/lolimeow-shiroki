@@ -802,23 +802,36 @@ footer.blog-glass {
 }
 
 /* 🎯 搜索框拟态玻璃效果 */
-.search-form.blog-glass .search-input {
+.search-form.blog-glass {
     position: relative;
+    display: block;
+    width: 100%;
+}
+
+.search-form.blog-glass .search-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-form.blog-glass .search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 50px 0 20px;
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
+    border-radius: 22px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 
         0 8px 32px 0 rgba(31, 38, 135, 0.15),
         inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    padding: 12px 24px;
-    font-size: 16px;
+    font-size: 0.95rem;
     font-weight: 500;
     color: #333;
     cursor: text;
     transition: all 0.3s ease;
-    overflow: hidden;
     outline: none;
 }
 
@@ -857,112 +870,177 @@ footer.blog-glass {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* 🎯 导航栏搜索框拟态玻璃效果 */
-.boxmoe_header .search-form.blog-glass {
-    position: relative;
-}
-
-.boxmoe_header .search-form.blog-glass .search-input {
-    position: relative;
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px 0 rgba(31, 38, 135, 0.15),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    padding: 12px 48px 12px 24px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    cursor: text;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    outline: none;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 240px;
-    opacity: 1;
-    visibility: visible;
-}
-
-.boxmoe_header .search-form.blog-glass .search-input:focus {
-    transform: translateY(-52%);
-    background: rgba(255, 255, 255, 0.4);
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 
-        0 12px 40px 0 rgba(31, 38, 135, 0.2),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-}
-
-.boxmoe_header .search-form.blog-glass .search-btn {
+/* 🔍 搜索按钮样式 */
+.search-form.blog-glass .search-submit {
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    width: 36px;
+    height: 36px;
+    border: none;
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 
-        0 8px 32px 0 rgba(31, 38, 135, 0.15),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    width: 40px;
-    height: 40px;
+    background: transparent;
+    cursor: pointer;
+    color: var(--bs-dark, #212529);
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    overflow: hidden;
 }
 
-.boxmoe_header .search-form.blog-glass .search-btn:hover {
-    transform: translateY(-52%);
+.search-form.blog-glass .search-submit:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.search-form.blog-glass .search-submit i {
+    color: inherit;
+    font-size: 1rem;
+}
+
+/* 🎯 导航栏搜索框拟态玻璃效果 - 暂时保持与漫画风相同的布局结构 */
+
+/* 🔘 限制搜索表单尺寸，确保按钮保持圆形 */
+.boxmoe_header .search-form.blog-glass {
+    width: 40px;
+    height: 40px;
+}
+
+/* 🔍 搜索输入框 - 默认隐藏（暂时保持与漫画风相同的布局结构） */
+.boxmoe_header .search-form.blog-glass .search-input {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* 🔍 搜索输入框 - 激活状态显示（暂时保持与漫画风相同的布局结构） */
+.boxmoe_header .search-form.blog-glass.active .search-input {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.boxmoe_header .search-form.blog-glass .search-input:focus {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.5);
     box-shadow: 
         0 12px 40px 0 rgba(31, 38, 135, 0.2),
         inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
 }
 
+/* 🔘 搜索按钮 - 玻璃效果 */
+.boxmoe_header .search-form.blog-glass .search-btn {
+    /* 暂时保持与漫画风相同的样式 */
+    position: relative;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    box-shadow: none;
+    flex-shrink: 0;
+    color: var(--bs-dark);
+    cursor: pointer;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 🔍 搜索按钮图标颜色 */
+.boxmoe_header .search-box .search-form.blog-glass .search-btn i.fa-search,
+.boxmoe_header .search-form.blog-glass .search-btn i.fa-search {
+    color: var(--bs-dark) !important;
+    font-size: 1.05rem;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.boxmoe_header .search-form.blog-glass .search-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 🔍 搜索按钮 - 激活状态 */
+.boxmoe_header .search-form.blog-glass.active .search-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 
+        0 4px 16px 0 rgba(31, 38, 135, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.boxmoe_header .search-form.blog-glass.active .search-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 🌆 暗色模式 - 搜索输入框 */
 [data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-input {
     background: rgba(30, 30, 40, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
         0 8px 32px 0 rgba(0, 0, 0, 0.3),
         inset 0 0 0 1px rgba(255, 255, 255, 0.05);
     color: #ffffff;
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass.active .search-input {
+    background: rgba(30, 30, 40, 0.5);
 }
 
 [data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-input:focus {
+    background: rgba(30, 30, 40, 0.6);
     box-shadow: 
         0 12px 40px 0 rgba(0, 0, 0, 0.4),
         inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* 🌆 暗色模式 - 搜索按钮 */
 [data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-btn {
-    background: rgba(30, 30, 40, 0.4);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 
-        0 8px 32px 0 rgba(0, 0, 0, 0.3),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    background: transparent;
+    border: none;
+    box-shadow: none;
     color: #ffffff;
 }
 
+/* 🌆 暗色模式 - 搜索按钮图标颜色 */
+[data-bs-theme="dark"] .boxmoe_header .search-box .search-form.blog-glass .search-btn i.fa-search,
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-btn i.fa-search {
+    color: #ffffff !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
 [data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass .search-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass.active .search-btn {
+    background: rgba(30, 30, 40, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 
-        0 12px 40px 0 rgba(0, 0, 0, 0.4),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+        0 4px 16px 0 rgba(0, 0, 0, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .boxmoe_header .search-form.blog-glass.active .search-btn:hover {
+    background: rgba(30, 30, 40, 0.4);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* 📄 分页按钮拟态玻璃效果 */

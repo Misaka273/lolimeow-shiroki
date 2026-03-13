@@ -1863,15 +1863,12 @@ if (is_user_logged_in()){
                   
                   // 第一步：验证验证码（如果启用）
                   if (captchaEnabled && captchaLoginEnabled) {
-                      console.log('开始验证登录验证码');
-                      
                       if (captchaType === 'cloudflare') {
                           // Cloudflare验证码
                           if (!loginCfToken) {
                               throw new Error('请先完成人机验证');
                           }
                           const cfResult = await validateCloudflareCaptcha(loginCfToken);
-                          console.log('Cloudflare验证结果:', cfResult);
                       } else {
                           // 普通验证码
                           const captchaInput = document.getElementById('login-captcha-input');
@@ -1893,7 +1890,6 @@ if (is_user_logged_in()){
                               }
                           }
                       }
-                      console.log('验证码验证通过');
                   }
                   
                   // 第二步：收集表单数据并提交
@@ -1917,8 +1913,6 @@ if (is_user_logged_in()){
                       }
                   }
                   
-                  console.log('提交登录数据:', formData);
-                  
                   // 提交表单
                   const formDataToSend = new FormData();
                   formDataToSend.append('action', 'user_login_action');
@@ -1931,7 +1925,6 @@ if (is_user_logged_in()){
                   });
                   
                   const responseData = await response.json();
-                  console.log('登录响应数据:', responseData);
                   
                   if(responseData.success) {
                       showMessage('login-message', responseData.data.message + '，正在跳转...', false);
@@ -1954,8 +1947,6 @@ if (is_user_logged_in()){
                   }
                   
               } catch (error) {
-                  console.error('登录过程错误:', error);
-                  
                   // 显示错误信息
                   let errorMessage = error.message || '登录失败，请重试';
                   showMessage('login-message', errorMessage, true);
@@ -2024,15 +2015,12 @@ if (is_user_logged_in()){
                   
                   // 第一步：验证验证码（如果启用）
                   if (captchaEnabled && captchaRegisterEnabled) {
-                      console.log('开始验证注册验证码');
-                      
                       if (captchaType === 'cloudflare') {
                           // Cloudflare验证码
                           if (!registerCfToken) {
                               throw new Error('请先完成人机验证');
                           }
                           const cfResult = await validateCloudflareCaptcha(registerCfToken);
-                          console.log('Cloudflare验证结果:', cfResult);
                       } else {
                           // 普通验证码
                           const captchaInput = document.getElementById('register-captcha-input');
@@ -2076,8 +2064,6 @@ if (is_user_logged_in()){
                       }
                   }
                   
-                  console.log('提交注册数据:', formData);
-                  
                   const response = await fetch(ajax_object.ajaxurl, {
                       method: 'POST',
                       headers: {
@@ -2087,7 +2073,6 @@ if (is_user_logged_in()){
                   });
                   
                   const data = await response.json();
-                  console.log('注册响应数据:', data);
                   
                   if(data.success) {
                       showMessage('signup-message', data.data.message + '，正在跳转到会员中心...', false);
@@ -2104,7 +2089,6 @@ if (is_user_logged_in()){
                   }
                   
               } catch (error) {
-                  console.error('注册过程错误:', error);
                   showMessage('signup-message', error.message || '注册失败，请重试', true);
                   
                   // 显示验证码错误
@@ -2154,8 +2138,6 @@ if (is_user_logged_in()){
                   
                   // 验证验证码（如果启用）
                   if (captchaEnabled && captchaRegisterEnabled) {
-                      console.log('发送验证码前验证验证码');
-                      
                       if (captchaType === 'cloudflare') {
                           if (!registerCfToken) {
                               throw new Error('请先完成人机验证');
@@ -2215,7 +2197,6 @@ if (is_user_logged_in()){
                       btn.textContent = originalText;
                   }
               } catch (error) {
-                  console.error('发送验证码失败:', error);
                   showMessage('signup-message', error.message || '发送失败，请重试', true);
                   btn.disabled = false;
                   btn.textContent = originalText;
@@ -2279,8 +2260,6 @@ if (is_user_logged_in()){
               const isMobile480x690 = window.innerWidth === 480 && window.innerHeight === 690;
               
               if (isMobile480x690) {
-                  console.log('🌟 移动端480x690模式激活');
-                  
                   // 🌟 增强左右切换动画
                   const signInBtn = document.getElementById('sign-in-btn');
                   const signUpBtn = document.getElementById('sign-up-btn');
@@ -2318,10 +2297,6 @@ if (is_user_logged_in()){
                       }, 400);
                   }
                   
-                  // 添加切换动画完成后的回调
-                  setTimeout(() => {
-                      console.log('📱 切换到登录模式');
-                  }, 800);
               }
           }
           
@@ -2342,10 +2317,6 @@ if (is_user_logged_in()){
                       }, 400);
                   }
                   
-                  // 添加切换动画完成后的回调
-                  setTimeout(() => {
-                      console.log('📱 切换到注册模式');
-                  }, 800);
               }
           }
           
@@ -2366,8 +2337,6 @@ if (is_user_logged_in()){
                           copyright.style.display = 'block';
                       }
                   });
-                  
-                  console.log('📱 版权信息位置已优化');
               }
           }
           
@@ -2382,8 +2351,6 @@ if (is_user_logged_in()){
           
           // 🌟 页面加载完成后初始化移动端功能
           setTimeout(initMobileFeatures, 100);
-          
-          console.log('页面初始化完成');
       });
     </script>
     <!-- 📱 移动端触摸滑动脚本 -->

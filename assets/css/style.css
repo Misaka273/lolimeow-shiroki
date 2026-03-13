@@ -1080,6 +1080,39 @@ to {opacity:1;transform:translateY(0);}
     background: linear-gradient(135deg, #60A5FA, #7C3AED);
 }
 
+/* ⚠️ 密码错误提示样式 */
+.password-error-message {
+    background: linear-gradient(135deg, #FEE2E2, #FECACA);
+    border: 1px solid #F87171;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    color: #DC2626;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: shake 0.5s ease-in-out;
+}
+
+.password-error-message i {
+    font-size: 16px;
+}
+
+/* 🌆 暗色模式密码错误提示 */
+[data-bs-theme="dark"] .password-error-message {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(185, 28, 28, 0.3));
+    border-color: rgba(248, 113, 113, 0.5);
+    color: #FCA5A5;
+}
+
+/* 💫 错误提示动画 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
 .boxmoe_header .navbar .navbar-nav .nav-item {display: flex;align-items: center;}
 
 .boxmoe_header .navbar .navbar-nav .nav-item .nav-link {font-size:0.9rem;font-weight:400;color:var(--bs-dark);padding:0.25rem 1rem;border-radius:20px;position:relative;z-index:1;transition:all 0.3s ease;border:1px solid transparent;overflow:hidden;}
@@ -1132,15 +1165,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .navbar-nav > li > .dropdown-menu {border:1px solid var(--bs-hui);}
 .boxmoe_header .dropdown-submenu .dropdown-menu {border:1px solid var(--bs-hui);}
 .boxmoe_header .dropdown-menu .dropdown-item {font-size:0.9em;font-weight:500;}
-.boxmoe_header .search-box {position:relative;height:40px;margin-right:5px;display:block;}
-.boxmoe_header .search-form {position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;align-items:center;z-index:1000;}
-.boxmoe_header .search-input {position:absolute;right:40px;width:0;height:40px;padding:0;border:1px solid #e0e0e0;outline:none;border-radius:20px;background:var(--bs-white);transition:all 0.3s ease;opacity:0;visibility:hidden;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.boxmoe_header .search-input:focus {border-color:var(--bs-primary);}
-.boxmoe_header .search-btn {position:relative;width:40px;height:40px;border:none;border-radius:50%;background:transparent;cursor:pointer;z-index:1;}
-.boxmoe_header .search-btn i {color:var(--bs-dark);font-size:1.05rem;padding-top:3px;}
-.boxmoe_header .search-form.active .search-btn i {color:var(--bs-gray-900);}
-.boxmoe_header .search-form.active .search-input {width:240px;padding:0 40px 0 15px;opacity:1;visibility:visible;right:0;}
-.boxmoe_header .search-form.active .search-btn {background:transparent;transform:none;}
+
 .boxmoe_header .offcanvas.width {width:20rem}
 .boxmoe_header .offcanvas {transition:transform 0.3s ease-in-out !important;border-top-right-radius: 20px;border-bottom-right-radius: 20px;z-index:1000;}
 .boxmoe_header .offcanvas.offcanvas-start {transform:translateX(-100%);}
@@ -1149,7 +1174,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .offcanvas-backdrop.show {opacity:0.5;}
 .boxmoe_header .dropdown-submenu {position:relative;}
 .boxmoe_header .dropdown-submenu .dropdown-menu {top:0;left:100%;margin-left:1px;}
-.boxmoe_header .navbar.scrolled .mobile-search-input {background:var(--bs-white);}
+
 .boxmoe_header .user-login-wrap,.boxmoe_header .user-reg-wrap {border-radius:4px;}
 .boxmoe_header .user-login,.boxmoe_header .user-reg {padding:.3em .8em;font-size:0.9em;color:var(--bs-white);background-color:#04040452;display:block;border-radius:4px;}
 .boxmoe_header .user-login:hover,.boxmoe_header .user-reg:hover {color:var(--bs-dark);}
@@ -1196,11 +1221,7 @@ to {opacity:1;transform:translateY(0);}
 .boxmoe_header .mobile-user-wrapper .user-login-wrap,.boxmoe_header .mobile-user-wrapper .user-reg-wrap {text-align:center;}
 .boxmoe_header .mobile-user-wrapper .user-login,.boxmoe_header .mobile-user-wrapper .user-reg {padding:.3em .8em;font-size:0.9em;color:var(--bs-white);background-color:#04040452;display:inline-block;border-radius:4px;min-width:60px;}
 .boxmoe_header .mobile-user-wrapper .divider {position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:15px;height:15px;line-height:15px;text-align:center;background:var(--bs-white);color:var(--bs-success);border-radius:50%;font-size:11px;border:2px solid #e7e7e7;z-index:11;}
-.boxmoe_header .mobile-search-btn {border:none;background:transparent;padding:8px;color:var(--bs-gray-900);position:absolute;right:0;top:50%;transform:translateY(calc(-50% + 2px));z-index:1;display:flex;align-items:center;justify-content:center;}
-.boxmoe_header .mobile-search-form {position:relative;height:40px;margin-right:10px;display:flex;align-items:center;}
-.boxmoe_header .mobile-search-input {width:0;height:40px;padding:0;border:1px solid #e0e0e0;outline:none;border-radius:20px;background:var(--bs-white);transition:all 0.3s ease;opacity:0;padding-right:40px;}
-.boxmoe_header .mobile-search-form.active .mobile-search-input {width:240px;padding:0 40px 0 15px;opacity:1;background:var(--bs-white);border:1px solid #e0e0e0;transform: translateY(28px);}
-.boxmoe_header .mobile-search-submit {position:absolute;right:0;width:40px;height:40px;border:none;background:transparent;cursor:pointer;display:none !important;}
+
 .boxmoe_header .mobile-logged-user-wrapper {padding:15px 2rem;}
 .boxmoe_header .mobile-logged-user-wrapper .user-info-wrap {width:100%;padding:10px;background:rgba(0,0,0,0.05);border-radius:8px;border:1px solid rgba(0,0,0,0.1);transition:all 0.3s ease;text-decoration:none;transform:translateZ(0);will-change:transform,background;contain:layout style paint;isolation:isolate;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
 .boxmoe_header .mobile-logged-user-wrapper .user-info-wrap:active {transform:scale(0.98);}
@@ -1563,10 +1584,7 @@ background: rgba(0, 0, 0, .25);}
         background: var(--pure-white) !important;
     }
     
-    /* 显示搜索框和主题切换按钮在右侧，覆盖全局的隐藏样式 */
-    .boxmoe_header .search-box {
-        display: block !important;
-    }
+
     
     /* 右侧搜索和用户菜单 */
     .boxmoe_header .nav-right-section {
@@ -1633,15 +1651,26 @@ background: rgba(0, 0, 0, .25);}
         align-items: center !important;
     }
     
-    /* 确保搜索按钮和用户按钮在同一行 */
-    .mobile-search-form {
-        margin-right: 10px !important;
-    }
-    
     .boxmoe_header .offcanvas {background-image:url(../images/offcanvas.png);background-size:cover;}
 .boxmoe_header .offcanvas-nav {background-color:var(--bs-white);}
-.boxmoe_header .navbar-nav {padding:1rem 0;}
-.boxmoe_header .search-box {padding:0 1rem;display:block !important;}
+.boxmoe_header .navbar-nav {padding:0.5rem 0;}
+    
+    /* 📱 优化移动端导航栏高度 */
+    .boxmoe_header .navbar {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        min-height: 32px !important;
+    }
+
+    .boxmoe_header .navbar-brand {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .boxmoe_header .navbar-brand img {
+        max-height: 32px !important;
+        width: auto !important;
+    }
 .boxmoe_header .navbar .dropdown .dropdown-toggle:after {color:var(--bs-dark)}
 .boxmoe_header .offcanvas-body {padding:2rem;border:2px solid var(--bs-dark);margin:2rem;border-radius:10px}
 .boxmoe_header .navbar .navbar-nav .nav-item .nav-link {color:var(--bs-dark);font-size:0.825rem;padding-left:1rem !important;padding-right:1rem !important;}
@@ -1873,7 +1902,6 @@ background: rgba(0, 0, 0, .25);}
 .boxmoe_header .dropdown-submenu .dropdown-toggle::after {transform:rotate(-90deg);}
 .boxmoe_header .dropdown-submenu .dropdown-toggle[aria-expanded="true"]::after {transform:rotate(0deg);}
 .boxmoe_header .navbar-brand {position:static;left:auto;transform:none;}
-.boxmoe_header .search-box {display:none !important;}
 .boxmoe_header .nav-right-section {display:none !important;}
 .boxmoe_header .logged-user-wrapper {display:none !important;}
 .boxmoe_header .user-wrapper {display:inline-flex !important;}}
@@ -2798,6 +2826,10 @@ hr:not([size]) {height:1px}
 .blog-sidebar .widget-post .title {font-size:0.8rem;margin-bottom:5px;letter-spacing:0.25px;font-weight:400}
 .blog-sidebar .widget-post .title a {color:var(--bs-dark);}
 .blog-sidebar .widget-post time {font-size:12px;color:var(--bs-gray-500);}
+/* 🎲 随机文章小部件 - 日期和阅读全文布局 */
+.blog-sidebar .widget-post .post-meta {display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:5px}
+.blog-sidebar .widget-post .post-meta .read-more {font-size:12px;color:var(--bs-primary);text-decoration:none;-webkit-transition:all 0.3s ease;-o-transition:all 0.3s ease;transition:all 0.3s ease}
+.blog-sidebar .widget-post .post-meta .read-more:hover {color:var(--bs-dark);text-decoration:underline}
 .blog-sidebar .widget-post .number {position:absolute;left:-10px;top:-10px;z-index:3;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--epcl-title-font-family);font-weight:700;color:var(--bs-dark);background:url(../images/number.svg) no-repeat center center}
 .blog-sidebar .widget-post .thumb:hover,.pagenav .page-item .page-link:hover {-webkit-box-shadow:2px 2px 0px 0px var(--bs-dark);box-shadow:2px 2px 0px 0px var(--bs-dark)}
 .blog-sidebar .widget-post .title a:not(.widget-button),.post-list .post-title a:not(.widget-button) {padding-bottom:5px;background-image:-webkit-gradient(linear,left top,right top,from(var(--bs-dark)),to(var(--bs-dark)));background-image:-o-linear-gradient(left,var(--bs-dark) 0%,var(--bs-dark) 100%);background-image:linear-gradient(to right,var(--bs-dark) 0%,var(--bs-dark) 100%);background-size:0% 5%;background-repeat:no-repeat;background-position:left 80%;-webkit-transition:all 400ms ease;-o-transition:all 400ms ease;transition:all 400ms ease;}
@@ -2832,161 +2864,7 @@ hr:not([size]) {height:1px}
 .blog-sidebar .widget_categories ul li a:hover {color:var(--bs-dark);}
 .blog-sidebar .widget_ads img {width:100%}
 
-/* 通用搜索表单样式 - 与主题边框样式保持一致 */
-.search-form {
-    margin-bottom: 20px;
-}
 
-.search-form .search-wrap {
-    position:relative;
-    display:flex;
-    align-items:center;
-    height:100%;
-}
-
-/* 基础搜索框样式 */
-.search-form .search-input {
-    width:100%;
-    height:40px;
-    padding:0 40px 0 15px;
-    border:1px solid var(--bs-hui);
-    border-radius:20px;
-    background:var(--bs-white);
-    font-size:0.85rem;
-    transition:all 0.3s ease;
-}
-
-/* 搜索框焦点样式 */
-.search-form .search-input:focus {
-    outline:none;
-    border-color:var(--bs-primary);
-    box-shadow:0 0 0 2px rgba(139, 61, 255, 0.15);
-}
-
-.search-form .search-submit {
-    position:absolute;
-    right:0;
-    top:50%;
-    transform:translateY(-50%);
-    width:40px;
-    height:40px;
-    border:none;
-    background:transparent;
-    cursor:pointer;
-    color:var(--bs-dark);
-    transition:all 0.3s ease;
-}
-
-.search-form .search-submit:hover {
-    color:var(--bs-primary);
-}
-
-.search-form .search-submit i {
-    font-size:1.05rem;
-    line-height:40px;
-    display:block;
-    text-align:center;
-    transform:translateY(28px);
-}
-
-/* 侧边栏搜索小部件样式 - 与主题边框样式保持一致 */
-.blog-sidebar .widget-search {
-    position:relative;
-}
-
-.blog-sidebar .widget-search .search-wrap {
-    position:relative;
-    display:flex;
-    align-items:center;
-}
-
-/* 统一搜索框主题边框样式效果 */
-/* 漫画边框效果 */
-.search-form.blog-border .search-input,
-.widget.blog-border .search-form .search-input {
-    border:1px solid var(--bs-dark);
-    box-shadow:2px 2px 0px 0px var(--bs-dark);
-}
-
-/* 阴影边框效果 */
-.search-form.blog-shadow .search-input,
-.widget.blog-shadow .search-form .search-input {
-    border:1px solid transparent;
-    box-shadow:0 0px 0px 1px rgba(7,10,25,0.1);
-}
-
-/* 🎨 原线条边框效果 已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
-
-/* 导航栏搜索框主题边框样式 - 漫画风效果 */
-.boxmoe_header .search-form .search-input {
-    border:1px solid var(--bs-dark);
-    box-shadow:2px 2px 0px 0px var(--bs-dark);
-    background: var(--bs-white);
-    color: var(--bs-dark);
-}
-
-/* 移动端导航搜索框样式 - 漫画风效果 */
-.boxmoe_header .mobile-search-form .mobile-search-input {
-    border:1px solid var(--bs-dark);
-    box-shadow:2px 2px 0px 0px var(--bs-dark);
-    background: var(--bs-white);
-    color: var(--bs-dark);
-}
-
-/* 导航栏搜索框激活状态 - 漫画风效果 */
-.boxmoe_header .search-form.active .search-input {
-    border:1px solid var(--bs-dark);
-    box-shadow:2px 2px 0px 0px var(--bs-dark);
-    background: var(--bs-white);
-    color: var(--bs-dark);
-}
-
-/* 导航栏搜索框激活状态下的搜索按钮 */
-.boxmoe_header .search-form.active .search-btn i {
-    color: var(--bs-dark);
-}
-
-/* 🌆 修复：确保导航栏搜索框在暗色模式下也能显示漫画风效果 */
-[data-bs-theme="dark"] .boxmoe_header .search-form .search-input,
-[data-bs-theme="dark"] .boxmoe_header .mobile-search-form .mobile-search-input,
-[data-bs-theme="dark"] .boxmoe_header .search-form.active .search-input {
-    border:1px solid var(--pure-white) !important;
-    box-shadow:2px 2px 0px 0px var(--pure-white) !important;
-    background: var(--bs-body-bg) !important;
-    color: var(--pure-white) !important;
-    outline: none !important;
-}
-
-/* 侧边栏搜索框焦点样式 */
-.blog-sidebar .widget-search .search-input:focus {
-    outline:none;
-    border-color:var(--bs-primary);
-    box-shadow:0 0 0 2px rgba(139, 61, 255, 0.15);
-}
-
-.blog-sidebar .widget-search .search-submit {
-    position:absolute;
-    right:0;
-    top:50%;
-    transform:translateY(-50%);
-    width:40px;
-    height:40px;
-    border:none;
-    background:transparent;
-    cursor:pointer;
-    color:var(--bs-dark);
-    transition:all 0.3s ease;
-}
-
-.blog-sidebar .widget-search .search-submit:hover {
-    color:var(--bs-primary);
-}
-
-.blog-sidebar .widget-search .search-submit i {
-    font-size:1.05rem;
-    line-height:40px;
-    text-align:center;
-}
 
 .blog-sidebar .widget_categories select,widget_archive select {width:100%;padding:10px 15px;font-size:0.85rem;border:1px solid var(--bs-hui);border-radius:20px;background-color:var(--bs-white);color:var(--bs-gray-700);cursor:pointer;transition:all 0.3s ease;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 15px center;padding-right:40px;}
 .blog-sidebar .widget_categories select:hover,widget_archive select:hover {transform:translateY(-2px);box-shadow:2px 2px 0px 0px var(--bs-dark);}
@@ -4341,105 +4219,7 @@ hr:not([size]) {height:1px}
     color: var(--bs-body-color);
 }
 
-/* 底部栏搜索小部件样式 */
-.footer-widgets .widget-search .search-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
 
-.footer-widgets .widget-search .search-input {
-    width: 100%;
-    height: 40px;
-    padding: 0 40px 0 15px;
-    border: 1px solid var(--bs-hui);
-    border-radius: 20px;
-    background: var(--bs-white);
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-}
-
-
-/* 底部栏搜索框焦点样式 */
-.footer-widgets .widget-search .search-input:focus {
-    outline: none;
-    border-color: var(--bs-primary);
-    box-shadow:0 0 0 2px rgba(139, 61, 255, 0.15);
-}
-
-.footer-widgets .widget-search .search-submit {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--bs-dark);
-    transition: all 0.3s ease;
-}
-
-.footer-widgets .widget-search .search-submit:hover {
-    color: var(--bs-primary);
-}
-
-.footer-widgets .widget-search .search-submit i {
-    font-size: 1.05rem;
-    line-height: 40px;
-    display: block;
-    text-align: center;
-}
-
-/* 优化描述：移除错误的白色背景，只保留白色描边 */
-/* 🌆 暗色模式下所有搜索框样式 - 保留原本的漫画风边框效果 */
-[data-bs-theme="dark"] .search-form .search-input,
-[data-bs-theme="dark"] .blog-sidebar input[type="search"].search-input,
-[data-bs-theme="dark"] .footer-widgets input[type="search"].search-input {
-    background: transparent !important; /* ◀️ 恢复透明背景，保留原本的漫画风边框效果 */
-    border-color: var(--bs-primary) !important;
-    color: var(--bs-body-color) !important;
-    box-shadow: none !important; /* ◀️ 移除阴影，保留原本的漫画风边框效果 */
-}
-
-/* 🌆 暗色模式下侧边栏和底部栏搜索框 - 只添加白色描边，保留漫画风边框效果 */
-[data-bs-theme="dark"] .blog-sidebar .widget input.search-input,
-[data-bs-theme="dark"] .footer-widgets .widget input.search-input,
-[data-bs-theme="dark"] .blog-sidebar input[type="search"].search-input,
-[data-bs-theme="dark"] .footer-widgets input[type="search"].search-input {
-    outline: 2px solid rgba(255, 255, 255, 0.9) !important; /* ◀️ 添加描边色 */
-    outline-offset: -2px !important;
-    /* 移除所有可能破坏漫画风边框效果的样式 */
-    box-shadow: none !important;
-    border: 1px solid var(--bs-hui) !important; /* ◀️ 恢复默认边框 */
-    background: transparent !important; /* ◀️ 恢复透明背景 */
-    color: var(--bs-body-color) !important; /* ◀️ 恢复默认文字颜色 */
-}
-
-/* 🌆 暗色模式下侧边栏和底部栏中的所有input元素 - 只添加白色描边 */
-[data-bs-theme="dark"] .blog-sidebar .widget input,
-[data-bs-theme="dark"] .footer-widgets .widget input {
-    outline: 2px solid rgba(255, 255, 255, 0.9) !important; /* ◀️ 添加描边色 */
-    outline-offset: -2px !important;
-    /* 移除所有可能破坏漫画风边框效果的样式 */
-    box-shadow: none !important;
-    border: 1px solid var(--bs-hui) !important; /* ◀️ 恢复默认边框 */
-    background: transparent !important; /* ◀️ 恢复透明背景 */
-    color: var(--bs-body-color) !important; /* ◀️ 恢复默认文字颜色 */
-}
-
-[data-bs-theme="dark"] .search-form .search-submit,
-[data-bs-theme="dark"] .blog-sidebar .widget-search .search-submit,
-[data-bs-theme="dark"] .footer-widgets .widget-search .search-submit {
-    color: var(--bs-primary);
-}
-
-[data-bs-theme="dark"] .search-form .search-submit:hover,
-[data-bs-theme="dark"] .blog-sidebar .widget-search .search-submit:hover,
-[data-bs-theme="dark"] .footer-widgets .widget-search .search-submit:hover {
-    color: var(--bs-body-bg);
-}
 
 /* 底部栏书签小部件样式 */
 .footer-widgets .widget.bookmark {
@@ -4885,14 +4665,21 @@ footer .logo {height:35px;}
     mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
 }
+/* 📖 展开状态下wrapper添加底部内边距，为按钮留出空间 */
+.code-block-collapse-wrapper:has(.code-block-expanded) {
+    padding-bottom: 45px;
+}
+/* 🔗 代码块折叠按钮样式 - ☀️ 亮色模式使用白色高斯模糊渐变色 */
 .code-block-collapse-toggle {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: none;
-    color: #fff;
+    color: var(--bs-dark);
     padding: 20px 10px 10px;
     font-size: 14px;
     cursor: pointer;
@@ -4904,7 +4691,9 @@ footer .logo {height:35px;}
     z-index: 10;
 }
 .code-block-collapse-toggle:hover {
-    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.9));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transform: translateY(-2px);
 }
 .code-block-collapse-toggle i {
@@ -4913,13 +4702,48 @@ footer .logo {height:35px;}
 .code-block-collapse-toggle:hover i {
     transform: scale(1.2);
 }
-/* 🌆 暗色模式下的代码块折叠按钮 */
+/* 📖 展开状态下按钮样式 - 显示在代码块底部中央 */
+.code-block-expanded ~ .code-block-collapse-toggle {
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.9));
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 15px 10px 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.code-block-expanded ~ .code-block-collapse-toggle:hover {
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 1));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+/* 🌆 暗色模式下的代码块折叠按钮 - 使用灰色高斯模糊半透明渐变色 */
 [data-bs-theme="dark"] .code-block-collapse-toggle {
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.2));
+    background: linear-gradient(to bottom, rgba(50, 50, 50, 0), rgba(50, 50, 50, 0.8));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: #fff;
 }
 [data-bs-theme="dark"] .code-block-collapse-toggle:hover {
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.3));
+    background: linear-gradient(to bottom, rgba(50, 50, 50, 0), rgba(50, 50, 50, 0.95));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+/* 🌆 暗色模式下展开状态按钮样式 - 显示在代码块底部中央 */
+[data-bs-theme="dark"] .code-block-expanded ~ .code-block-collapse-toggle {
+    background: linear-gradient(to bottom, transparent, rgba(50, 50, 50, 0.9));
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+[data-bs-theme="dark"] .code-block-expanded ~ .code-block-collapse-toggle:hover {
+    background: linear-gradient(to bottom, transparent, rgba(50, 50, 50, 1));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 .boxmoe-container .col-lg-8{min-width:0}
 .copyright .runtime-line .runtime-num {display:inline-block;font-weight:600;}
@@ -4950,6 +4774,111 @@ footer .logo {height:35px;}
 }
 .favorite-btn.processing {opacity:0.7;cursor:progress;}
 [data-bs-theme="dark"] .favorite-btn.favorited {background-color:#ffd700;color:var(--bs-dark);}
+
+/* ⏱️ 文章最后更新时间计时器样式 */
+.post-update-timer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bs-white);
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius-lg);
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.post-update-timer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.timer-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: var(--bs-border-radius);
+    font-size: 1.2rem;
+    color: #e67e22;
+}
+
+.timer-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 💕 计时器标题 - 继承站点默认字体 */
+.timer-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--bs-dark);
+    margin-bottom: 2px;
+    font-family: inherit; /* ◀️ 继承body字体，与主题【字体设置】的【站点默认字体】保持同步 */
+}
+
+/* 💕 计时器显示文字 - 继承站点默认字体 */
+.timer-display {
+    font-weight: 600;
+    color: var(--bs-primary);
+    font-family: inherit; /* ◀️ 继承body字体，与主题【字体设置】的【站点默认字体】保持同步 */
+}
+
+/* 💕 计时器副标题 - 继承站点默认字体 */
+.timer-subtitle {
+    font-size: 0.75rem;
+    color: var(--bs-gray-600);
+    font-family: inherit; /* ◀️ 继承body字体，与主题【字体设置】的【站点默认字体】保持同步 */
+}
+
+/* 🌆 暗色模式下的计时器样式 */
+[data-bs-theme="dark"] .post-update-timer {
+    background: var(--bs-body-bg);
+    border-color: var(--bs-gray-700);
+}
+
+[data-bs-theme="dark"] .post-update-timer:hover {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme="dark"] .timer-icon {
+    background: linear-gradient(135deg, #434343 0%, #2c3e50 100%);
+    color: #f39c12;
+}
+
+[data-bs-theme="dark"] .timer-title {
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .timer-subtitle {
+    color: var(--bs-gray-400);
+}
+
+/* 📱 移动端响应式 */
+@media (max-width: 991px) {
+    .post-update-timer {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+    
+    .timer-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    
+    .timer-title {
+        font-size: 0.85rem;
+    }
+    
+    .timer-subtitle {
+        font-size: 0.7rem;
+    }
+}
+
 /* 🎨 原线条边框效果 - blog-lines 样式已移至 glassmorphism-border.css，使用拟态毛玻璃效果 */
 .deng-box{position:fixed;top:-40px;right:150px;z-index:9999;pointer-events:none}
 .deng-box1{position:fixed;top:-30px;right:10px;z-index:9999;pointer-events:none}
@@ -4987,7 +4916,8 @@ footer .logo {height:35px;}
 .shui-c{position:absolute;top:18px;left:-2px;width:10px;height:35px;background:orange;border-radius:0 0 0 5px}
 .deng:before{position:absolute;top:-7px;left:29px;height:12px;width:60px;content:" ";display:block;z-index:999;border-radius:5px 5px 0 0;border:solid 1px #dc8f03;background:orange;background:linear-gradient(to right,#dc8f03,orange,#dc8f03,orange,#dc8f03)}
 .deng:after{position:absolute;bottom:-7px;left:10px;height:12px;width:60px;content:" ";display:block;margin-left:20px;border-radius:0 0 5px 5px;border:solid 1px #dc8f03;background:orange;background:linear-gradient(to right,#dc8f03,orange,#dc8f03,orange,#dc8f03)}
-.deng-t{font-family:黑体,Arial,Lucida Grande,Tahoma,sans-serif;font-size:3.2rem;color:#dc8f03;font-weight:700;line-height:85px;text-align:center}
+/* 🏮 节日灯笼文字样式 - 使用继承字体以同步站点默认字体设置 */
+.deng-t{font-family:inherit;font-size:3.2rem;color:#dc8f03;font-weight:700;line-height:85px;text-align:center}
 .night .deng-box,.night .deng-box1,.night .deng-t{background:0 0!important}
 @-moz-keyframes swing{0%{-moz-transform:rotate(-10deg)}
 50%{-moz-transform:rotate(10deg)}
@@ -5310,165 +5240,6 @@ footer .logo {height:35px;}
     box-shadow: 2px 2px 0px 0px var(--bs-dark);
 }
 
-/* 搜索小部件样式 */
-/* 通用搜索小部件样式，适用于所有位置 */
-.widget-search .search-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.widget-search .search-input {
-    width: 100%;
-    height: 40px;
-    padding: 0 40px 0 15px;
-    border: 1px solid var(--bs-hui);
-    border-radius: 20px;
-    background: var(--bs-white);
-    font-size: 0.85rem;
-    transition: all 0.3s ease;
-}
-
-.widget-search .search-input:focus {
-    outline: none;
-    box-shadow: 2px 2px 0px 0px var(--bs-dark);
-    transform: translate(-1px, -1px);
-}
-
-.widget-search .search-submit {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--bs-gray-600);
-    transition: all 0.3s ease;
-}
-
-.widget-search .search-submit:hover {
-    color: var(--bs-dark);
-}
-
-.widget-search .search-submit i {
-    font-size: 0.9rem;
-}
-
-/* 主题边框效果绑定 */
-/* blog-border 样式绑定 */
-.blog-border .search-form .search-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.blog-border .search-form .search-input {
-    border: 2px solid var(--bs-dark);
-    border-radius: 20px;
-    background: var(--bs-white);
-    transition: all 0.3s ease;
-}
-
-.blog-border .search-form .search-input:focus {
-    box-shadow: 2px 2px 0px 0px var(--bs-dark);
-    transform: translate(-1px, -1px);
-    border-color: var(--bs-dark);
-}
-
-.blog-border .search-form .search-submit {
-    color: var(--bs-dark);
-}
-
-/* 🌆 暗色模式下的 blog-border 样式绑定 */
-[data-bs-theme="dark"] .blog-border .search-form .search-input {
-    border-color: var(--bs-white);
-    background-color: var(--bs-body-bg);
-}
-
-[data-bs-theme="dark"] .blog-border .search-form .search-input:focus {
-    box-shadow: 2px 2px 0px 0px var(--bs-white);
-}
-
-[data-bs-theme="dark"] .blog-border .search-form .search-submit {
-    color: var(--bs-white);
-}
-
-/* blog-shadow 样式绑定 */
-.blog-shadow .search-form .search-input {
-    border: 1px solid rgba(7, 10, 25, 0.1);
-    box-shadow: 0 1px 3px rgba(7, 10, 25, 0.05);
-    background: var(--bs-white);
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.blog-shadow .search-form .search-input:focus {
-    box-shadow: 0 3px 12px -1px rgba(7, 10, 25, 0.1), 2px 2px 0px 0px var(--bs-dark);
-    transform: translate(-1px, -1px);
-}
-
-/* blog-lines 样式绑定 */
-.blog-lines .search-form .search-input {
-    border: 1px solid var(--bs-dark);
-    background: linear-gradient(90deg, var(--bs-white), rgba(var(--bs-primary-rgb), 0.05), var(--bs-white));
-    background-size: 200% 100%;
-    animation: borderFlow 5s linear infinite;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.blog-lines .search-form .search-input:focus {
-    box-shadow: 2px 2px 0px 0px var(--bs-dark);
-    animation: borderFlow 1.5s linear infinite;
-    transform: translate(-1px, -1px);
-}
-
-/* 🌆 暗色模式适配 */
-[data-bs-theme="dark"] .search-form .search-input {
-    background-color: #ffffff4a;
-    border-color: var(--bs-white);
-    color: var(--bs-white);
-    border-radius: 20px;
-}
-
-[data-bs-theme="dark"] .search-form .search-input::placeholder {
-    color: var(--bs-gray-400);
-}
-
-[data-bs-theme="dark"] .search-form .search-submit {
-    color: var(--bs-gray-400);
-}
-
-[data-bs-theme="dark"] .search-form .search-submit:hover {
-    color: var(--bs-white);
-}
-
-
-
-[data-bs-theme="dark"] .blog-shadow .search-form .search-input {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.05);
-    background-color: var(--bs-body-bg);
-}
-
-[data-bs-theme="dark"] .blog-shadow .search-form .search-input:focus {
-    box-shadow: 0 3px 12px -1px rgba(255, 255, 255, 0.1), 2px 2px 0px 0px var(--bs-white);
-    transform: translate(-1px, -1px);
-}
-
-[data-bs-theme="dark"] .blog-lines .search-form .search-input {
-    border-color: var(--bs-white);
-    background: linear-gradient(90deg, #ffffff4a, rgba(255, 255, 255, 0.1), #ffffff4a);
-    background-size: 200% 100%;
-}
-
-[data-bs-theme="dark"] .blog-lines .search-form .search-input:focus {
-    box-shadow: 2px 2px 0px 0px var(--bs-white);
-    animation: borderFlow 1.5s linear infinite;
-    transform: translate(-1px, -1px);
-}
 
 /* 🌆 暗色模式下的内容样式适配 */
 [data-bs-theme="dark"] .footer-bar .widget_categories ul li {
@@ -5960,11 +5731,6 @@ footer .logo {height:35px;}
         overflow: visible;
     }
     
-    /* 优化移动端导航栏搜索框 */
-    .mobile-search-form.active .mobile-search-input {
-        width: 200px !important;
-    }
-    
     /* 优化移动端文章卡片间距 */
     .post-list {
         margin-bottom: 1.5rem !important;
@@ -6020,7 +5786,34 @@ footer .logo {height:35px;}
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* ◀️ 亮色模式下添加轻微阴影 */
 }
 
+/* 🎨 主题切换按钮图标样式 */
+/* ☀️ 太阳图标 - 默认隐藏 */
+.bd-theme .theme-icon-sun {
+    display: none;
+}
 
+/* 🌙 月亮图标 - 默认显示 */
+.bd-theme .theme-icon-moon {
+    display: block;
+}
+
+/* ☀️ 亮色模式下显示月亮图标（提示可切换到暗色） */
+[data-bs-theme="light"] .bd-theme .theme-icon-sun {
+    display: none;
+}
+
+[data-bs-theme="light"] .bd-theme .theme-icon-moon {
+    display: block;
+}
+
+/* 🌙 暗色模式下显示太阳图标（提示可切换到亮色） */
+[data-bs-theme="dark"] .bd-theme .theme-icon-sun {
+    display: block;
+}
+
+[data-bs-theme="dark"] .bd-theme .theme-icon-moon {
+    display: none;
+}
 
 
 

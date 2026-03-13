@@ -52,6 +52,18 @@ $options[] = array(
 			'glass' => __('圆角拟态玻璃效果', 'ui_boxmoe_com')
 		));
     $options[] = array(
+		'name' => __('搜索框效果', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_search_style',
+		'std' => "glass",
+		'type' => "radio",
+		'options' => array(
+			'glass' => __('💎 无边框玻璃质感', 'ui_boxmoe_com'),
+			'comic' => __('🎨 漫画风格', 'ui_boxmoe_com'),
+			'shadow' => __('🌑 阴影边框', 'ui_boxmoe_com'),
+			'line' => __('📏 线条边框', 'ui_boxmoe_com'),
+			'neon' => __('✨ 发光效果', 'ui_boxmoe_com')
+		));
+    $options[] = array(
         'name' => __('懒加载自定义占位图', 'ui_boxmoe_com'), 
         'id' => 'boxmoe_lazy_load_images',
         'std' => $image_path.'loading.gif',
@@ -237,7 +249,7 @@ $options[] = array(
 	$options[] = array(
 		'name' => __('网站底部自定义信息（如备案号支持HTML代码）', 'ui_boxmoe_com'),
 		'id' => 'boxmoe_footer_info',
-		'std' => '本站使用Wordpress创作'."\n",
+		'std' => '本站使用Wordpress创作✨'."\n",
 		'settings' => array('rows' => 3),
 		'type' => 'textarea');	
 	$options[] = array(

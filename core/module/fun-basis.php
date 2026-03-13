@@ -455,7 +455,7 @@ function boxmoe_load_assets_footer(){?>
             </div>
           </div>
           <div class="col-lg-12 text-center mt-3 copyright">
-          <span><?php echo get_boxmoe('boxmoe_footer_copyright_hidden') ? '' : 'Copyright'; ?> © <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a> <?php echo get_boxmoe('boxmoe_footer_info','Powered by WordPress'); ?> </span>
+          <span><?php echo get_boxmoe('boxmoe_footer_copyright_hidden') ? '' : '版权©'; ?> <?php echo date('Y'); ?> <a href="<?php echo home_url(); ?>"><?php echo get_bloginfo('name'); ?></a> <?php echo get_boxmoe('boxmoe_footer_info','Powered by WordPress'); ?> </span>
           <span><?php $footer_text = get_boxmoe('boxmoe_footer_theme_by_text','本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'🕊️ 主题版本：{THEME_VERSION}'); echo str_replace('{THEME_VERSION}', THEME_VERSION, $footer_text); ?></span>
           <?php if(get_boxmoe('boxmoe_footer_running_days_switch')): ?>
           <span class="runtime-line">
@@ -646,6 +646,17 @@ add_action('wp_ajax_nopriv_boxmoe_check_login_status', 'boxmoe_check_login_statu
 
 // 🔐 阻止登录状态缓存--------------------------boxmoe.com--------------------------
 function boxmoe_no_cache_for_logged_in() {
+    // 🚫 密码保护页面不缓存，确保密码验证后能正确显示内容
+    if (post_password_required()) {
+        header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Expires: Wed, 11 Jan 1984 05:00:00 GMT');
+        header('Surrogate-Control: no-store');
+        header('CDN-Cache-Control: no-cache'); // ◀️ 防止CDN缓存密码保护页面
+        header('X-Cache-Enabled: false');
+        return;
+    }
+    
     // 对所有用户都添加缓存控制，确保登录状态实时更新
     header('Cache-Control: no-cache, no-store, must-revalidate, max-age=0');
     header('Pragma: no-cache');

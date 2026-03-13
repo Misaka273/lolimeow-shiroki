@@ -84,6 +84,33 @@ if(!defined('ABSPATH')){
     $options[] = array(
         'group' => 'end',
         );
+    // ⏱️ 文章最后更新时间计时器功能
+    $options[] = array(
+        'group' => 'start',
+        'group_title' => '文章最后更新时间计时器设置',
+        'name' => __('文章最后更新时间计时器开关', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_post_update_timer_switch',
+        'type' => "checkbox",
+        'std' => false,
+        'desc' => __('若开启则在文章页面显示【最后更新到现在已过去多久】的持续计时器', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'name' => __('计时器提示文字', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_post_update_timer_text',
+        'type' => 'text',
+        'std' => '上一次更新已经跑远了✨',
+        'desc' => __('计时器标题文字，默认为【上一次更新已经跑远了✨】', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'name' => __('计时器副标题文字', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_post_update_timer_subtext',
+        'type' => 'text',
+        'std' => '(‾◡◝) 本内容里的一些消息，可能已经跟不上时间啦～',
+        'desc' => __('计时器下方提示文字，默认为【(‾◡◝) 本内容里的一些消息，可能已经跟不上时间啦～】', 'ui_boxmoe_com'),
+        );
+    $options[] = array(
+        'group' => 'end',
+        );
     $options[] = array(
         'group' => 'start',
         'group_title' => '文章缩略图随机API',

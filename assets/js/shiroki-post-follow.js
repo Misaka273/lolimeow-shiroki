@@ -7,35 +7,23 @@
 jQuery(document).ready(function($) {
     'use strict';
 
-    console.log('shiroki-post-follow: 文档已加载');
-    console.log('shiroki-post-follow: jQuery版本 = ' + $.fn.jquery);
-
     var $followBtn = $('.shiroki-follow-btn');
     if ($followBtn.length === 0) {
-        console.log('shiroki-post-follow: 未找到订阅按钮');
         return;
     }
 
-    console.log('shiroki-post-follow: 找到订阅按钮，数量 = ' + $followBtn.length);
     var postId = $followBtn.data('post-id');
     var isFollowed = $followBtn.hasClass('followed');
 
     if (typeof shirokiPostFollow === 'undefined') {
-        console.error('shiroki-post-follow: shirokiPostFollow 对象未定义，请检查脚本加载');
-        console.log('shiroki-post-follow: 可用的全局变量:', Object.keys(window).filter(k => k.includes('shiroki')));
         return;
     }
 
-    console.log('shiroki-post-follow: AJAX URL = ' + shirokiPostFollow.ajax_url);
-    console.log('shiroki-post-follow: Nonce = ' + shirokiPostFollow.nonce);
-
     $followBtn.on('click', function(e) {
         e.preventDefault();
-        console.log('shiroki-post-follow: 按钮被点击');
 
         var $this = $(this);
         var action = $this.hasClass('followed') ? 'unfollow' : 'follow';
-        console.log('shiroki-post-follow: 操作 = ' + action);
 
         $.ajax({
             url: shirokiPostFollow.ajax_url,
@@ -48,10 +36,8 @@ jQuery(document).ready(function($) {
             },
             beforeSend: function() {
                 $this.prop('disabled', true).addClass('loading');
-                console.log('shiroki-post-follow: 发送请求...');
             },
             success: function(response) {
-                console.log('shiroki-post-follow: 收到响应', response);
                 if (response.success) {
                     if (action === 'follow') {
                         $this.addClass('followed');

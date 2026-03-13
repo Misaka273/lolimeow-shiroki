@@ -1,0 +1,403 @@
+/*
+ * 🕊️ 白木 开发 🔗gl.baimu.live
+ * ✨ 方案5：圆角拟态玻璃发光效果搜索框样式
+ * 📝 功能说明：实现圆角拟态玻璃效果布局，拟态圆角边框玻璃风格，边框底座实现发光的紫色效果
+ */
+
+/* 🔗 基础变量定义 */
+:root {
+  /* ☀️ 亮色模式变量 */
+  --search-neon-bg: rgba(255, 255, 255, 0.3);
+  --search-neon-bg-hover: rgba(255, 255, 255, 0.4);
+  --search-neon-bg-focus: rgba(255, 255, 255, 0.5);
+  --search-neon-border: rgba(255, 255, 255, 0.4);
+  --search-neon-border-focus: rgba(139, 92, 246, 0.5);
+  --search-neon-glow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.2), inset 0 0 20px rgba(139, 92, 246, 0.05);
+  --search-neon-glow-hover: 0 0 25px rgba(139, 92, 246, 0.4), 0 0 50px rgba(139, 92, 246, 0.25), inset 0 0 25px rgba(139, 92, 246, 0.08);
+  --search-neon-glow-focus: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3), inset 0 0 30px rgba(139, 92, 246, 0.1);
+  --search-neon-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  --search-neon-text: #333333;
+  --search-neon-placeholder: #666666;
+  --search-neon-icon: #8b5cf6;
+  --search-neon-backdrop: blur(20px);
+  --search-neon-radius: 20px;
+}
+
+/* 🌆 暗色模式变量 */
+[data-bs-theme="dark"] {
+  --search-neon-bg: rgba(30, 30, 45, 0.5);
+  --search-neon-bg-hover: rgba(40, 40, 60, 0.6);
+  --search-neon-bg-focus: rgba(30, 30, 45, 0.7);
+  --search-neon-border: rgba(139, 92, 246, 0.3);
+  --search-neon-border-focus: rgba(139, 92, 246, 0.6);
+  --search-neon-glow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.25), inset 0 0 20px rgba(139, 92, 246, 0.1);
+  --search-neon-glow-hover: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.35), inset 0 0 30px rgba(139, 92, 246, 0.15);
+  --search-neon-glow-focus: 0 0 40px rgba(139, 92, 246, 0.6), 0 0 80px rgba(139, 92, 246, 0.4), inset 0 0 40px rgba(139, 92, 246, 0.2);
+  --search-neon-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --search-neon-text: #ffffff;
+  --search-neon-placeholder: rgba(255, 255, 255, 0.5);
+  --search-neon-icon: #a78bfa;
+}
+
+/* ✨ 导航栏搜索框容器 */
+.boxmoe_header .search-box.search-style-neon {
+  position: relative;
+  height: 40px;
+  margin-right: 5px;
+  display: block;
+}
+
+/* ✨ 搜索表单基础样式 */
+.boxmoe_header .search-form.search-style-neon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ✨ 搜索输入框 - 默认收起状态 */
+.boxmoe_header .search-form.search-style-neon .search-input {
+  position: absolute;
+  right: 40px;
+  width: 0;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--search-neon-border);
+  outline: none;
+  border-radius: var(--search-neon-radius);
+  background: var(--search-neon-bg);
+  backdrop-filter: var(--search-neon-backdrop);
+  -webkit-backdrop-filter: var(--search-neon-backdrop);
+  box-shadow: var(--search-neon-shadow), var(--search-neon-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  visibility: hidden;
+  font-size: 0.9rem;
+  color: var(--search-neon-text);
+}
+
+/* ✨ 搜索输入框占位符 */
+.boxmoe_header .search-form.search-style-neon .search-input::placeholder {
+  color: var(--search-neon-placeholder);
+}
+
+/* ✨ 搜索按钮 - 纯图标样式 */
+.boxmoe_header .search-form.search-style-neon .search-btn,
+.boxmoe_header .search-box .search-form.search-style-neon .search-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ✨ 搜索按钮图标 - 保持默认样式 */
+.boxmoe_header .search-form.search-style-neon .search-btn i.fa-search,
+.boxmoe_header .search-box .search-form.search-style-neon .search-btn i.fa-search {
+  color: inherit;
+  background: transparent !important;
+}
+
+/* ✨ 搜索按钮悬停效果 */
+.boxmoe_header .search-form.search-style-neon .search-btn:hover,
+.boxmoe_header .search-box .search-form.search-style-neon .search-btn:hover {
+  background: transparent !important;
+  transform: translateY(-2px) scale(1.1);
+}
+
+/* ✨ 激活状态 - 搜索框展开 */
+.boxmoe_header .search-form.search-style-neon.active {
+  width: auto;
+}
+
+.boxmoe_header .search-form.search-style-neon.active .search-input {
+  width: 240px;
+  padding: 0 48px 0 18px;
+  opacity: 1;
+  visibility: visible;
+  right: 0;
+}
+
+.boxmoe_header .search-form.search-style-neon.active .search-input:focus {
+  background: var(--search-neon-bg-focus);
+  border-color: var(--search-neon-border-focus);
+  box-shadow: var(--search-neon-shadow), var(--search-neon-glow-focus);
+}
+
+/* ✨ 激活状态 - 搜索按钮定位 */
+.boxmoe_header .search-form.search-style-neon.active .search-btn,
+.boxmoe_header .search-box .search-form.search-style-neon.active .search-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  position: absolute;
+  right: 0;
+}
+
+/* ✨ 移动端搜索表单 */
+.boxmoe_header .mobile-search-form.search-style-neon {
+  position: absolute;
+  right: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* ✨ 移动端搜索输入框 - 收起状态 */
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-input {
+  width: 0;
+  height: 40px;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: var(--search-neon-radius);
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  font-size: 0.9rem;
+  color: var(--search-neon-text);
+  position: absolute;
+  right: 40px;
+  top: 0;
+}
+
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-input::placeholder {
+  color: var(--search-neon-placeholder);
+}
+
+/* ✨ 移动端搜索按钮 - 纯图标样式 */
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-btn,
+.boxmoe_header .mobile-search-form.search-style-neon .search-submit.mobile-search-btn,
+.boxmoe_header .mobile-search-form.search-style-neon .search-wrap .search-submit.mobile-search-btn {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 8px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ✨ 移动端搜索按钮图标 */
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-btn i,
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-btn i.fa-search,
+.boxmoe_header .mobile-search-form.search-style-neon .search-submit.mobile-search-btn i {
+  background: transparent !important;
+  color: inherit;
+}
+
+/* ✨ 移动端搜索按钮悬停效果 */
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-btn:hover,
+.boxmoe_header .mobile-search-form.search-style-neon .search-submit.mobile-search-btn:hover,
+.boxmoe_header .mobile-search-form.search-style-neon .search-wrap .search-submit.mobile-search-btn:hover {
+  background: transparent !important;
+  transform: translateY(calc(-50% - 2px)) scale(1.1);
+}
+
+/* ✨ 移动端激活状态 */
+.boxmoe_header .mobile-search-form.search-style-neon.active .mobile-search-input {
+  width: 200px;
+  padding: 0 48px 0 18px;
+  opacity: 1;
+  background: var(--search-neon-bg);
+  backdrop-filter: var(--search-neon-backdrop);
+  -webkit-backdrop-filter: var(--search-neon-backdrop);
+  border: 1px solid var(--search-neon-border);
+  box-shadow: var(--search-neon-shadow), var(--search-neon-glow);
+  right: 0;
+}
+
+.boxmoe_header .mobile-search-form.search-style-neon.active .mobile-search-input:focus {
+  background: var(--search-neon-bg-focus);
+  border-color: var(--search-neon-border-focus);
+  box-shadow: var(--search-neon-shadow), var(--search-neon-glow-focus);
+}
+
+/* ✨ 移动端激活状态 - 搜索按钮 */
+.boxmoe_header .mobile-search-form.search-style-neon.active .mobile-search-btn,
+.boxmoe_header .mobile-search-form.search-style-neon.active .search-submit.mobile-search-btn {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ✨ 通用搜索表单样式（侧边栏等） */
+.search-form.search-style-neon {
+  margin-bottom: 20px;
+}
+
+.search-form.search-style-neon .search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.search-form.search-style-neon .search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 55px 0 20px;
+  border: 1px solid var(--search-neon-border);
+  outline: none;
+  border-radius: var(--search-neon-radius);
+  background: var(--search-neon-bg);
+  backdrop-filter: var(--search-neon-backdrop);
+  -webkit-backdrop-filter: var(--search-neon-backdrop);
+  box-shadow: var(--search-neon-shadow), var(--search-neon-glow);
+  font-size: 0.95rem;
+  color: var(--search-neon-text);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-form.search-style-neon .search-input::placeholder {
+  color: var(--search-neon-placeholder);
+}
+
+.search-form.search-style-neon .search-input:focus {
+  background: var(--search-neon-bg-focus);
+  border-color: var(--search-neon-border-focus);
+  box-shadow: var(--search-neon-shadow), var(--search-neon-glow-focus);
+  transform: translateY(-2px);
+}
+
+/* ✨ 通用搜索按钮样式 */
+.search-form.search-style-neon .search-submit {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: var(--search-neon-icon);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form.search-style-neon .search-submit:hover {
+  background: var(--search-neon-bg-hover);
+  box-shadow: var(--search-neon-glow-hover);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* ✨ 通用搜索按钮图标 - 保持默认样式 */
+.search-form.search-style-neon .search-submit i {
+  color: inherit;
+}
+
+/* ✨ 搜索框发光效果 - 仅应用于输入框 */
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow: var(--search-neon-shadow), var(--search-neon-glow);
+  }
+  50% {
+    box-shadow: var(--search-neon-shadow), var(--search-neon-glow-hover);
+  }
+}
+
+/* ✨ 输入框发光动画 */
+.boxmoe_header .search-form.search-style-neon .search-input,
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-input {
+  animation: neon-pulse 3s ease-in-out infinite;
+}
+
+.boxmoe_header .search-form.search-style-neon .search-input:focus,
+.boxmoe_header .mobile-search-form.search-style-neon .mobile-search-input:focus {
+  animation: none;
+}
+
+/* 📱 响应式设计 */
+@media (max-width: 991px) {
+  .boxmoe_header .search-form.search-style-neon.active .search-input {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .boxmoe_header .search-form.search-style-neon.active .search-input {
+    width: 180px;
+  }
+  
+  .boxmoe_header .mobile-search-form.search-style-neon.active .mobile-search-input {
+    width: 160px;
+  }
+  
+  .search-form.search-style-neon .search-input {
+    height: 46px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .boxmoe_header .search-form.search-style-neon.active .search-input {
+    width: 150px;
+    padding: 0 42px 0 15px;
+  }
+  
+  .boxmoe_header .mobile-search-form.search-style-neon.active .mobile-search-input {
+    width: 140px;
+    padding: 0 42px 0 15px;
+  }
+}
+
+/* 🎨 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+  .boxmoe_header .search-form.search-style-neon .search-input,
+  .boxmoe_header .mobile-search-form.search-style-neon .mobile-search-input {
+    animation: none;
+  }
+
+  .boxmoe_header .search-form.search-style-neon,
+  .boxmoe_header .search-form.search-style-neon .search-input,
+  .boxmoe_header .search-form.search-style-neon .search-btn,
+  .boxmoe_header .mobile-search-form.search-style-neon .mobile-search-input,
+  .boxmoe_header .mobile-search-form.search-style-neon .mobile-search-btn,
+  .search-form.search-style-neon .search-input {
+    transition: none;
+  }
+
+  .boxmoe_header .search-form.search-style-neon .search-btn:hover,
+  .boxmoe_header .mobile-search-form.search-style-neon .mobile-search-btn:hover,
+  .search-form.search-style-neon .search-input:focus,
+  .search-form.search-style-neon .search-submit:hover {
+    transform: none;
+  }
+}

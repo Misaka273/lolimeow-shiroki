@@ -732,7 +732,6 @@ function initLazyLoad(container = document) {
             img.src = fixed;
             shirokiImageLoader.revealImage(img);
         } catch (error) {
-            console.warn('LazyLoad: Failed to preload image:', fixed, error);
             // 降级到原始加载方式
             const onLoad = () => { 
                 img.classList.add('loaded'); 
@@ -961,7 +960,6 @@ class ShirokiImageLoader {
             await this.preloadImage(src);
             this.revealImage(imgElement);
         } catch (error) {
-            console.warn('ShirokiImageLoader: Failed to load image:', src, error);
             this.revealImage(imgElement); // 即使失败也显示
         }
     }
@@ -2278,11 +2276,21 @@ const ThemeSwitcher = (() => {
             btn.classList.toggle("active", btn === themeSwitcher);
             btn.setAttribute("aria-pressed", btn === themeSwitcher);
         });
-        const mainThemeBtn = document.querySelector('.bd-theme i');
-        if (mainThemeBtn) {
-            mainThemeBtn.className = theme === 'light' ? 'fa fa-sun-o' :
-                                   theme === 'dark' ? 'fa fa-moon-o' :
-                                   'fa fa-adjust';
+        /* 🎨 更新主题切换按钮图标 - 根据当前主题显示对应的图标 */
+        const bdThemeBtn = document.querySelector('.bd-theme');
+        if (bdThemeBtn) {
+            const sunIcon = bdThemeBtn.querySelector('.theme-icon-sun');
+            const moonIcon = bdThemeBtn.querySelector('.theme-icon-moon');
+            /* ☀️ 亮色模式显示月亮（提示可切换到暗色）🌙 暗色模式显示太阳（提示可切换到亮色） */
+            const effectiveTheme = theme === 'auto'
+                ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light')
+                : theme;
+            if (sunIcon) {
+                sunIcon.style.display = effectiveTheme === 'dark' ? 'block' : 'none';
+            }
+            if (moonIcon) {
+                moonIcon.style.display = effectiveTheme === 'light' ? 'block' : 'none';
+            }
         }
 
         focus && themeSwitcher.focus();
@@ -3867,6 +3875,68 @@ function initInfiniteScroll() {
     }, 500);
 }
 
+// ⏱️ 文章最后更新时间计时器初始化
+function initPostUpdateTimer() {
+    const timerEl = document.querySelector('.post-update-timer');
+    if (!timerEl) return;
+    
+    const modifiedTime = timerEl.dataset.modifiedTime;
+    if (!modifiedTime) return;
+    
+    const modifiedDate = new Date(modifiedTime.replace(/-/g, '/'));
+    const displayEl = timerEl.querySelector('.timer-display');
+    if (!displayEl) return;
+    
+    // 格式化时间差的函数
+    function formatTimeDiff(diff) {
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        const months = Math.floor(days / 30);
+        const years = Math.floor(days / 365);
+        
+        if (years > 0) {
+            const remainingMonths = Math.floor((days % 365) / 30);
+            const remainingDays = days % 30;
+            if (remainingMonths > 0) {
+                return `${years}年${remainingMonths}月${remainingDays}日 ${hours % 24}小时${minutes % 60}分${seconds % 60}秒`;
+            }
+            return `${years}年${days % 365}日 ${hours % 24}小時${minutes % 60}分${seconds % 60}秒`;
+        } else if (months > 0) {
+            const remainingDays = days % 30;
+            return `${months}月${remainingDays}日 ${hours % 24}小时${minutes % 60}分${seconds % 60}秒`;
+        } else if (days > 0) {
+            return `${days}日 ${hours % 24}小时${minutes % 60}分${seconds % 60}秒`;
+        } else if (hours > 0) {
+            return `${hours}小时${minutes % 60}分${seconds % 60}秒`;
+        } else if (minutes > 0) {
+            return `${minutes}分${seconds % 60}秒`;
+        } else {
+            return `${seconds}秒`;
+        }
+    }
+    
+    // 更新计时器显示
+    function updateTimer() {
+        const now = new Date();
+        const diff = now.getTime() - modifiedDate.getTime();
+        
+        if (diff < 0) {
+            displayEl.textContent = '刚刚更新';
+            return;
+        }
+        
+        displayEl.textContent = formatTimeDiff(diff);
+    }
+    
+    // 立即更新一次
+    updateTimer();
+    
+    // 每秒更新一次
+    setInterval(updateTimer, 1000);
+}
+
 // DOM加载完成后初始化
 document.addEventListener("DOMContentLoaded", () => {
     const run = fn => { try { fn(); } catch(_) {} };
@@ -3893,6 +3963,7 @@ document.addEventListener("DOMContentLoaded", () => {
     run(initVideoPlayer);
     run(initBackToTop);
     run(initInfiniteScroll);
+    run(initPostUpdateTimer);
     (function initGifFix(){
         try{
             const imgs = document.querySelectorAll('.single-content img');

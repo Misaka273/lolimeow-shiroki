@@ -265,18 +265,26 @@ if (!function_exists('user_login_action_callback')) {
         }
         
         $user = wp_authenticate($username, $password);
-        
+
         if (is_wp_error($user)) {
             wp_send_json_error(array('message' => '用户名或密码错误'));
             return;
         }
-        
-        // 登录用户
-        wp_set_auth_cookie($user->ID, $remember);
-        do_action('wp_login', $user->user_login, $user);
-        
-        // 设置重定向URL
-        $redirect_url = !empty($form_data['redirect_to']) ? esc_url_raw($form_data['redirect_to']) : home_url();
+
+        /* 🎯 修复管理员登录重复输入密码问题
+         * 问题原因：缺少wp_set_current_user()导致当前用户会话不完整
+         * 解决方案：设置当前用户、认证cookie并触发wp_login钩子
+         */
+        wp_set_current_user($user->ID); // ◀️ 设置当前用户对象
+        wp_set_auth_cookie($user->ID, $remember); // ◀️ 设置认证cookie
+        do_action('wp_login', $user->user_login, $user); // ◀️ 触发登录钩子
+
+        // 🔗 设置重定向URL：管理员到后台，普通用户到首页或指定页面
+        if (user_can($user, 'manage_options')) {
+            $redirect_url = admin_url(); // ◀️ 管理员跳转到后台
+        } else {
+            $redirect_url = !empty($form_data['redirect_to']) ? esc_url_raw($form_data['redirect_to']) : home_url(); // ◀️ 普通用户跳转到指定页面或首页
+        }
         
         wp_send_json_success(array(
             'message' => '登录成功',
@@ -1112,9 +1120,21 @@ function custom_password_protected_form($form) {
         $label_text = '请输入密码查看本文内容';
     }
     
+    /* 🔗 直接使用 wp-login.php，绕过 login_url 过滤器
+     * ⚠️ 必须使用 site_url() 直接构建，避免被 boxmoe_custom_login_url 替换
+     */
+    $action_url = site_url('wp-login.php?action=postpass', 'login_post');
+    
+    /* ⚠️ 检查密码错误提示 - 通过 URL 参数判断 */
+    $error_message = '';
+    if (isset($_GET['password-error']) && $_GET['password-error'] === '1') {
+        $error_message = '<div class="password-error-message"><i class="fa fa-exclamation-circle"></i> 密码错误，请重试</div>';
+    }
+    
     $output = '<div class="password-protected-form">';
     $output .= '<h3 class="password-form-title">' . $title . '</h3>';
-    $output .= '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" method="post">';
+    $output .= $error_message;
+    $output .= '<form action="' . esc_url($action_url) . '" method="post">';
     $output .= '<div class="form-group password-form-group">';
     $output .= '<input name="post_password" id="' . $label . '" type="password" class="form-control password-input" size="20" maxlength="20" placeholder="" />';
     $output .= '<label for="' . $label . '" class="password-input-label">' . $label_text . '</label>';
@@ -1126,7 +1146,43 @@ function custom_password_protected_form($form) {
 }
 add_filter('the_password_form', 'custom_password_protected_form');
 
+/* 🔐 密码错误处理 - 在密码验证失败时添加错误参数到 URL
+ * 🎯 让用户能看到密码错误的提示
+ */
 
+// 📝 在密码验证前记录原始文章 URL
+add_action('login_form_postpass', 'shiroki_capture_postpass_referer');
+function shiroki_capture_postpass_referer() {
+    if (isset($_POST['post_password']) && isset($_SERVER['HTTP_REFERER'])) {
+        // 💾 保存原始来源页面到临时变量
+        $GLOBALS['shiroki_postpass_referer'] = $_SERVER['HTTP_REFERER'];
+    }
+}
+
+// 🔍 在重定向时检查是否是密码错误
+add_filter('wp_redirect', 'shiroki_password_error_redirect', 10, 2);
+function shiroki_password_error_redirect($location, $status) {
+    // ⚠️ 检查是否有记录的 referer（说明是从密码验证表单提交的）
+    if (!empty($GLOBALS['shiroki_postpass_referer'])) {
+        $referer = $GLOBALS['shiroki_postpass_referer'];
+        
+        // 🔗 获取 referer 和 location 的文章 ID
+        $referer_post_id = url_to_postid($referer);
+        $location_post_id = url_to_postid($location);
+        
+        /* 🎯 判断密码错误的逻辑：
+         * 1. referer 和 location 指向同一篇文章（说明密码错误，WordPress 把用户送回原文）
+         * 2. 或者 location 包含 password-error 参数（已经被处理过）
+         */
+        if ($referer_post_id && $location_post_id && $referer_post_id === $location_post_id) {
+            // ❌ 密码错误 - 添加错误参数到 URL
+            if (strpos($location, 'password-error') === false) {
+                $location = add_query_arg('password-error', '1', $location);
+            }
+        }
+    }
+    return $location;
+}
 
 // 将书签小部件标题从"书签"改为"链接"
 function lolimeow_change_bookmark_title($args) {
@@ -2344,9 +2400,6 @@ function lolimeow_custom_login_page() {
             const errorMessage = error.message || \'未知错误\';
             document.getElementById(\'login-message\').innerHTML = 
                 \'<div class="alert alert-danger mt-3">登录请求失败: \' + errorMessage + \'，请稍后重试</div>\';
-            
-            // 在控制台打印完整的错误信息，方便开发者调试
-            console.error(\'登录请求失败:\', error);
         });
     });
 });
@@ -2400,8 +2453,8 @@ function lolimeow_rename_wp_fastest_cache_menu() {
 
 // 🚀 添加页面缓存头设置，解决缓存检测问题
 function shiroki_add_cache_headers() {
-    // 只对前端页面添加缓存头，排除管理员页面和登录页面
-    if (!is_admin() && !shiroki_is_login() && !shiroki_is_logout()) {
+    // 只对前端页面添加缓存头，排除管理员页面、登录页面、密码保护页面
+    if (!is_admin() && !shiroki_is_login() && !shiroki_is_logout() && !post_password_required()) {
         // 设置Cache-Control头
         header('Cache-Control: public, max-age=3600'); // ◀️ 缓存1小时
         

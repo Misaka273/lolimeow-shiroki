@@ -224,7 +224,6 @@ function boxmoe_role_manager_script() {
         ?>
         <script type="text/javascript">
         jQuery(document).ready(function($) {
-            console.log('Boxmoe Role Manager Script Loaded');
 
             // 🥳 自定义弹窗逻辑
             // 扁平圆角风，倒计时自动关闭

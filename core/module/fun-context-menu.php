@@ -288,7 +288,6 @@ function boxmoe_add_context_menu() {
                           // 如果是因为格式问题，交给 Canvas 转换
                           if (e.message === 'Need PNG') throw e;
                           // 其他 API 错误，降级到 legacy
-                          console.warn('Clipboard API failed, fallback to legacy', e);
                           await legacyCopyImage(blob);
                       }
                  } else {
@@ -309,7 +308,6 @@ function boxmoe_add_context_menu() {
                 await writeToClipboard(blob);
 
             } catch (err) {
-                console.warn('Fetch copy failed/skipped, trying canvas...', err);
                 // 尝试 Canvas (统一转为 PNG，处理 CORS 和 格式问题)
                 try {
                     const img = new Image();

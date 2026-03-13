@@ -65,8 +65,6 @@ class ShirokiMusicErrorHandler {
 
         // 检查是否是音乐相关错误
         if (this.isMusicRelatedError(errorMessage)) {
-            console.warn(`🎵 音乐播放器错误 [${source}]:`, errorMessage);
-            
             // 显示用户友好的错误提示
             this.showUserFriendlyError(errorMessage, source);
             

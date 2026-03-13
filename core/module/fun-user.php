@@ -260,11 +260,11 @@ function handle_user_login() {
     );
     
     $user = wp_signon($creds, false);
-    
+
     if (is_wp_error($user)) {
         $error_code = $user->get_error_code();
         $error_message = '';
-        
+
         switch ($error_code) {
             case 'invalid_username':
                 $error_message = '用户不存在，如果不确定可以用邮箱登录';
@@ -281,36 +281,37 @@ function handle_user_login() {
             default:
                 $error_message = '登录失败，请检查用户名和密码';
         }
-        
+
         wp_send_json_error(array(
             'message' => $error_message
         ));
         exit;
-    } 
-    
+    }
+
+    /* 🎯 修复管理员登录重复输入密码问题
+     * 问题原因：wp_signon()已设置cookie，但缺少当前用户会话和wp_login钩子触发
+     * 解决方案：设置当前用户、设置认证cookie并触发wp_login钩子，确保WordPress后台认证流程完整
+     */
+    wp_set_current_user($user->ID); // ◀️ 设置当前用户对象
+    wp_set_auth_cookie($user->ID, $remember, is_ssl()); // ◀️ 设置认证cookie，这是关键！
+    do_action('wp_login', $user->user_login, $user); // ◀️ 触发登录钩子，让其他插件/主题知道用户已登录
+
     // 🔗 获取并验证重定向地址
-    $redirect_to = !empty($formData['redirect_to']) ? $formData['redirect_to'] : boxmoe_user_center_link_page();
-    
-    // 处理后台登录链接，确保管理员用户能正确跳转到后台
-    if (strpos($redirect_to, 'wp-admin') !== false || strpos($redirect_to, 'dashboard') !== false) {
+    $redirect_to = !empty($formData['redirect_to']) ? $formData['redirect_to'] : '';
+
+    // 👮 判断用户类型并设置对应的重定向地址
+    if (empty($redirect_to)) {
+        // 🔄 没有指定重定向地址时，根据用户类型设置默认跳转
         if (user_can($user, 'manage_options')) {
-            // 🔒 确保管理员用户直接跳转到后台，不强制到用户中心
+            // 🔒 管理员用户：跳转到后台
             $redirect_to = admin_url();
+        } else {
+            // 🔗 非管理员用户：跳转到会员中心
+            $redirect_to = boxmoe_user_center_link_page();
         }
     }
 
-    // 👮u200d♂️ 非管理员用户跳转到会员中心，管理员保持原有重定向
-    if ( !user_can( $user, 'manage_options' ) ) {
-        $redirect_to = boxmoe_user_center_link_page();
-    }
-
     $redirect_to = wp_validate_redirect($redirect_to, boxmoe_user_center_link_page());
-
-    // 确保登录成功后设置了正确的auth cookie
-    if (is_user_logged_in()) {
-        // 刷新auth cookie，确保cookie设置正确
-        wp_set_auth_cookie($user->ID, $remember, true);
-    }
 
     wp_send_json_success(array(
         'message' => '登录成功',
@@ -677,7 +678,9 @@ function boxmoe_custom_login_logo_url() {
 add_filter('login_headerurl', 'boxmoe_custom_login_logo_url');
 
 // 🎨 自定义登录页面样式
-
+function boxmoe_custom_login_style() {
+    /* 💡 此函数用于login_head钩子，样式已在boxmoe_customize_login_page函数中通过wp_enqueue_scripts加载 */
+}
 add_action('login_head', 'boxmoe_custom_login_style');
 
 // 🎨 添加自定义登录页面内容 - 根据页面类型显示不同内容
@@ -826,4 +829,93 @@ function boxmoe_user_center_page_exists() {
     }
     
     return false;
+}
+
+/* 🔒 禁用WordPress默认登录页面wp-login.php
+ * 🎯 将所有访问wp-login.php的请求重定向到自定义登录页面
+ * ⚠️ 但保留必要的认证功能（如重置密码链接验证）
+ */
+add_action('init', 'boxmoe_disable_default_login_page', 1);
+function boxmoe_disable_default_login_page() {
+    /* 🔍 检查当前是否在登录页面 */
+    if (!is_admin() && strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false) {
+        /* 🔗 获取自定义登录页面URL */
+        $custom_login_url = boxmoe_sign_in_link_page();
+        
+        /* 📋 保留必要的操作：重置密码、退出登录、文章密码验证 */
+        $action = isset($_GET['action']) ? $_GET['action'] : '';
+        $allowed_actions = array('logout', 'rp', 'resetpass', 'postpass');
+        
+        /* 🔑 检查是否有重置密码的key */
+        $has_reset_key = isset($_GET['key']) && isset($_GET['login']);
+        
+        /* ✅ 如果是允许的操作，不拦截 */
+        if (in_array($action, $allowed_actions) || $has_reset_key) {
+            return;
+        }
+        
+        /* 🔄 如果是登录操作（POST请求），让WordPress处理 */
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($action)) {
+            return;
+        }
+        
+        /* 🚫 其他情况：重定向到自定义登录页面 */
+        wp_safe_redirect($custom_login_url);
+        exit;
+    }
+}
+
+/* 🔒 替换WordPress默认登录URL
+ * 🎯 将所有wp-login.php链接替换为自定义登录页面链接
+ */
+add_filter('login_url', 'boxmoe_custom_login_url', 10, 2);
+function boxmoe_custom_login_url($login_url, $redirect) {
+    /* 🔗 获取自定义登录页面URL */
+    $custom_login_url = boxmoe_sign_in_link_page();
+    
+    /* 🔗 如果有重定向参数，添加到自定义登录URL */
+    if (!empty($redirect)) {
+        $custom_login_url = add_query_arg('redirect_to', urlencode($redirect), $custom_login_url);
+    }
+    
+    return $custom_login_url;
+}
+
+/* 🔒 替换WordPress默认注册URL
+ * 🎯 将所有wp-login.php?action=register链接替换为自定义注册页面链接
+ */
+add_filter('register_url', 'boxmoe_custom_register_url');
+function boxmoe_custom_register_url($register_url) {
+    /* 🔗 获取自定义登录页面URL并添加注册模式参数 */
+    $custom_login_url = boxmoe_sign_in_link_page();
+    return add_query_arg('mode', 'signup', $custom_login_url);
+}
+
+/* 🔒 替换WordPress默认找回密码URL
+ * 🎯 将所有wp-login.php?action=lostpassword链接替换为自定义找回密码页面链接
+ */
+add_filter('lostpassword_url', 'boxmoe_custom_lostpassword_url', 10, 2);
+function boxmoe_custom_lostpassword_url($lostpassword_url, $redirect) {
+    /* 🔗 获取自定义重置密码页面URL */
+    $custom_reset_url = boxmoe_reset_password_link_page();
+    
+    /* 🔗 如果有重定向参数，添加到自定义重置密码URL */
+    if (!empty($redirect)) {
+        $custom_reset_url = add_query_arg('redirect_to', urlencode($redirect), $custom_reset_url);
+    }
+    
+    return $custom_reset_url;
+}
+
+/* 🔒 退出登录后重定向到首页
+ * 🎯 避免退出后跳转到wp-login.php
+ */
+add_action('wp_logout', 'boxmoe_redirect_after_logout');
+function boxmoe_redirect_after_logout() {
+    /* 🔗 获取首页URL */
+    $home_url = home_url();
+    
+    /* 🔄 执行重定向 */
+    wp_safe_redirect($home_url);
+    exit;
 }

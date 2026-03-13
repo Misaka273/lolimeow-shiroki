@@ -9,8 +9,8 @@ if (!defined('ABSPATH')) {echo'Look your sister';exit;}
 add_action('widgets_init','unregister_d_widget');
 function unregister_d_widget(){
     unregister_widget('WP_Widget_Recent_Comments');
-    // 恢复 WordPress 默认搜索小部件，注释掉下面这行
-    // unregister_widget('WP_Widget_Search');
+    // 注销 WordPress 默认搜索小部件，使用自定义的
+    unregister_widget('WP_Widget_Search');
 }
 
 $widgets = array(
@@ -33,7 +33,7 @@ foreach ($widgets as $widget) {
 	include 'widget-'.$widget.'.php';
 }
 
-add_action( 'widgets_init', 'widget_ui_loader' );
+add_action( 'widgets_init', 'widget_ui_loader', 20 );
 function widget_ui_loader() {
 	global $widgets;
 	foreach ($widgets as $widget) {

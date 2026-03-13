@@ -12,5 +12,78 @@ body .tk-image-viewer__wrapper--fade-out{opacity:0}
 .tk-image-viewer__actions button{border:none;background:#fff;color:#111;border-radius:12px;padding:8px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:transform .12s ease}
 .tk-image-viewer__actions button:hover{transform:translateY(-1px)}
 .tk-image-viewer__info{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;background:rgba(0,0,0,.35);padding:6px 10px;border-radius:12px}
-@media (max-width:985px){.tk-image-viewer__actions{gap:8px}.tk-image-viewer__info{bottom:80px}}
+/* 📱 移动端适配样式 */
+@media (max-width:985px){
+  .tk-image-viewer__actions{gap:8px;padding:6px 10px}
+  .tk-image-viewer__info{bottom:80px}
+}
+
+@media (max-width:768px){
+  /* 🥳 关闭按钮移动端适配 */
+  .tk-image-viewer__close{
+    top:12px;
+    right:12px;
+    width:36px;
+    height:36px;
+    font-size:18px
+  }
+  
+  /* 💕 图片圆角调整 & 移动端尺寸限制 */
+  .tk-image-viewer__canvas img{
+    border-radius:8px;
+    max-width:90vw;
+    max-height:70vh
+  }
+  
+  /* 🔗 操作按钮栏移动端适配 */
+  .tk-image-viewer__actions{
+    bottom:16px;
+    gap:6px;
+    padding:6px 8px;
+    border-radius:12px;
+    max-width:calc(100vw - 32px);
+    flex-wrap:wrap;
+    justify-content:center
+  }
+  
+  .tk-image-viewer__actions button{
+    padding:6px 10px;
+    font-size:12px;
+    border-radius:8px
+  }
+  
+  /* 🌆 图片计数信息位置调整 */
+  .tk-image-viewer__info{
+    bottom:72px;
+    font-size:12px;
+    padding:4px 8px
+  }
+}
+
+@media (max-width:480px){
+  /* ☀️ 小屏幕手机适配 */
+  .tk-image-viewer__close{
+    top:8px;
+    right:8px;
+    width:32px;
+    height:32px;
+    font-size:16px
+  }
+  
+  .tk-image-viewer__actions{
+    bottom:12px;
+    gap:4px;
+    padding:4px 6px
+  }
+  
+  .tk-image-viewer__actions button{
+    padding:5px 8px;
+    font-size:11px
+  }
+  
+  .tk-image-viewer__info{
+    bottom:64px;
+    font-size:11px
+  }
+}
 

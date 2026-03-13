@@ -467,6 +467,10 @@ function boxmoe_admin_clear_format_scripts($hook){
 		wp_enqueue_style('shiroki-divider', get_template_directory_uri() . '/assets/css/shiroki-divider.css', array(), THEME_VERSION);
 		wp_enqueue_script('tinymce-shiroki-divider', get_template_directory_uri() . '/assets/js/tinymce-shiroki-divider.js', array('jquery'), THEME_VERSION, true);
 		wp_enqueue_script('quicktags-shiroki-divider', get_template_directory_uri() . '/assets/js/quicktags-shiroki-divider.js', array('jquery'), THEME_VERSION, true);
+		// 🎬 加载admin-shiroki样式，包含TinyMCE全屏按钮位置修复
+		wp_enqueue_style('admin-shiroki', get_template_directory_uri() . '/assets/css/admin/admin-shiroki.css', array(), THEME_VERSION);
+		// 🎬 加载TinyMCE全屏按钮位置修复脚本
+		wp_enqueue_script('admin-tinymce-fullscreen-fix', get_template_directory_uri() . '/assets/js/admin-tinymce-fullscreen-fix.js', array('jquery'), THEME_VERSION, true);
 	}
 }
 add_action('admin_enqueue_scripts', 'boxmoe_admin_clear_format_scripts');
@@ -624,7 +628,24 @@ function boxmoe_duplicate_post_as_draft() {
 }
 add_action('admin_action_boxmoe_duplicate_post_as_draft', 'boxmoe_duplicate_post_as_draft');
 
-// 📦 修改后台外观菜单中的小工具名称为右侧/底部栏卡片和菜单为导航栏
+// 📄 文章编辑页面添加【复制此文章】按钮
+function boxmoe_add_duplicate_button_to_edit_page() {
+    global $post;
+    /* 🔗 只在编辑已有文章时显示复制按钮 */
+    if (isset($post) && isset($post->ID) && $post->ID > 0 && current_user_can('edit_posts')) {
+        $duplicate_url = wp_nonce_url('admin.php?action=boxmoe_duplicate_post_as_draft&post=' . $post->ID, 'boxmoe_duplicate_nonce');
+        ?>
+        <div id="boxmoe-duplicate-action" style="margin-bottom: 10px;">
+            <a href="<?php echo esc_url($duplicate_url); ?>" class="button button-secondary" style="width: 100%; text-align: center;" target="_blank" rel="noopener noreferrer">
+                📋 复制此文章
+            </a>
+        </div>
+        <?php
+    }
+}
+add_action('post_submitbox_start', 'boxmoe_add_duplicate_button_to_edit_page');
+
+// �📦 修改后台外观菜单中的小工具名称为右侧/底部栏卡片和菜单为导航栏
 function boxmoe_rename_widgets_and_menu() {
     global $submenu;
     // 找到外观菜单下的子菜单并修改名称
@@ -649,10 +670,36 @@ function boxmoe_rename_widgets_and_menu_label($translated_text, $text, $domain) 
     if ($text == '菜单' && $domain == 'default') {
         return '导航栏设置';
     }
+    /* ✏️ 将【写文章】按钮文本改为【写新文章】 */
+    if (($text == '写文章' || $translated_text == '写文章') && $domain == 'default') {
+        return '写新文章';
+    }
     return $translated_text;
 }
 add_filter('gettext', 'boxmoe_rename_widgets_and_menu_label', 10, 3);
 add_filter('ngettext', 'boxmoe_rename_widgets_and_menu_label', 10, 3);
+
+// ✏️ 使用 JavaScript 确保【写文章】按钮文本改为【写新文章】
+function boxmoe_rename_add_new_post_button() {
+    global $pagenow;
+    /* 🔗 只在文章相关页面执行 */
+    if ($pagenow == 'edit.php' || $pagenow == 'post.php' || $pagenow == 'post-new.php') {
+        ?>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                /* 📝 查找并替换【写文章】按钮文本 */
+                var buttons = document.querySelectorAll('.page-title-action');
+                buttons.forEach(function(button) {
+                    if (button.textContent.trim() === '写文章') {
+                        button.textContent = '写新文章';
+                    }
+                });
+            });
+        </script>
+        <?php
+    }
+}
+add_action('admin_head', 'boxmoe_rename_add_new_post_button');
 
 // 🎨 允许在主题设置描述中使用span标签
 function boxmoe_allow_span_tags_in_options($allowedtags) {
@@ -905,16 +952,18 @@ function boxmoe_fix_date_i18n($date, $format, $timestamp, $gmt) {
 }
 add_filter('date_i18n', 'boxmoe_fix_date_i18n', 10, 4);
 
-// 🌊 注册shiroki分割线TinyMCE插件
+/* 🌊 注册shiroki分割线TinyMCE插件 */
 function boxmoe_register_tinymce_shiroki_divider_plugin($plugin_array) {
     $plugin_array['shiroki_divider'] = get_template_directory_uri() . '/assets/js/tinymce-shiroki-divider.js';
+    $plugin_array['shiroki_nbsp'] = get_template_directory_uri() . '/assets/js/tinymce-shiroki-divider.js';
     return $plugin_array;
 }
 add_filter('mce_external_plugins', 'boxmoe_register_tinymce_shiroki_divider_plugin');
 
-// 🌊 添加shiroki分割线按钮到TinyMCE工具栏
+/* 🌊 添加shiroki分割线按钮到TinyMCE工具栏 */
 function boxmoe_add_tinymce_shiroki_divider_button($buttons) {
     array_push($buttons, 'shiroki_divider');
+    array_push($buttons, 'shiroki_nbsp');
     return $buttons;
 }
 add_filter('mce_buttons', 'boxmoe_add_tinymce_shiroki_divider_button');

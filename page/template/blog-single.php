@@ -103,6 +103,18 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                           </button>
                           <?php endif; ?>
                       </div>
+                      <?php if(get_boxmoe('boxmoe_post_update_timer_switch')): ?>
+                      <!-- ⏱️ 文章最后更新时间计时器 -->
+                      <div class="post-update-timer mt-4" data-modified-time="<?php echo get_the_modified_time('Y-m-d H:i:s'); ?>">
+                          <div class="timer-icon">
+                              <i class="fa fa-clock-o"></i>
+                          </div>
+                          <div class="timer-content">
+                              <div class="timer-title"><?php echo esc_html(get_boxmoe('boxmoe_post_update_timer_text') ?: '上一次更新已经跑远了✨'); ?> <span class="timer-display">计算中...</span></div>
+                              <div class="timer-subtitle"><?php echo esc_html(get_boxmoe('boxmoe_post_update_timer_subtext') ?: '(‾◡◝) 本内容里的一些消息，可能已经跟不上时间啦～'); ?></div>
+                          </div>
+                      </div>
+                      <?php endif; ?>
                       <?php if(get_boxmoe('boxmoe_reward_switch')): ?>
                       <div class="reward-modal">
                           <div class="reward-content">

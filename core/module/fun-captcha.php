@@ -11,10 +11,33 @@ if (!defined('ABSPATH')) {
     exit('Access Denied');
 }
 
-// 确保会话始终正确启动
+/* 🔄 Session 会话管理优化 - 增强服务器兼容性 */
 function boxmoe_init_session() {
-    if (!session_id() && !headers_sent()) {
-        session_start();
+    /* 🚫 排除 wp-login.php 页面，避免干扰密码保护等功能设置 cookie */
+    if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false) {
+        return;
+    }
+    
+    /* 如果 headers 已发送，无法启动 session */
+    if (headers_sent()) {
+        return;
+    }
+    
+    /* 设置 session cookie 参数，确保跨域兼容 */
+    if (!session_id()) {
+        /* 设置 session cookie 有效期和路径 */
+        $cookie_params = session_get_cookie_params();
+        session_set_cookie_params([
+            'lifetime' => $cookie_params['lifetime'],
+            'path' => '/',
+            'domain' => '',
+            'secure' => is_ssl(),
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+        
+        /* 启动 session */
+        @session_start();
     }
 }
 add_action('init', 'boxmoe_init_session', 1);

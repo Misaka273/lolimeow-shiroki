@@ -39,3 +39,67 @@
     --shiroki-shadow-pink: 0 2px 10px rgba(255, 182, 193, 0.3);
     --shiroki-shadow-black: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
+
+/* 🎬 TinyMCE 编辑器全屏按钮位置优化
+ * 🕊️白木 开发 🔗gl.baimu.live
+ */
+
+/* 📌 媒体按钮容器使用 flex 布局 */
+#wp-content-media-buttons {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+/* 🎬 全屏按钮样式（添加到媒体按钮行） */
+.shiroki-fullscreen-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important; /* ◀️ 推到最右侧 */
+    padding: 0 10px !important;
+    height: 28px !important;
+    background: var(--shiroki-gradient-pink) !important;
+    border: 1px solid var(--shiroki-pink-dark) !important;
+    color: var(--shiroki-white) !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+/* 🖱️ 悬停效果 */
+.shiroki-fullscreen-btn:hover {
+    background: var(--shiroki-gradient-pink-deep) !important;
+    box-shadow: var(--shiroki-shadow-pink) !important;
+    color: var(--shiroki-white) !important;
+}
+
+/* 🎨 全屏按钮图标 */
+.shiroki-fullscreen-btn .mce-ico {
+    font-family: 'dashicons' !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    color: var(--shiroki-white) !important;
+}
+
+.shiroki-fullscreen-btn .mce-ico:before {
+    content: "\f211" !important; /* ◀️ Dashicons 全屏图标 */
+}
+
+/* 🗑️ 隐藏原来的 TinyMCE 全屏按钮容器 */
+.mce-flow-layout-item:has(.mce-fullscreen),
+.mce-btn-group .mce-btn.mce-fullscreen {
+    display: none !important;
+}
+
+/* 📱 响应式适配 */
+@media screen and (max-width: 782px) {
+    #wp-content-media-buttons {
+        gap: 8px !important;
+    }
+    
+    .shiroki-fullscreen-btn {
+        margin-left: 0 !important;
+    }
+}

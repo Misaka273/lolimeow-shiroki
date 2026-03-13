@@ -52,7 +52,8 @@ class widget_random_posts extends WP_Widget {
 		echo '<h4 class="title">
 			 <a '. boxmoe_article_new_window() .' href="'. get_the_permalink() .'">'. get_the_title() . get_the_subtitle() .'</a></h4>';
 		
-		// 📅 显示发布日期
+		// 📅 显示发布日期和阅读链接容器
+		echo '<div class="post-meta">';
 		if ($show_date) {
 			echo '<time datetime="'.get_the_time('Y-m-d').'">'.get_the_time('Y-m-d').'</time>';
 		}
@@ -64,6 +65,7 @@ class widget_random_posts extends WP_Widget {
 		
 		// 🔗 显示阅读链接
 		echo '<a href="'. get_the_permalink() .'" '. boxmoe_article_new_window() .' class="read-more">阅读全文</a>';
+		echo '</div>';
 		
 		if ($show_thumb) {
 			echo '</div></div>';
