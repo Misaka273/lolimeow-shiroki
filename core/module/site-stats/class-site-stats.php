@@ -710,12 +710,12 @@ class Shiroki_Site_Stats {
 
         $start = date('Y-m-d', strtotime("-{$days} days", current_time('timestamp')));
 
-        // 📊 统计用户的访问次数
+        // 📊 统计登录用户和访客的访问次数
         $results = $wpdb->get_results($wpdb->prepare(
-            "SELECT user_id, COUNT(*) as visit_count
+            "SELECT user_id, user_ip, COUNT(*) as visit_count
             FROM {$this->table_visits}
-            WHERE user_id > 0 AND visit_date >= %s
-            GROUP BY user_id
+            WHERE visit_date >= %s
+            GROUP BY user_id, user_ip
             ORDER BY visit_count DESC
             LIMIT %d",
             $start,
@@ -723,19 +723,82 @@ class Shiroki_Site_Stats {
         ));
 
         $users = array();
+        $guest_number = 0;
         foreach ($results as $row) {
-            $user = get_userdata($row->user_id);
-            if ($user) {
+            $user_id = intval($row->user_id);
+            if ($user_id > 0) {
+                $user = get_userdata($user_id);
+                if (!$user) {
+                    continue;
+                }
+
                 $users[] = array(
-                    'id' => $row->user_id,
+                    'id' => $user_id,
                     'name' => $user->display_name,
-                    'avatar' => get_avatar_url($row->user_id, array('size' => 48)),
-                    'visit_count' => $row->visit_count
+                    'avatar' => get_avatar_url($user_id, array('size' => 48)),
+                    'visit_count' => intval($row->visit_count),
+                    'is_guest' => false,
+                    'guest_number' => 0,
+                    'region' => ''
+                );
+            } else {
+                $guest_number++;
+                $users[] = array(
+                    'id' => 0,
+                    'name' => '访客',
+                    'avatar' => get_avatar_url(0, array('size' => 48)),
+                    'visit_count' => intval($row->visit_count),
+                    'is_guest' => true,
+                    'guest_number' => $guest_number,
+                    'region' => $this->get_ip_region($row->user_ip)
                 );
             }
         }
 
         return $users;
+    }
+
+    /**
+     * 🌍 获取访客地区
+     */
+    private function get_ip_region($ip) {
+        $ip = trim((string) $ip);
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return '未知地区';
+        }
+
+        $cache_key = 'shiroki_ip_region_' . md5($ip);
+        $cached_region = get_transient($cache_key);
+        if ($cached_region !== false) {
+            return $cached_region;
+        }
+
+        $response = wp_remote_get(
+            'https://ipwho.is/' . rawurlencode($ip) . '?lang=zh-CN',
+            array(
+                'timeout' => 2,
+                'redirection' => 2,
+            )
+        );
+
+        if (is_wp_error($response)) {
+            set_transient($cache_key, '未知地区', DAY_IN_SECONDS);
+            return '未知地区';
+        }
+
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+        if (empty($body['success'])) {
+            set_transient($cache_key, '未知地区', DAY_IN_SECONDS);
+            return '未知地区';
+        }
+
+        $region = isset($body['region']) ? sanitize_text_field($body['region']) : '';
+        $city = isset($body['city']) ? sanitize_text_field($body['city']) : '';
+        $location = trim($region . ($region && $city ? ' · ' : '') . $city);
+        $location = $location ?: '未知地区';
+
+        set_transient($cache_key, $location, DAY_IN_SECONDS);
+        return $location;
     }
 
     /**
@@ -797,33 +860,91 @@ class Shiroki_Site_Stats {
     }
 
     /**
-     * 📥 前端下载点击追踪脚本
+     * 📥 前端链接点击追踪（仅统计指定语法生成的链接）
      */
     public function enqueue_frontend_tracking() {
+        if (is_admin() || !is_singular(array('post', 'page'))) {
+            return;
+        }
+
         add_action('wp_footer', function() {
-            // 直接内联配置，不依赖 wp_localize_script 的 handle 绑定
             $ajax_url = admin_url('admin-ajax.php');
             $nonce    = wp_create_nonce('shiroki_stats_nonce');
 ?>
 <script>
 (function() {
-    var AJAX_URL = '<?php echo $ajax_url; ?>';
-    var NONCE    = '<?php echo $nonce; ?>';
+    var AJAX_URL = '<?php echo esc_js($ajax_url); ?>';
+    var NONCE    = '<?php echo esc_js($nonce); ?>';
 
-    console.log('[shiroki-track] script loaded, ajax_url:', AJAX_URL);
+    function shouldTrackLink(link) {
+        if (!link.closest('.single-content')) {
+            return false;
+        }
 
-    document.addEventListener('click', function(e) {
-        var link = e.target.closest('a.download_btn');
-        if (!link) return; // 不是下载按钮，跳过
+        if (link.classList.contains('download_btn')) {
+            return true;
+        }
 
-        var href = link.getAttribute('href');
-        console.log('[shiroki-track] download_btn clicked, href:', href);
-        if (!href || href === '#' || href.indexOf('javascript:') === 0) return;
+        if (link.classList.contains('links_btn')) {
+            return true;
+        }
 
+        if (link.classList.contains('shiroki-md-link')) {
+            return true;
+        }
+
+        // MD 卡片：名称 / 头像链接 / 描述 / 链接 / 勋章
+        if (link.classList.contains('md-card-link-wrap')) {
+            return true;
+        }
+
+        if (link.closest('.post-download-box')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function resolveTrackUrl(link) {
+        var href = (link.getAttribute('href') || '').trim();
+        if (!href || href === '#' || href.indexOf('javascript:') === 0) {
+            return '';
+        }
+
+        var targetUrl = href;
+
+        if (targetUrl.indexOf('url=') !== -1) {
+            try {
+                var parsed = new URL(targetUrl, window.location.origin);
+                var embedded = parsed.searchParams.get('url');
+                if (embedded) {
+                    targetUrl = decodeURIComponent(embedded);
+                }
+            } catch (err) {}
+        }
+
+        if (/^(mailto:|tel:|javascript:)/i.test(targetUrl)) {
+            return '';
+        }
+
+        return targetUrl;
+    }
+
+    function getTrackName(link) {
+        var cardTitle = link.querySelector('.md-card-title');
+        if (cardTitle) {
+            return (cardTitle.textContent || '').trim();
+        }
+
+        return (link.textContent || link.getAttribute('title') || '').trim();
+    }
+
+    function trackLinkClick(link, targetUrl) {
+        var fileName = getTrackName(link);
         var body = 'action=shiroki_track_download'
-                 + '&nonce='    + encodeURIComponent(NONCE)
-                 + '&file_url=' + encodeURIComponent(href)
-                 + '&file_name='+ encodeURIComponent((link.textContent || '').trim());
+                 + '&nonce='     + encodeURIComponent(NONCE)
+                 + '&file_url='  + encodeURIComponent(targetUrl)
+                 + '&file_name=' + encodeURIComponent(fileName);
 
         fetch(AJAX_URL, {
             method:      'POST',
@@ -831,9 +952,21 @@ class Shiroki_Site_Stats {
             body:        body,
             keepalive:   true,
             credentials: 'same-origin'
-        }).then(function(r) { return r.json(); })
-          .then(function(d) { console.log('[shiroki-track] server response:', d); })
-          .catch(function(err) { console.error('[shiroki-track] fetch error:', err); });
+        }).catch(function() {});
+    }
+
+    document.addEventListener('click', function(e) {
+        var link = e.target.closest('a');
+        if (!link || !shouldTrackLink(link)) {
+            return;
+        }
+
+        var targetUrl = resolveTrackUrl(link);
+        if (!targetUrl) {
+            return;
+        }
+
+        trackLinkClick(link, targetUrl);
     });
 })();
 </script>
@@ -853,13 +986,23 @@ class Shiroki_Site_Stats {
      */
     private function save_download_url_mapping($hash_id, $url, $name = '') {
         $mappings = get_option('shiroki_download_url_map', array());
+        $fallback_name = basename(wp_parse_url($url, PHP_URL_PATH));
+
         if (!isset($mappings[$hash_id])) {
             $mappings[$hash_id] = array(
                 'url'  => $url,
-                'name' => $name ?: basename(wp_parse_url($url, PHP_URL_PATH))
+                'name' => $name ?: $fallback_name,
             );
-            update_option('shiroki_download_url_map', $mappings, false);
+        } else {
+            $mappings[$hash_id]['url'] = $url;
+            if (!empty($name)) {
+                $mappings[$hash_id]['name'] = $name;
+            } elseif (empty($mappings[$hash_id]['name'])) {
+                $mappings[$hash_id]['name'] = $fallback_name;
+            }
         }
+
+        update_option('shiroki_download_url_map', $mappings, false);
     }
 
     /**

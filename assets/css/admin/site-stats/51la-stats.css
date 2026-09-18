@@ -7,11 +7,6 @@
    🎯 51LA 仪表盘整体布局
    ============================================ */
 
-/* 🪟 51LA 页面背景 */
-.toplevel_page_shiroki-51la-stats {
-  background: var(--shiroki-bg-gradient-light);
-}
-
 .toplevel_page_shiroki-51la-stats.wp-dark-mode,
 .toplevel_page_shiroki-51la-stats .wp-dark-mode {
   background: var(--shiroki-bg-gradient-dark);

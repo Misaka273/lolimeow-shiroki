@@ -5,7 +5,8 @@
 /* 前端页面中的卡片样式 */
 body .single-content .md-card {
     display: flex;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 12px;
     background: rgba(255, 255, 255, 0.95);
     border: 2px solid #f3e8ff;
@@ -37,13 +38,17 @@ body .single-content .md-card:hover {
 }
 
 body .single-content .md-card-avatar {
+    flex: 0 0 60px;
+    width: 60px;
     flex-shrink: 0;
     position: relative;
 }
 
 body .single-content .md-card-avatar img {
+    display: block;
     width: 60px;
     height: 60px;
+    max-width: none;
     border-radius: 50% !important;
     border: 2px solid #fdf4ff;
     box-shadow: 0 2px 6px rgba(139, 61, 255, 0.4);
@@ -93,12 +98,22 @@ body .single-content .md-card-content {
 }
 
 body .single-content .md-card-title {
+    display: block;
+    width: auto;
     margin: 0 0 6px 0;
     font-size: 16px;
     font-weight: 700;
     color: #7a20ff;
     line-height: 1.3;
     font-family: 'Public Sans', sans-serif;
+}
+
+body .single-content .md-card-title::after {
+    display: none;
+}
+
+body .single-content .md-card-title:hover {
+    transform: none;
 }
 
 body .single-content .md-card-desc {

@@ -16,5 +16,6 @@
 <h3>😘投喂~支持一下💕</h3>
 </div>
 <div align="center">
-<img src="https://gl.baimu.live/wp-content/uploads/2025/09/touwei-03.jpg" alt="投喂图" width="500" height="281" />
+<img src="https://gl.baimu.live/wp-content/uploads/skm.jpg" alt="投喂图" width="500" height="281" />
+<a href="https://github.com/Misaka273/lolimeow-shiroki" target="_blank">本项目地址</a>
 </div>

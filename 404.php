@@ -6,30 +6,8 @@
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
 
-// 🔽 同步站点字体设置
-$shiroki_fonts_css = '';
-if(get_boxmoe('boxmoe_custom_font_switch')){
-    $fonts = get_boxmoe('boxmoe_fonts');
-    if(is_array($fonts) && !empty($fonts)){
-        foreach($fonts as $f){
-            $name = isset($f['name']) ? trim($f['name']) : '';
-            $src = '';
-            if(!empty($f['woff2'])){ $src = trim($f['woff2']); }
-            elseif(!empty($f['url'])){ $src = trim($f['url']); }
-            if($name && $src){
-                $shiroki_fonts_css .= "@font-face{font-family:'".esc_attr($name)."';src:url(".esc_url($src).") format('woff2');font-display:swap;}";
-            }
-        }
-    }
-    $default = get_boxmoe('boxmoe_default_font');
-    if(!empty($default) && $default !== 'default'){
-        $fallback = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif";
-        $shiroki_fonts_css .= "body{font-family:'".esc_attr($default)."',".$fallback." !important;}";
-    }
-}
-
-// 🎨 获取站点图标
-$shiroki_site_logo = get_site_icon_url();
+// 🎨 获取站点 LOGO「主题 LOGO设置接管站点图标」
+$shiroki_site_logo = function_exists('boxmoe_get_logo_src') ? boxmoe_get_logo_src() : get_site_icon_url();
 
 // 🎨 获取站点名称
 $shiroki_site_name = get_bloginfo('name');
@@ -68,11 +46,18 @@ $shiroki_favicon_path = $shiroki_template_uri . '/assets/images/favicon.ico';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo esc_html($shiroki_404_title); ?></title>
     
-    <!-- 🎨 404页面自定义字体样式 -->
-    <style>
-        <?php echo $shiroki_fonts_css; ?>
-    </style>
-    
+    <?php
+    // ⏳ 自定义字体：先加载再挂载，避免闪烁
+    if(function_exists('boxmoe_fonts_early_output')){
+        boxmoe_fonts_early_output();
+    }
+    if(function_exists('boxmoe_fonts_build_apply_css')){
+        $shiroki_404_font_css = boxmoe_fonts_build_apply_css(true);
+        if($shiroki_404_font_css){
+            echo '<style id="shiroki-404-fonts">'.$shiroki_404_font_css.'</style>'."\n    ";
+        }
+    }
+    ?>
     <!-- 🔽 引入tsParticles粒子效果库 -->
     <script src="<?php echo esc_url($shiroki_template_uri); ?>/assets/404/tsparticles.preset.fountain.bundle.min.js"></script>
     

@@ -5,11 +5,13 @@
  * 支持无限加载模式下新加载的文章卡片
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // 🎯 检测是否为文章列表页面
-    if (!document.querySelector('.blog-post')) {
-        return;
-    }
+(function() {
+    'use strict';
+
+    let scrollObserver = null;
+    let resizeObserver = null;
+    let mutationObserver = null;
+    let ticking = false;
 
     // 🎨 初始化所有文章卡片
     const shirokiInitPostCards = function(container = document) {
@@ -122,31 +124,54 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // 🚀 初始化
-    shirokiInitPostCards();
-    
-    // 📜 添加滚动监听
-    let ticking = false;
-    function requestTick() {
-        if (!ticking) {
-            window.requestAnimationFrame(shirokiHandleScroll);
-            ticking = true;
-            setTimeout(() => { ticking = false; }, 100);
+    function initShirokiPostCards() {
+        // 🎯 检测是否为文章列表页面
+        if (!document.querySelector('.blog-post')) {
+            return;
         }
+
+        shirokiInitPostCards();
+
+        // 📜 添加滚动监听（仅绑定一次）
+        if (!scrollObserver) {
+            scrollObserver = true;
+            function requestTick() {
+                if (!ticking) {
+                    window.requestAnimationFrame(shirokiHandleScroll);
+                    ticking = true;
+                    setTimeout(() => { ticking = false; }, 100);
+                }
+            }
+            window.addEventListener('scroll', requestTick);
+        }
+
+        // 🔄 初始执行一次，处理已在视口中的卡片
+        shirokiHandleScroll();
+
+        // 🔄 窗口大小改变时重新计算（仅绑定一次）
+        if (!resizeObserver) {
+            resizeObserver = true;
+            window.addEventListener('resize', function() {
+                setTimeout(shirokiHandleScroll, 100);
+            });
+        }
+
+        // 👀 启动DOM观察器，监听无限加载的新文章
+        if (mutationObserver) {
+            try { mutationObserver.disconnect(); } catch(_) {}
+        }
+        mutationObserver = shirokiObserveNewPosts();
     }
-    
-    window.addEventListener('scroll', requestTick);
-    
-    // 🔄 初始执行一次，处理已在视口中的卡片
-    shirokiHandleScroll();
-    
-    // 🔄 窗口大小改变时重新计算
-    window.addEventListener('resize', function() {
-        setTimeout(shirokiHandleScroll, 100);
-    });
-    
-    // 👀 启动DOM观察器，监听无限加载的新文章
-    const observer = shirokiObserveNewPosts();
-    
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initShirokiPostCards);
+    } else {
+        initShirokiPostCards();
+    }
+
+    // 🚀 Swup 无刷新切换后重新初始化
+    document.addEventListener('shiroki:content:loaded', initShirokiPostCards);
+
     // 🔄 暴露初始化函数到全局，供无限加载脚本调用
     window.shirokiInitPostCards = shirokiInitPostCards;
-});
+})();

@@ -180,8 +180,8 @@ input[type="number"].number-text-d {width:70px;}
 #optionsframework-wrap #optionsframework .section.section-fonts_table,
 #optionsframework-wrap #optionsframework .section.section-editor,
 #optionsframework-wrap #optionsframework .section.section-custom_board_list {grid-column:1/-1;}
-/**保存/重置 悬浮底部**/#optionsframework-wrap #optionsframework-submit {padding:12px 20px;box-sizing:border-box;text-align:right;background:rgba(240,240,241,0.92) !important;border:none !important;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);width:min(960px,calc(100% - 320px));z-index:9999;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:6px 6px 14px rgba(0,0,0,0.08),-6px -6px 14px rgba(255,255,255,0.9) !important;border-radius:16px !important;margin:0 !important;}
-#optionsframework-wrap #optionsframework.postbox {padding-bottom:100px;}
+/**保存/重置 悬浮顶部**/#optionsframework-wrap #optionsframework-submit {padding:12px 20px;box-sizing:border-box;text-align:right;background:rgba(240,240,241,0.92) !important;border:none !important;position:fixed;top:7.5rem;bottom:auto;right:20px;left:auto;transform:none;width:max-content;max-width:calc(100% - 40px);display:flex;align-items:center;justify-content:flex-end;gap:10px;z-index:9999;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:6px 6px 14px rgba(0,0,0,0.08),-6px -6px 14px rgba(255,255,255,0.9) !important;border-radius:16px !important;margin:0 !important;}
+#optionsframework-wrap #optionsframework.postbox {padding:0 0 20px;}
 input.reset-button.button-secondary {float:left;background:#be3838;color:#fff;border-color:#be3838;}
 /* 🚀 重置按钮样式 */
 #super-fast-reset-button {
@@ -191,6 +191,8 @@ input.reset-button.button-secondary {float:left;background:#be3838;color:#fff;bo
     float: left !important;
     margin-right: 10px;
 }
+#optionsframework-wrap #optionsframework-submit .button-primary {float:none !important;margin-right:0;}
+#optionsframework-wrap #optionsframework-submit .clear {display:none;}
 #super-fast-reset-button:hover {
     background-color: #ff7875 !important;
     border-color: #ff7875 !important;
@@ -201,7 +203,7 @@ input.reset-button.button-secondary {float:left;background:#be3838;color:#fff;bo
 #optionsframework-wrap .options-sidebar {width:100% !important;max-height:none;position:static !important;overflow:visible;}
 #optionsframework-wrap .nav-tab-wrapper {width:100% !important;max-height:none;position:static !important;overflow:visible;}
 #optionsframework-wrap .nav-tab-wrapper ul {display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;}
-#optionsframework-wrap #optionsframework-submit {width:calc(100% - 32px) !important;}
+#optionsframework-wrap #optionsframework-submit {width:max-content !important;right:16px !important;left:auto !important;max-width:calc(100% - 32px) !important;}
 /**移动端 - 导航收起为按钮**/#optionsframework-wrap .options-main-content:has(.options-nav-toggle) {gap:16px;}
 #optionsframework-wrap .options-sidebar:has(.options-nav-toggle) {display:contents;}
 #optionsframework-wrap .options-sidebar:has(.options-nav-toggle) .boxmoe-options-site-name {display:none;}
@@ -239,7 +241,11 @@ h1 .nav-tab,h2 .nav-tab,h3 .nav-tab,nav .nav-tab {margin:0;border-bottom:0;}
 #optionsframework input.of-radio,#optionsframework .section-radio label,#optionsframework .section-multicheck label {margin:10px 5px 5px 2px;float:none;}
 #optionsframework-wrap .options-top-bar {padding:12px;flex-wrap:wrap;margin:12px 12px 0;}
 #optionsframework-wrap .header-set-title {flex-wrap:wrap;justify-content:flex-start;}
-#optionsframework-wrap #optionsframework-submit {width:calc(100% - 24px) !important;left:12px !important;transform:none;max-width:none;}
+#optionsframework-wrap #optionsframework-submit {width:max-content !important;right:12px !important;left:auto !important;transform:none;max-width:calc(100% - 24px) !important;}
+}
+
+@media screen and (max-width:782px) {
+#optionsframework-wrap #optionsframework-submit {top:8.25rem;}
 }
 
 #optionsframework-wrap .nav-tab-wrapper a {text-decoration:none;color:inherit;}
@@ -290,7 +296,7 @@ h1 .nav-tab,h2 .nav-tab,h3 .nav-tab,nav .nav-tab {margin:0;border-bottom:0;}
 #optionsframework-wrap #optionsframework .controls-radio input.of-radio.of-input {width:16px !important;height:16px !important;min-width:16px !important;min-height:16px !important;max-width:16px !important;max-height:16px !important;flex:0 0 16px !important;flex-shrink:0 !important;padding:0 !important;margin:0 !important;border-radius:50% !important;box-shadow:none !important;background:#fff !important;border:1px solid #8c8f94 !important;appearance:auto;-webkit-appearance:radio;}
 #optionsframework-wrap #optionsframework .controls-radio .of-radio-option input.of-radio:checked::before,
 #optionsframework-wrap #optionsframework .controls-radio input.of-radio.of-input:checked::before {width:8px !important;height:8px !important;margin:3px !important;background-color:#2271b1 !important;}
-#optionsframework-wrap #optionsframework .controls-multicheck input.checkbox.of-input {width:auto !important;min-width:45px !important;min-height:20px !important;padding:0 !important;}
+#optionsframework-wrap #optionsframework .controls input.checkbox.of-input {width:45px !important;min-width:45px !important;max-width:45px !important;height:20px !important;min-height:20px !important;max-height:20px !important;flex:0 0 45px !important;padding:0 !important;overflow:hidden;}
 
 /**SMTP邮局设置页**/#optionsframework-wrap.boxmoe-smtp-wrap .header-set-title {justify-content:space-between;}
 #optionsframework-wrap.boxmoe-smtp-wrap .themes-name {display:flex;align-items:center;gap:8px;}

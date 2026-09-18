@@ -156,38 +156,18 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
   <header class="boxmoe_header">
       <nav class="navbar navbar-expand-lg  w-100">
         <div class="container d-flex justify-content-between align-items-center">
-          <button class="navbar-toggler offcanvas-nav-btn" type="button">
-            <span class="navbar-toggler-bar"></span>
-            <span class="navbar-toggler-bar"></span>
-            <span class="navbar-toggler-bar"></span>
-          </button>
           <a class="navbar-brand" href="<?php echo home_url(); ?>">
               <?php boxmoe_logo(); ?></a>
-          <div class="d-flex d-lg-none align-items-center">
-            <form class="mobile-search-form search-form search-style-<?php echo $search_style; ?>" role="search" method="get" action="<?php echo home_url( '/' ) ?>">
-              <div class="search-wrap">
-                <input type="search" class="search-input mobile-search-input" placeholder="搜索..." aria-label="Search" name="s" value="<?php echo get_search_query(); ?>">
-                <button type="submit" class="search-submit mobile-search-btn">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
-            </form>
-            <?php if(get_boxmoe('boxmoe_sign_in_link_switch')): ?>
-            <button class="mobile-user-btn ms-2" type="button">
-              <i class="fa fa-user"></i>
-            </button>
-            <?php endif; ?>
+          <div class="d-flex d-lg-none align-items-center mobile-header-legacy-tools">
             <?php if(is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
             <div class="mobile-user-panel">
               <div class="user-panel-content">
                 <div class="mobile-user-wrapper">
                   <div class="mobile-logged-menu">
-                  <!-- 新增判断用户中心页面是否存在 -->
                     <?php if(boxmoe_user_center_page_exists()): ?>
                     <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="mobile-menu-item">
                       <i class="fa fa-user-circle"></i>
                       <span>会员中心</span></a>
-                      <!-- 新增判断用户中心页面是否存在 -->
                       <?php endif; ?>
                       <?php if(current_user_can('administrator')): ?>
                     <a href="<?php echo admin_url(); ?>" class="mobile-menu-item">
@@ -209,12 +189,12 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
                   <div class="mobile-logged-menu">
                   <div class="user-wrapper d-lg-flex">
                 <div class="user-login-wrap">
-                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login">
+                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login" data-no-swup>
                 <span class="login-text">登录</span></a>
                 </div>
                 <span class="divider">or</span>
                 <div class="user-reg-wrap">
-                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg">
+                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg" data-no-swup>
                 <span class="reg-text">注册</span></a></div>
                 </div>
                   </div>
@@ -305,12 +285,12 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
                 <?php if(!is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
                 <div class="user-wrapper d-none d-lg-flex">
                 <div class="user-login-wrap">
-                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login">
+                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login" data-no-swup>
                 <span class="login-text">登录</span></a>
                 </div>
                 <span class="divider">or</span>
                 <div class="user-reg-wrap">
-                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg">
+                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg" data-no-swup>
                 <span class="reg-text">注册</span></a></div>
                 <img src="<?php echo boxmoe_theme_url(); ?>/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
                 </div>
@@ -386,6 +366,161 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
         <div class="mobile-nav-panel-body"></div>
       </div>
     </div>
+    <?php
+    $dock_logo_src = get_boxmoe('boxmoe_logo_src');
+    if (empty($dock_logo_src)) {
+      $dock_logo_src = get_boxmoe('boxmoe_favicon_src');
+    }
+    if (empty($dock_logo_src)) {
+      $dock_logo_src = boxmoe_theme_url() . '/assets/images/favicon.ico';
+    }
+    ?>
+    <nav class="mobile-dock" aria-label="底部导航">
+      <div class="mobile-dock__bg" aria-hidden="true">
+        <svg class="mobile-dock__bg-svg" viewBox="0 0 390 92" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="mobile-dock__bg-path" d="M0,42 V92 H390 V42 Q390,34 382,34 H255 C238,34 230,2 195,2 C160,2 152,34 135,34 H8 Q0,34 0,42 Z" />
+        </svg>
+      </div>
+      <div class="mobile-dock__inner">
+        <div class="mobile-dock__side mobile-dock__side--left">
+          <button type="button" class="mobile-dock__trigger offcanvas-nav-btn" aria-label="打开菜单">
+            <span class="mobile-dock__hamburger" aria-hidden="true">
+              <span class="navbar-toggler-bar"></span>
+              <span class="navbar-toggler-bar"></span>
+              <span class="navbar-toggler-bar"></span>
+            </span>
+            <span class="mobile-dock__label">菜单</span>
+          </button>
+          <button type="button" class="mobile-dock__trigger mobile-dock-search-btn" aria-label="搜索" aria-controls="mobileDockSearch">
+            <i class="fa fa-search mobile-dock__icon" aria-hidden="true"></i>
+            <span class="mobile-dock__label">搜索</span>
+          </button>
+        </div>
+        <a href="<?php echo home_url(); ?>" class="mobile-dock__brand" aria-label="<?php echo esc_attr(get_bloginfo('name')); ?>">
+          <img class="mobile-dock__logo" src="<?php echo esc_url($dock_logo_src); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+        </a>
+        <div class="mobile-dock__side mobile-dock__side--right">
+          <?php if(get_boxmoe('boxmoe_sign_in_link_switch')): ?>
+          <button type="button" class="mobile-dock__trigger mobile-user-btn" aria-label="我的" aria-controls="mobileUserDrawer">
+            <span class="mobile-dock__avatar" aria-hidden="true">
+              <?php
+              $dock_avatar_src = boxmoe_default_avatar_url();
+              if (is_user_logged_in()) {
+                $user_avatar_src = boxmoe_get_avatar_url(get_current_user_id(), 96);
+                if (!empty($user_avatar_src)) {
+                  $dock_avatar_src = $user_avatar_src;
+                }
+              }
+              ?>
+              <img class="mobile-dock__avatar-img" src="<?php echo esc_url($dock_avatar_src); ?>" data-default-src="<?php echo esc_url(boxmoe_default_avatar_url()); ?>" alt="" width="28" height="28" decoding="async" onerror="this.src='<?php echo esc_url(boxmoe_default_avatar_url()); ?>'">
+            </span>
+            <span class="mobile-dock__label">我的</span>
+          </button>
+          <?php endif; ?>
+          <button type="button" class="mobile-dock__trigger mobile-dock-more-btn" aria-label="更多" aria-controls="mobileMoreDrawer">
+            <i class="fa fa-ellipsis-h mobile-dock__icon" aria-hidden="true"></i>
+            <span class="mobile-dock__label">更多</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="mobile-dock-sheet mobile-dock-sheet--top" id="mobileDockSearch" hidden aria-hidden="true">
+      <div class="mobile-dock-sheet__backdrop"></div>
+      <div class="mobile-dock-sheet__panel">
+        <div class="mobile-dock-sheet__title">搜索</div>
+        <form class="mobile-dock-search-form search-form search-style-<?php echo esc_attr($search_style); ?>" role="search" method="get" action="<?php echo home_url('/'); ?>">
+          <div class="search-wrap">
+            <input type="search" class="search-input mobile-search-input" placeholder="搜索..." aria-label="Search" name="s" value="<?php echo get_search_query(); ?>" autocomplete="off">
+            <button type="submit" class="search-submit mobile-search-btn" aria-label="提交搜索">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </form>
+        <button type="button" class="mobile-dock-sheet__close" data-dock-sheet-close>取消</button>
+        <div class="mobile-dock-sheet__handle" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="mobile-dock-sheet" id="mobileMoreDrawer" hidden aria-hidden="true">
+      <div class="mobile-dock-sheet__backdrop"></div>
+      <div class="mobile-dock-sheet__panel">
+        <div class="mobile-dock-sheet__handle" aria-hidden="true"></div>
+        <div class="mobile-dock-sheet__title">更多</div>
+        <nav class="mobile-more-nav" aria-label="更多功能">
+          <?php if(get_boxmoe('boxmoe_blog_layout')=='two'): ?>
+          <button type="button" class="mobile-more-item" data-open-sidebar-modal>
+            <i class="fa fa-outdent"></i>
+            <span>打开侧栏</span>
+            <i class="fa fa-chevron-right"></i>
+          </button>
+          <?php endif; ?>
+          <button type="button" class="mobile-more-item" data-bs-theme-value="light">
+            <i class="fa fa-sun-o"></i>
+            <span>亮色模式</span>
+            <i class="fa fa-chevron-right"></i>
+          </button>
+          <button type="button" class="mobile-more-item" data-bs-theme-value="dark">
+            <i class="fa fa-moon-o"></i>
+            <span>暗色模式</span>
+            <i class="fa fa-chevron-right"></i>
+          </button>
+          <button type="button" class="mobile-more-item" data-bs-theme-value="auto">
+            <i class="fa fa-adjust"></i>
+            <span>跟随系统</span>
+            <i class="fa fa-chevron-right"></i>
+          </button>
+          <a href="<?php echo home_url(); ?>" class="mobile-more-item">
+            <i class="fa fa-home"></i>
+            <span>返回首页</span>
+            <i class="fa fa-chevron-right"></i>
+          </a>
+        </nav>
+        <button type="button" class="mobile-dock-sheet__close" data-dock-sheet-close>取消</button>
+      </div>
+    </div>
+    <?php if(get_boxmoe('boxmoe_sign_in_link_switch')): ?>
+    <div class="mobile-dock-sheet" id="mobileUserDrawer" hidden aria-hidden="true">
+      <div class="mobile-dock-sheet__backdrop"></div>
+      <div class="mobile-dock-sheet__panel">
+        <div class="mobile-dock-sheet__handle" aria-hidden="true"></div>
+        <div class="mobile-dock-sheet__title">我的</div>
+        <nav class="mobile-more-nav" aria-label="账号">
+          <?php if(is_user_logged_in()): ?>
+            <?php if(boxmoe_user_center_page_exists()): ?>
+            <a href="<?php echo boxmoe_user_center_link_page(); ?>" class="mobile-more-item">
+              <i class="fa fa-user-circle"></i>
+              <span>会员中心</span>
+              <i class="fa fa-chevron-right"></i>
+            </a>
+            <?php endif; ?>
+            <?php if(current_user_can('administrator')): ?>
+            <a href="<?php echo admin_url(); ?>" class="mobile-more-item" target="_blank" rel="noopener noreferrer">
+              <i class="fa fa-cog"></i>
+              <span>后台管理</span>
+              <i class="fa fa-chevron-right"></i>
+            </a>
+            <?php endif; ?>
+            <a href="<?php echo wp_logout_url(home_url()); ?>" class="mobile-more-item">
+              <i class="fa fa-sign-out"></i>
+              <span>注销登录</span>
+              <i class="fa fa-chevron-right"></i>
+            </a>
+          <?php else: ?>
+            <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="mobile-more-item" data-no-swup>
+              <i class="fa fa-sign-in"></i>
+              <span>登录</span>
+              <i class="fa fa-chevron-right"></i>
+            </a>
+            <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="mobile-more-item" data-no-swup>
+              <i class="fa fa-user-plus"></i>
+              <span>注册</span>
+              <i class="fa fa-chevron-right"></i>
+            </a>
+          <?php endif; ?>
+        </nav>
+        <button type="button" class="mobile-dock-sheet__close" data-dock-sheet-close>取消</button>
+      </div>
+    </div>
+    <?php endif; ?>
     <section class="boxmoe_header_banner">
       <div class="boxmoe_header_banner_img">
         <img src="<?php  boxmoe_banner_image(); ?>" alt="boxmoe_header_banner_img">
@@ -421,7 +556,8 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
         </svg>
       </div>
     </section>
-    <section class="boxmoe-container container">
+    <section id="swup-container" class="boxmoe-container container transition-main">
+      <div class="transition-leaving">
       <div class="breadcrumb-head">
         <span>
           <?php if(!get_boxmoe('boxmoe_slogan_remove_icon')): ?>

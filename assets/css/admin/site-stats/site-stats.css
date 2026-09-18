@@ -7,11 +7,6 @@
    🎯 仪表盘整体布局
    ============================================ */
 
-/* 🪟 仪表盘页面背景 */
-.toplevel_page_shiroki-site-stats {
-  background: var(--shiroki-bg-gradient-light);
-}
-
 .toplevel_page_shiroki-site-stats.wp-dark-mode,
 .toplevel_page_shiroki-site-stats .wp-dark-mode {
   background: var(--shiroki-bg-gradient-dark);
@@ -419,6 +414,18 @@
 
 .ranking-title:hover {
   color: var(--admin-primary-text);
+}
+
+.shiroki-stats-guest-region {
+  display: inline-block;
+  margin-left: var(--admin-space-xs);
+  padding: 2px var(--admin-space-xs);
+  border-radius: var(--admin-radius-sm);
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  font-size: var(--admin-font-size-xs);
+  font-weight: var(--admin-font-weight-normal);
+  vertical-align: middle;
 }
 
 .ranking-meta {

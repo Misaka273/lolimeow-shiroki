@@ -12,6 +12,12 @@ jQuery(document).ready(function($) {
         
         $('select:not([multiple]):not(.boxmoe-select-hidden)').each(function() {
             var $this = $(this);
+            var isPostEditSelect = (
+                ($this.is('#post_status, #mm') &&
+                    $this.closest('#misc-publishing-actions').length > 0) ||
+                ($this.is('#newcategory_parent') &&
+                    $this.closest('#category-adder, #category-add-div').length > 0)
+            );
             
             // 检查是否已经被当前插件美化过（已在 wrapper 中）
             if ($this.closest('.boxmoe-select-wrapper').length > 0) {
@@ -27,7 +33,7 @@ jQuery(document).ready(function($) {
             // 1. 必须有 regular-text 类
             // 2. 但不在小部件区域内
             // 这样可以确保只美化特定的下拉框，避免与小部件系统冲突
-            if (!$this.hasClass('regular-text')) {
+            if (!$this.hasClass('regular-text') && !isPostEditSelect) {
                 return;
             }
             
@@ -43,7 +49,7 @@ jQuery(document).ready(function($) {
             }
             
             // 排除特定区域的 select 元素
-            if (
+            if (!isPostEditSelect && (
                 // 排除日期选择器中的 select 元素
                 $this.hasClass('pt_month') || $this.hasClass('pt_year') || // 快速编辑中的日期选择器
                 $this.closest('#timestampdiv').length > 0 || // 文章编辑页面中的日期选择器
@@ -60,7 +66,7 @@ jQuery(document).ready(function($) {
                 // 排除文章编辑页中添加分类区域的 select 元素
                 $this.closest('.category-add').length > 0 || // 排除添加分类区域的select
                 $this.closest('#category-adder').length > 0 // 排除链接分类添加区域的select
-            ) {
+            )) {
                 return;
             }
 
@@ -89,6 +95,11 @@ jQuery(document).ready(function($) {
 
             $this.after($wrapper);
             $wrapper.append($this);
+            var $fieldLabel = $wrapper.closest('label');
+            if ($fieldLabel.length) {
+                $fieldLabel.attr('for', $this.attr('id'));
+                $fieldLabel.after($wrapper);
+            }
             
             // 创建显示框 (Trigger)
             var $trigger = $('<div class="boxmoe-select-trigger"></div>');
@@ -97,6 +108,21 @@ jQuery(document).ready(function($) {
             
             // 创建下拉列表 (Dropdown)
             var $dropdown = $('<div class="boxmoe-select-dropdown"></div>');
+            $dropdown.data('boxmoe-wrapper', $wrapper);
+            /* 🔒 绝对定位列表，禁止撑开 sticky 侧栏布局 */
+            $wrapper[0].style.setProperty('position', 'relative', 'important');
+            $wrapper[0].style.setProperty('display', 'inline-block', 'important');
+            $wrapper[0].style.setProperty('height', '36px', 'important');
+            $wrapper[0].style.setProperty('vertical-align', 'top', 'important');
+            $dropdown[0].style.setProperty('position', 'absolute', 'important');
+            $dropdown[0].style.setProperty('top', '100%', 'important');
+            $dropdown[0].style.setProperty('left', '0', 'important');
+            $dropdown[0].style.setProperty('right', 'auto', 'important');
+            $dropdown[0].style.setProperty('width', '100%', 'important');
+            $dropdown[0].style.setProperty('margin', '0', 'important');
+            $dropdown[0].style.setProperty('display', 'none', 'important');
+            $dropdown[0].style.setProperty('z-index', '100002', 'important');
+            $dropdown[0].style.setProperty('transform', 'none', 'important');
             var $list = $('<ul></ul>');
             
             $this.find('option').each(function() {
@@ -114,21 +140,87 @@ jQuery(document).ready(function($) {
             
             $dropdown.append($list);
             $wrapper.append($dropdown);
+
+            /* 🔒 关闭并还原到触发器容器，避免侧栏 overflow 裁剪冲突 */
+            var closeDropdown = function() {
+                $wrapper.removeClass('open');
+                $dropdown.appendTo($wrapper);
+                $dropdown[0].style.setProperty('position', 'absolute', 'important');
+                $dropdown[0].style.setProperty('top', '100%', 'important');
+                $dropdown[0].style.setProperty('left', '0', 'important');
+                $dropdown[0].style.setProperty('right', 'auto', 'important');
+                $dropdown[0].style.setProperty('width', '100%', 'important');
+                $dropdown[0].style.setProperty('display', 'none', 'important');
+                $dropdown[0].style.setProperty('z-index', '100002', 'important');
+                $dropdown[0].style.setProperty('transform', 'none', 'important');
+            };
+
+            /* 🔓 打开时挂到 body，避开侧栏 clip-path / overflow 裁剪 */
+            var openDropdown = function() {
+                var rect = $trigger[0].getBoundingClientRect();
+                var top = rect.bottom + window.pageYOffset;
+                var left = rect.left + window.pageXOffset;
+                var width = Math.max(rect.width, 120);
+
+                $dropdown.appendTo(document.body);
+                $dropdown[0].style.setProperty('position', 'absolute', 'important');
+                $dropdown[0].style.setProperty('left', left + 'px', 'important');
+                $dropdown[0].style.setProperty('top', top + 'px', 'important');
+                $dropdown[0].style.setProperty('width', width + 'px', 'important');
+                $dropdown[0].style.setProperty('right', 'auto', 'important');
+                $dropdown[0].style.setProperty('display', 'block', 'important');
+                $dropdown[0].style.setProperty('z-index', '100002', 'important');
+                $dropdown[0].style.setProperty('transform', 'none', 'important');
+
+                /* 🔼 下方空间不足时向上展开 */
+                var dropdownHeight = $dropdown.outerHeight() || 0;
+                if (rect.bottom + dropdownHeight > window.innerHeight - 8) {
+                    var upTop = rect.top + window.pageYOffset - dropdownHeight;
+                    $dropdown[0].style.setProperty('top', Math.max(window.pageYOffset + 8, upTop) + 'px', 'important');
+                }
+            };
             
             // 事件绑定
             
             // 点击 Trigger 切换下拉显示
+            $trigger.on('mousedown', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
             $trigger.on('click', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 
                 // 关闭其他已打开的下拉
-                $('.boxmoe-select-wrapper.open').not($wrapper).removeClass('open');
+                $('.boxmoe-select-wrapper.open').not($wrapper).each(function() {
+                    var $otherWrapper = $(this);
+                    var $otherDropdown = $('.boxmoe-select-dropdown').filter(function() {
+                        return $(this).data('boxmoe-wrapper') &&
+                            $(this).data('boxmoe-wrapper')[0] === $otherWrapper[0];
+                    });
+                    $otherWrapper.removeClass('open');
+                    if ($otherDropdown.length) {
+                        $otherDropdown.appendTo($otherWrapper);
+                        $otherDropdown[0].style.setProperty('display', 'none', 'important');
+                        $otherDropdown[0].style.setProperty('position', 'absolute', 'important');
+                        $otherDropdown[0].style.setProperty('top', '100%', 'important');
+                        $otherDropdown[0].style.setProperty('left', '0', 'important');
+                        $otherDropdown[0].style.setProperty('width', '100%', 'important');
+                    }
+                });
                 
-                $wrapper.toggleClass('open');
+                if ($wrapper.hasClass('open')) {
+                    closeDropdown();
+                } else {
+                    $wrapper.addClass('open');
+                    openDropdown();
+                }
             });
             
             // 点击选项
             $list.on('click', 'li', function(e) {
+                e.preventDefault();
                 e.stopPropagation();
                 var $li = $(this);
                 var value = $li.attr('data-value');
@@ -145,12 +237,26 @@ jQuery(document).ready(function($) {
                 $this.val(value).trigger('change');
                 
                 // 关闭下拉
-                $wrapper.removeClass('open');
+                closeDropdown();
             });
             
             // 点击外部关闭
-            $(document).on('click', function() {
-                $wrapper.removeClass('open');
+            $(document).on('click.boxmoeSelect', function() {
+                if ($wrapper.hasClass('open')) {
+                    closeDropdown();
+                }
+            });
+
+            // 📜 滚动时关闭，避免列表与触发器错位
+            $(window).on('scroll.boxmoeSelect resize.boxmoeSelect', function() {
+                if ($wrapper.hasClass('open')) {
+                    closeDropdown();
+                }
+            });
+            $('.shiroki-editor-sidebar').on('scroll.boxmoeSelect', function() {
+                if ($wrapper.hasClass('open')) {
+                    closeDropdown();
+                }
             });
 
             // 监听原生 Select 的 change 事件（如果是外部触发的）

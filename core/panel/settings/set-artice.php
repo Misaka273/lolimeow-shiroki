@@ -173,7 +173,7 @@ if(!defined('ABSPATH')){
         'name' => __('密码保护文章摘要文案', 'ui_boxmoe_com'),
         'id' => 'boxmoe_article_password_excerpt_text',
         'type' => 'text',
-        'std' => '无法提供摘要。这是一篇受保护的文章。',
+        'std' => '哎呀呀~摘要被拦截了呢，可恶的加密手段...',
         'desc' => __('用于受密码保护的文章在列表中的摘要说明', 'ui_boxmoe_com'),
     );
     // 📦 代码块折叠功能

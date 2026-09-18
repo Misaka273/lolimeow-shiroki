@@ -34,6 +34,66 @@ function boxmoe_theme_url(){
     return get_template_directory_uri();
 }
 
+// 🧭 本地开发端口变化时，把旧绝对地址改写到当前站点
+function boxmoe_normalize_dev_url($value){
+    if (is_array($value)) {
+        foreach ($value as $key => $item) {
+            $value[$key] = boxmoe_normalize_dev_url($item);
+        }
+        return $value;
+    }
+    if (!is_string($value) || $value === '' || stripos($value, 'http') === false) {
+        return $value;
+    }
+    if (!function_exists('home_url') || !function_exists('wp_parse_url')) {
+        return $value;
+    }
+    $home_parts = wp_parse_url(home_url('/'));
+    if (empty($home_parts['host'])) {
+        return $value;
+    }
+    $local_hosts = array('127.0.0.1', 'localhost', '::1');
+    $home_host = strtolower($home_parts['host']);
+    if (!in_array($home_host, $local_hosts, true)) {
+        return $value;
+    }
+    $home_scheme = isset($home_parts['scheme']) ? strtolower($home_parts['scheme']) : 'http';
+    $home_port = isset($home_parts['port']) ? (int) $home_parts['port'] : ($home_scheme === 'https' ? 443 : 80);
+    $home_origin = $home_scheme . '://' . $home_host;
+    if (!(($home_port === 80 && $home_scheme === 'http') || ($home_port === 443 && $home_scheme === 'https'))) {
+        $home_origin .= ':' . $home_port;
+    }
+    return preg_replace_callback(
+        '#https?://(127\.0\.0\.1|localhost|\[::1\])(:\d+)?#i',
+        function ($matches) use ($home_origin, $home_host, $home_port) {
+            $host = strtolower($matches[1] === '[::1]' ? '::1' : $matches[1]);
+            $scheme = (stripos($matches[0], 'https://') === 0) ? 'https' : 'http';
+            $port = (isset($matches[2]) && $matches[2] !== '') ? (int) substr($matches[2], 1) : ($scheme === 'https' ? 443 : 80);
+            if ($host === $home_host && $port === $home_port) {
+                return $matches[0];
+            }
+            return $home_origin;
+        },
+        $value
+    );
+}
+
+function boxmoe_sync_dev_option_urls(){
+    if (!function_exists('optionsframework_option_name')) {
+        return;
+    }
+    $option_name = optionsframework_option_name();
+    $options = get_option($option_name);
+    if (!is_array($options)) {
+        return;
+    }
+    $rewritten = boxmoe_normalize_dev_url($options);
+    if ($rewritten !== $options) {
+        update_option($option_name, $rewritten);
+    }
+}
+add_action('init', 'boxmoe_sync_dev_option_urls', 5);
+
 // 前端布局--------------------------gl.baimu.live--------------------------
 function boxmoe_layout_setting(){
     $layout = get_boxmoe('boxmoe_blog_layout');
@@ -55,23 +115,66 @@ function boxmoe_layout_setting(){
 }
 
 // Favicon--------------------------boxmoe.com--------------------------
-function boxmoe_favicon(){
-    $src= get_boxmoe('boxmoe_favicon_src');    
-    if($src){
-        echo $src;
-    }else{
-        echo boxmoe_theme_url().'/assets/images/favicon.ico';
-    }
-}
-
-function boxmoe_filter_site_icon_url($url, $size, $blog_id){
+function boxmoe_get_favicon_src(){
     $src = get_boxmoe('boxmoe_favicon_src');
     if($src){
         return $src;
     }
     return boxmoe_theme_url().'/assets/images/favicon.ico';
 }
+
+function boxmoe_favicon(){
+    echo boxmoe_get_favicon_src();
+}
+
+// 🖼️ 站点图标改走主题 LOGO 设置
+function boxmoe_get_logo_src(){
+    $src = get_boxmoe('boxmoe_logo_src');
+    if($src){
+        return $src;
+    }
+    $favicon = get_boxmoe('boxmoe_favicon_src');
+    if($favicon){
+        return $favicon;
+    }
+    return boxmoe_theme_url().'/assets/images/logo.png';
+}
+
+function boxmoe_filter_site_icon_url($url, $size, $blog_id){
+    return boxmoe_get_logo_src();
+}
 add_filter('get_site_icon_url', 'boxmoe_filter_site_icon_url', 10, 3);
+
+// 🚫 隐藏设置 → 常规 中的原生站点图标
+function boxmoe_hide_native_site_icon_setting(){
+    $theme_settings_url = admin_url('admin.php?page=boxmoe_options');
+    ?>
+    <style>
+        tr.site-icon-section .site-icon-preview,
+        tr.site-icon-section .site-icon-action-buttons,
+        tr.site-icon-section p.description:not(.boxmoe-site-icon-notice) {
+            display: none !important;
+        }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var row = document.querySelector('tr.site-icon-section td');
+        if (!row) return;
+        var notice = document.createElement('p');
+        notice.className = 'description boxmoe-site-icon-notice';
+        notice.innerHTML = '站点图标已由主题【LOGO设置】接管，请前往 <a href="<?php echo esc_url($theme_settings_url); ?>">盒子萌主题设置</a> 中的【LOGO设置】进行修改';
+        row.insertBefore(notice, row.firstChild);
+    });
+    </script>
+    <?php
+}
+add_action('admin_head-options-general.php', 'boxmoe_hide_native_site_icon_setting');
+
+// 🎛️ 自定义器中同步移除站点图标控件
+function boxmoe_remove_customizer_site_icon($wp_customize){
+    $wp_customize->remove_control('site_icon');
+}
+add_action('customize_register', 'boxmoe_remove_customizer_site_icon', 20);
 
 // LOGO--------------------------boxmoe.com--------------------------
 function boxmoe_logo(){
@@ -334,11 +437,68 @@ function boxmoe_body_grey(){
         wp_add_inline_style('boxmoe-style', $css);
     }
 }
-// 欢迎语--------------------------boxmoe.com--------------------------
+// 🌍 获取访客地区--------------------------boxmoe.com--------------------------
+function boxmoe_banner_visitor_location(){
+    $ip = '';
+    foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR') as $ip_key) {
+        if (!empty($_SERVER[$ip_key])) {
+            $ip = trim((string) $_SERVER[$ip_key]);
+            if (strpos($ip, ',') !== false) {
+                $ip = trim(explode(',', $ip)[0]);
+            }
+            break;
+        }
+    }
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+        return '';
+    }
+
+    $cache_key = 'boxmoe_banner_location_' . md5($ip);
+    $cached_location = get_transient($cache_key);
+    if ($cached_location !== false) {
+        return $cached_location;
+    }
+
+    $response = wp_remote_get(
+        'https://ipwho.is/' . rawurlencode($ip) . '?lang=zh-CN',
+        array(
+            'timeout' => 2,
+            'redirection' => 2,
+        )
+    );
+
+    if (is_wp_error($response)) {
+        set_transient($cache_key, '', HOUR_IN_SECONDS);
+        return '';
+    }
+
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+    if (empty($body['success'])) {
+        set_transient($cache_key, '', HOUR_IN_SECONDS);
+        return '';
+    }
+
+    $region = isset($body['region']) ? sanitize_text_field($body['region']) : '';
+    $city = isset($body['city']) ? sanitize_text_field($body['city']) : '';
+    $region = preg_replace('/省$/u', '', $region);
+    $city = preg_replace('/市$/u', '', $city);
+    $location = trim($region . $city);
+
+    set_transient($cache_key, $location, DAY_IN_SECONDS);
+    return $location;
+}
+
+// 👋 欢迎语--------------------------boxmoe.com--------------------------
 function boxmoe_banner_welcome($return = false){
     $text = get_boxmoe('boxmoe_banner_font');
-    // 🔍 当设置为空时，返回空字符串，而不是默认值
     $content = $text !== '' ? $text : '';
+    if (strpos($content, '{USER_LOCATION}') !== false || strpos($content, '{LOCATION}') !== false) {
+        $location = '';
+        if (get_boxmoe('boxmoe_banner_location_switch')) {
+            $location = boxmoe_banner_visitor_location() ?: '远方';
+        }
+        $content = str_replace(array('{USER_LOCATION}', '{LOCATION}'), $location, $content);
+    }
     if ($return) {
         return $content;
     }
@@ -349,7 +509,7 @@ function boxmoe_banner_welcome($return = false){
 // 欢迎语一言 --------------------------boxmoe.com--------------------------
 function boxmoe_banner_hitokoto(){
     if(get_boxmoe('boxmoe_banner_hitokoto_switch')){
-        echo '<h1 class="main-title"><i class="fa fa-star spinner"></i><span id="hitokoto" class="text-gradient">加载中</span></h1>';
+        echo '<h1 class="main-title"><span id="hitokoto" class="hitokoto-stage"><span class="hitokoto-row"><i class="fa fa-star spinner" aria-hidden="true"></i><span class="hitokoto-text text-gradient">加载中</span></span></span></h1>';
     }
 }
 
@@ -383,6 +543,46 @@ function boxmoe_load_assets_header(){
     wp_enqueue_script('theme-lib-script', boxmoe_theme_url() . '/assets/js/lib.min.js', array(), THEME_VERSION, true);
     wp_enqueue_script('comments-script', boxmoe_theme_url() . '/assets/js/comments.js', array(), THEME_VERSION, true);
     wp_enqueue_script('boxmoe-script', boxmoe_theme_url() . '/assets/js/boxmoe.js', array(), THEME_VERSION, true);
+
+    /* 🚀 无刷新过渡动画 */
+    $page_loading_type = get_boxmoe('boxmoe_page_loading_type', 'none');
+    if ($page_loading_type == 'swup' && !boxmoe_is_swup_disabled()) {
+        $swup_base = get_template_directory() . '/assets/js/swup';
+        $swup_url  = boxmoe_theme_url() . '/assets/js/swup';
+
+        wp_enqueue_style(
+            'page-swup-transition',
+            boxmoe_theme_url() . '/assets/css/page-swup-transition.css',
+            array('theme-style'),
+            filemtime(get_template_directory() . '/assets/css/page-swup-transition.css')
+        );
+        // 合并后的 Swup bundle：core + HeadPlugin + ProgressPlugin + BodyClassPlugin + ScriptsPlugin
+        wp_enqueue_script(
+            'swup-bundle',
+            $swup_url . '/swup-bundle.umd.js',
+            array(),
+            filemtime($swup_base . '/swup-bundle.umd.js'),
+            true
+        );
+        wp_enqueue_script(
+            'page-swup-transition',
+            boxmoe_theme_url() . '/assets/js/page-swup-transition.js',
+            array('boxmoe-script', 'swup-bundle'),
+            filemtime(get_template_directory() . '/assets/js/page-swup-transition.js'),
+            true
+        );
+        // 🧭 登录/注册等独立整页布局必须走完整刷新，不能塞进 #swup-container
+        $swup_full_reload_urls = array_values(array_filter(array(
+            function_exists('boxmoe_sign_in_link_page') ? boxmoe_sign_in_link_page() : '',
+            function_exists('boxmoe_sign_up_link_page') ? boxmoe_sign_up_link_page() : '',
+            function_exists('boxmoe_user_center_link_page') ? boxmoe_user_center_link_page() : '',
+            function_exists('boxmoe_reset_password_link_page') ? boxmoe_reset_password_link_page() : '',
+        )));
+        wp_localize_script('page-swup-transition', 'shirokiSwupConfig', array(
+            'fullReloadUrls' => $swup_full_reload_urls,
+        ));
+    }
+
     wp_enqueue_script(
         'shiroki-content-page-links',
         boxmoe_theme_url() . '/assets/js/shiroki-content-page-links.js',
@@ -418,6 +618,8 @@ function boxmoe_load_assets_header(){
         'nonce' =>wp_create_nonce('boxmoe_ajax_nonce'),
         'running_days' => get_boxmoe('boxmoe_footer_running_days_time')?:'2025-01-01',
         'hitokoto' => get_boxmoe('boxmoe_banner_hitokoto_text')?:'a',
+        'hitokoto_api_url' => get_boxmoe('boxmoe_banner_hitokoto_api_url')?:'',
+        'hitokoto_interval' => max(3, intval(get_boxmoe('boxmoe_banner_hitokoto_interval') ?: 10)),
         'sign_in_link_switch' => get_boxmoe('boxmoe_sign_in_link_switch') ? 'true' : 'false'
     ));
     
@@ -441,6 +643,82 @@ function boxmoe_bubble_style_body_class($classes) {
     return $classes;
 }
 add_filter('body_class', 'boxmoe_bubble_style_body_class');
+
+// 🚀 判断后台是否启用了 Swup 无刷新过渡动画模式
+function boxmoe_is_swup_mode() {
+    return get_boxmoe('boxmoe_page_loading_type', 'none') === 'swup';
+}
+
+// 🚀 判断当前页面是否应该禁用 Swup 无刷新切换
+function boxmoe_is_swup_disabled() {
+    // 后台、登录、注册相关页面
+    if (is_admin() || is_customize_preview() || in_array($GLOBALS['pagenow'], array('wp-login.php', 'wp-register.php'))) {
+        return true;
+    }
+
+    // 密码保护页面
+    if (post_password_required()) {
+        return true;
+    }
+
+    // 用户中心、登录、注册、密码重置等自定义页面模板
+    $excluded_templates = array(
+        'page/p-user_center.php',
+        'p-user_center.php',
+        'page/p-signin.php',
+        'p-signin.php',
+        'page/p-signup.php',
+        'p-signup.php',
+        'page/p-reset_password.php',
+        'p-reset_password.php'
+    );
+    $current_template = get_page_template_slug();
+    if ($current_template && in_array($current_template, $excluded_templates, true)) {
+        return true;
+    }
+
+    // 后台设置中指定的登录/注册/用户中心页面
+    $excluded_page_ids = array();
+    $user_center_page = get_boxmoe('boxmoe_user_center_link_page');
+    $sign_in_page = get_boxmoe('boxmoe_sign_in_link_page');
+    $sign_up_page = get_boxmoe('boxmoe_sign_up_link_page');
+    if ($user_center_page && is_numeric($user_center_page)) {
+        $excluded_page_ids[] = (int) $user_center_page;
+    }
+    if ($sign_in_page && is_numeric($sign_in_page)) {
+        $excluded_page_ids[] = (int) $sign_in_page;
+    }
+    if ($sign_up_page && is_numeric($sign_up_page)) {
+        $excluded_page_ids[] = (int) $sign_up_page;
+    }
+    if (!empty($excluded_page_ids) && is_page($excluded_page_ids)) {
+        return true;
+    }
+
+    return false;
+}
+
+// 🚀 为禁用 Swup 的页面添加 body class
+function boxmoe_swup_body_class($classes) {
+    if (boxmoe_is_swup_disabled()) {
+        $classes[] = 'no-swup';
+    }
+    return $classes;
+}
+add_filter('body_class', 'boxmoe_swup_body_class');
+
+// 🚀 预加载 Swup bundle，让浏览器尽早开始获取脚本
+function boxmoe_preload_swup_bundle() {
+    $page_loading_type = get_boxmoe('boxmoe_page_loading_type', 'none');
+    if ($page_loading_type != 'swup' || boxmoe_is_swup_disabled()) {
+        return;
+    }
+    $swup_file = get_template_directory() . '/assets/js/swup/swup-bundle.umd.js';
+    $swup_url = boxmoe_theme_url() . '/assets/js/swup';
+    $swup_src = add_query_arg('ver', filemtime($swup_file), $swup_url . '/swup-bundle.umd.js');
+    printf('<link rel="preload" href="%s" as="script">' . "\n", esc_url($swup_src));
+}
+add_action('wp_head', 'boxmoe_preload_swup_bundle', 1);
 
 // 前端内容载入--------------------------boxmoe.com--------------------------
 function boxmoe_load_assets_footer(){?>
@@ -549,7 +827,8 @@ function boxmoe_nav_menu(){
 
 // 🔗 导航菜单新窗口打开控制
 function boxmoe_nav_target_blank_filter($items, $args) {
-    if ($args->theme_location == 'boxmoe-menu' && get_boxmoe('boxmoe_nav_target_blank')) {
+    // 🚫 无刷新过渡动画开启时，强制关闭导航栏链接新窗口打开
+    if ($args->theme_location == 'boxmoe-menu' && get_boxmoe('boxmoe_nav_target_blank') && !boxmoe_is_swup_mode()) {
         foreach ($items as $item) {
             // 排除含有子菜单的父级项目 (通常只是 dropdown toggle)
             if (!in_array('menu-item-has-children', $item->classes)) {

@@ -5,8 +5,11 @@
     html, body, main {
         width: 100% !important;
         height: 100% !important;
+        height: 100svh !important;
         max-width: 100% !important;
         max-height: 100% !important;
+        max-height: 100svh !important;
+        min-height: 0 !important;
         overflow: hidden !important;
         position: fixed !important;
         margin: 0 !important;
@@ -16,10 +19,19 @@
     
     /* 🌟 移动端容器重新布局 */
     .container {
+        --header-h: clamp(108px, 22svh, 176px);
+        --footer-h: clamp(40px, 7svh, 56px);
+        --space-y: clamp(4px, 1.05svh, 12px);
+        --control-h: clamp(36px, 5.4svh, 48px);
+        --logo-size: clamp(40px, 6.8svh, 72px);
+        --title-size: clamp(15px, 2.15svh, 18px);
+        --btn-h: clamp(36px, 5svh, 44px);
+        --panel-top: clamp(8px, 2.6svh, 28px);
         width: 100% !important;
         height: 100% !important;
         max-width: 100% !important;
         max-height: 100% !important;
+        min-height: 0 !important;
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
@@ -32,13 +44,13 @@
         backdrop-filter: blur(20px) !important;
     }
     
-    /* 🌙 正圆形顶部覆盖 - 完全覆盖顶部 */
+    /* 🌙 顶部圆弧覆盖 - 水平拉宽，避免竖向挤压 */
     .container::before {
         content: "" !important;
         position: absolute !important;
-        width: 120% !important;
-        height: 40% !important;
-        top: -15% !important;
+        width: 220% !important;
+        height: 34% !important;
+        top: -12% !important;
         left: 50% !important;
         transform: translateX(-50%) scale(var(--ball-scale, 1)) !important;
         background-image: linear-gradient(-45deg, #1c5fd1 0%, #1ec3fa 100%) !important;
@@ -53,13 +65,13 @@
         border: 1px solid rgba(255, 255, 255, 0.2) !important;
     }
     
-    /* 🌟 球体光晕效果 - 适配半圆形状 */
+    /* 🌟 球体光晕效果 - 同步拉宽 */
     .container::after {
         content: "" !important;
         position: absolute !important;
-        width: 130% !important;
-        height: 45% !important;
-        top: -18% !important;
+        width: 230% !important;
+        height: 38% !important;
+        top: -14% !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         background: radial-gradient(circle, rgba(89, 149, 253, 0.1) 0%, transparent 70%) !important;
@@ -72,16 +84,16 @@
     .container.sign-up-mode::before {
         transform: translateX(-50%) scale(var(--ball-scale, 1)) !important;
         left: 50% !important;
-        top: -15% !important;
+        top: -12% !important;
     }
     
     /* 🌟 面板容器重新布局 - 文字精确居中到圆形中心 */
     .panels-container {
         position: absolute !important;
-        top: 60px !important;
+        top: var(--panel-top) !important;
         left: 0 !important;
         width: 100% !important;
-        height: 100px !important;
+        height: clamp(72px, 13svh, 100px) !important;
         display: flex !important;
         flex-direction: row !important;
         z-index: 11 !important;
@@ -94,7 +106,7 @@
     .panel {
         position: absolute !important;
         width: 100% !important;
-        height: 100px !important;
+        height: clamp(72px, 13svh, 100px) !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -133,15 +145,15 @@
         text-align: center !important;
         position: relative !important;
         z-index: 12 !important;
-        transform: translateY(-25px) !important;
+        transform: none !important;
     }
     
     /* 🌟 面板标题 - 适配球体效果 */
     .panel h3 {
-        font-size: 18px !important;
+        font-size: clamp(14px, 2.1svh, 18px) !important;
         font-weight: 600 !important;
         color: #fff !important;
-        margin: 0 0 4px 0 !important;
+        margin: 0 0 clamp(2px, 0.4svh, 4px) 0 !important;
         line-height: 1.2 !important;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
         z-index: 13 !important;
@@ -149,10 +161,10 @@
     
     /* 🌟 面板段落样式 - 紧凑布局 */
     .panel p {
-        font-size: 13px !important;
+        font-size: clamp(11px, 1.5svh, 13px) !important;
         color: rgba(255, 255, 255, 0.95) !important;
-        margin: 4px 0 8px 0 !important;
-        line-height: 1.4 !important;
+        margin: clamp(2px, 0.4svh, 4px) 0 clamp(4px, 0.7svh, 8px) 0 !important;
+        line-height: 1.35 !important;
         max-width: 320px !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
         z-index: 13 !important;
@@ -160,9 +172,9 @@
     
     /* 🌟 面板按钮 - 紧凑布局 */
     .panel .btn.transparent {
-        margin: 4px 0 0 0 !important;
-        padding: 8px 22px !important;
-        font-size: 13px !important;
+        margin: clamp(2px, 0.5svh, 4px) 0 0 0 !important;
+        padding: clamp(5px, 0.9svh, 8px) clamp(16px, 3svh, 22px) !important;
+        font-size: clamp(12px, 1.5svh, 13px) !important;
         font-weight: 600 !important;
         border: 1px solid #fff !important;
         border-radius: 20px !important;
@@ -216,7 +228,7 @@
     
     .left-panel .content,
     .right-panel .content {
-        transform: translateY(-25px) !important;
+        transform: none !important;
         opacity: 1 !important;
         transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
@@ -262,43 +274,46 @@
     
     .left-panel h3,
     .right-panel h3 {
-        font-size: 18px !important;
+        font-size: clamp(14px, 2.1svh, 18px) !important;
         font-weight: 600 !important;
         color: #fff !important;
-        margin: 0 0 4px 0 !important;
+        margin: 0 0 clamp(2px, 0.4svh, 4px) 0 !important;
         line-height: 1.2 !important;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
     }
     
     .left-panel p,
     .right-panel p {
-        font-size: 13px !important;
+        font-size: clamp(11px, 1.5svh, 13px) !important;
         color: rgba(255, 255, 255, 0.95) !important;
-        margin: 4px 0 8px 0 !important;
-        line-height: 1.4 !important;
+        margin: clamp(2px, 0.4svh, 4px) 0 clamp(4px, 0.7svh, 8px) 0 !important;
+        line-height: 1.35 !important;
         max-width: 320px !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
     }
     
     .left-panel .btn.transparent,
     .right-panel .btn.transparent {
-        margin: 4px 0 0 0 !important;
-        padding: 8px 22px !important;
-        font-size: 13px !important;
+        margin: clamp(2px, 0.5svh, 4px) 0 0 0 !important;
+        padding: clamp(5px, 0.9svh, 8px) clamp(16px, 3svh, 22px) !important;
+        font-size: clamp(12px, 1.5svh, 13px) !important;
         font-weight: 600 !important;
     }
     
-    /* 🌟 表单容器重新布局 - 适配半圆顶部 */
+    /* 🌟 表单容器重新布局 - 占满顶部弧线与底部版权之间的剩余高度 */
     .forms-container {
         position: absolute !important;
-        top: 220px !important;
+        top: var(--header-h) !important;
         left: 0 !important;
+        right: 0 !important;
+        bottom: var(--footer-h) !important;
         width: 100% !important;
-        height: calc(100% - 260px) !important;
+        height: auto !important;
         overflow: hidden !important;
         margin: 0 !important;
         padding: 0 !important;
         z-index: 7 !important;
+        container-type: size !important;
     }
     
     /* 🌟 登录注册表单切换 - 适配新布局 */
@@ -312,53 +327,58 @@
         flex-direction: row !important;
         transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
         transform: translateX(0) !important;
+        overflow: hidden !important;
         margin: 0 !important;
         padding: 0 !important;
     }
     
-    /* 🌟 表单样式 - 适配新布局 */
+    /* 🌟 表单样式 - 完整展示、禁止滚动 */
     form {
         width: 50% !important;
         height: 100% !important;
-        padding: 20px !important;
+        padding: var(--space-y) 16px !important;
         margin: 0 !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
+        justify-content: center !important;
+        gap: var(--space-y) !important;
+        overflow: hidden !important;
         position: relative !important;
         box-sizing: border-box !important;
         background: rgba(255, 255, 255, 0.8) !important;
         backdrop-filter: blur(10px) !important;
-        scrollbar-width: thin !important;
-        scrollbar-color: rgba(89, 149, 253, 0.3) transparent !important;
+        scrollbar-width: none !important;
+        zoom: min(1, calc(100cqh / 420px)) !important;
     }
     
     /* 🌟 表单标题样式 - 增强对比度 */
     form .title {
-        font-size: 20px !important;
-        margin: 0 0 18px 0 !important;
+        font-size: var(--title-size) !important;
+        margin: 0 !important;
         color: #2c3e50 !important;
         font-weight: 600 !important;
         text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+        flex-shrink: 0 !important;
+        line-height: 1.2 !important;
     }
     
     /* 🌟 浮动标签组 - 增强可见性 */
     .floating-label-group {
-        margin-bottom: 24px !important;
+        margin-bottom: 0 !important;
         width: 100% !important;
         max-width: 280px !important;
         position: relative !important;
         display: block !important;
-        min-height: 54px !important;
+        min-height: 0 !important;
+        height: var(--control-h) !important;
+        flex-shrink: 0 !important;
     }
 
     .floating-label-group .form-control {
-        height: 50px !important;
-        padding: 16px 14px !important;
-        font-size: 15px !important;
+        height: var(--control-h) !important;
+        padding: 0 14px !important;
+        font-size: clamp(13px, 1.8svh, 15px) !important;
         line-height: 1.2 !important;
         border-radius: 8px !important;
         background: rgba(255, 255, 255, 0.95) !important;
@@ -371,7 +391,7 @@
     }
 
     .floating-label-group label {
-        font-size: 15px !important;
+        font-size: clamp(12px, 1.7svh, 15px) !important;
         color: #666 !important;
         background: transparent !important;
         padding: 0 8px !important;
@@ -437,16 +457,16 @@
         display: inline-block !important;
         background: var(--primary) !important;
         color: white !important;
-        padding: 8px 16px !important;
+        padding: clamp(4px, 0.7svh, 8px) clamp(10px, 2svh, 16px) !important;
         border-radius: 20px !important;
         cursor: pointer !important;
-        font-size: 14px !important;
+        font-size: clamp(12px, 1.6svh, 14px) !important;
         font-weight: 600 !important;
-        transition: all 0.3s ease !important;
+        transition: background-color 0.3s ease, transform 0.3s ease !important;
         border: none !important;
         line-height: 1 !important;
         height: auto !important;
-        min-height: 32px !important;
+        min-height: 0 !important;
         box-sizing: border-box !important;
     }
 
@@ -497,71 +517,70 @@
         text-align: left !important;
     }
 
-    /* 🌟 表单消息样式 - 避免影响输入框布局 */
+    /* 🌟 表单消息样式 - 空内容不占高度 */
     #login-message,
     #signup-message {
         width: 100% !important;
         max-width: 280px !important;
-        margin: 10px 0 !important;
-        padding: 8px 12px !important;
+        margin: 0 !important;
+        padding: 0 !important;
         border-radius: 6px !important;
         text-align: center !important;
         box-sizing: border-box !important;
         position: relative !important;
         z-index: 10 !important;
+        flex-shrink: 0 !important;
     }
 
-    /* 🌟 确保错误信息不影响表单整体高度 */
-    form {
-        align-items: center !important;
-        justify-content: flex-start !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        position: relative !important;
+    #login-message:empty,
+    #signup-message:empty {
+        display: none !important;
+    }
+
+    form .mt-3 {
+        margin: 0 !important;
+    }
+
+    form .captcha-wrapper {
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        transform: scale(0.86);
+        transform-origin: center center;
     }
     
-    /* 🌟 Webkit浏览器滚动条样式 */
+    /* 🌟 隐藏表单滚动条 */
     form::-webkit-scrollbar {
-        width: 4px !important;
-    }
-    
-    form::-webkit-scrollbar-track {
-        background: transparent !important;
-    }
-    
-    form::-webkit-scrollbar-thumb {
-        background: rgba(89, 149, 253, 0.3) !important;
-        border-radius: 2px !important;
-    }
-    
-    form::-webkit-scrollbar-thumb:hover {
-        background: rgba(89, 149, 253, 0.5) !important;
-    }
-    
-    /* 🌟 表单标题 */
-    form .title {
-        font-size: 18px !important;
-        margin: 0 0 15px 0 !important;
-        color: #444 !important;
-        font-weight: 600 !important;
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
     }
     
     /* 🌟 Logo容器 */
     .logo-container {
-        margin: 0 0 10px 0 !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        line-height: 1 !important;
+        height: var(--logo-size) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     
+    .logo-container img,
     .logo {
-        max-width: 80px !important;
+        max-width: var(--logo-size) !important;
+        max-height: var(--logo-size) !important;
+        width: auto !important;
         height: auto !important;
+        object-fit: contain !important;
     }
     
     /* 🌟 按钮样式 - 修复被压扁问题 */
     .btn {
-        width: 160px !important;
-        height: 44px !important;
-        font-size: 16px !important;
-        margin: 12px 0 !important;
+        width: clamp(132px, 38vw, 160px) !important;
+        height: var(--btn-h) !important;
+        font-size: clamp(14px, 1.9svh, 16px) !important;
+        margin: 0 !important;
         border-radius: 22px !important;
         background-color: #5995fd !important;
         color: #fff !important;
@@ -570,13 +589,13 @@
         text-transform: uppercase !important;
         font-weight: 600 !important;
         cursor: pointer !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
         position: relative !important;
-        overflow: hidden !important; /* 确保扫光效果在按钮内部 */
+        overflow: hidden !important;
         padding: 0 20px !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
@@ -627,12 +646,14 @@
     
     /* 🌟 复选框文本 */
     .social_text {
-        margin: 8px 0 !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+        line-height: 1.3 !important;
     }
     
     .agree_text {
-        font-size: 11px !important;
-        line-height: 1.4 !important;
+        font-size: clamp(10px, 1.4svh, 11px) !important;
+        line-height: 1.3 !important;
     }
     
     /* 🌟 表单切换 */
@@ -640,26 +661,26 @@
         transform: translateX(-50%) !important;
     }
     
-    /* 🌟 注册表单独立滚动 */
+    /* 🌟 注册表单同样禁止滚动 */
     .sign-up-form {
-        overflow-y: auto !important;
-        padding-bottom: 20px !important;
+        overflow: hidden !important;
+        padding-bottom: var(--space-y) !important;
     }
     
     /* 🌟 版权信息底部定位 - 适配新布局 */
     .theme-copyright {
         position: fixed !important;
-        bottom: 10px !important;
+        bottom: 6px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        width: calc(100% - 20px) !important;
+        width: calc(100% - 16px) !important;
         max-width: 460px !important;
         text-align: center !important;
-        font-size: 10px !important;
+        font-size: clamp(8px, 1.2svh, 10px) !important;
         color: rgba(0, 0, 0, 0.6) !important;
         z-index: 9999 !important;
-        line-height: 1.4 !important;
-        padding: 6px 10px !important;
+        line-height: 1.25 !important;
+        padding: 3px 8px !important;
         box-sizing: border-box !important;
         background: rgba(255, 255, 255, 0.6) !important;
         border-radius: 12px !important;
@@ -669,7 +690,7 @@
     }
     
     .theme-copyright p {
-        margin: 2px 0 !important;
+        margin: 0 !important;
     }
     
     .theme-copyright a {
@@ -719,73 +740,30 @@
         outline-offset: 2px !important;
     }
     
-    /* 🌟 滚动条优化 */
-    form::-webkit-scrollbar-thumb {
-        background: rgba(89, 149, 253, 0.4) !important;
-        border-radius: 2px !important;
-        transition: background 0.3s ease !important;
-    }
-    
-    form::-webkit-scrollbar-thumb:hover {
-        background: rgba(89, 149, 253, 0.6) !important;
-    }
-    
     /* 🌟 预加载图片隐藏 */
     #bg-preloader {
         display: none !important;
     }
     
-    /* 🌟 小屏幕高度适配 */
-    @media screen and (max-height: 790px) {
-        /* 调整表单容器顶部位置和高度，确保内容溢出 */
-        .forms-container {
-            top: 180px !important;
-            height: 360px !important;
-            overflow: hidden !important;
-            max-height: calc(100% - 220px) !important;
+    /* 🌟 更矮的屏幕继续压缩模块，而不是出现滚动条 */
+    @media screen and (max-height: 700px) {
+        .container {
+            --header-h: clamp(96px, 18svh, 128px);
+            --footer-h: clamp(32px, 6svh, 42px);
+            --space-y: clamp(2px, 0.7svh, 6px);
+            --control-h: clamp(34px, 5svh, 40px);
+            --logo-size: clamp(34px, 5.6svh, 48px);
+            --btn-h: clamp(32px, 4.6svh, 38px);
         }
-        
-        /* 确保表单容器的子元素高度适应 */
-        .signin-signup {
-            height: 100% !important;
+
+        .container::before {
+            height: 30% !important;
+            top: -10% !important;
         }
-        
-        /* 确保表单可以独立滚动 */
-        form {
-            height: 100% !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            padding-bottom: 40px !important;
-        }
-        
-        /* 强制显示滚动条轨道，增强用户体验 */
-        form::-webkit-scrollbar {
-            width: 6px !important;
-            display: block !important;
-        }
-        
-        /* 增强滚动条可见性 */
-        form::-webkit-scrollbar-track {
-            background: rgba(89, 149, 253, 0.1) !important;
-            border-radius: 3px !important;
-        }
-        
-        form::-webkit-scrollbar-thumb {
-            background: rgba(89, 149, 253, 0.6) !important;
-            border-radius: 3px !important;
-            display: block !important;
-        }
-        
-        /* 确保Firefox浏览器也显示滚动条 */
-        form {
-            scrollbar-width: thin !important;
-            scrollbar-color: rgba(89, 149, 253, 0.6) rgba(89, 149, 253, 0.1) !important;
-        }
-        
-        /* 注册表单特殊处理 */
-        .sign-up-form {
-            overflow-y: auto !important;
-            padding-bottom: 50px !important;
+
+        .container::after {
+            height: 34% !important;
+            top: -12% !important;
         }
     }
 }

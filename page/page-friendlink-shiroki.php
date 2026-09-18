@@ -78,10 +78,96 @@ get_header();
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 🌸 友链卡片样式 */
+/* 🌸 本站信息区域 */
+.shiroki-site-info {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+    border: 1px solid #f0f0f0;
+}
+
+.shiroki-site-info-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.shiroki-site-info-desc {
+    font-size: 14px;
+    color: #888;
+    margin: 0 0 16px;
+}
+
+.shiroki-site-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.shiroki-site-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    min-width: 0;
+}
+
+.shiroki-site-info-label {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    min-width: 72px;
+}
+
+.shiroki-site-info-value {
+    flex: 1;
+    font-size: 13px;
+    color: #333;
+    word-break: break-all;
+    line-height: 1.4;
+    min-width: 0;
+}
+
+.shiroki-site-info-value img {
+    vertical-align: middle;
+}
+
+.shiroki-site-info-copy {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #fff;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.shiroki-site-info-copy:hover {
+    background: linear-gradient(45deg, #ff6b9d, #fecfef);
+    border-color: transparent;
+    color: #fff;
+}
+
+/* 🌸 友链卡片样式（双栏布局） */
 .shiroki-link-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
     margin-top: 20px;
 }
@@ -232,6 +318,7 @@ get_header();
 
 /* 🌸 响应式设计 */
 @media (max-width: 768px) {
+    .shiroki-site-info-grid,
     .shiroki-link-grid {
         grid-template-columns: 1fr;
     }
@@ -275,6 +362,39 @@ get_header();
     .shiroki-category-tab.active {
         background: linear-gradient(45deg, #ff6b9d, #fecfef) !important;
         color: #fff !important;
+    }
+    
+    /* 🌆 本站信息区域 */
+    .shiroki-site-info {
+        background: #2d2d2d !important;
+        border-color: #404040 !important;
+    }
+    
+    .shiroki-site-info-title {
+        color: #e0e0e0 !important;
+    }
+    
+    .shiroki-site-info-desc {
+        color: #999 !important;
+    }
+    
+    .shiroki-site-info-item {
+        background: #333 !important;
+        border-color: #444 !important;
+    }
+    
+    .shiroki-site-info-label {
+        color: #999 !important;
+    }
+    
+    .shiroki-site-info-value {
+        color: #e0e0e0 !important;
+    }
+    
+    .shiroki-site-info-copy {
+        background: #3d3d3d !important;
+        border-color: #555 !important;
+        color: #b0b0b0 !important;
     }
     
     /* 🌆 分类标题 */
@@ -386,6 +506,42 @@ get_header();
         <p style="color: #666; font-size: 16px; line-height: 1.6;">
             精心整理的友情链接，按类别展示，发现更多精彩网站
         </p>
+    </div>
+
+    <?php
+    $shiroki_site_name = get_option('blogname');
+    $shiroki_site_url = home_url('/');
+    $shiroki_site_desc = get_option('blogdescription');
+    $shiroki_site_icon = get_site_icon_url();
+    $shiroki_site_info_items = [
+        ['label' => '网站名称', 'value' => $shiroki_site_name, 'copy' => $shiroki_site_name],
+        ['label' => '网站地址', 'value' => $shiroki_site_url, 'copy' => $shiroki_site_url],
+        ['label' => '网站描述', 'value' => $shiroki_site_desc, 'copy' => $shiroki_site_desc],
+        ['label' => '网站 ICO', 'value' => $shiroki_site_icon, 'copy' => $shiroki_site_icon, 'is_icon' => true],
+    ];
+    ?>
+    <!-- 📋 本站信息（申请友链时请添加以下信息） -->
+    <div class="shiroki-site-info">
+        <h2 class="shiroki-site-info-title"><span>📋</span><span>本站信息</span></h2>
+        <p class="shiroki-site-info-desc">申请友链前，请先在您的网站添加本站链接。点击右侧按钮可快速复制对应信息。</p>
+        <div class="shiroki-site-info-grid">
+            <?php foreach ($shiroki_site_info_items as $item) : ?>
+            <div class="shiroki-site-info-item">
+                <span class="shiroki-site-info-label"><?php echo esc_html($item['label']); ?></span>
+                <span class="shiroki-site-info-value">
+                    <?php if (!empty($item['is_icon']) && !empty($item['value'])) : ?>
+                        <img src="<?php echo esc_url($item['value']); ?>" alt="<?php echo esc_attr($shiroki_site_name); ?> ICO" class="shiroki-site-icon">
+                        <span><?php echo esc_html($item['value']); ?></span>
+                    <?php else : ?>
+                        <?php echo esc_html($item['value']); ?>
+                    <?php endif; ?>
+                </span>
+                <?php if (!empty($item['copy'])) : ?>
+                <button type="button" class="shiroki-site-info-copy copy-btn" data-copy-text="<?php echo esc_attr($item['copy']); ?>" data-copy-label="<?php echo esc_attr($item['label']); ?>" title="复制<?php echo esc_attr($item['label']); ?>">📋</button>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
     </div>
 
     <!-- 🏷️ 分类导航标签 -->
@@ -562,24 +718,7 @@ get_header();
         <h2 style="font-size: 22px; margin-bottom: 20px; text-align: center;">申请友链</h2>
         <div style="padding: 30px; border-radius: 12px;">
             <div style="margin-bottom: 20px; line-height: 1.8;">
-                <p>欢迎申请友链！请在您的网站添加本站链接后再提交申请：</p>
-                <div style="padding: 15px; border-radius: 8px; margin: 15px 0;">
-                    <p style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
-                        <strong>网站名称：</strong><?php echo get_option('blogname'); ?>
-                    </p>
-                    <p style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
-                        <strong>网站地址：</strong><?php echo get_option('siteurl'); ?>
-                    </p>
-                    <p style="margin: 5px 0; display: flex; align-items: flex-start; gap: 10px;">
-                        <strong>网站描述：</strong>
-                        <span style="font-size: 13px; line-height: 1.5;"><?php echo get_option('blogdescription'); ?></span>
-                    </p>
-                    <p style="margin: 5px 0; display: flex; align-items: center; gap: 10px;">
-                        <strong>网站ICO：</strong>
-                        <img src="<?php echo get_site_icon_url(); ?>" alt="<?php echo esc_attr(get_option('blogname')); ?> ICO" class="shiroki-site-icon">
-                        <span style="font-size: 13px;"><?php echo get_site_icon_url(); ?></span>
-                    </p>
-                </div>
+                <p>欢迎申请友链！请先在您的网站添加本站链接（信息见页面顶部「本站信息」），再提交申请。</p>
                 <p>提交申请后，我们会在审核通过后第一时间邮件通知您。</p>
             </div>
             

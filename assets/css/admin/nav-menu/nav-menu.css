@@ -196,6 +196,8 @@ body.boxmoe-nav-menus-ui #menu-settings-column {
   border-radius: 14px;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
+  position: relative;
+  z-index: 2;
 }
 
 body.boxmoe-nav-menus-ui #menu-management-liquid {
@@ -316,23 +318,111 @@ body.boxmoe-nav-menus-ui .quick-search {
   box-sizing: border-box;
 }
 
-/* 复选框 / 批量选择 */
+/* 胶囊玻璃风滑块 — 导航栏设置页全部复选框 */
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace input[type="checkbox"],
 body.boxmoe-nav-menus-ui #menu-settings-column input[type="checkbox"],
 body.boxmoe-nav-menus-ui #nav-menus-frame input[type="checkbox"],
 body.boxmoe-nav-menus-ui .categorychecklist input[type="checkbox"],
-body.boxmoe-nav-menus-ui .bulk-select input[type="checkbox"] {
-  width: 16px !important;
-  height: 16px !important;
-  min-width: 16px !important;
-  min-height: 16px !important;
-  margin: 0 6px 0 0 !important;
-  border-radius: 4px !important;
-  border: 1px solid #8c8f94 !important;
-  background: #fff !important;
-  box-shadow: none !important;
+body.boxmoe-nav-menus-ui .bulk-select input[type="checkbox"],
+body.boxmoe-nav-menus-ui .menu-item-checkbox,
+body.boxmoe-nav-menus-ui .menu-item-settings input[type="checkbox"],
+body.boxmoe-nav-menus-ui .menu-settings input[type="checkbox"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  position: relative !important;
+  display: inline-block !important;
+  width: 40px !important;
+  height: 22px !important;
+  min-width: 40px !important;
+  min-height: 22px !important;
+  margin: 0 8px 0 0 !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgba(255, 255, 255, 0.52) !important;
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(255, 255, 255, 0.75) !important;
   vertical-align: middle;
   flex-shrink: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 1;
+  overflow: hidden;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]::before {
+  content: none !important;
+  display: none !important;
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]::after {
+  content: "" !important;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 1px 4px rgba(15, 23, 42, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]:checked {
+  background: rgba(99, 179, 237, 0.45) !important;
+  border-color: rgba(99, 179, 237, 0.58) !important;
+  box-shadow:
+    inset 0 1px 3px rgba(34, 113, 177, 0.14),
+    0 0 0 2px rgba(99, 179, 237, 0.14) !important;
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]:checked::after {
+  transform: translateX(18px);
+  box-shadow:
+    0 1px 5px rgba(34, 113, 177, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]:focus {
+  outline: none !important;
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.06),
+    0 0 0 2px rgba(99, 179, 237, 0.32) !important;
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]:focus:checked {
+  box-shadow:
+    inset 0 1px 3px rgba(34, 113, 177, 0.14),
+    0 0 0 2px rgba(99, 179, 237, 0.32) !important;
+}
+
+body.boxmoe-nav-menus-ui input[type="checkbox"]:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+body.boxmoe-nav-menus-ui.wp-dark-mode input[type="checkbox"],
+body.boxmoe-nav-menus-ui .wp-dark-mode input[type="checkbox"] {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28) !important;
+}
+
+body.boxmoe-nav-menus-ui.wp-dark-mode input[type="checkbox"]:checked,
+body.boxmoe-nav-menus-ui .wp-dark-mode input[type="checkbox"]:checked {
+  background: rgba(99, 179, 237, 0.38) !important;
+  border-color: rgba(99, 179, 237, 0.52) !important;
 }
 
 body.boxmoe-nav-menus-ui .bulk-select,
@@ -350,10 +440,16 @@ body.boxmoe-nav-menus-ui #menu-items-select-all-bottom {
 
 body.boxmoe-nav-menus-ui .bulk-select label,
 body.boxmoe-nav-menus-ui #menu-items-select-all-top label,
-body.boxmoe-nav-menus-ui #menu-items-select-all-bottom label {
+body.boxmoe-nav-menus-ui #menu-items-select-all-bottom label,
+body.boxmoe-nav-menus-ui .menu-settings label,
+body.boxmoe-nav-menus-ui .bulk-actions label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
   font-size: 13px;
   color: #50575e;
+  cursor: pointer;
 }
 
 body.boxmoe-nav-menus-ui #nav-menu-header .bulk-actions,
@@ -460,20 +556,41 @@ body.boxmoe-nav-menus-ui .customlinkdiv p {
   margin: 0 0 8px;
 }
 
-body.boxmoe-nav-menus-ui .categorychecklist li,
-body.boxmoe-nav-menus-ui .categorychecklist label {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
+body.boxmoe-nav-menus-ui .categorychecklist li {
+  display: block;
   margin: 0 0 6px;
-  padding: 4px 6px;
+  padding: 0;
   border-radius: 8px;
   line-height: 1.45;
   font-size: 13px;
 }
 
-body.boxmoe-nav-menus-ui .categorychecklist li:hover {
-  background: rgba(255, 255, 255, 0.65);
+body.boxmoe-nav-menus-ui .categorychecklist label.menu-item-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: 10px;
+  line-height: 1.45;
+  font-size: 13px;
+  cursor: pointer;
+  pointer-events: auto;
+  border: 1px solid transparent;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+body.boxmoe-nav-menus-ui .categorychecklist li:hover label.menu-item-title {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+body.boxmoe-nav-menus-ui .categorychecklist li:has(input[type="checkbox"]:checked) label.menu-item-title {
+  background: rgba(99, 179, 237, 0.16);
+  border-color: rgba(99, 179, 237, 0.28);
+  color: #1a5a96;
 }
 
 body.boxmoe-nav-menus-ui .quick-search-wrap {
@@ -495,8 +612,11 @@ body.boxmoe-nav-menus-ui .menu-item-settings select {
   background: rgba(255, 255, 255, 0.92) !important;
 }
 
-body.boxmoe-nav-menus-ui .menu-item-settings input[type="checkbox"] {
-  border-radius: 4px !important;
+body.boxmoe-nav-menus-ui .menu-item-settings label:has(input[type="checkbox"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
 }
 
 /* 链接框、自定义链接 */

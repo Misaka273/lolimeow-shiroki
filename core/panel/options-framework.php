@@ -86,7 +86,15 @@ function get_boxmoe( $name, $default = false ) {
 
 	// Return specific option
 	if ( isset( $options[$name] ) ) {
-		return $options[$name];
+		$value = $options[$name];
+		if ( function_exists( 'boxmoe_normalize_dev_url' ) ) {
+			$value = boxmoe_normalize_dev_url( $value );
+		}
+		return $value;
+	}
+
+	if ( function_exists( 'boxmoe_normalize_dev_url' ) ) {
+		return boxmoe_normalize_dev_url( $default );
 	}
 
 	return $default;

@@ -40,7 +40,7 @@ jQuery(document).ready(function($){
 				uploadInput.val(attachment.attributes.url).addClass('has-file');
 				// 更新预览图，确保预览图等比例显示
 				var screenshot = optionsframework_selector.find('.screenshot');
-				var isImage = attachment.attributes.type == 'image' || attachment.attributes.url.toLowerCase().match(/\.(jpg|jpeg|png|gif|ico|svg)$/i);
+				var isImage = attachment.attributes.type == 'image' || attachment.attributes.url.toLowerCase().match(/\.(jpg|jpeg|png|gif|avif|webp|ico|svg)$/i);
 				if ( isImage ) {
 					screenshot.empty().append('<img src="' + attachment.attributes.url + '" style="max-width: 162px; max-height: 75px; object-fit: contain; background: #f5f5f5;">').show();
 				}

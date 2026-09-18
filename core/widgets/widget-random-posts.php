@@ -15,7 +15,7 @@ class widget_random_posts extends WP_Widget {
 	}
 	function widget( $args, $instance ) {
 		extract( $args );
-		$title       = apply_filters('widget_name', $instance['title']);
+		$title       = apply_filters('widget_name', isset($instance['title']) ? $instance['title'] : __('随机文章', 'boxmoe-com'));
 		$limit       = isset($instance['limit']) ? $instance['limit'] : 6;
 		$cat         = isset($instance['cat']) ? $instance['cat'] : 0;
 		$show_thumb  = isset($instance['show_thumb']) ? $instance['show_thumb'] : true;
@@ -48,9 +48,14 @@ class widget_random_posts extends WP_Widget {
 			       <div class="right">';
 		}
 		
-		// 📝 显示标题
+		// ✂️ 文章标题超过 10 字自动省略
+		$post_title = get_the_title();
+		$plain_title = wp_strip_all_tags(html_entity_decode($post_title, ENT_QUOTES, 'UTF-8'));
+		$display_title = mb_strlen($plain_title, 'UTF-8') > 10
+			? mb_substr($plain_title, 0, 10, 'UTF-8') . '...'
+			: $post_title;
 		echo '<h4 class="title">
-			 <a '. boxmoe_article_new_window() .' href="'. get_the_permalink() .'">'. get_the_title() . get_the_subtitle() .'</a></h4>';
+			 <a '. boxmoe_article_new_window() .' href="'. get_the_permalink() .'" title="'. esc_attr($post_title) .'">'. $display_title . get_the_subtitle() .'</a></h4>';
 		
 		// 📅 显示发布日期和阅读链接容器
 		echo '<div class="post-meta">';

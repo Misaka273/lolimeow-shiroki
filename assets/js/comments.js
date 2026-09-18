@@ -1,10 +1,23 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const commentForm = document.getElementById('commentform');
-    if (commentForm) {
-        commentForm.addEventListener('submit', function(e) {
+(function() {
+    'use strict';
+
+    // 📝 评论表单 AJAX 提交（使用事件委托，兼容 Swup 动态加载的表单）
+    function bindCommentFormSubmit() {
+        // 避免重复绑定
+        if (document.body && document.body.dataset.shirokiCommentSubmitBound === 'true') {
+            return;
+        }
+        if (document.body) {
+            document.body.dataset.shirokiCommentSubmitBound = 'true';
+        }
+
+        document.body.addEventListener('submit', function(e) {
+            const commentForm = e.target.closest('#commentform');
+            if (!commentForm) return;
+
             e.preventDefault();
 
-            const commentField = this.querySelector('#comment');
+            const commentField = commentForm.querySelector('#comment');
             if (commentField && !commentField.value.trim()) {
                 commentField.classList.add('shiroki-field-error');
                 if (window.ShirokiBubbleTooltip) {
@@ -16,11 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const formData = new FormData(this);
+            const formData = new FormData(commentForm);
             const messageArea = document.querySelector('.message-content');
-            const submitBtn = this.querySelector('.submit-btn');
+            const submitBtn = commentForm.querySelector('.submit-btn');
             const submitBtnIcon = submitBtn.querySelector('i');
-            
+
             // 更改按钮状态为提交中
             submitBtn.disabled = true;
             submitBtnIcon.className = 'fa fa-spinner fa-spin';
@@ -39,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 if (data.success) {
                     // 清空输入框
-                    this.querySelector('textarea').value = '';
-                    
+                    commentForm.querySelector('textarea').value = '';
+
                     // 更新用户信息显示
                     const userNameElement = document.querySelector('.user-info .user-name');
                     const userEmailElement = document.querySelector('.user-info .user-email');
@@ -50,20 +63,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (userEmailElement && !window.ajax_object .is_user_logged_in) {
                         userEmailElement.textContent = formData.get('email');
                     }
-                    
+
                     // 获取新评论容器
                     const commentNew = document.querySelector('.comment-new');
                     const newContent = commentNew.querySelector('.new-content');
-                    
+
                     // 插入新评论
                     const newComment = createCommentElement(data.data.comment);
                     newContent.insertAdjacentElement('afterbegin', newComment);
-                    
+
                     // 显示新评论容器并添加动画效果
                     commentNew.style.display = 'block';
                     void commentNew.offsetWidth;
                     commentNew.classList.add('show');
-                    
+
                     // 初始化新评论中的懒加载图片
                     const lazyImages = newComment.querySelectorAll('img.lazy');
                     lazyImages.forEach(img => {
@@ -78,10 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                         imageObserver.observe(img);
                     });
-                    
+
                     // 更新评论计数
                     updateCommentCount();
-                    
+
                     showMessage(data.data.message || '评论提交成功！', 'success');
                 } else {
                     showMessage(data.data || '提交失败，请检查输入！', 'error');

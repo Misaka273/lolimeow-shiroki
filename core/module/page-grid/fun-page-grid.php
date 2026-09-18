@@ -235,14 +235,12 @@ class Shiroki_Page_Grid_UI {
                         </div>
                     </div>
                     
-                    <!-- 🔍 搜索框 - 独立行 -->
-                    <div class="shiroki-post-search-wrapper">
-                        <div class="shiroki-post-search">
-                            <input type="text" 
-                                   id="shiroki-post-search" 
-                                   placeholder="🔍 搜索页面..."
-                                   autocomplete="off">
-                        </div>
+                    <!-- 🔍 搜索框 -->
+                    <div class="shiroki-post-search">
+                        <input type="text"
+                               id="shiroki-post-search"
+                               placeholder="🔍 搜索页面..."
+                               autocomplete="off">
                     </div>
                     
                     <!-- 🧰 自定义工具栏 -->
@@ -324,6 +322,12 @@ class Shiroki_Page_Grid_UI {
             if ($addButton.length) {
                 $addButton.appendTo('.shiroki-post-add-container');
             }
+
+            // 🎯 将新建页面按钮容器移动到页面标题右侧
+            $('.shiroki-post-add-container').insertAfter('.wrap > h1.wp-heading-inline');
+
+            // 🔍 将搜索框移动到状态筛选右侧
+            $('.shiroki-post-search').insertAfter('.shiroki-post-filter-wrapper');
             
             // 🚀 触发自定义事件，通知JS可以初始化了
             $(document).trigger('shiroki-page-grid-ready');

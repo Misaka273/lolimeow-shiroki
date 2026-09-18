@@ -66,9 +66,9 @@
 
 .wrap .page-title-action:hover,
 .wrap .add-new-h2:hover {
-    background: linear-gradient(135deg, #ffb6c1, #ff69b4) ;
-    border-color: #ff69b4 ;
-    color: #ffffff ;
+    background: linear-gradient(135deg, var(--shiroki-pink-light), var(--shiroki-pink-dark)) ;
+    border-color: var(--shiroki-pink-dark) ;
+    color: var(--shiroki-white) ;
 }
 
 /* 📝 文本输入框扁平圆角化 */
@@ -78,20 +78,20 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
 textarea {
     border-radius: 12px ;
     border: 1px solid var(--shiroki-pink-light) ;
-    background: #ffffff ;
-    transition: all 0.2s ease ;
+    background: var(--shiroki-white) ;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease ;
 }
 
 /* 📝 Textarea 悬停效果 */
 textarea:hover {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+    box-shadow: 0 2px 8px var(--shiroki-pink-glow) ;
 }
 
 /* 📝 Textarea 聚焦效果 */
 textarea:focus {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    box-shadow: 0 0 0 3px var(--shiroki-pink-ring) ;
     outline: none ;
 }
 
@@ -99,20 +99,20 @@ textarea:focus {
 .wp-editor-area {
     border-radius: 12px ;
     border: 1px solid var(--shiroki-pink-light) ;
-    background: #ffffff ;
-    transition: all 0.2s ease ;
+    background: var(--shiroki-white) ;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease ;
 }
 
 /* 📝 WordPress 编辑器区域悬停效果 */
 .wp-editor-area:hover {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+    box-shadow: 0 2px 8px var(--shiroki-pink-glow) ;
 }
 
 /* 📝 WordPress 编辑器区域聚焦效果 */
 .wp-editor-area:focus {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    box-shadow: 0 0 0 3px var(--shiroki-pink-ring) ;
     outline: none ;
 }
 
@@ -132,7 +132,7 @@ input:focus, textarea:focus, select:focus{border-color:var(--shiroki-black-light
 .media-modal-content{border-radius:12px }
 
 .notice-info{background:var(--shiroki-gray-light) ;border-color:var(--shiroki-gray-medium) }
-.notice-warning{background:#fde68a ;border-color:#f59e0b }
+.notice-warning{background:var(--admin-warning-bg) ;border-color:var(--admin-warning-border) }
 
 #screen-meta{border-radius:8px ;border-color:var(--shiroki-gray-medium) }
 
@@ -148,10 +148,10 @@ input:focus, textarea:focus, select:focus{border-color:var(--shiroki-black-light
 /* 🏷️ 列表表格扁平圆角化 */
 .wp-list-table.widefat {
     border-radius: 12px ;
-    border: 1px solid #ffb6c1 ;
+    border: 1px solid var(--shiroki-pink-light) ;
     box-shadow: none ;
     overflow: hidden ; /* ⬅️ 确保圆角不被内部内容溢出遮挡 */
-    background: #ffffff ;
+    background: var(--shiroki-white) ;
     border-spacing: 0 ; /* ⬅️ 修复圆角 */
 }
 
@@ -344,9 +344,9 @@ body select:not(.mm):not(.jj):not(.aa):focus,
 [name="gravatar"]:focus,
 [name="google_fonts"]:focus {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    box-shadow: 0 0 0 3px var(--shiroki-pink-ring) ;
     outline: none ;
-    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff1493%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background: var(--shiroki-white) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff1493%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
     background-size: 16px 16px ;
 }
 
@@ -472,6 +472,8 @@ body select[multiple] {
     position: relative;
     display: inline-block;
     vertical-align: middle;
+    /* 🔒 固定触发器高度，避免展开列表撑开父级布局 */
+    height: 36px;
     /* width: auto; */ /* ⬅️ 由 JS 动态控制或自适应 */
 }
 
@@ -479,10 +481,10 @@ body select[multiple] {
     position: relative;
     display: block;
     padding: 0 32px 0 12px;
-    background: #ffffff;
-    border: 1px solid #ffb6c1;
+    background: var(--shiroki-white);
+    border: 1px solid var(--shiroki-pink-light);
     border-radius: 8px;
-    color: #8b008b;
+    color: var(--shiroki-pink-text);
     line-height: 28px; /* ⬅️ 文字大小 */
     height: 30px;      /* ⬅️ 容器高度 */
     cursor: pointer;
@@ -490,7 +492,7 @@ body select[multiple] {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
 }
 
 .boxmoe-select-trigger:after {
@@ -508,8 +510,8 @@ body select[multiple] {
 }
 
 .boxmoe-select-wrapper.open .boxmoe-select-trigger {
-    border-color: #ff69b4;
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15);
+    border-color: var(--shiroki-pink-dark);
+    box-shadow: 0 0 0 3px var(--shiroki-pink-ring);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 }
@@ -523,21 +525,26 @@ body select[multiple] {
     top: 100%;
     left: 0;
     right: 0;
-    background: #ffffff;
-    border: 1px solid #ff69b4;
+    /* 🔒 脱离文档流，禁止参与父级高度计算 */
+    margin: 0;
+    background: var(--shiroki-white);
+    border: 1px solid var(--shiroki-pink-dark);
     border-top: none;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
+    box-shadow: 0 4px 12px var(--shiroki-pink-glow);
     z-index: 9999;
     display: none;
     max-height: 200px;
+    overflow-x: hidden;
     overflow-y: auto;
+    box-sizing: border-box;
+    /* 🔒 避免 transform 动画影响 sticky 侧栏滚动上下文 */
+    transform: none;
 }
 
 .boxmoe-select-wrapper.open .boxmoe-select-dropdown {
     display: block;
-    animation: boxmoeSlideDown 0.2s ease;
 }
 
 @keyframes boxmoeSlideDown {
@@ -561,18 +568,18 @@ body select[multiple] {
 }
 
 .boxmoe-select-trigger:hover {
-    border-color: #ff69b4 ;
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%) ;
+    border-color: var(--shiroki-pink-dark) ;
+    background: var(--shiroki-gradient-pink) ;
 }
 
 .boxmoe-select-dropdown li:hover {
-    background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
-    color: #8b008b;
+    background: var(--shiroki-gradient-pink);
+    color: var(--shiroki-pink-text);
 }
 
 .boxmoe-select-dropdown li.selected {
-    background: #ffe4e1;
-    color: #8b008b;
+    background: var(--shiroki-pink-pale);
+    color: var(--shiroki-pink-text);
     font-weight: 600;
 }
 
@@ -581,11 +588,11 @@ body select[multiple] {
     width: 6px;
 }
 .boxmoe-select-dropdown::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    background: var(--shiroki-gradient-pink);
     border-radius: 3px;
 }
 .boxmoe-select-dropdown::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    background: var(--shiroki-gradient-pink-deep);
 }
 
 /* ⏬ Admin Bar at Bottom */
@@ -806,8 +813,8 @@ html.wp-toolbar {
 #post-status-info {
     border-radius: 12px ;
     border: 1px solid var(--shiroki-pink-light) ;
-    background: #ffffff ;
-    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+    background: var(--shiroki-white) ;
+    box-shadow: 0 2px 8px var(--shiroki-pink-glow) ;
     margin-top: 10px ;
 }
 
@@ -822,14 +829,14 @@ html.wp-toolbar {
 /* 📊 状态信息栏悬停效果 */
 #post-status-info:hover {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15) ;
+    box-shadow: 0 4px 12px var(--shiroki-pink-glow) ;
 }
 
 /* 🎯 WordPress 编辑器展开模式下的状态信息栏圆角 */
 .wp-editor-expand #post-status-info {
     border-radius: 12px ;
-    background: #ffffff ;
-    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+    background: var(--shiroki-white) ;
+    box-shadow: 0 2px 8px var(--shiroki-pink-glow) ;
 }
 
 /* 🎯 WordPress 编辑器展开模式下的编辑器容器圆角 */
@@ -854,22 +861,22 @@ html.wp-toolbar {
 .wp-editor-expand textarea.wp-editor-area {
     border-radius: 12px ;
     border: 1px solid var(--shiroki-pink-light) ;
-    background: #ffffff ;
-    transition: all 0.2s ease ;
+    background: var(--shiroki-white) ;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease ;
 }
 
 /* 🎯 WordPress 编辑器展开模式下的编辑器区域悬停效果 */
 .wp-editor-expand #wp-content-editor-container .wp-editor-area:hover,
 .wp-editor-expand textarea.wp-editor-area:hover {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.1) ;
+    box-shadow: 0 2px 8px var(--shiroki-pink-glow) ;
 }
 
 /* 🎯 WordPress 编辑器展开模式下的编辑器区域聚焦效果 */
 .wp-editor-expand #wp-content-editor-container .wp-editor-area:focus,
 .wp-editor-expand textarea.wp-editor-area:focus {
     border-color: var(--shiroki-pink-dark) ;
-    box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.15) ;
+    box-shadow: 0 0 0 3px var(--shiroki-pink-ring) ;
     outline: none ;
 }
 

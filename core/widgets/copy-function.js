@@ -1,69 +1,98 @@
 // 📋 统一复制功能脚本
-// 确保只在DOM完全加载后执行
 document.addEventListener('DOMContentLoaded', function() {
-    // 使用事件委托，监听所有复制按钮的点击事件
+    function showCopyBanner(message, iconClass) {
+        iconClass = iconClass || 'fa-check-circle';
+        var banner = document.querySelector('.copy-banner');
+        if (!banner) {
+            banner = document.createElement('div');
+            banner.className = 'copy-banner';
+            document.body.appendChild(banner);
+        }
+        if (!banner.dataset.defaultText && banner.innerHTML.trim() !== '') {
+            banner.dataset.defaultText = banner.innerHTML;
+        }
+        banner.innerHTML = '<i class="fa ' + iconClass + '"></i> ' + message;
+        if (typeof window._copyBannerShow === 'function') {
+            window._copyBannerShow();
+        } else {
+            banner.classList.remove('mask-run', 'show');
+            void banner.offsetWidth;
+            banner.classList.add('mask-run', 'show');
+            setTimeout(function() {
+                banner.classList.remove('show', 'mask-run');
+            }, 1500);
+        }
+        setTimeout(function() {
+            if (banner.dataset.defaultText) {
+                banner.innerHTML = banner.dataset.defaultText;
+            }
+        }, 2000);
+    }
+
+    function getSiteInfoCopyMessage(copyBtn, copyText) {
+        var label = copyBtn.getAttribute('data-copy-label');
+        if (label) {
+            return '已复制「' + label + '」';
+        }
+        return '已复制：' + copyText;
+    }
+
     document.addEventListener('click', function(e) {
-        // 检查点击的元素是否是复制按钮或其子元素
-        const copyBtn = e.target.closest('.copy-btn');
-        if (copyBtn) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // 获取要复制的文本
-            const copyText = copyBtn.getAttribute('data-copy-text');
-            if (!copyText) return;
-            
-            // 定义复制成功后的回调函数
-            function copySuccess() {
-                // 检查showToast函数是否存在
-                if (typeof showToast === 'function') {
-                    // 使用主题已实现的showToast函数显示复制成功提示，传递实际复制的文本
-                    showToast(copyText, true);
-                } else {
-                    // 如果showToast函数不存在，使用alert提示
-                    alert('已复制：' + copyText);
-                }
+        var copyBtn = e.target.closest('.copy-btn');
+        if (!copyBtn) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        var copyText = copyBtn.getAttribute('data-copy-text');
+        if (!copyText) return;
+
+        var isSiteInfo = copyBtn.closest('.shiroki-site-info, .fl-site-info');
+
+        function copySuccess() {
+            if (isSiteInfo) {
+                showCopyBanner(getSiteInfoCopyMessage(copyBtn, copyText));
+                return;
             }
-            
-            // 定义复制失败后的回调函数
-            function copyFail() {
-                alert('复制失败，请手动复制');
-            }
-            
-            // 优先使用Clipboard API
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(copyText)
-                    .then(copySuccess)
-                    .catch(function(err) {
-                        console.error('Clipboard API error:', err);
-                        // 降级使用传统方法
-                        fallbackCopyTextToClipboard(copyText, copySuccess, copyFail);
-                    });
+            if (typeof showToast === 'function') {
+                showToast(copyText, true);
             } else {
-                // 直接使用传统方法
-                fallbackCopyTextToClipboard(copyText, copySuccess, copyFail);
+                alert('已复制：' + copyText);
             }
         }
+
+        function copyFail() {
+            if (isSiteInfo) {
+                showCopyBanner('复制失败，请手动复制', 'fa-times-circle');
+            } else {
+                alert('复制失败，请手动复制');
+            }
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(copyText)
+                .then(copySuccess)
+                .catch(function(err) {
+                    console.error('Clipboard API error:', err);
+                    fallbackCopyTextToClipboard(copyText, copySuccess, copyFail);
+                });
+        } else {
+            fallbackCopyTextToClipboard(copyText, copySuccess, copyFail);
+        }
     });
-    
-    // 传统复制方法，兼容不支持Clipboard API的浏览器
+
     function fallbackCopyTextToClipboard(text, successCallback, failCallback) {
-        const textArea = document.createElement('textarea');
+        var textArea = document.createElement('textarea');
         textArea.value = text;
-        
-        // 设置样式，避免影响页面布局
         textArea.style.position = 'fixed';
         textArea.style.left = '-999999px';
         textArea.style.top = '-999999px';
         textArea.style.opacity = '0';
-        
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        
         try {
-            const successful = document.execCommand('copy');
-            if (successful) {
+            if (document.execCommand('copy')) {
                 successCallback();
             } else {
                 failCallback();

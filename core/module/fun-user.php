@@ -572,6 +572,54 @@ function boxmoe_czcard_src(){
 add_action('wp_ajax_nopriv_user_login_action', 'handle_user_login');
 add_action('wp_ajax_user_login_action', 'handle_user_login');
 
+/**
+ * 🔍 将登录标识解析为 user_login
+ * 支持：邮箱 / 用户名 / 显示名称「精确匹配」
+ *
+ * @param string $identity 用户输入的登录标识
+ * @return string|WP_Error 解析后的 user_login，或歧义/空值错误
+ */
+function boxmoe_resolve_login_username($identity) {
+    $identity = sanitize_text_field($identity);
+    if ($identity === '') {
+        return new WP_Error('empty_username', '请输入用户名、显示名称或邮箱');
+    }
+
+    // 📧 邮箱优先
+    if (is_email($identity)) {
+        $user = get_user_by('email', $identity);
+        if ($user) {
+            return $user->user_login;
+        }
+    }
+
+    // 👤 用户名「user_login」
+    $user = get_user_by('login', $identity);
+    if ($user) {
+        return $user->user_login;
+    }
+
+    // 🏷️ 显示名称精确匹配
+    global $wpdb;
+    $matched_ids = $wpdb->get_col($wpdb->prepare(
+        "SELECT ID FROM {$wpdb->users} WHERE display_name = %s LIMIT 2",
+        $identity
+    ));
+
+    if (count($matched_ids) === 1) {
+        $user = get_user_by('id', (int) $matched_ids[0]);
+        if ($user) {
+            return $user->user_login;
+        }
+    }
+
+    if (count($matched_ids) > 1) {
+        return new WP_Error('ambiguous_display_name', '该显示名称对应多个账号，请使用用户名或邮箱登录');
+    }
+
+    return $identity;
+}
+
 function handle_user_login() {
     $formData = isset($_POST['formData']) ? json_decode(stripslashes($_POST['formData']), true) : array();
     
@@ -593,16 +641,17 @@ function handle_user_login() {
         exit;
     }
     
-    $username = sanitize_text_field($formData['username']);
     $password = $formData['password'];
     $remember = isset($formData['rememberme']) ? true : false;
-    
-    if (is_email($username)) {
-        $user = get_user_by('email', $username);
-        if ($user) {
-            $username = $user->user_login;
-        }
+
+    $resolved = boxmoe_resolve_login_username($formData['username']);
+    if (is_wp_error($resolved)) {
+        wp_send_json_error(array(
+            'message' => $resolved->get_error_message()
+        ));
+        exit;
     }
+    $username = $resolved;
     
     $creds = array(
         'user_login'    => $username,
@@ -618,13 +667,13 @@ function handle_user_login() {
 
         switch ($error_code) {
             case 'invalid_username':
-                $error_message = '用户不存在，如果不确定可以用邮箱登录';
+                $error_message = '用户不存在，可尝试用户名、显示名称或邮箱登录';
                 break;
             case 'incorrect_password':
                 $error_message = '密码错误';
                 break;
             case 'empty_username':
-                $error_message = '请输入用户名';
+                $error_message = '请输入用户名、显示名称或邮箱';
                 break;
             case 'empty_password':
                 $error_message = '请输入密码';
@@ -732,15 +781,14 @@ function handle_user_signup() {
         exit;
     }
 
-    remove_filter('sanitize_user', 'sanitize_user');
-    $username = $formData['username'];
+    $username = trim($formData['username']);
     if (!preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9_]+$/u', $username)) {
         wp_send_json_error(array(
             'message' => '用户名只能包含中文、字母、数字和下划线'
         ));
         exit;
     }
-    if (empty($username) || mb_strlen($username) < 2) {
+    if ($username === '' || mb_strlen($username) < 2) {
         wp_send_json_error(array(
             'message' => '用户名长度至少需要2个字符'
         ));
@@ -752,12 +800,25 @@ function handle_user_signup() {
         ));
         exit;
     }
+
+    // 🏷️ 避免与已有显示名称冲突，保证可用显示名称登录
+    global $wpdb;
+    $display_name_taken = (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(ID) FROM {$wpdb->users} WHERE display_name = %s",
+        $username
+    ));
+    if ($display_name_taken > 0) {
+        wp_send_json_error(array(
+            'message' => '该名称已被使用，请更换一个'
+        ));
+        exit;
+    }
+
     $user_id = wp_create_user(
         $username,
         $formData['password'],
         $formData['email']
     );
-    add_filter('sanitize_user', 'sanitize_user');
 
     if (is_wp_error($user_id)) {
         $error_code = $user_id->get_error_code();
@@ -783,6 +844,13 @@ function handle_user_signup() {
     $user = new WP_User($user_id);
     $user->set_role('subscriber');
 
+    // 🌟 同步显示名称与注册名，支持中文显示名称登录
+    wp_update_user(array(
+        'ID' => $user_id,
+        'display_name' => $username,
+        'nickname' => $username,
+    ));
+
     // 🆔 生成并保存随机6位数UID
     $custom_uid = boxmoe_generate_custom_uid();
     update_user_meta($user_id, 'custom_uid', $custom_uid);
@@ -806,9 +874,9 @@ function handle_user_signup() {
 function boxmoe_allow_chinese_username($username, $raw_username, $strict) {
     if (!$strict) {
         return $username;
-    } 
-    $username = $raw_username;
-    $username = preg_replace('/[^[\x{4e00}-\x{9fa5}a-zA-Z0-9_]]/u', '', $username);
+    }
+    // 🇨🇳 严格模式下保留中文、字母、数字与下划线
+    $username = preg_replace('/[^\x{4e00}-\x{9fa5}a-zA-Z0-9_]/u', '', $raw_username);
     return $username;
 }
 add_filter('sanitize_user', 'boxmoe_allow_chinese_username', 10, 3);

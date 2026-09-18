@@ -128,6 +128,8 @@ class Shiroki_Post_Grid_UI {
         
         $theme_uri = get_template_directory_uri();
         $version = wp_get_theme()->get('Version');
+        $post_grid_script = get_template_directory() . '/assets/js/admin/post-grid/post-grid.js';
+        $post_grid_version = file_exists($post_grid_script) ? filemtime($post_grid_script) : $version;
         
         /* 🎨 先加载统一变量文件 */
         wp_enqueue_style(
@@ -150,7 +152,7 @@ class Shiroki_Post_Grid_UI {
             'shiroki-post-grid',
             $theme_uri . '/assets/js/admin/post-grid/post-grid.js',
             array('jquery'),
-            $version,
+            $post_grid_version,
             true
         );
         
@@ -159,6 +161,7 @@ class Shiroki_Post_Grid_UI {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'adminUrl' => admin_url(),
             'nonce' => wp_create_nonce('shiroki_post_nonce'),
+            'editTargetBlank' => (bool) get_boxmoe('boxmoe_article_edit_target_blank'),
             'strings' => array(
                 'loading' => '⏳ 加载中...',
                 'noItems' => '📭 暂无文章',
@@ -242,10 +245,13 @@ class Shiroki_Post_Grid_UI {
                             <span class="shiroki-post-filter-label">📊 状态筛选：</span>
                             <div class="shiroki-post-status-options">
                                 <button class="shiroki-post-status-btn active" data-status="all">
-                                    📁 全部 (<?php echo intval($status_counts->publish + $status_counts->draft + $status_counts->pending + $status_counts->private); ?>)
+                                    📁 全部 (<?php echo intval($status_counts->publish + $status_counts->future + $status_counts->draft + $status_counts->pending + $status_counts->private); ?>)
                                 </button>
                                 <button class="shiroki-post-status-btn" data-status="publish">
                                     🟢 已发布 (<?php echo intval($status_counts->publish); ?>)
+                                </button>
+                                <button class="shiroki-post-status-btn" data-status="future">
+                                    🔵 定时发布 (<?php echo intval($status_counts->future); ?>)
                                 </button>
                                 <button class="shiroki-post-status-btn" data-status="draft">
                                     🟡 草稿 (<?php echo intval($status_counts->draft); ?>)
@@ -346,6 +352,12 @@ class Shiroki_Post_Grid_UI {
             if ($addButton.length) {
                 $addButton.appendTo('.shiroki-post-add-container');
             }
+
+            // 🎯 将新建文章按钮容器移动到页面标题右侧
+            $('.shiroki-post-add-container').insertAfter('.wrap > h1.wp-heading-inline');
+
+            // 🔍 将搜索框移动到状态筛选右侧
+            $('.shiroki-post-search').insertAfter('.shiroki-post-filter-wrapper');
             
             // 📦 将分类筛选模态框添加到 body 级别
             var modalHTML = `
@@ -487,7 +499,7 @@ class Shiroki_Post_Grid_UI {
         if ($status !== 'all') {
             $args['post_status'] = $status;
         } else {
-            $args['post_status'] = array('publish', 'draft', 'pending', 'private');
+            $args['post_status'] = array('publish', 'future', 'draft', 'pending', 'private');
         }
         
         // 分类筛选
@@ -549,7 +561,29 @@ class Shiroki_Post_Grid_UI {
         
         // 格式化日期
         $date = get_the_date('Y-m-d H:i', $post_id);
-        
+
+        /* 🔐 读取 shiroki-content-paywall 插件内容保护配置 */
+        $paywall_enabled = false;
+        $paywall_types   = array();
+        $paywall_price   = 0;
+
+        if ( class_exists( 'Shiroki_CP_Post_Meta' ) ) {
+            $paywall_config = Shiroki_CP_Post_Meta::get_post_config( $post_id );
+            $paywall_enabled = ! empty( $paywall_config['enabled'] );
+
+            if ( $paywall_enabled && ! empty( $paywall_config['zones'] ) ) {
+                foreach ( $paywall_config['zones'] as $zone ) {
+                    if ( isset( $zone['type'] ) && ! in_array( $zone['type'], $paywall_types, true ) ) {
+                        $paywall_types[] = $zone['type'];
+                    }
+                }
+            }
+
+            if ( ! empty( $paywall_config['price'] ) ) {
+                $paywall_price = floatval( $paywall_config['price'] );
+            }
+        }
+
         return array(
             'id' => $post_id,
             'title' => get_the_title($post_id),
@@ -560,7 +594,10 @@ class Shiroki_Post_Grid_UI {
             'thumbnail' => $thumbnail,
             'edit_link' => get_edit_post_link($post_id, 'raw'),
             'view_link' => get_permalink($post_id),
-            'password_protected' => !empty($post->post_password)
+            'password_protected' => !empty($post->post_password),
+            'paywall_enabled' => $paywall_enabled,
+            'paywall_types' => $paywall_types,
+            'paywall_price' => $paywall_price
         );
     }
     

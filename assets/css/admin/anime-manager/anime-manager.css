@@ -1,0 +1,1214 @@
+/* 🕊️白木 原创开发 🔗gl.baimu.live */
+/* 📺 追番管理 UI 样式 */
+/* 🎨 拟态拟物玻璃质感设计，与评论网格 UI 风格一致 */
+/* 🔗 变量定义在 admin-variables.css 中统一管理 */
+
+/* ============================================
+   🎯 追番管理页面整体布局
+   ============================================ */
+
+/* 🪟 页面背景 */
+.toplevel_page_shiroki-anime-manager,
+.boxmoe_page_shiroki-anime-manager,
+.appearance_page_shiroki-anime-manager,
+.themes_page_shiroki-anime-manager {
+  background: var(--shiroki-bg-gradient-light);
+}
+
+.toplevel_page_shiroki-anime-manager.wp-dark-mode,
+.boxmoe_page_shiroki-anime-manager.wp-dark-mode,
+.appearance_page_shiroki-anime-manager.wp-dark-mode,
+.themes_page_shiroki-anime-manager.wp-dark-mode,
+.toplevel_page_shiroki-anime-manager .wp-dark-mode,
+.boxmoe_page_shiroki-anime-manager .wp-dark-mode,
+.appearance_page_shiroki-anime-manager .wp-dark-mode,
+.themes_page_shiroki-anime-manager .wp-dark-mode {
+  background: var(--shiroki-bg-gradient-dark);
+}
+
+/* 📝 隐藏 WordPress 默认元素 */
+.toplevel_page_shiroki-anime-manager #wpbody-content > .wrap > h1,
+.boxmoe_page_shiroki-anime-manager #wpbody-content > .wrap > h1,
+.appearance_page_shiroki-anime-manager #wpbody-content > .wrap > h1,
+.themes_page_shiroki-anime-manager #wpbody-content > .wrap > h1,
+.toplevel_page_shiroki-anime-manager #screen-meta,
+.boxmoe_page_shiroki-anime-manager #screen-meta,
+.appearance_page_shiroki-anime-manager #screen-meta,
+.themes_page_shiroki-anime-manager #screen-meta,
+.toplevel_page_shiroki-anime-manager #screen-meta-links,
+.boxmoe_page_shiroki-anime-manager #screen-meta-links,
+.appearance_page_shiroki-anime-manager #screen-meta-links,
+.themes_page_shiroki-anime-manager #screen-meta-links {
+  display: none !important;
+}
+
+/* ============================================
+   🎯 自定义页面头部
+   ============================================ */
+
+/* 🎯 头部容器 */
+.shiroki-anime-manager-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-xl) var(--admin-space-2xl);
+  margin: 0 0 var(--admin-space-md) 0;
+}
+
+/* 🏷️ 标题 */
+.shiroki-anime-manager-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  font-size: 24px;
+  font-weight: var(--admin-font-weight-bold);
+  color: var(--admin-current-text-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 🎨 标题图标 */
+.shiroki-anime-manager-title-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-primary-bg);
+  border: 1px solid var(--admin-primary-border);
+  border-radius: var(--admin-radius-xl);
+  box-shadow: var(--admin-shadow-sm);
+  backdrop-filter: var(--admin-glass-blur);
+  object-fit: contain;
+  padding: var(--admin-space-xs);
+}
+
+/* ➕ 添加番剧按钮 */
+.shiroki-anime-manager-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-sm);
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  background: var(--admin-primary-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  border: 1px solid var(--admin-primary-border);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-primary-text);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  box-shadow: var(--admin-shadow-sm);
+  flex-shrink: 0;
+}
+
+.shiroki-anime-manager-add-btn:hover {
+  background: var(--admin-primary-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--admin-shadow-md);
+}
+
+/* ============================================
+   ⬆️ 顶部工具栏
+   ============================================ */
+
+/* 🎯 顶部工具栏容器 */
+.shiroki-anime-manager-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-lg) var(--admin-space-2xl);
+  margin-bottom: var(--admin-space-md);
+  gap: var(--admin-space-lg);
+  flex-wrap: nowrap;
+}
+
+/* 📊 筛选区容器 */
+.shiroki-anime-manager-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-md);
+  flex: 1;
+  min-width: 0;
+}
+
+/* 📊 单行筛选 */
+.shiroki-anime-manager-filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex-wrap: wrap;
+}
+
+/* 📊 状态筛选标签 */
+.shiroki-anime-manager-filter-label {
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  white-space: nowrap;
+}
+
+/* 📦 状态选项容器 */
+.shiroki-anime-manager-status-options {
+  display: flex;
+  gap: var(--admin-space-sm);
+  flex-wrap: wrap;
+}
+
+/* 🔘 状态筛选按钮 */
+.shiroki-anime-manager-filter-btn,
+.shiroki-anime-manager-status-btn,
+.shiroki-anime-manager-status-options > button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+  line-height: 1.4;
+}
+
+.shiroki-anime-manager-filter-btn:hover,
+.shiroki-anime-manager-status-btn:hover,
+.shiroki-anime-manager-status-options > button:hover {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+}
+
+.shiroki-anime-manager-filter-btn.active,
+.shiroki-anime-manager-status-btn.active,
+.shiroki-anime-manager-status-options > button.active {
+  background: var(--admin-primary-bg);
+  border-color: var(--admin-primary-border);
+  color: var(--admin-primary-text);
+  font-weight: var(--admin-font-weight-semibold);
+}
+
+/* 📦 批量操作工具栏 */
+.shiroki-anime-manager-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex: 1;
+  animation: shiroki-anime-bulk-enter 0.3s ease;
+}
+
+@keyframes shiroki-anime-bulk-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 📊 批量操作计数 */
+.shiroki-anime-manager-bulk-count {
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-primary);
+  white-space: nowrap;
+}
+
+.shiroki-anime-manager-bulk-count-num {
+  color: var(--admin-primary-text);
+  font-weight: var(--admin-font-weight-bold);
+}
+
+/* 🔘 批量操作按钮 */
+.shiroki-anime-manager-bulk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-anime-manager-bulk-btn:hover {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  border-color: var(--admin-primary-border);
+}
+
+/* 🗑️ 批量删除按钮 */
+.shiroki-anime-manager-bulk-delete:hover {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger-text);
+  border-color: var(--admin-danger-border);
+}
+
+/* 🚫 取消选择按钮 */
+.shiroki-anime-manager-bulk-cancel:hover {
+  background: var(--admin-warning-bg);
+  color: var(--admin-warning-text);
+  border-color: var(--admin-warning-border);
+}
+
+/* 🛠️ 右侧操作区 */
+.shiroki-anime-manager-actions-right {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   🔍 搜索框
+   ============================================ */
+
+/* 🔍 搜索框容器 */
+.shiroki-anime-manager-search-wrapper {
+  padding: 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* 🔍 搜索框 */
+.shiroki-anime-manager-search {
+  position: relative;
+  width: 200px;
+}
+
+.shiroki-anime-manager-search input {
+  width: 100%;
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  padding-left: 36px;
+  background: var(--admin-current-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-primary);
+  transition: all var(--admin-transition-fast);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.shiroki-anime-manager-search input:focus {
+  outline: none;
+  border-color: var(--admin-primary-border);
+  box-shadow: 0 0 0 3px var(--admin-primary-shadow);
+  width: 240px;
+}
+
+.shiroki-anime-manager-search::before {
+  content: '🔍';
+  position: absolute;
+  left: var(--admin-space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-muted);
+}
+
+/* ============================================
+   ⏳ 加载状态
+   ============================================ */
+
+/* ⏳ 加载容器 */
+.shiroki-anime-manager-loading {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--admin-space-3xl);
+  gap: var(--admin-space-lg);
+  color: var(--admin-current-text-secondary);
+  font-size: var(--admin-font-size-lg);
+}
+
+/* ⏳ 加载动画 */
+.shiroki-anime-manager-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--admin-current-glass);
+  border-top-color: var(--admin-primary-border);
+  border-radius: var(--admin-radius-full);
+  animation: shiroki-anime-spin 1s linear infinite;
+}
+
+@keyframes shiroki-anime-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   🎴 网格布局容器
+   ============================================ */
+
+/* 📦 番剧网格容器 */
+.shiroki-anime-manager-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--admin-space-xl);
+  padding: var(--admin-space-2xl);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   🃏 番剧卡片主体样式
+   ============================================ */
+
+/* 🎴 单个番剧卡片 */
+.shiroki-anime-card {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  background: var(--admin-current-bg);
+  border-radius: var(--admin-radius-xl);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--admin-shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✨ 卡片悬停效果 */
+.shiroki-anime-card:hover {
+  transform: translateY(var(--admin-hover-translate));
+  box-shadow: var(--admin-shadow-hover);
+}
+
+/* 🌆 暗色模式悬停效果 */
+.wp-admin.wp-dark-mode .shiroki-anime-card:hover {
+  box-shadow: var(--admin-shadow-hover-dark);
+}
+
+/* 🎯 卡片选中状态 */
+.shiroki-anime-card.selected {
+  box-shadow: 0 0 0 3px var(--admin-primary-border);
+}
+
+/* ⭕ 选择圆圈 */
+.shiroki-anime-select-circle {
+  position: absolute;
+  top: var(--admin-space-md);
+  right: var(--admin-space-md);
+  width: 24px;
+  height: 24px;
+  border-radius: var(--admin-radius-full);
+  border: 2px solid var(--admin-current-border);
+  background: var(--admin-current-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-anime-select-circle:hover {
+  border-color: var(--admin-primary-border);
+  background: var(--admin-primary-bg);
+}
+
+.shiroki-anime-card.selected .shiroki-anime-select-circle {
+  border-color: var(--admin-primary-border);
+  background: var(--admin-primary-bg);
+}
+
+.shiroki-anime-select-inner {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--admin-radius-full);
+  background: var(--admin-primary-text);
+  opacity: 0;
+  transition: opacity var(--admin-transition-fast);
+}
+
+.shiroki-anime-card.selected .shiroki-anime-select-inner {
+  opacity: 1;
+}
+
+/* 🖼️ 封面区域 */
+.shiroki-anime-cover {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.shiroki-anime-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.shiroki-anime-card:hover .shiroki-anime-cover img {
+  transform: scale(1.05);
+}
+
+/* 🏷️ 状态徽章 */
+.shiroki-anime-status-badge {
+  position: absolute;
+  top: var(--admin-space-sm);
+  left: var(--admin-space-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-xs) var(--admin-space-sm);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-xs);
+  font-weight: var(--admin-font-weight-semibold);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.shiroki-anime-status-badge.status-watching {
+  background: var(--admin-info-bg);
+  color: var(--admin-info-text);
+  border-color: var(--admin-info-border);
+}
+
+.shiroki-anime-status-badge.status-completed {
+  background: var(--admin-success-bg);
+  color: var(--admin-success-text);
+  border-color: var(--admin-success-border);
+}
+
+.shiroki-anime-status-badge.status-planned {
+  background: var(--admin-warning-bg);
+  color: var(--admin-warning-text);
+  border-color: var(--admin-warning-border);
+}
+
+.shiroki-anime-status-badge.status-on_hold {
+  background: var(--admin-purple-bg);
+  color: var(--admin-purple-text);
+  border-color: var(--admin-purple-border);
+}
+
+.shiroki-anime-status-badge.status-dropped {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger-text);
+  border-color: var(--admin-danger-border);
+}
+
+/* ⭐ 评分 */
+.shiroki-anime-rating {
+  position: absolute;
+  bottom: var(--admin-space-sm);
+  right: var(--admin-space-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-xs) var(--admin-space-sm);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: var(--admin-glass-blur);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-semibold);
+  color: #ffd700;
+}
+
+/* 📝 信息区域 */
+.shiroki-anime-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-sm);
+  padding: var(--admin-space-lg);
+  flex: 1;
+}
+
+/* 🏷️ 标题 */
+.shiroki-anime-card-title {
+  font-size: var(--admin-font-size-lg);
+  font-weight: var(--admin-font-weight-bold);
+  color: var(--admin-current-text-primary);
+  margin: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 🏷️ 标签 */
+.shiroki-anime-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--admin-space-xs);
+}
+
+.shiroki-anime-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--admin-space-sm);
+  background: var(--admin-current-glass);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-secondary);
+}
+
+.shiroki-anime-tag-protagonist {
+  background: var(--admin-purple-bg);
+  border-color: var(--admin-purple-border);
+  color: var(--admin-purple-text);
+}
+
+.shiroki-anime-tag-voice {
+  background: var(--admin-primary-bg);
+  border-color: var(--admin-primary-border);
+  color: var(--admin-primary-text);
+}
+
+.shiroki-anime-meta-tags {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-xs);
+  margin-bottom: var(--admin-space-sm);
+}
+
+/* 📅 上映/完结时间 */
+.shiroki-anime-date-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: var(--admin-space-sm);
+  padding: 2px var(--admin-space-sm);
+  background: var(--admin-current-glass);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 📝 简介 */
+.shiroki-anime-description {
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* 📊 进度条 */
+.shiroki-anime-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-xs);
+  margin-top: auto;
+}
+
+.shiroki-anime-progress-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-secondary);
+}
+
+.shiroki-anime-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--admin-current-border);
+  border-radius: var(--admin-radius-full);
+  overflow: hidden;
+}
+
+.shiroki-anime-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--admin-primary-border) 0%, var(--admin-purple-border) 100%);
+  border-radius: var(--admin-radius-full);
+  transition: width 0.6s ease;
+}
+
+/* 🔘 卡片操作按钮 */
+.shiroki-anime-card-actions {
+  display: flex;
+  gap: var(--admin-space-sm);
+  padding: 0 var(--admin-space-lg) var(--admin-space-lg);
+}
+
+.shiroki-anime-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--admin-space-xs);
+  flex: 1;
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-anime-card-btn:hover {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  border-color: var(--admin-primary-border);
+}
+
+.shiroki-anime-card-btn-delete:hover {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger-text);
+  border-color: var(--admin-danger-border);
+}
+
+/* ============================================
+   📭 空状态
+   ============================================ */
+
+.shiroki-anime-manager-empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--admin-space-3xl);
+  gap: var(--admin-space-md);
+  color: var(--admin-current-text-secondary);
+  text-align: center;
+}
+
+.shiroki-anime-manager-empty-icon {
+  width: 64px;
+  height: 64px;
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.shiroki-anime-manager-empty-text {
+  font-size: var(--admin-font-size-xl);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-primary);
+}
+
+.shiroki-anime-manager-empty-subtext {
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-secondary);
+}
+
+/* ============================================
+   📝 编辑弹窗
+   ============================================ */
+
+/* 🪟 弹窗遮罩 */
+.shiroki-anime-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shiroki-anime-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+/* 📦 弹窗内容 */
+.shiroki-anime-modal-content {
+  position: relative;
+  width: 94%;
+  max-width: 960px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--admin-current-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-xl);
+  box-shadow: var(--admin-shadow-xl);
+  z-index: 1;
+  animation: shiroki-anime-modal-enter 0.3s ease;
+}
+
+@keyframes shiroki-anime-modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 🎯 弹窗头部 */
+.shiroki-anime-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-lg) var(--admin-space-xl);
+  border-bottom: 1px solid var(--admin-current-border);
+}
+
+.shiroki-anime-modal-header h3 {
+  margin: 0;
+  font-size: var(--admin-font-size-xl);
+  font-weight: var(--admin-font-weight-bold);
+  color: var(--admin-current-text-primary);
+}
+
+.shiroki-anime-modal-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-current-glass);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: 20px;
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-anime-modal-close:hover {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger-text);
+  border-color: var(--admin-danger-border);
+}
+
+/* 📝 弹窗主体 */
+.shiroki-anime-modal-body {
+  padding: var(--admin-space-xl);
+}
+
+/* 📝 表单布局 */
+.shiroki-anime-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--admin-space-lg);
+  margin-bottom: var(--admin-space-lg);
+}
+
+.shiroki-anime-form-row.shiroki-anime-form-row-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.shiroki-anime-form-group.shiroki-anime-form-span-3 {
+  grid-column: 1 / -1;
+}
+
+.shiroki-anime-form-row:last-child {
+  margin-bottom: 0;
+}
+
+.shiroki-anime-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-sm);
+}
+
+.shiroki-anime-form-row:has(.shiroki-anime-form-group:only-child) {
+  grid-template-columns: 1fr;
+}
+
+.shiroki-anime-form-group label {
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-primary);
+}
+
+.shiroki-anime-form-group label .required {
+  color: var(--admin-danger-text);
+}
+
+.shiroki-anime-form-group input,
+.shiroki-anime-form-group select,
+.shiroki-anime-form-group textarea {
+  width: 100%;
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-bg);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-primary);
+  transition: all var(--admin-transition-fast);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.shiroki-anime-form-group input:focus,
+.shiroki-anime-form-group select:focus,
+.shiroki-anime-form-group textarea:focus {
+  outline: none;
+  border-color: var(--admin-primary-border);
+  box-shadow: 0 0 0 3px var(--admin-primary-shadow);
+}
+
+.shiroki-anime-form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* 📅 日期选择框 */
+.shiroki-anime-form-group input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  min-height: 40px;
+}
+
+.shiroki-anime-form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity var(--admin-transition-fast);
+}
+
+.shiroki-anime-form-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* 📁 分类名称联想 */
+.shiroki-anime-autocomplete-wrap {
+  position: relative;
+}
+
+.shiroki-anime-autocomplete-list {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--admin-current-bg);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  box-shadow: var(--admin-shadow-lg);
+}
+
+.shiroki-anime-autocomplete-item {
+  display: block;
+  width: 100%;
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  border: 0;
+  background: transparent;
+  color: var(--admin-current-text-primary);
+  font-size: var(--admin-font-size-sm);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--admin-transition-fast);
+}
+
+.shiroki-anime-autocomplete-item:hover,
+.shiroki-anime-autocomplete-item:focus {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  outline: none;
+}
+
+.shiroki-anime-category-name {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 0;
+  padding: 2px var(--admin-space-sm);
+  border-radius: var(--admin-radius-full);
+  background: var(--admin-warning-bg);
+  border: 1px solid var(--admin-warning-border);
+  color: var(--admin-warning-text);
+  font-size: var(--admin-font-size-xs);
+  font-weight: var(--admin-font-weight-medium);
+}
+
+.shiroki-anime-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--admin-space-xs);
+  margin-bottom: var(--admin-space-sm);
+}
+
+.shiroki-anime-private-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 2px var(--admin-space-sm);
+  border-radius: var(--admin-radius-full);
+  background: var(--admin-danger-bg);
+  border: 1px solid var(--admin-danger-border);
+  color: var(--admin-danger-text);
+  font-size: var(--admin-font-size-xs);
+  font-weight: var(--admin-font-weight-medium);
+}
+
+.shiroki-anime-card.is-private {
+  box-shadow: inset 0 0 0 1px var(--admin-danger-border);
+}
+
+.shiroki-anime-private-group {
+  justify-content: flex-end;
+}
+
+.shiroki-anime-field-hint {
+  margin: var(--admin-space-xs) 0 0;
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-secondary);
+  line-height: 1.5;
+}
+
+.shiroki-anime-page-meta .shiroki-anime-autocomplete-wrap,
+#shiroki_anime_page_settings .shiroki-anime-autocomplete-wrap {
+  position: relative;
+}
+
+.shiroki-anime-page-meta-hint {
+  color: var(--admin-current-text-secondary);
+  font-size: var(--admin-font-size-sm);
+}
+
+/* ♾️ 无限话复选框 */
+.shiroki-anime-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-sm);
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-bg);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-primary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  box-shadow: var(--admin-shadow-sm);
+  min-height: 40px;
+  margin-top: auto;
+}
+
+.shiroki-anime-infinite-group {
+  justify-content: flex-end;
+}
+
+.shiroki-anime-checkbox-label:hover {
+  border-color: var(--admin-primary-border);
+}
+
+.shiroki-anime-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--admin-primary-color);
+}
+
+/* 禁用总话数样式 */
+.shiroki-anime-total-group.is-disabled label {
+  color: var(--admin-current-text-muted);
+}
+
+.shiroki-anime-total-group.is-disabled input {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--admin-current-bg-disabled);
+}
+
+/* 🔘 弹窗底部按钮 */
+.shiroki-anime-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--admin-space-md);
+  padding: var(--admin-space-lg) var(--admin-space-xl);
+  border-top: 1px solid var(--admin-current-border);
+}
+
+.shiroki-anime-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-anime-modal-btn:hover {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  border-color: var(--admin-primary-border);
+}
+
+.shiroki-anime-modal-save {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  border-color: var(--admin-primary-border);
+}
+
+.shiroki-anime-modal-save:hover {
+  background: var(--admin-primary-bg-hover);
+}
+
+/* ============================================
+   🍞 Toast 提示
+   ============================================ */
+
+.shiroki-anime-toast {
+  position: fixed;
+  bottom: var(--admin-space-2xl);
+  right: var(--admin-space-2xl);
+  display: none;
+  align-items: center;
+  gap: var(--admin-space-md);
+  padding: var(--admin-space-md) var(--admin-space-lg);
+  background: var(--admin-current-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-lg);
+  box-shadow: var(--admin-shadow-lg);
+  z-index: 100000;
+  animation: shiroki-anime-toast-enter 0.3s ease;
+}
+
+@keyframes shiroki-anime-toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shiroki-anime-toast.success {
+  border-color: var(--admin-success-border);
+}
+
+.shiroki-anime-toast.error {
+  border-color: var(--admin-danger-border);
+}
+
+.shiroki-anime-toast-icon {
+  font-size: var(--admin-font-size-lg);
+}
+
+.shiroki-anime-toast-message {
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-primary);
+}
+
+/* ============================================
+   📱 响应式适配
+   ============================================ */
+
+@media screen and (max-width: 1200px) {
+  .shiroki-anime-form-row.shiroki-anime-form-row-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .shiroki-anime-manager-top-bar {
+    flex-wrap: wrap;
+  }
+
+  .shiroki-anime-manager-filters,
+  .shiroki-anime-manager-bulk-actions {
+    flex: 1 1 100%;
+  }
+
+  .shiroki-anime-manager-actions-right {
+    flex: 1 1 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media screen and (max-width: 782px) {
+  .shiroki-anime-manager-header {
+    padding: var(--admin-space-lg);
+    flex-direction: column;
+    gap: var(--admin-space-md);
+    align-items: flex-start;
+  }
+
+  .shiroki-anime-manager-top-bar {
+    padding: var(--admin-space-lg);
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .shiroki-anime-manager-filter-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .shiroki-anime-manager-status-options {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: var(--admin-space-sm);
+  }
+
+  .shiroki-anime-manager-actions-right {
+    justify-content: space-between;
+  }
+
+  .shiroki-anime-manager-grid {
+    grid-template-columns: 1fr;
+    padding: var(--admin-space-lg);
+  }
+
+  .shiroki-anime-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .shiroki-anime-modal-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .shiroki-anime-toast {
+    left: var(--admin-space-md);
+    right: var(--admin-space-md);
+    bottom: var(--admin-space-md);
+  }
+}

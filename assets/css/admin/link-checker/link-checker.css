@@ -1,0 +1,990 @@
+/* 🕊️白木 原创开发 🔗gl.baimu.live */
+/* 🔗 友链反链检测 UI 样式 */
+/* 🎨 拟态拟物玻璃质感设计 */
+/* 🔗 变量定义在 admin-variables.css 中统一管理 */
+
+/* ============================================
+   🎯 友链检测页面整体布局
+   ============================================ */
+
+/* 🪟 页面背景 */
+.toplevel_page_shiroki-link-checker,
+.boxmoe_page_shiroki-link-checker,
+.appearance_page_shiroki-link-checker,
+.themes_page_shiroki-link-checker {
+  background: var(--shiroki-bg-gradient-light);
+}
+
+.toplevel_page_shiroki-link-checker.wp-dark-mode,
+.boxmoe_page_shiroki-link-checker.wp-dark-mode,
+.appearance_page_shiroki-link-checker.wp-dark-mode,
+.themes_page_shiroki-link-checker.wp-dark-mode,
+.toplevel_page_shiroki-link-checker .wp-dark-mode,
+.boxmoe_page_shiroki-link-checker .wp-dark-mode,
+.appearance_page_shiroki-link-checker .wp-dark-mode,
+.themes_page_shiroki-link-checker .wp-dark-mode {
+  background: var(--shiroki-bg-gradient-dark);
+}
+
+/* 📝 隐藏 WordPress 默认元素 */
+.toplevel_page_shiroki-link-checker #wpbody-content > .wrap > h1,
+.boxmoe_page_shiroki-link-checker #wpbody-content > .wrap > h1,
+.appearance_page_shiroki-link-checker #wpbody-content > .wrap > h1,
+.themes_page_shiroki-link-checker #wpbody-content > .wrap > h1,
+.toplevel_page_shiroki-link-checker #screen-meta,
+.boxmoe_page_shiroki-link-checker #screen-meta,
+.appearance_page_shiroki-link-checker #screen-meta,
+.themes_page_shiroki-link-checker #screen-meta,
+.toplevel_page_shiroki-link-checker #screen-meta-links,
+.boxmoe_page_shiroki-link-checker #screen-meta-links,
+.appearance_page_shiroki-link-checker #screen-meta-links,
+.themes_page_shiroki-link-checker #screen-meta-links {
+  display: none !important;
+}
+
+/* ============================================
+   🎯 自定义页面头部
+   ============================================ */
+
+/* 🎯 头部容器 */
+.shiroki-link-checker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-xl) var(--admin-space-2xl);
+  margin: 0 0 var(--admin-space-md) 0;
+}
+
+/* 🏷️ 标题 */
+.shiroki-link-checker-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  font-size: 24px;
+  font-weight: var(--admin-font-weight-bold);
+  color: var(--admin-current-text-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 🎨 标题图标 */
+.shiroki-link-checker-title-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--admin-primary-bg);
+  border: 1px solid var(--admin-primary-border);
+  border-radius: var(--admin-radius-xl);
+  box-shadow: var(--admin-shadow-sm);
+  backdrop-filter: var(--admin-glass-blur);
+  object-fit: contain;
+  padding: var(--admin-space-xs);
+}
+
+/* 📦 源码来源按钮 */
+.shiroki-link-checker-source-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-sm);
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  background: var(--admin-current-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  text-decoration: none;
+  box-shadow: var(--admin-shadow-sm);
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-link-checker-source-btn:hover {
+  background: var(--admin-primary-bg);
+  border-color: var(--admin-primary-border);
+  color: var(--admin-primary-text);
+  transform: translateY(-2px);
+  box-shadow: var(--admin-shadow-md);
+}
+
+/* ============================================
+   ⬆️ 顶部工具栏
+   ============================================ */
+
+/* 🎯 顶部工具栏容器 */
+.shiroki-link-checker-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-lg) var(--admin-space-2xl);
+  margin-bottom: var(--admin-space-md);
+  gap: var(--admin-space-lg);
+  flex-wrap: nowrap;
+}
+
+/* 📊 筛选区容器 */
+.shiroki-link-checker-filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-space-md);
+  flex: 1;
+  min-width: 0;
+}
+
+/* 📊 单行筛选 */
+.shiroki-link-checker-filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex-wrap: wrap;
+}
+
+/* 📊 状态筛选标签 */
+.shiroki-link-checker-filter-label {
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  white-space: nowrap;
+}
+
+/* 📦 状态/分类选项容器 */
+.shiroki-link-checker-status-options,
+.shiroki-link-checker-category-options {
+  display: flex;
+  gap: var(--admin-space-sm);
+  flex-wrap: wrap;
+}
+
+/* 🔘 状态/分类筛选按钮 */
+.shiroki-link-checker-filter-btn,
+.shiroki-link-checker-status-btn,
+.shiroki-link-checker-category-btn,
+.shiroki-link-checker-status-options > button,
+.shiroki-link-checker-category-options > button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+  line-height: 1.4;
+}
+
+.shiroki-link-checker-filter-btn:hover,
+.shiroki-link-checker-status-btn:hover,
+.shiroki-link-checker-category-btn:hover,
+.shiroki-link-checker-status-options > button:hover,
+.shiroki-link-checker-category-options > button:hover {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+}
+
+.shiroki-link-checker-filter-btn.active,
+.shiroki-link-checker-status-btn.active,
+.shiroki-link-checker-category-btn.active,
+.shiroki-link-checker-status-options > button.active,
+.shiroki-link-checker-category-options > button.active {
+  background: var(--admin-primary-bg);
+  border-color: var(--admin-primary-border);
+  color: var(--admin-primary-text);
+  font-weight: var(--admin-font-weight-semibold);
+}
+
+/* 📦 批量操作工具栏 */
+.shiroki-link-checker-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex: 1;
+  animation: shiroki-link-bulk-enter 0.3s ease;
+}
+
+@keyframes shiroki-link-bulk-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 📊 批量操作计数 */
+.shiroki-link-checker-bulk-count {
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-primary);
+  white-space: nowrap;
+}
+
+.shiroki-link-checker-bulk-count-num {
+  color: var(--admin-primary-text);
+  font-weight: var(--admin-font-weight-bold);
+}
+
+/* 🔘 批量操作按钮 */
+.shiroki-link-checker-bulk-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-secondary);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-link-checker-bulk-btn:hover {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  border-color: var(--admin-primary-border);
+}
+
+/* 🔍 批量检测按钮 */
+.shiroki-link-checker-bulk-check:hover {
+  background: var(--admin-primary-bg-hover);
+  color: var(--admin-primary-text);
+}
+
+/* ⚪ 批量加白按钮 */
+.shiroki-link-checker-bulk-whitelist:hover {
+  background: var(--admin-success-bg);
+  color: var(--admin-success-text);
+  border-color: var(--admin-success-border);
+}
+
+/* ❌ 批量移白按钮 */
+.shiroki-link-checker-bulk-unwhitelist:hover {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger-text);
+  border-color: var(--admin-danger-border);
+}
+
+/* 🚫 取消选择按钮 */
+.shiroki-link-checker-bulk-cancel:hover {
+  background: var(--admin-warning-bg);
+  color: var(--admin-warning-text);
+  border-color: var(--admin-warning-border);
+}
+
+/* 🛠️ 右侧操作区 */
+.shiroki-link-checker-actions-right {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   🔍 搜索框与检测全部按钮
+   ============================================ */
+
+/* 🔍 搜索框容器 */
+.shiroki-link-checker-search-wrapper {
+  padding: 0;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+/* 🔍 搜索框 */
+.shiroki-link-checker-search {
+  position: relative;
+  width: 200px;
+}
+
+.shiroki-link-checker-search input {
+  width: 100%;
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  padding-left: 36px;
+  background: var(--admin-current-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-primary);
+  transition: all var(--admin-transition-fast);
+  box-shadow: var(--admin-shadow-sm);
+}
+
+.shiroki-link-checker-search input:focus {
+  outline: none;
+  border-color: var(--admin-primary-border);
+  box-shadow: 0 0 0 3px var(--admin-primary-shadow);
+  width: 240px;
+}
+
+.shiroki-link-checker-search::before {
+  content: '🔍';
+  position: absolute;
+  left: var(--admin-space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-muted);
+}
+
+/* 🔍 检测全部按钮 */
+.shiroki-link-checker-check-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-sm);
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  background: var(--admin-primary-bg);
+  backdrop-filter: var(--admin-glass-blur);
+  border: 1px solid var(--admin-primary-border);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-sm);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-primary-text);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  box-shadow: var(--admin-shadow-sm);
+  flex-shrink: 0;
+}
+
+.shiroki-link-checker-check-all-btn:hover {
+  background: var(--admin-primary-bg-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--admin-shadow-md);
+}
+
+.shiroki-link-checker-check-all-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============================================
+   ⏳ 加载状态
+   ============================================ */
+
+/* ⏳ 加载容器 */
+.shiroki-link-checker-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--admin-space-3xl);
+  gap: var(--admin-space-lg);
+  color: var(--admin-current-text-secondary);
+  font-size: var(--admin-font-size-lg);
+}
+
+/* ⏳ 加载动画 */
+.shiroki-link-checker-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--admin-current-glass);
+  border-top-color: var(--admin-primary-border);
+  border-radius: var(--admin-radius-full);
+  animation: shiroki-link-spin 1s linear infinite;
+}
+
+@keyframes shiroki-link-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   🎴 网格布局容器
+   ============================================ */
+
+/* 📦 友链网格容器 */
+.shiroki-link-checker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--admin-space-xl);
+  padding: var(--admin-space-2xl);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   🃏 友链卡片主体样式
+   ============================================ */
+
+/* 🎴 单个友链卡片 */
+.shiroki-link-card {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  background: var(--admin-current-bg);
+  border-radius: var(--admin-radius-xl);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--admin-shadow-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ✨ 卡片悬停效果 */
+.shiroki-link-card:hover {
+  transform: translateY(var(--admin-hover-translate));
+  box-shadow: var(--admin-shadow-hover);
+}
+
+/* 🌆 暗色模式悬停效果 */
+.wp-admin.wp-dark-mode .shiroki-link-card:hover {
+  box-shadow: var(--admin-shadow-hover-dark);
+}
+
+/* 🎯 卡片选中状态 */
+.shiroki-link-card.selected {
+  box-shadow: 0 0 0 3px var(--admin-primary-border);
+}
+
+/* ============================================
+   🌐 网站信息区域
+   ============================================ */
+
+/* 🌐 网站头部 */
+.shiroki-link-header {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  padding: var(--admin-space-md) var(--admin-space-lg);
+  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  border-bottom: 1px solid var(--admin-current-border);
+}
+
+/* 🖼️ Logo 容器 */
+.shiroki-link-logo {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--admin-radius-full);
+  overflow: hidden;
+  box-shadow: var(--admin-shadow-sm);
+  background: var(--admin-current-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.shiroki-link-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 📝 网站信息 */
+.shiroki-link-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.shiroki-link-name {
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shiroki-link-domain {
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 🔘 选择圆圈（右上角） */
+.shiroki-link-select-circle {
+  position: absolute;
+  top: var(--admin-space-sm);
+  right: var(--admin-space-sm);
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--admin-radius-full);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--admin-primary-border);
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--admin-transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shiroki-link-card:hover .shiroki-link-select-circle {
+  opacity: 1;
+}
+
+.shiroki-link-select-inner {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--admin-radius-full);
+  background: var(--admin-primary-text);
+  opacity: 0;
+  transition: opacity var(--admin-transition-fast);
+}
+
+/* ✅ 选中状态 */
+.shiroki-link-card.selected .shiroki-link-select-circle {
+  opacity: 1;
+  background: var(--admin-primary-bg);
+  border-color: var(--admin-primary-border);
+}
+
+.shiroki-link-card.selected .shiroki-link-select-inner {
+  opacity: 1;
+}
+
+/* ============================================
+   📝 链接描述区域
+   ============================================ */
+
+/* 📝 描述容器 */
+.shiroki-link-content {
+  flex: 1;
+  padding: var(--admin-space-lg);
+  font-size: var(--admin-font-size-md);
+  color: var(--admin-current-text-primary);
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+.shiroki-link-content p {
+  margin: 0 0 var(--admin-space-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.shiroki-link-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 🔗 URL 显示 */
+.shiroki-link-url {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-xs) var(--admin-space-sm);
+  background: var(--admin-current-glass);
+  border: 1px solid var(--admin-current-border);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-muted);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: var(--admin-space-sm);
+}
+
+/* ============================================
+   📊 状态与元信息区域
+   ============================================ */
+
+/* 📊 元信息容器 */
+.shiroki-link-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--admin-current-border);
+}
+
+/* 📅 检测时间 */
+.shiroki-link-date {
+  font-size: var(--admin-font-size-xs);
+  color: var(--admin-current-text-muted);
+}
+
+/* 🏷️ 状态标签 */
+.shiroki-link-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-xs) var(--admin-space-sm);
+  border-radius: var(--admin-radius-full);
+  font-size: var(--admin-font-size-xs);
+  font-weight: var(--admin-font-weight-medium);
+}
+
+.shiroki-link-status-tag.has {
+  background: var(--admin-success-bg);
+  border: 1px solid var(--admin-success-border);
+  color: var(--admin-success-text);
+}
+
+.shiroki-link-status-tag.no {
+  background: var(--admin-danger-bg);
+  border: 1px solid var(--admin-danger-border);
+  color: var(--admin-danger-text);
+}
+
+.shiroki-link-status-tag.whitelisted {
+  background: var(--admin-warning-bg);
+  border: 1px solid var(--admin-warning-border);
+  color: var(--admin-warning-text);
+}
+
+.shiroki-link-status-tag.unknown {
+  background: var(--admin-current-glass);
+  border: 1px solid var(--admin-current-border);
+  color: var(--admin-current-text-muted);
+}
+
+/* ============================================
+   ⚡ 操作按钮区域
+   ============================================ */
+
+/* 🎛️ 操作按钮容器 */
+.shiroki-link-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--admin-space-sm);
+  padding: var(--admin-space-md) var(--admin-space-lg);
+  border-top: 1px solid var(--admin-current-border);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* 🔘 操作按钮 */
+.shiroki-link-btn {
+  padding: var(--admin-space-xs) var(--admin-space-sm);
+  border: none;
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-xs);
+  font-weight: var(--admin-font-weight-medium);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+  backdrop-filter: var(--admin-glass-blur);
+  -webkit-backdrop-filter: var(--admin-glass-blur);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 48px;
+}
+
+.shiroki-link-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 🎨 按钮图标 */
+.shiroki-link-btn-icon {
+  font-size: var(--admin-font-size-md);
+  line-height: 1;
+}
+
+/* 📝 按钮文本 */
+.shiroki-link-btn-text {
+  font-size: var(--admin-font-size-xs);
+  line-height: 1.2;
+}
+
+/* 🔍 检测按钮 */
+.shiroki-link-btn-check {
+  background: var(--admin-primary-bg);
+  color: var(--admin-primary-text);
+  border: 1px solid var(--admin-primary-border);
+}
+
+.shiroki-link-btn-check:hover:not(:disabled) {
+  background: var(--admin-primary-bg-hover);
+}
+
+/* 🌐 访问按钮 */
+.shiroki-link-btn-visit {
+  background: var(--admin-success-bg);
+  color: var(--admin-success-text);
+  border: 1px solid var(--admin-success-border);
+}
+
+.shiroki-link-btn-visit:hover:not(:disabled) {
+  background: var(--admin-success-bg-hover);
+}
+
+/* 📋 复制按钮 */
+.shiroki-link-btn-copy {
+  background: var(--admin-purple-bg);
+  color: var(--admin-purple-text);
+  border: 1px solid var(--admin-purple-border);
+}
+
+.shiroki-link-btn-copy:hover:not(:disabled) {
+  background: var(--admin-purple-bg-hover);
+}
+
+/* ⚪ 加白按钮 */
+.shiroki-link-btn-whitelist {
+  background: var(--admin-warning-bg);
+  color: var(--admin-warning-text);
+  border: 1px solid var(--admin-warning-border);
+}
+
+.shiroki-link-btn-whitelist:hover:not(:disabled) {
+  background: var(--admin-warning-bg-solid);
+}
+
+/* ❌ 移白按钮 */
+.shiroki-link-btn-unwhitelist {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger-text);
+  border: 1px solid var(--admin-danger-border);
+}
+
+.shiroki-link-btn-unwhitelist:hover:not(:disabled) {
+  background: var(--admin-danger-bg-hover);
+}
+
+/* ============================================
+   📭 空状态
+   ============================================ */
+
+/* 📭 空状态容器 */
+.shiroki-link-checker-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--admin-space-3xl);
+  text-align: center;
+}
+
+.shiroki-link-checker-empty-icon {
+  width: 120px;
+  height: 120px;
+  margin-bottom: var(--admin-space-lg);
+  opacity: 0.5;
+  color: var(--admin-current-text-muted);
+}
+
+.shiroki-link-checker-empty-text {
+  font-size: var(--admin-font-size-xl);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-secondary);
+  margin-bottom: var(--admin-space-sm);
+}
+
+.shiroki-link-checker-empty-subtext {
+  font-size: var(--admin-font-size-md);
+  color: var(--admin-current-text-muted);
+}
+
+/* ============================================
+   📱 响应式设计
+   ============================================ */
+
+@media screen and (max-width: 1400px) {
+  .shiroki-link-checker-top-bar {
+    flex-wrap: wrap;
+  }
+
+  .shiroki-link-checker-filters {
+    flex-basis: 100%;
+  }
+
+  .shiroki-link-checker-actions-right {
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .shiroki-link-checker-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--admin-space-lg);
+    padding: var(--admin-space-lg);
+  }
+}
+
+@media screen and (max-width: 782px) {
+  .shiroki-link-checker-header {
+    padding: var(--admin-space-md);
+    flex-direction: column;
+    gap: var(--admin-space-md);
+    align-items: flex-start;
+  }
+
+  .shiroki-link-checker-title {
+    font-size: 20px;
+  }
+
+  .shiroki-link-checker-title-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .shiroki-link-checker-top-bar {
+    flex-direction: column;
+    gap: var(--admin-space-md);
+    padding: var(--admin-space-md);
+    align-items: stretch;
+  }
+
+  .shiroki-link-checker-filters {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .shiroki-link-checker-bulk-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .shiroki-link-checker-actions-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .shiroki-link-checker-search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .shiroki-link-checker-search input:focus {
+    width: 100%;
+  }
+
+  .shiroki-link-checker-status-options,
+  .shiroki-link-checker-category-options {
+    justify-content: center;
+  }
+
+  .shiroki-link-checker-filter-btn,
+  .shiroki-link-checker-status-btn,
+  .shiroki-link-checker-category-btn,
+  .shiroki-link-checker-status-options > button,
+  .shiroki-link-checker-category-options > button {
+    padding: var(--admin-space-xs) var(--admin-space-sm);
+    font-size: var(--admin-font-size-xs);
+  }
+
+  .shiroki-link-checker-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--admin-space-md);
+    padding: var(--admin-space-md);
+  }
+
+  .shiroki-link-card {
+    min-height: 260px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .shiroki-link-checker-grid {
+    grid-template-columns: 1fr;
+    gap: var(--admin-space-sm);
+    padding: var(--admin-space-sm);
+  }
+
+  .shiroki-link-card {
+    min-height: 240px;
+  }
+
+  .shiroki-link-header {
+    padding: var(--admin-space-sm);
+  }
+
+  .shiroki-link-logo {
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+  }
+
+  .shiroki-link-content {
+    padding: var(--admin-space-md);
+  }
+
+  .shiroki-link-actions {
+    padding: var(--admin-space-sm);
+    gap: var(--admin-space-xs);
+  }
+
+  .shiroki-link-btn {
+    padding: var(--admin-space-xs) var(--admin-space-sm);
+    font-size: var(--admin-font-size-xs);
+  }
+
+  .shiroki-link-meta {
+    flex-direction: column;
+    gap: var(--admin-space-xs);
+    align-items: flex-start;
+  }
+}
+
+/* ============================================
+   ✨ 动画效果
+   ============================================ */
+
+/* 🎬 卡片入场动画 */
+@keyframes shiroki-link-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.shiroki-link-card {
+  animation: shiroki-link-card-enter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 🌟 stagger 动画延迟 */
+.shiroki-link-card:nth-child(1) { animation-delay: 0.05s; }
+.shiroki-link-card:nth-child(2) { animation-delay: 0.1s; }
+.shiroki-link-card:nth-child(3) { animation-delay: 0.15s; }
+.shiroki-link-card:nth-child(4) { animation-delay: 0.2s; }
+.shiroki-link-card:nth-child(5) { animation-delay: 0.25s; }
+.shiroki-link-card:nth-child(6) { animation-delay: 0.3s; }
+.shiroki-link-card:nth-child(7) { animation-delay: 0.35s; }
+.shiroki-link-card:nth-child(8) { animation-delay: 0.4s; }
+
+/* 💫 复制成功提示动画 */
+@keyframes shiroki-link-copy-success {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.shiroki-link-card.copied {
+  animation: shiroki-link-copy-success 0.3s ease;
+}
+
+/* 🔄 检测中动画 */
+@keyframes shiroki-link-checking {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.shiroki-link-card.checking {
+  animation: shiroki-link-checking 1.5s ease infinite;
+  pointer-events: none;
+}

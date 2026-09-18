@@ -16,9 +16,60 @@ const ShirokiPostEdit = {
         this.cacheElements();
         this.moveSidebarMetaboxes(); /* ◀️ 将侧栏元框移入自定义三栏 */
         this.moveToolbarElements(); /* ◀️ 将工具栏元素移动到对应容器 */
+        this.organizeTimestampFields();
+        setTimeout(() => this.organizeTimestampFields(), 500);
         this.initToolbarSticky(); /* ◀️ 工具栏滚动时固定在可视区域 */
         this.bindEvents();
         this.enhanceUI();
+    },
+
+    organizeTimestampFields() {
+        const timestampWrap = document.querySelector('#timestampdiv .timestamp-wrap');
+        if (!timestampWrap || timestampWrap.classList.contains('shiroki-timestamp-organized')) {
+            return;
+        }
+
+        const getLabel = id => {
+            const field = timestampWrap.querySelector(`#${id}`);
+            return field ? field.closest('label') : null;
+        };
+        const year = getLabel('aa');
+        const month = getLabel('mm');
+        const day = getLabel('jj');
+        const hour = getLabel('hh');
+        const minute = getLabel('mn');
+        if (!year || !month || !day || !hour || !minute) {
+            return;
+        }
+
+        const dateRow = document.createElement('div');
+        const timeRow = document.createElement('div');
+        dateRow.className = 'shiroki-timestamp-row shiroki-timestamp-date-row';
+        timeRow.className = 'shiroki-timestamp-row shiroki-timestamp-time-row';
+
+        const appendField = (row, label, suffix) => {
+            row.appendChild(label);
+            if (suffix) {
+                const unit = document.createElement('span');
+                unit.className = 'shiroki-timestamp-unit';
+                unit.textContent = suffix;
+                row.appendChild(unit);
+            }
+        };
+
+        appendField(dateRow, year, '年');
+        appendField(dateRow, month, '');
+        appendField(dateRow, day, '日');
+        appendField(timeRow, hour, '');
+
+        const separator = document.createElement('span');
+        separator.className = 'shiroki-timestamp-separator';
+        separator.textContent = ':';
+        timeRow.appendChild(separator);
+        appendField(timeRow, minute, '');
+
+        timestampWrap.replaceChildren(dateRow, timeRow);
+        timestampWrap.classList.add('shiroki-timestamp-organized');
     },
 
     /**
@@ -40,7 +91,8 @@ const ShirokiPostEdit = {
         const container1 = document.getElementById('postbox-container-1');
         if (postBody) {
             postBody.classList.remove('columns-2');
-            postBody.classList.add('columns-1');
+            postBody.style.width = '100%';
+            postBody.style.marginRight = '0';
         }
         if (container1) {
             container1.style.display = 'none';
@@ -50,6 +102,24 @@ const ShirokiPostEdit = {
         if (postBodyContent) {
             postBodyContent.style.marginRight = '0';
             postBodyContent.style.width = '100%';
+            postBodyContent.style.maxWidth = '100%';
+            postBodyContent.style.float = 'none';
+        }
+
+        const layout = document.getElementById('shiroki-editor-layout');
+        if (layout && (window.innerWidth <= 782 || layout.getBoundingClientRect().width <= 782)) {
+            layout.style.setProperty('grid-template-columns', 'minmax(0, 1fr)', 'important');
+            layout.style.setProperty('grid-template-areas', '"main" "sidebar"', 'important');
+            layout.style.setProperty('width', '100%', 'important');
+            layout.style.setProperty('max-width', '100%', 'important');
+            const toolbarColumn = layout.querySelector('.shiroki-editor-toolbar-column');
+            if (toolbarColumn) {
+                toolbarColumn.style.setProperty('display', 'none', 'important');
+            }
+            sidebar.style.setProperty('width', '100%', 'important');
+            sidebar.style.setProperty('max-width', '100%', 'important');
+            sidebar.style.setProperty('position', 'relative', 'important');
+            sidebar.style.setProperty('height', 'auto', 'important');
         }
 
         document.body.classList.add('shiroki-post-edit-layout-ready');

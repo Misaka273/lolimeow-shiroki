@@ -8,6 +8,7 @@
 require_once get_template_directory() . '/core/module/site-stats/class-site-stats.php';
 require_once get_template_directory() . '/core/module/site-stats/class-51la-api.php';
 require_once get_template_directory() . '/core/module/site-stats/fun-site-stats-dashboard.php';
+require_once get_template_directory() . '/core/module/fun-admin-colors.php';
 
 //boxmoe.com===后台登录页美化
 function boxmoe_admin_login_style() {
@@ -22,10 +23,27 @@ function boxmoe_admin_all_links_new_tab() {
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function($) {
+                // 🚫 主题/插件安装与覆盖流程保持同页跳转
+                var excludePaths = ['themes.php', 'theme-install.php', 'plugins.php', 'plugin-install.php', 'update.php'];
                 $('a').each(function() {
-                    var href = $(this).attr('href');
+                    var $link = $(this);
+                    var href = $link.attr('href');
+                    var existingTarget = $link.attr('target');
+                    // 🛡️ 已有 target「如 _parent」时不覆盖，避免破坏 WP 覆盖安装按钮
+                    if (existingTarget || $link.hasClass('update-from-upload-overwrite') || $link.closest('.update-from-upload-actions').length) {
+                        return;
+                    }
                     if (href && href.indexOf('javascript') === -1 && href !== '#') {
-                        $(this).attr('target', '_blank');
+                        var shouldExclude = false;
+                        for (var i = 0; i < excludePaths.length; i++) {
+                            if (href.indexOf(excludePaths[i]) !== -1) {
+                                shouldExclude = true;
+                                break;
+                            }
+                        }
+                        if (!shouldExclude) {
+                            $link.attr('target', '_blank');
+                        }
                     }
                 });
             });
@@ -585,8 +603,8 @@ add_action('admin_footer', 'boxmoe_media_modal_fix');
 
 function boxmoe_admin_flat_rounded_enqueue($hook){
     // 🎨 先加载统一变量文件
-    wp_enqueue_style('admin-variables', get_template_directory_uri() . '/assets/css/admin/admin-variables.css', array(), '1.0');
-    wp_enqueue_style('lolimeow-admin-flat-rounded', get_template_directory_uri() . '/assets/css/admin-flat-rounded.css', array(), '1.6');
+    wp_enqueue_style('admin-variables', get_template_directory_uri() . '/assets/css/admin/admin-variables.css', array(), '1.2');
+    wp_enqueue_style('lolimeow-admin-flat-rounded', get_template_directory_uri() . '/assets/css/admin-flat-rounded.css', array(), '1.7');
     // 使用文件修改时间作为版本号，确保缓存更新
     $js_version = file_exists(get_template_directory() . '/assets/js/admin-select-ui.js') ? filemtime(get_template_directory() . '/assets/js/admin-select-ui.js') : '1.2';
     wp_enqueue_script('boxmoe-admin-select-ui', get_template_directory_uri() . '/assets/js/admin-select-ui.js', array('jquery'), $js_version, true);
@@ -611,9 +629,12 @@ function boxmoe_admin_clear_format_scripts($hook){
 		wp_enqueue_script('admin-tinymce-fullscreen-fix', get_template_directory_uri() . '/assets/js/admin-tinymce-fullscreen-fix.js', array('jquery'), THEME_VERSION, true);
 
 		// 📝 加载写文章/编辑文章页面玻璃拟态UI样式
-		wp_enqueue_style('shiroki-post-edit', get_template_directory_uri() . '/assets/css/admin/post-edit/post-edit.css', array('admin-variables', 'lolimeow-admin-flat-rounded'), THEME_VERSION);
+		$post_edit_css = get_template_directory() . '/assets/css/admin/post-edit/post-edit.css';
+		$post_edit_js = get_template_directory() . '/assets/js/admin/post-edit/post-edit.js';
+		$post_edit_version = file_exists($post_edit_css) && file_exists($post_edit_js) ? filemtime($post_edit_css) . '.' . filemtime($post_edit_js) : THEME_VERSION;
+		wp_enqueue_style('shiroki-post-edit', get_template_directory_uri() . '/assets/css/admin/post-edit/post-edit.css', array('admin-variables', 'lolimeow-admin-flat-rounded'), $post_edit_version);
 		// 📝 加载写文章/编辑文章页面交互增强脚本
-		wp_enqueue_script('shiroki-post-edit', get_template_directory_uri() . '/assets/js/admin/post-edit/post-edit.js', array('jquery'), THEME_VERSION, true);
+		wp_enqueue_script('shiroki-post-edit', get_template_directory_uri() . '/assets/js/admin/post-edit/post-edit.js', array('jquery'), $post_edit_version, true);
 
 		// 🎨 加载三栏布局编辑文章页面
 		require_once get_template_directory() . '/core/module/post-edit/fun-post-edit-layout.php';
@@ -638,10 +659,7 @@ function boxmoe_adminbar_viewsite_newtab($wp_admin_bar){
 add_action('admin_bar_menu', 'boxmoe_adminbar_viewsite_newtab', 100);
 
 function boxmoe_adminbar_wp_logo_to_favicon($wp_admin_bar){
-    $src = get_boxmoe('boxmoe_favicon_src');
-    if(!$src){
-        $src = boxmoe_theme_url().'/assets/images/favicon.ico';
-    }
+    $src = boxmoe_get_favicon_src();
     $logo = $wp_admin_bar->get_node('wp-logo');
     if($logo){
         $logo->title = '<img src="'.esc_url($src).'" alt="favicon" style="width:20px;height:20px;display:inline-block;vertical-align:middle;border-radius:3px;" />';
@@ -649,6 +667,47 @@ function boxmoe_adminbar_wp_logo_to_favicon($wp_admin_bar){
     }
 }
 add_action('admin_bar_menu', 'boxmoe_adminbar_wp_logo_to_favicon', 50);
+
+// 🖼️ Admin Bar 站点 LOGO 自适应缩小在容器内显示
+function boxmoe_adminbar_site_icon_fit_css(){
+    if (!is_admin_bar_showing()) {
+        return;
+    }
+    $css = '
+#wpadminbar #wp-admin-bar-site-name.has-site-icon > .ab-item .site-icon{
+	width:auto!important;
+	height:auto!important;
+	max-width:96px;
+	max-height:20px;
+	object-fit:contain;
+	object-position:center;
+	background:none;
+	flex-shrink:0;
+}
+@media screen and (max-width:782px){
+	#wpadminbar #wp-admin-bar-site-name > .ab-item .site-icon{
+		width:auto!important;
+		height:auto!important;
+		max-width:36px;
+		max-height:28px;
+	}
+}';
+    wp_add_inline_style('admin-bar', $css);
+}
+add_action('wp_enqueue_scripts', 'boxmoe_adminbar_site_icon_fit_css', 20);
+add_action('admin_enqueue_scripts', 'boxmoe_adminbar_site_icon_fit_css', 20);
+
+// 🔖 后台浏览器标签读取主题 Favicon 地址「覆盖 wp_site_icon 输出的 LOGO」
+function boxmoe_filter_admin_site_icon_meta_tags($meta_tags){
+    if (!is_admin()) {
+        return $meta_tags;
+    }
+    $favicon = esc_url(boxmoe_get_favicon_src());
+    return array(
+        sprintf('<link rel="icon" href="%s" type="image/x-icon" />', $favicon),
+    );
+}
+add_filter('site_icon_meta_tags', 'boxmoe_filter_admin_site_icon_meta_tags');
 function boxmoe_adminbar_new_post_newtab($wp_admin_bar){
     $node = $wp_admin_bar->get_node('new-post');
     if ($node) {
@@ -781,8 +840,8 @@ function boxmoe_add_duplicate_button_to_edit_page() {
     if (isset($post) && isset($post->ID) && $post->ID > 0 && current_user_can('edit_posts')) {
         $duplicate_url = wp_nonce_url('admin.php?action=boxmoe_duplicate_post_as_draft&post=' . $post->ID, 'boxmoe_duplicate_nonce');
         ?>
-        <div id="boxmoe-duplicate-action" style="margin-bottom: 10px;">
-            <a href="<?php echo esc_url($duplicate_url); ?>" class="button button-secondary" style="width: 100%; text-align: center;" target="_blank" rel="noopener noreferrer">
+        <div id="boxmoe-duplicate-action">
+            <a href="<?php echo esc_url($duplicate_url); ?>" class="button button-secondary" target="_blank" rel="noopener noreferrer">
                 📋 复制此文章
             </a>
         </div>
@@ -1368,6 +1427,17 @@ function boxmoe_ajax_save_profile() {
     }
     if (empty($email) || !is_email($email)) {
         wp_send_json_error(array('message' => '请输入有效的电子邮箱'));
+    }
+
+    // 🏷️ 显示名称需唯一，保证可用显示名称登录
+    global $wpdb;
+    $display_name_taken = (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(ID) FROM {$wpdb->users} WHERE display_name = %s AND ID != %d",
+        $display_name,
+        $user_id
+    ));
+    if ($display_name_taken > 0) {
+        wp_send_json_error(array('message' => '该显示名称已被使用，请更换一个'));
     }
 
     /* 📝 更新用户数据 */

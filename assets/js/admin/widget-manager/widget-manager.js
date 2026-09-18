@@ -760,7 +760,7 @@
                         </div>
                         <div class="shiroki-widget-form-group">
                             <label class="shiroki-widget-form-label">RSS地址</label>
-                            <input type="text" class="shiroki-widget-form-input" name="url" value="${instance.url || ''}" placeholder="https://example.com/feed">
+                            <input type="text" class="shiroki-widget-form-input" name="url" value="${instance.url || ''}" placeholder="https://gl.baimu.live/feed">
                         </div>
                         <div class="shiroki-widget-form-group">
                             <label class="shiroki-widget-form-label">显示数量</label>

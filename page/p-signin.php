@@ -91,7 +91,7 @@ if (is_user_logged_in()){
 <html <?php language_attributes(); ?>>
     <head>
    <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, interactive-widget=resizes-content">
    <title><?php echo boxmoe_theme_title(); ?></title>
    <link rel="icon" href="<?php echo boxmoe_favicon(); ?>" type="image/x-icon">
     <?php boxmoe_keywords(); ?>
@@ -1067,8 +1067,8 @@ if (is_user_logged_in()){
         
         @media (max-width: 870px) {
             .container {
-                min-height: 800px;
-                height: 100vh;
+                min-height: 0;
+                height: 100%;
             }
             
             .signin-signup {
@@ -1246,8 +1246,8 @@ if (is_user_logged_in()){
                   <h2 class="title">登录</h2>
                   <div class="floating-label-group">
                      <input type="text" name="username" class="form-control" id="username" required placeholder=" " />
-                     <label for="username" data-default="请输入用户名" data-active="用户名"></label>
-                     <div class="invalid-feedback">请输入有效的用户名。</div>
+                     <label for="username" data-default="用户名 / 显示名称 / 邮箱" data-active="登录账号"></label>
+                     <div class="invalid-feedback">请输入用户名、显示名称或邮箱</div>
                   </div>
                   <div class="floating-label-group" style="position: relative;">
                      <input type="password" name="password" class="form-control" id="password" required placeholder=" " />
@@ -1318,8 +1318,8 @@ if (is_user_logged_in()){
                   <h2 class="title">注册</h2>
                   <div class="floating-label-group">
                      <input type="text" name="username" class="form-control" id="signupFullnameInput" required placeholder=" " />
-                     <label for="signupFullnameInput" data-default="请输入用户名" data-active="用户名"></label>
-                     <div class="invalid-feedback">请输入有效的用户名。</div>
+                     <label for="signupFullnameInput" data-default="用户名（支持中文）" data-active="用户名"></label>
+                     <div class="invalid-feedback">请输入有效的用户名，支持中文</div>
                   </div>
                   <div class="floating-label-group">
                      <input type="email" name="email" class="form-control" id="signupEmailInput" required placeholder=" " />

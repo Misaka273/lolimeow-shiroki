@@ -84,6 +84,21 @@
   float: none;
 }
 
+/* 📝 编辑区容器链强制铺满，避免 WP columns-2 浮层挤窄中间栏 */
+.post-new-php #post-body-content,
+.post-php #post-body-content,
+.post-new-php #poststuff,
+.post-php #poststuff,
+.post-new-php #postbox-container-2,
+.post-php #postbox-container-2 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0;
+  margin-right: 0 !important;
+  float: none !important;
+  box-sizing: border-box;
+}
+
 .post-new-php #post-body,
 .post-php #post-body {
   margin-right: 0 !important;
@@ -101,8 +116,8 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 /* 🎨 三栏布局主容器 */
 .shiroki-editor-layout {
   display: grid;
-  /* 侧栏可收缩，中间栏保底宽度并吃掉剩余空间 */
-  grid-template-columns: minmax(260px, 320px) minmax(420px, 1fr) minmax(280px, 340px);
+  /* minmax(0, …) 允许列随视口收缩，避免小屏编辑区被 min-width 挤成窄条 */
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr) minmax(0, 340px);
   grid-template-areas: "toolbar main sidebar";
   gap: var(--admin-space-lg);
   width: 100%;
@@ -1011,6 +1026,10 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   align-items: center;
   justify-content: space-between;
   gap: var(--admin-space-sm);
+  background: transparent !important;
+  background-image: none !important;
+  border-top: 1px solid var(--admin-current-border);
+  box-sizing: border-box;
 }
 
 .post-new-php #major-publishing-actions > .clear,
@@ -1063,6 +1082,11 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   box-sizing: border-box;
 }
 
+/* 🙈 新建文章或页面尚未保存时隐藏删除模块 */
+.post-new-php #delete-action {
+  display: none;
+}
+
 /* 🗑️ 删除链接样式 */
 .post-new-php #delete-action .submitdelete,
 .post-php #delete-action .submitdelete {
@@ -1084,6 +1108,20 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #boxmoe-duplicate-action {
   margin: 0 !important;
   padding: 0;
+  background: transparent;
+}
+
+.post-new-php #boxmoe-duplicate-action a,
+.post-php #boxmoe-duplicate-action a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  line-height: 1.4;
+  box-sizing: border-box;
 }
 
 /* 🔘 发布按钮 */
@@ -1094,9 +1132,12 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   border-radius: var(--admin-radius-md);
   color: var(--admin-success-text);
   font-weight: var(--admin-font-weight-semibold);
-  padding: var(--admin-space-md) var(--admin-space-xl);
+  padding: var(--admin-space-sm) var(--admin-space-lg);
   transition: all var(--admin-transition-fast);
   width: auto;
+  min-height: 0;
+  height: auto;
+  line-height: 1.4;
   box-sizing: border-box;
   margin-top: 0;
 }
@@ -1117,6 +1158,10 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   color: var(--admin-warning-text);
   font-weight: var(--admin-font-weight-medium);
   padding: var(--admin-space-sm) var(--admin-space-md);
+  min-height: 0;
+  height: auto;
+  line-height: 1.4;
+  box-sizing: border-box;
   transition: all var(--admin-transition-fast);
 }
 
@@ -1134,12 +1179,258 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   color: var(--admin-purple-text);
   font-weight: var(--admin-font-weight-medium);
   padding: var(--admin-space-sm) var(--admin-space-md);
+  min-height: 0;
+  height: auto;
+  line-height: 1.4;
+  box-sizing: border-box;
   transition: all var(--admin-transition-fast);
 }
 
 .post-new-php #post-preview:hover,
 .post-php #post-preview:hover {
   background: var(--admin-purple-bg-hover);
+}
+
+/* 📦 发布设置区域 */
+.post-new-php #misc-publishing-actions,
+.post-php #misc-publishing-actions {
+  padding: 0;
+}
+
+.post-new-php #misc-publishing-actions .misc-pub-section,
+.post-php #misc-publishing-actions .misc-pub-section {
+  margin: 0;
+  padding: var(--admin-space-md) 0;
+  border-bottom: 1px solid var(--admin-current-border);
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.post-new-php #misc-publishing-actions .misc-pub-section:last-child,
+.post-php #misc-publishing-actions .misc-pub-section:last-child {
+  border-bottom: none;
+}
+
+.post-new-php #post-status-select,
+.post-php #post-status-select,
+.post-new-php #post-visibility-select,
+.post-php #post-visibility-select,
+.post-new-php #timestampdiv,
+.post-php #timestampdiv {
+  margin-top: var(--admin-space-sm);
+  padding: var(--admin-space-sm);
+  background: var(--admin-current-glass);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  box-sizing: border-box;
+}
+
+.post-new-php #post-status-select select,
+.post-php #post-status-select select,
+.post-new-php #post_password,
+.post-php #post_password {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.post-new-php #post-visibility-select label,
+.post-php #post-visibility-select label {
+  line-height: 1.8;
+}
+
+.post-new-php #post-visibility-select #sticky,
+.post-php #post-visibility-select #sticky {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.post-new-php #post-visibility-select #sticky + label,
+.post-php #post-visibility-select #sticky + label {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  min-height: 24px;
+  padding-left: 50px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.post-new-php #post-visibility-select #sticky + label::before,
+.post-php #post-visibility-select #sticky + label::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 42px;
+  height: 24px;
+  background: var(--admin-current-border);
+  border-radius: var(--admin-radius-full);
+  transition: background var(--admin-transition-fast);
+}
+
+.post-new-php #post-visibility-select #sticky + label::after,
+.post-php #post-visibility-select #sticky + label::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 18px;
+  height: 18px;
+  background: var(--admin-current-bg);
+  border-radius: var(--admin-radius-full);
+  box-shadow: var(--admin-shadow-sm);
+  transition: transform var(--admin-transition-fast);
+}
+
+.post-new-php #post-visibility-select #sticky:checked + label::before,
+.post-php #post-visibility-select #sticky:checked + label::before {
+  background: var(--admin-primary-bg);
+}
+
+.post-new-php #post-visibility-select #sticky:checked + label::after,
+.post-php #post-visibility-select #sticky:checked + label::after {
+  transform: translateX(18px);
+}
+
+.post-new-php #post-visibility-select #sticky:focus-visible,
+.post-php #post-visibility-select #sticky:focus-visible {
+  outline: 2px solid var(--admin-primary-border);
+  outline-offset: 2px;
+}
+
+.post-new-php #post-visibility-select #sticky:focus-visible + label::before,
+.post-php #post-visibility-select #sticky:focus-visible + label::before {
+  outline: 2px solid var(--admin-primary-border);
+  outline-offset: 2px;
+}
+
+.post-new-php #timestampdiv .timestamp-wrap,
+.post-php #timestampdiv .timestamp-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--admin-space-sm);
+  line-height: 1.8;
+}
+
+.post-new-php #timestampdiv .timestamp-wrap label,
+.post-php #timestampdiv .timestamp-wrap label {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.post-new-php #timestampdiv .timestamp-wrap input,
+.post-php #timestampdiv .timestamp-wrap input,
+.post-new-php #timestampdiv .timestamp-wrap select,
+.post-php #timestampdiv .timestamp-wrap select {
+  margin: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.post-new-php #timestampdiv #jj,
+.post-php #timestampdiv #jj {
+  width: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  text-align: center;
+  border-radius: var(--admin-radius-md);
+  line-height: 36px;
+}
+
+.post-new-php #timestampdiv .boxmoe-select-wrapper,
+.post-php #timestampdiv .boxmoe-select-wrapper {
+  position: relative;
+  display: inline-block;
+  height: 36px;
+  z-index: 100001;
+}
+
+.post-new-php #timestampdiv .boxmoe-select-dropdown,
+.post-php #timestampdiv .boxmoe-select-dropdown {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  width: 100% !important;
+  z-index: 100002;
+}
+
+.post-new-php .shiroki-editor-sidebar .boxmoe-select-wrapper,
+.post-php .shiroki-editor-sidebar .boxmoe-select-wrapper,
+.post-new-php #category-adder .boxmoe-select-wrapper,
+.post-php #category-adder .boxmoe-select-wrapper {
+  position: relative;
+  display: inline-block;
+  height: 36px;
+  vertical-align: top;
+}
+
+.post-new-php .shiroki-editor-sidebar .boxmoe-select-dropdown,
+.post-php .shiroki-editor-sidebar .boxmoe-select-dropdown,
+.post-new-php #category-adder .boxmoe-select-dropdown,
+.post-php #category-adder .boxmoe-select-dropdown {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  width: 100% !important;
+  z-index: 100002;
+}
+
+.post-new-php #timestampdiv .shiroki-timestamp-row,
+.post-php #timestampdiv .shiroki-timestamp-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--admin-space-xs);
+  min-height: 36px;
+}
+
+.post-new-php #timestampdiv .shiroki-timestamp-date-row,
+.post-php #timestampdiv .shiroki-timestamp-date-row {
+  margin-bottom: var(--admin-space-xs);
+}
+
+.post-new-php #timestampdiv .shiroki-timestamp-row label,
+.post-php #timestampdiv .shiroki-timestamp-row label {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+}
+
+.post-new-php #timestampdiv .shiroki-timestamp-unit,
+.post-php #timestampdiv .shiroki-timestamp-unit,
+.post-new-php #timestampdiv .shiroki-timestamp-separator,
+.post-php #timestampdiv .shiroki-timestamp-separator {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.post-new-php #post-status-select .button,
+.post-php #post-status-select .button,
+.post-new-php #post-visibility-select .button,
+.post-php #post-visibility-select .button,
+.post-new-php #timestampdiv .button,
+.post-php #timestampdiv .button {
+  min-height: 0;
+  height: auto;
+  padding: var(--admin-space-xs) var(--admin-space-sm);
+  line-height: 1.4;
+  box-sizing: border-box;
 }
 
 /* ============================================
@@ -1180,6 +1471,52 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   padding: var(--admin-space-lg);
 }
 
+.post-new-php #category-add > a,
+.post-php #category-add > a,
+.post-new-php #category-add-toggle,
+.post-php #category-add-toggle,
+.post-new-php .category-add-toggle,
+.post-php .category-add-toggle,
+.post-new-php #category-adder .taxonomy-add-new,
+.post-php #category-adder .taxonomy-add-new {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--admin-space-xs);
+  padding: var(--admin-space-xs) var(--admin-space-md);
+  background: var(--admin-current-glass);
+  backdrop-filter: var(--admin-glass-blur);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+  color: var(--admin-current-text-primary);
+  line-height: 1.5;
+  text-decoration: none;
+  box-shadow: var(--admin-shadow-sm);
+  transition: all var(--admin-transition-fast);
+}
+
+.post-new-php #category-add > a:hover,
+.post-php #category-add > a:hover,
+.post-new-php #category-add-toggle:hover,
+.post-php #category-add-toggle:hover,
+.post-new-php .category-add-toggle:hover,
+.post-php .category-add-toggle:hover,
+.post-new-php #category-adder .taxonomy-add-new:hover,
+.post-php #category-adder .taxonomy-add-new:hover {
+  background: var(--admin-current-glass-hover);
+  color: var(--admin-primary-text);
+  transform: translateY(-1px);
+}
+
+.post-new-php #category-add-submit,
+.post-php #category-add-submit {
+  min-height: 0;
+  height: auto;
+  padding: var(--admin-space-xs) var(--admin-space-md);
+  border-radius: var(--admin-radius-md);
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
 /* 🏷️ 分类列表 - 圆角按钮布局 */
 .post-new-php #categorychecklist,
 .post-php #categorychecklist,
@@ -1189,8 +1526,8 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   border: none;
   border-radius: 0;
   padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
   display: flex;
   flex-wrap: wrap;
   gap: var(--admin-space-xs);
@@ -1240,10 +1577,10 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #categorychecklist li:has(input[type="checkbox"]:checked) .selectit,
 .post-new-php #categorychecklist-pop li:has(input[type="checkbox"]:checked) .selectit,
 .post-php #categorychecklist-pop li:has(input[type="checkbox"]:checked) .selectit {
-  background: rgba(237, 137, 54, 0.2);
-  border-color: rgba(237, 137, 54, 0.5);
-  color: #c05621;
-  box-shadow: 0 2px 4px rgba(237, 137, 54, 0.15);
+  background: var(--admin-current-text-primary);
+  border-color: var(--admin-current-text-primary);
+  color: var(--admin-current-bg);
+  box-shadow: var(--admin-shadow-sm);
 }
 
 /* 🏷️ 分类复选框隐藏 ◀️ 使用 clip 隐藏但保持可交互 */
@@ -1762,7 +2099,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 /* 📱 中等屏幕 - 隐藏工具栏，保留编辑区 + 侧栏 */
 @media screen and (max-width: 1400px) {
   .shiroki-editor-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
     grid-template-areas: "main sidebar";
   }
 
@@ -1783,8 +2120,87 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   }
 }
 
+/* 📱 平板/小屏 - 单栏布局，编辑区占满可用宽度 */
+@media screen and (max-width: 1024px) {
+  .shiroki-editor-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "main"
+      "sidebar";
+    gap: var(--admin-space-lg);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .shiroki-editor-main,
+  .shiroki-editor-main .editor-inner {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .shiroki-editor-sidebar {
+    position: relative;
+    top: auto;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .post-new-php #titlediv,
+  .post-php #titlediv,
+  .post-new-php #postdivrich,
+  .post-php #postdivrich,
+  .post-new-php #wp-content-wrap,
+  .post-php #wp-content-wrap,
+  .post-new-php #wp-content-editor-container,
+  .post-php #wp-content-editor-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .post-new-php .wp-editor-area,
+  .post-php .wp-editor-area,
+  .post-new-php textarea#content,
+  .post-php textarea#content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    field-sizing: fixed !important;
+    box-sizing: border-box !important;
+  }
+}
+
 /* 📱 小屏幕 - 单栏布局 */
 @media screen and (max-width: 782px) {
+  .post-new-php #wpcontent,
+  .post-php #wpcontent,
+  .post-new-php #wpbody,
+  .post-php #wpbody,
+  .post-new-php #wpbody-content,
+  .post-php #wpbody-content,
+  .post-new-php #post,
+  .post-php #post,
+  .post-new-php #poststuff,
+  .post-php #poststuff,
+  .post-new-php #post-body,
+  .post-php #post-body,
+  .post-new-php #post-body-content,
+  .post-php #post-body-content,
+  .post-new-php #postbox-container-2,
+  .post-php #postbox-container-2 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    float: none !important;
+    box-sizing: border-box !important;
+  }
+
   .post-new-php #wpbody-content,
   .post-php #wpbody-content {
     padding: var(--admin-space-md);
@@ -1807,6 +2223,11 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
     position: relative;
     top: auto;
     height: auto;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: 0;
+    justify-self: stretch;
   }
 
   /* 📝 📱 移动端编辑区域容器优化 */
@@ -1851,7 +2272,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
     overflow-x: hidden !important; /* ◀️ 📱 隐藏水平滚动条，防止内容超出页面 */
     overflow-y: auto !important; /* ◀️ 📱 允许垂直滚动 */
     resize: vertical !important; /* ◀️ 📱 允许用户手动调整高度 */
-    field-sizing: content !important; /* ◀️ ☀️ 现代浏览器：根据内容自动调整 */
+    field-sizing: fixed !important; /* ◀️ 📱 宽度随容器，高度仍由 min-height 控制 */
     max-width: 100% !important; /* ◀️ 📱 确保不超出父容器宽度 */
     width: 100% !important; /* ◀️ 📱 强制宽度为100% */
     box-sizing: border-box !important; /* ◀️ 📱 确保内边距不增加总宽度 */
@@ -1913,13 +2334,47 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
     overflow-x: hidden !important; /* ◀️ 📱 隐藏水平滚动条，防止内容超出页面 */
     overflow-y: auto !important; /* ◀️ 📱 允许垂直滚动 */
     resize: vertical !important; /* ◀️ 📱 允许用户手动调整高度 */
-    field-sizing: content !important; /* ◀️ ☀️ 现代浏览器：根据内容自动调整 */
+    field-sizing: fixed !important; /* ◀️ 📱 宽度随容器，高度仍由 min-height 控制 */
     max-width: 100% !important; /* ◀️ 📱 确保不超出父容器宽度 */
     width: 100% !important; /* ◀️ 📱 强制宽度为100% */
     box-sizing: border-box !important; /* ◀️ 📱 确保内边距不增加总宽度 */
     word-wrap: break-word !important; /* ◀️ 📱 长文本自动换行 */
     white-space: pre-wrap !important; /* ◀️ 📱 保留换行符并自动换行 */
   }
+}
+
+body.mobile.shiroki-post-edit-layout-ready.post-php .shiroki-editor-layout,
+body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas:
+    "main"
+    "sidebar" !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+body.mobile.shiroki-post-edit-layout-ready.post-php .shiroki-editor-toolbar-column,
+body.mobile.shiroki-post-edit-layout-ready.post-php .shiroki-editor-toolbar,
+body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-toolbar-column,
+body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-toolbar {
+  display: none !important;
+}
+
+body.mobile.shiroki-post-edit-layout-ready.post-php .shiroki-editor-main,
+body.mobile.shiroki-post-edit-layout-ready.post-php .shiroki-editor-sidebar,
+body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-main,
+body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-sidebar {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-inline: 0 !important;
+}
+
+body.mobile.shiroki-post-edit-layout-ready.post-php .shiroki-editor-sidebar,
+body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-sidebar {
+  position: relative !important;
+  top: auto !important;
+  height: auto !important;
 }
 
 /* ============================================

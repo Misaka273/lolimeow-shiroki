@@ -10,6 +10,8 @@ if(!defined('ABSPATH')){
     exit;
 }
 
+$shiroki_cursor_base = get_template_directory_uri() . '/assets/guangbiao/';
+
 $options[] = array(
     'name' => __('站点美化', 'ui_boxmoe_com'),
     'icon' => 'dashicons-art',
@@ -51,24 +53,24 @@ $options[] = array(
         'name' => __('默认光标', 'ui_boxmoe_com'),
         'id' => 'boxmoe_cursor_arrow',
         'type' => "upload",
-        'std' => '',
-        'desc' => __('上传默认状态下的光标图片「推荐尺寸 32x32，PNG格式」', 'ui_boxmoe_com'),
+        'std' => $shiroki_cursor_base . 'Arrow.png',
+        'desc' => __('上传默认状态下的光标图片「推荐尺寸 32x32，支持 PNG / AVIF / GIF 格式；AVIF 在不支持时会自动回退为 assets/guangbiao/Arrow.png」', 'ui_boxmoe_com'),
         );
 
     $options[] = array(
         'name' => __('文本输入光标', 'ui_boxmoe_com'),
         'id' => 'boxmoe_cursor_handwriting',
         'type' => "upload",
-        'std' => '',
-        'desc' => __('上传文本输入时的光标图片「如点击输入框时显示」', 'ui_boxmoe_com'),
+        'std' => $shiroki_cursor_base . 'Handwriting.png',
+        'desc' => __('上传文本输入时的光标图片「支持 PNG / AVIF / GIF 格式；AVIF 在不支持时会自动回退为 Handwriting.png」', 'ui_boxmoe_com'),
         );
 
     $options[] = array(
         'name' => __('文本框选光标', 'ui_boxmoe_com'),
         'id' => 'boxmoe_cursor_ibeam',
         'type' => "upload",
-        'std' => '',
-        'desc' => __('上传框选文本时的光标图片', 'ui_boxmoe_com'),
+        'std' => $shiroki_cursor_base . 'IBeam.png',
+        'desc' => __('上传框选文本时的光标图片「支持 PNG / AVIF / GIF 格式；AVIF 在不支持时会自动回退为 IBeam.png」', 'ui_boxmoe_com'),
         );
 
     $options[] = array(
@@ -76,8 +78,8 @@ $options[] = array(
         'name' => __('加载中光标', 'ui_boxmoe_com'),
         'id' => 'boxmoe_cursor_appstarting',
         'type' => "upload",
-        'std' => '',
-        'desc' => __('上传页面加载资源时的光标图片', 'ui_boxmoe_com'),
+        'std' => $shiroki_cursor_base . 'AppStarting.png',
+        'desc' => __('上传页面加载资源时的光标图片「支持 PNG / AVIF / GIF 格式；AVIF 在不支持时会自动回退为 AppStarting.png」', 'ui_boxmoe_com'),
         );
 
     // 🌟 LOGO呼吸动画设置
@@ -133,4 +135,127 @@ $options[] = array(
         'type' => 'text',
         'std' => '请输入内容',
         'desc' => __('输入框留空提交时，气泡提示的文案', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'group' => 'start',
+        'group_title' => '后台配色设置',
+        'name' => __('开启自定义后台配色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_custom_switch',
+        'type' => 'checkbox',
+        'std' => false,
+        'desc' => __('开启后，下方颜色选择器会覆盖后台统一变量，关闭则恢复主题默认配色', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('按钮浅色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_pink_light',
+        'type' => 'color',
+        'std' => '#ffb6c1',
+        'desc' => __('用于按钮悬停底、边框浅色与列表悬停', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('按钮中色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_pink_medium',
+        'type' => 'color',
+        'std' => '#ffc0cb',
+        'desc' => __('用于主按钮渐变终点与替换类按钮', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('按钮深色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_pink_dark',
+        'type' => 'color',
+        'std' => '#ff69b4',
+        'desc' => __('用于主按钮、聚焦边框与强调描边', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('按钮最深色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_pink_deep',
+        'type' => 'color',
+        'std' => '#ff1493',
+        'desc' => __('用于主按钮悬停渐变与下拉箭头聚焦态', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('强调文字色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_pink_text',
+        'type' => 'color',
+        'std' => '#8b008b',
+        'desc' => __('用于自定义下拉框文字等强调文案', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('信息色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_primary',
+        'type' => 'color',
+        'std' => '#63b3ed',
+        'desc' => __('用于后台信息提示、主色标签与光晕', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('成功色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_success',
+        'type' => 'color',
+        'std' => '#68d391',
+        'desc' => __('用于成功状态按钮与标签', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('警告色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_warning',
+        'type' => 'color',
+        'std' => '#fbbf24',
+        'desc' => __('用于警告提示与待处理状态', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('危险色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_danger',
+        'type' => 'color',
+        'std' => '#f87171',
+        'desc' => __('用于删除、错误与危险操作', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('辅助色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_purple',
+        'type' => 'color',
+        'std' => '#b794f4',
+        'desc' => __('用于辅助标签与次要强调', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('浅灰', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_gray_light',
+        'type' => 'color',
+        'std' => '#f5f5f5',
+        'desc' => __('用于卡片浅底与提示条背景', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('中灰', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_gray_medium',
+        'type' => 'color',
+        'std' => '#e0e0e0',
+        'desc' => __('用于边框与分隔线', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'name' => __('深灰', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_gray_dark',
+        'type' => 'color',
+        'std' => '#d0d0d0',
+        'desc' => __('用于标题栏底与较深分隔', 'ui_boxmoe_com'),
+        );
+
+    $options[] = array(
+        'group' => 'end',
+        'name' => __('正文色', 'ui_boxmoe_com'),
+        'id' => 'boxmoe_admin_color_text',
+        'type' => 'color',
+        'std' => '#333333',
+        'desc' => __('用于后台正文与按钮文字', 'ui_boxmoe_com'),
         );

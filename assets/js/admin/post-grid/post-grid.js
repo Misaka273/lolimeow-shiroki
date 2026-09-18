@@ -377,6 +377,9 @@ const ShirokiPostGrid = {
 
         /* ✅ 检查是否已选中 */
         const isSelected = this.state.selectedItems.has(post.id);
+        const editLinkAttributes = shirokiPostConfig.editTargetBlank
+            ? ' target="_blank" rel="noopener noreferrer"'
+            : '';
 
         /* 📋 卡片HTML */
         card.innerHTML = `
@@ -412,7 +415,7 @@ const ShirokiPostGrid = {
             </div>
             <div class="shiroki-post-actions">
                 <a href="${post.view_link}" target="_blank" class="shiroki-post-btn shiroki-post-btn-view">👁️ 查看</a>
-                <a href="${post.edit_link}" class="shiroki-post-btn shiroki-post-btn-edit">✏️ 编辑</a>
+                <a href="${post.edit_link}"${editLinkAttributes} class="shiroki-post-btn shiroki-post-btn-edit">✏️ 编辑</a>
                 ${post.status === 'draft'
                     ? `<button class="shiroki-post-btn shiroki-post-btn-publish" data-action="publish" data-id="${post.id}">🚀 发布</button>`
                     : ''
@@ -581,6 +584,7 @@ const ShirokiPostGrid = {
         
         /* 🎛️ 显示/隐藏批量操作工具栏 */
         const filterWrapper = document.querySelector('.shiroki-post-filter-wrapper');
+        const search = document.querySelector('.shiroki-post-search');
         
         if (count > 0) {
             /* 📦 显示批量操作，隐藏筛选 */
@@ -590,6 +594,9 @@ const ShirokiPostGrid = {
             if (filterWrapper) {
                 filterWrapper.style.display = 'none';
             }
+            if (search) {
+                search.style.display = 'none';
+            }
         } else {
             /* 📦 隐藏批量操作，显示筛选 */
             if (this.elements.bulkActions) {
@@ -597,6 +604,9 @@ const ShirokiPostGrid = {
             }
             if (filterWrapper) {
                 filterWrapper.style.display = 'flex';
+            }
+            if (search) {
+                search.style.display = '';
             }
         }
     },
@@ -995,10 +1005,12 @@ const ShirokiPostGrid = {
      */
     buildStatusTags(post) {
         const tags = [];
-        
-        /* 📊 基础状态（发布、草稿、待审核） */
+
+        /* 📊 基础状态（发布、定时发布、草稿、待审核） */
         if (post.status === 'publish') {
             tags.push('<span class="shiroki-post-status-tag shiroki-post-status-publish">🟢 已发布</span>');
+        } else if (post.status === 'future') {
+            tags.push('<span class="shiroki-post-status-tag shiroki-post-status-future">🔵 定时发布</span>');
         } else if (post.status === 'draft') {
             tags.push('<span class="shiroki-post-status-tag shiroki-post-status-draft">🟡 草稿</span>');
         } else if (post.status === 'pending') {
@@ -1006,13 +1018,24 @@ const ShirokiPostGrid = {
         } else if (post.status === 'trash') {
             tags.push('<span class="shiroki-post-status-tag shiroki-post-status-trash">⚪ 已删除</span>');
         }
-        
+
         /* 🔴 私密状态（额外标签） */
         if (post.status === 'private') {
             tags.push('<span class="shiroki-post-status-tag shiroki-post-status-private">🔴 私密</span>');
             tags.push('<span class="shiroki-post-status-tag shiroki-post-status-publish">🟢 已发布</span>');
         }
-        
+
+        /* 🔐 内容保护标签（来自 shiroki-content-paywall 插件） */
+        if (post.paywall_enabled && Array.isArray(post.paywall_types) && post.paywall_types.length > 0) {
+            if (post.paywall_types.includes('password')) {
+                tags.push('<span class="shiroki-post-status-tag shiroki-post-status-password">🔐 加密</span>');
+            }
+            if (post.paywall_types.includes('pay')) {
+                const payLabel = post.paywall_price > 0 ? `💎 付费 ¥${post.paywall_price}` : '💎 付费';
+                tags.push(`<span class="shiroki-post-status-tag shiroki-post-status-pay">${payLabel}</span>`);
+            }
+        }
+
         return tags.join('');
     },
 
@@ -1335,6 +1358,7 @@ const ShirokiPostGrid = {
     getStatusText(status) {
         const statusMap = {
             'publish': '已发布',
+            'future': '定时发布',
             'draft': '草稿',
             'pending': '待审核',
             'private': '私密',

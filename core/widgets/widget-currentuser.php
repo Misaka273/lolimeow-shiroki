@@ -49,7 +49,7 @@ class widget_currentuser extends WP_Widget {
 		}
 		
 		extract($args);
-		$title = apply_filters('widget_name', $instance['title']);
+		$title = apply_filters('widget_name', isset($instance['title']) ? $instance['title'] : __('当前用户信息', 'boxmoe-com'));
 		
 		// 获取用户填写的信息，优先级：自定义填写 > 用户资料
 		$qq = !empty($instance['qq']) ? $instance['qq'] : '';
@@ -335,7 +335,7 @@ class widget_currentuser extends WP_Widget {
 	// 更新小工具设置
 	public function update( $new_instance, $old_instance ) {
 		$instance = $old_instance;
-		$instance['title'] = sanitize_text_field( $new_instance['title'] );
+		$instance['title'] = sanitize_text_field( isset($new_instance['title']) ? $new_instance['title'] : '' );
 		// 当用户ID为空时保持为空字符串，而不是转换为0
 		$instance['avatarid'] = !empty($new_instance['avatarid']) ? absint( $new_instance['avatarid'] ) : '';
 		$instance['avatar_url'] = esc_url_raw( $new_instance['avatar_url'] );

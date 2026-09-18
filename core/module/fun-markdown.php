@@ -1,13 +1,429 @@
 <?php
 if(!defined('ABSPATH')){echo 'Look your sister';exit;}
 
+/**
+ * 获取主题强调色（r-markdown 组件默认使用）。
+ */
+function boxmoe_get_theme_accent(){
+    $color = function_exists('get_boxmoe') ? get_boxmoe('boxmoe_theme_color') : '';
+    if($color && $color !== 'default' && preg_match('/^#[0-9a-fA-F]{6}$/', $color)){
+        return $color;
+    }
+    return '#27ae60';
+}
+
+/**
+ * 解析 HTML 属性字符串为关联数组。
+ */
+function boxmoe_parse_html_attrs($attr_str){
+    $attrs = [];
+    if(preg_match_all('/(\w+)(?:\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^>\s]*)))?/', $attr_str, $m, PREG_SET_ORDER)){
+        foreach($m as $match){
+            $key = strtolower($match[1]);
+            $val = isset($match[2]) && $match[2] !== '' ? $match[2] : (isset($match[3]) && $match[3] !== '' ? $match[3] : (isset($match[4]) ? $match[4] : ''));
+            $attrs[$key] = $val;
+        }
+    }
+    return $attrs;
+}
+
+/**
+ * 将十六进制颜色转为 rgba 字符串。
+ */
+function boxmoe_hex_to_rgba($hex, $alpha = 1){
+    $hex = ltrim($hex, '#');
+    if(strlen($hex) === 3){
+        $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+    }
+    $r = isset($hex[0]) ? hexdec(substr($hex, 0, 2)) : 0;
+    $g = isset($hex[2]) ? hexdec(substr($hex, 2, 2)) : 0;
+    $b = isset($hex[4]) ? hexdec(substr($hex, 4, 2)) : 0;
+    return "rgba($r,$g,$b,$alpha)";
+}
+
+/**
+ * 从字符串中截取到指定标签的配对闭合标签。
+ */
+function boxmoe_take_until_balanced_close($s, $tag){
+    $pattern = '/<(\/?)'.preg_quote($tag, '/').'\b[^>]*>/i';
+    $depth = 1;
+    $offset = 0;
+    while(preg_match($pattern, $s, $m, PREG_OFFSET_CAPTURE, $offset)){
+        $tag_pos = $m[0][1];
+        $tag_end = $tag_pos + strlen($m[0][0]);
+        $is_self_close = substr(rtrim($m[0][0]), -2) === '/>';
+        if($is_self_close){
+            $offset = $tag_end;
+            continue;
+        }
+        $is_close = ($m[1][0] === '/');
+        if($is_close){
+            $depth--;
+            if($depth === 0){
+                return ['body' => substr($s, 0, $tag_pos), 'end' => $tag_end];
+            }
+        } else {
+            $depth++;
+        }
+        $offset = $tag_end;
+    }
+    return null;
+}
+
+/**
+ * 解析字重关键字为 CSS 字重值。
+ */
+function boxmoe_resolve_weight($weight){
+    if(!$weight) return '';
+    $map = [
+        'thin' => '100', 'light' => '300', 'normal' => '400', 'regular' => '400',
+        'medium' => '500', 'semibold' => '600', 'bold' => '700', 'bolder' => '800'
+    ];
+    $lower = strtolower($weight);
+    return isset($map[$lower]) ? $map[$lower] : $weight;
+}
+
+/**
+ * 解析字号值，纯数字自动补 px。
+ */
+function boxmoe_resolve_size($size){
+    if(!$size) return '';
+    return preg_match('/^\d+(\.\d+)?$/', $size) ? $size.'px' : $size;
+}
+
+/**
+ * 渲染单个 r-markdown 扩展组件。
+ */
+function boxmoe_render_r_markdown_component($tag, $attrs, $body){
+    $accent = boxmoe_get_theme_accent();
+    $accent_dark = boxmoe_hex_to_rgba($accent, 1);
+    // 简单加深：直接沿用原色，保持组件可见
+    $text = trim($body);
+    if($text === '' && isset($attrs['text'])) $text = $attrs['text'];
+
+    switch($tag){
+        case 'text':
+            $styles = [];
+            if(isset($attrs['color'])) $styles[] = 'color:'.$attrs['color'];
+            $weight = boxmoe_resolve_weight(isset($attrs['weight']) ? $attrs['weight'] : '');
+            if($weight) $styles[] = 'font-weight:'.$weight;
+            $size = boxmoe_resolve_size(isset($attrs['size']) ? $attrs['size'] : '');
+            if($size) $styles[] = 'font-size:'.$size;
+            $style = $styles ? ' style="'.implode(';', $styles).'"' : '';
+            return '<span'.$style.'>'.esc_html($text).'</span>';
+
+        case 'pill-text':
+            $accent_rgba = boxmoe_hex_to_rgba($accent, 1);
+            return '<span style="background:linear-gradient(90deg,'.boxmoe_hex_to_rgba($accent, 0.85).' 0%,'.$accent_rgba.' 100%);padding:0px 6px;border-radius:4px;font-weight:700;color:#fff">'.esc_html($text).'</span>';
+
+        case 'strong-text':
+            return '<strong style="color:'.$accent.'">'.esc_html($text).'</strong>';
+
+        case 'soft-text':
+            return '<span style="color:'.$accent.';font-weight:700;background:'.boxmoe_hex_to_rgba($accent, 0.08).';padding:1px 6px;border-radius:4px">'.esc_html($text).'</span>';
+
+        case 'underline-text':
+            return '<span style="text-decoration:underline;text-decoration-color:'.$accent.';text-underline-offset:3px">'.esc_html($text).'</span>';
+
+        case 'strike-text':
+            return '<del style="color:#9ca3af">'.esc_html($text).'</del>';
+
+        case 'gradient-text':
+            $color = isset($attrs['color']) ? $attrs['color'] : '';
+            if($color && preg_match('/^#[0-9a-fA-F]{6}$/', $color)){
+                return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($color, 0.3).' 0%,'.boxmoe_hex_to_rgba($color, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$color.'">'.esc_html($text).'</span>';
+            }
+            return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($accent, 0.3).' 0%,'.boxmoe_hex_to_rgba($accent, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$accent.'">'.esc_html($text).'</span>';
+
+        case 'gradient-text-2':
+            $from = isset($attrs['from']) ? $attrs['from'] : $accent;
+            $to = isset($attrs['to']) ? $attrs['to'] : $accent;
+            $text_color = isset($attrs['textcolor']) ? $attrs['textcolor'] : 'var(--text-primary)';
+            return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($from, 0.3).' 0%,'.boxmoe_hex_to_rgba($to, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$text_color.'">'.esc_html($text).'</span>';
+
+        case 'gradient-text-3':
+            $color = isset($attrs['color']) ? $attrs['color'] : $accent;
+            $text_color = isset($attrs['textcolor']) ? $attrs['textcolor'] : 'var(--text-primary)';
+            return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($color, 0.3).' 0%,'.boxmoe_hex_to_rgba($color, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$text_color.'">'.esc_html($text).'</span>';
+
+        case 'pill-btn':
+            $link = isset($attrs['link']) ? $attrs['link'] : '';
+            $color = isset($attrs['color']) ? $attrs['color'] : '';
+            $gradient = $color
+                ? 'linear-gradient(135deg,'.$color.','.$color.')'
+                : (isset($attrs['gradient']) ? $attrs['gradient'] : 'linear-gradient(135deg,'.$accent.','.$accent.')');
+            $style = 'display:inline-flex;align-items:center;font-size:13px;padding:4px 14px;font-weight:500;color:#fff;border-radius:50px;border:none;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.15);background:'.$gradient.';cursor:pointer;vertical-align:middle;';
+            $hover = 'onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.2)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'0 2px 6px rgba(0,0,0,0.15)\'"';
+            if($link){
+                return '<a href="'.esc_url($link).'" target="_blank" rel="noopener" style="'.$style.'" '.$hover.'>'.esc_html($text).'</a>';
+            }
+            return '<span style="'.$style.'" '.$hover.'>'.esc_html($text).'</span>';
+
+        case 'pill-btn-2':
+            $link = isset($attrs['link']) ? $attrs['link'] : '';
+            $color = isset($attrs['color']) ? $attrs['color'] : $accent;
+            $text_color = isset($attrs['textcolor']) ? $attrs['textcolor'] : '#fff';
+            $style = 'display:inline-flex;align-items:center;font-size:13px;padding:4px 14px;font-weight:500;color:'.$text_color.';border-radius:50px;border:none;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.15);background:'.$color.';cursor:pointer;vertical-align:middle;';
+            $hover = 'onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.2)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'0 2px 6px rgba(0,0,0,0.15)\'"';
+            if($link){
+                return '<section style="margin:10px 0;text-align:center;"><a href="'.esc_url($link).'" target="_blank" rel="noopener" style="'.$style.'" '.$hover.'>'.esc_html($text).'</a></section>';
+            }
+            return '<section style="margin:10px 0;text-align:center;"><span style="'.$style.'" '.$hover.'>'.esc_html($text).'</span></section>';
+
+        case 'statement':
+            $title = isset($attrs['title']) ? $attrs['title'] : (isset($attrs['text']) ? $attrs['text'] : $text);
+            return '<section style="padding:28px 24px;margin:20px 0;text-align:center;border-radius:12px;background:linear-gradient(135deg,'.boxmoe_hex_to_rgba($accent, 0.06).','.boxmoe_hex_to_rgba($accent, 0.02).');border-left:4px solid '.$accent.'">
+      <p style="margin:0;font-size:17px;font-weight:600;color:var(--text-primary);line-height:1.8">'.esc_html($title).'</p>
+    </section>';
+
+        case 'lead':
+            $title = isset($attrs['title']) ? $attrs['title'] : (isset($attrs['text']) ? $attrs['text'] : $text);
+            return '<section style="margin:16px 0;padding:12px 16px;border-left:3px solid '.$accent.';background:rgba(0,0,0,0.02);border-radius:0 8px 8px 0">
+      <p style="margin:0;font-size:15px;color:#555;line-height:1.8;font-style:italic">'.esc_html($title).'</p>
+    </section>';
+    }
+
+    return '';
+}
+
+/**
+ * 解析 r-markdown 的 <html> 片段内容：
+ * - 自定义 HTML 原样保留
+ * - 内嵌扩展组件（text/pill-text/statement/lead 等）渲染为对应 HTML
+ */
+function boxmoe_parse_r_markdown_html_fragment($html){
+    $tags = ['text','pill-text','strong-text','soft-text','underline-text','strike-text','gradient-text','gradient-text-2','gradient-text-3','pill-btn','pill-btn-2','statement','lead'];
+    $tag_alt = implode('|', array_map(function($t){ return preg_quote($t, '/'); }, $tags));
+    $pattern = '/<('.$tag_alt.')\b([^>]*?)(\/?)>/i';
+
+    $result = '';
+    $offset = 0;
+    while(preg_match($pattern, $html, $m, PREG_OFFSET_CAPTURE, $offset)){
+        $start = $m[0][1];
+        $tag = strtolower($m[1][0]);
+        $full_open = $m[0][0];
+        $attr_str = isset($m[2]) ? $m[2][0] : '';
+        $self_closing = (isset($m[3]) && trim($m[3][0]) === '/') || substr(rtrim($full_open), -2) === '/';
+
+        $result .= substr($html, $offset, $start - $offset);
+
+        $attrs = boxmoe_parse_html_attrs($attr_str);
+
+        if($self_closing){
+            $body = isset($attrs['text']) ? $attrs['text'] : '';
+            $result .= boxmoe_render_r_markdown_component($tag, $attrs, $body);
+            $offset = $start + strlen($full_open);
+            continue;
+        }
+
+        $after = substr($html, $start + strlen($full_open));
+        $closed = boxmoe_take_until_balanced_close($after, $tag);
+        if(!$closed){
+            $result .= $full_open;
+            $offset = $start + strlen($full_open);
+            continue;
+        }
+
+        $end = $start + strlen($full_open) + $closed['end'];
+        $inner = $closed['body'];
+        $result .= boxmoe_render_r_markdown_component($tag, $attrs, $inner);
+        $offset = $end;
+    }
+    $result .= substr($html, $offset);
+    return $result;
+}
+
+/**
+ * 提取自定义 HTML 区块为占位符，内部 HTML 原样保留。
+ * 支持两种语法：
+ *   1. <!--!html-->...<!--!html-->
+ *   2. r-markdown 的 <html>...</html>（支持嵌套，栈匹配；内部扩展组件会被渲染）
+ */
+function boxmoe_extract_html_blocks($text, &$html_blocks){
+    $preserve_tables = function($html){
+        // r-markdown 自定义 HTML 块中的表格保持原样，不被主题 table-responsive 再次包装
+        return preg_replace('/<table\b/i', '<table data-no-table-replace="1"', $html);
+    };
+
+    // 1. 传统 <!--!html--> 语法
+    $text = preg_replace_callback('/<!--!html-->([\s\S]*?)<!--!html-->/', function($m) use (&$html_blocks, $preserve_tables){
+        $key = '__MD_HTML_'.count($html_blocks).'__';
+        $html_blocks[$key] = $preserve_tables($m[1]);
+        return $key;
+    }, $text);
+
+    // 2. r-markdown 的 <html>...</html> 语法：栈匹配找到正确闭合标签
+    $result = '';
+    $offset = 0;
+    while(preg_match('/<html\b[^>]*>/i', $text, $m, PREG_OFFSET_CAPTURE, $offset)){
+        $start = $m[0][1];
+        $open_end = $start + strlen($m[0][0]);
+        $depth = 1;
+        $pos = $open_end;
+        $found = false;
+        while(preg_match('/<\/?html\b[^>]*>/i', $text, $mm, PREG_OFFSET_CAPTURE, $pos)){
+            $tag_pos = $mm[0][1];
+            $tag_end = $tag_pos + strlen($mm[0][0]);
+            $is_close = (substr($mm[0][0], 1, 1) === '/');
+            $is_self_close = (substr(rtrim($mm[0][0]), -2) === '/>');
+            if($is_self_close){
+                $pos = $tag_end;
+                continue;
+            }
+            if($is_close){
+                $depth--;
+                if($depth === 0){
+                    $body = substr($text, $open_end, $tag_pos - $open_end);
+                    $body = boxmoe_parse_r_markdown_html_fragment($body);
+                    $body = $preserve_tables($body);
+                    $key = '__MD_HTML_'.count($html_blocks).'__';
+                    $html_blocks[$key] = '<section data-html-fragment="true" style="margin:16px 0;display:block">'.$body.'</section>';
+                    $result .= substr($text, $offset, $start - $offset).$key;
+                    $offset = $tag_end;
+                    $found = true;
+                    break;
+                }
+            } else {
+                $depth++;
+            }
+            $pos = $tag_end;
+        }
+        if(!$found){
+            // 未找到闭合标签：保留已扫描部分，继续向后避免无限循环
+            $result .= substr($text, $offset, $open_end - $offset);
+            $offset = $open_end;
+        }
+    }
+    $result .= substr($text, $offset);
+    return $result;
+}
+
+/**
+ * 提取完整合法的 HTML 为占位符，仅转义未闭合/孤立的尖括号片段。
+ * 例如 `<h1>标题</h1>` 会正常渲染，而 `<h1 class="page-title">` 会被转义为纯文本。
+ *
+ * @param string $text
+ * @param array  $safe_html 占位符 => 原始 HTML
+ * @return string
+ */
+function boxmoe_preserve_valid_html($text, &$safe_html){
+    $save_block = function($html) use (&$safe_html){
+        $key = '__MD_SAFE_BLOCK_'.count($safe_html).'__';
+        $safe_html[$key] = $html;
+        return $key;
+    };
+    $save_inline = function($html) use (&$safe_html){
+        $key = '__MD_SAFE_INLINE_'.count($safe_html).'__';
+        $safe_html[$key] = $html;
+        return $key;
+    };
+
+    // 🧱 优先提取块级元素，避免内部 <i class="fa"> 等行内标签被单独占位导致还原失败
+    // 同类型可嵌套块级元素（如 section、div）：使用栈匹配，避免正则错误截断内层闭合标签
+    $nestable_tags = 'section|div|article|aside|details|figure|blockquote|nav|header|footer|main|form';
+    for($i = 0; $i < 50; $i++){
+        $matched = false;
+        if(preg_match('/<('.$nestable_tags.')(\s[^>]*)?>/i', $text, $m, PREG_OFFSET_CAPTURE)){
+            $tag = strtolower($m[1][0]);
+            $start = $m[0][1];
+            $depth = 0;
+            $pos = $start;
+            $found = false;
+            while(preg_match('/<(\/?)('.$tag.')(\s[^>]*)?>/i', $text, $mm, PREG_OFFSET_CAPTURE, $pos)){
+                $tag_pos = $mm[0][1];
+                $is_close = ($mm[1][0] === '/');
+                if($is_close){
+                    $depth--;
+                    if($depth === 0){
+                        $end = $tag_pos + strlen($mm[0][0]);
+                        $html = substr($text, $start, $end - $start);
+                        $key = $save_block($html);
+                        $text = substr($text, 0, $start).$key.substr($text, $end);
+                        $matched = true;
+                        $found = true;
+                        break;
+                    }
+                } else {
+                    $depth++;
+                }
+                $pos = $tag_pos + strlen($mm[0][0]);
+            }
+            if(!$found){
+                // 未找到闭合标签：转义该开始标签并保存，避免无限循环
+                $escaped = str_replace(['<','>'], ['&lt;','&gt;'], $m[0][0]);
+                $key = $save_block($escaped);
+                $text = substr($text, 0, $start).$key.substr($text, $start + strlen($m[0][0]));
+                $matched = true;
+            }
+        }
+        if(!$matched){
+            break;
+        }
+    }
+
+    // 块级元素（迭代由内向外，支持嵌套）
+    $block_tags = 'address|article|aside|blockquote|canvas|dd|div|dl|dt|fieldset|figcaption|figure|footer|form|h[1-6]|header|li|main|nav|ol|p|pre|section|table|tbody|td|tfoot|th|thead|tr|ul|video|audio|details|summary|style|script|iframe|svg|math|center|font';
+    for($i = 0; $i < 30 && preg_match('/<('.$block_tags.')(\s[^>]*)?>[\s\S]*?<\/\1>/i', $text); $i++){
+        $text = preg_replace_callback('/<('.$block_tags.')(\s[^>]*)?>[\s\S]*?<\/\1>/i', function($m) use ($save_block){
+            return $save_block($m[0]);
+        }, $text);
+    }
+
+    // 行内元素（迭代匹配，支持嵌套）——在块级提取之后处理剩余孤立行内标签
+    $inline_tags = 'a|abbr|b|bdi|bdo|cite|code|data|del|dfn|em|i|ins|kbd|mark|q|s|samp|small|span|strong|sub|sup|time|u|var|label|ruby|rt|rp';
+    for($i = 0; $i < 30 && preg_match('/<('.$inline_tags.')(\s[^>]*)?>[\s\S]*?<\/\1>/i', $text); $i++){
+        $text = preg_replace_callback('/<('.$inline_tags.')(\s[^>]*)?>[\s\S]*?<\/\1>/i', function($m) use ($save_inline){
+            return $save_inline($m[0]);
+        }, $text);
+    }
+
+    // 自闭合 / void 标签——在块级提取之后处理剩余孤立标签
+    $void_tags = 'area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr';
+    $text = preg_replace_callback('/<('.$void_tags.')(\s[^>]*)?\/?>/i', function($m) use ($save_inline){
+        return $save_inline($m[0]);
+    }, $text);
+
+    // 转义剩余未闭合/孤立的尖括号，防止布局错乱
+    return str_replace(['<', '>'], ['&lt;', '&gt;'], $text);
+}
+
+/**
+ * 🔄 多轮还原 HTML 占位符，确保块级占位符内的行内占位符也能正确还原
+ */
+function boxmoe_restore_html_placeholders($html, $placeholders){
+    if(empty($placeholders)){
+        return $html;
+    }
+    for($pass = 0; $pass < 30; $pass++){
+        $changed = false;
+        foreach($placeholders as $key => $value){
+            if(strpos($html, $key) !== false){
+                $html = str_replace($key, $value, $html);
+                $changed = true;
+            }
+        }
+        if(!$changed){
+            break;
+        }
+    }
+    return $html;
+}
+
 function boxmoe_markdown_to_html($text){
     // 检查内容是否为密码保护表单，如果是则不进行Markdown转换
     if(strpos($text, 'password-protected-form') !== false || strpos($text, 'post_password') !== false || strpos($text, 'wp-login.php?action=postpass') !== false){
         return $text;
     }
     $text = str_replace(["\r\n","\r"],"\n",$text);
+    $html_blocks = [];
+    $safe_html = [];
     $blocks = [];
+
+    // 自定义 HTML 区块：<!--!html-->...<!--!html-->，优先提取以免被 Markdown 处理
+    $text = boxmoe_extract_html_blocks($text, $html_blocks);
+    // 强制 HTML 区块占位符独占段落，避免被 <p> 包裹
+    $text = preg_replace('/(__MD_HTML_\d+__)/', "\n\n$1\n\n", $text);
+
     // 代码块解析，确保与主题自带语法兼容
     $text = preg_replace_callback('/```(\w+)?\s*([\s\S]*?)```/m', function($m) use (&$blocks){
         $key = '__MD_CODE_'.count($blocks).'__';
@@ -18,6 +434,15 @@ function boxmoe_markdown_to_html($text){
         $blocks[$key] = '<pre class="prettyprint linenums'.esc_attr($lang_class).'"><code'.esc_attr($lang_class).'>'.esc_html($code).'</code></pre>';
         return $key;
     }, $text);
+
+    // 🌊 自定义分割线注释须在尖括号转义前转为块级 HTML，否则会被转义成纯文本
+    $text = preg_replace('/<!--\s*shiroki-divider\s*-->/', "\n\n<div class=\"shiroki-divider\"></div>\n\n", $text);
+
+    // 保留完整 HTML、转义孤立尖括号（HTML 区块与代码块已隔离）
+    $text = boxmoe_preserve_valid_html($text, $safe_html);
+    // 块级 HTML 占位符独占段落，避免被 <p> 包裹
+    $text = preg_replace('/(__MD_SAFE_BLOCK_\d+__)/', "\n\n$1\n\n", $text);
+
     // 标题解析，确保与主题自带语法兼容
     $text = preg_replace('/^\s*######\s*(.+)$/m','<h6>$1</h6>',$text);
     $text = preg_replace('/^\s*#####\s*(.+)$/m','<h5>$1</h5>',$text);
@@ -106,18 +531,19 @@ function boxmoe_markdown_to_html($text){
     }, $text);
     // 解析卡片内容，将其替换为临时占位符
     $card_placeholders = [];
-    $text = preg_replace_callback('/名称：\s*(.+?)\s*\n头像链接：\s*(.+?)\s*\n描述：\s*(.+?)\s*\n链接：\s*(.+?)\s*\n勋章：\s*(.+?)\s*(\n|$)/s', function($m) use (&$card_placeholders){
+    $text = preg_replace_callback('/名称：\s*(.+?)\s*\n头像链接：\s*(.+?)\s*\n描述：\s*(.+?)\s*\n链接：\s*(.+?)\s*\n勋章：\s*(.*?)\s*(\n|$)/s', function($m) use (&$card_placeholders){
         $name = $m[1];
         $avatar = $m[2];
         $desc = $m[3];
         $link = $m[4];
         $badge = $m[5];
+        $badge_html = $badge !== '' ? '<div class="md-card-badge">'.$badge.'</div>' : '';
         
-        $card_html = '<a href="'.$link.'" target="_blank" class="md-card-link-wrap">
+        $card_html = '<a href="'.esc_url($link).'" target="_blank" rel="noopener" class="md-card-link-wrap shiroki-md-card-link">
             <div class="md-card">
                 <div class="md-card-avatar">
-                    <img src="'.$avatar.'" alt="'.$name.'" />
-                    <div class="md-card-badge">'.$badge.'</div>
+                    <img src="'.esc_url($avatar).'" alt="'.esc_attr($name).'" />
+                    '.$badge_html.'
                 </div>
                 <div class="md-card-content">
                     <h3 class="md-card-title">'.$name.'</h3>
@@ -130,6 +556,8 @@ function boxmoe_markdown_to_html($text){
         $card_placeholders[$placeholder] = $card_html;
         return $placeholder;
     }, $text);
+    // 🎯 卡片占位符独占段落，避免被 <p> 包裹导致布局错乱
+    $text = preg_replace('/(__MD_CARD_\d+__)/', "\n\n$1\n\n", $text);
     
     // 处理其他Markdown元素，包括链接转换
     // 🔤 文本格式：粗体
@@ -142,40 +570,58 @@ function boxmoe_markdown_to_html($text){
     $text = preg_replace('/!\[([^\]]*)\]\(([^\)]+)\s*=\s*(\d+)x(\d+)(x(\w+))?\)/i','<img src="$2" alt="$1" width="$3" height="$4" $5$6 />',$text);
     // 处理基础图片语法（无尺寸）
     $text = preg_replace('/!\[([^\]]*)\]\(([^\)]+)\)/','<img src="$2" alt="$1" />',$text);
-    // 🔗 链接
-    $text = preg_replace('/\[([^\]]+)\]\(([^\)]+)\)/','<a href="$2"'.(is_admin()?'':' target="_blank"').'>$1</a>',$text);
+    // 🔗 链接（标记为可统计的 Markdown 链接）
+    $text = preg_replace('/\[([^\]]+)\]\(([^\)]+)\)/','<a href="$2" class="shiroki-md-link"'.(is_admin()?'':' target="_blank" rel="noopener"').'>$1</a>',$text);
     // 📊 表格支持
-    // 先将表格内容用占位符替换，避免贪婪匹配问题
+    // 🔍 匹配连续的管道行，不要求表格后存在空行或分割线
     $tables = [];
-    $text = preg_replace_callback('/(?:^|\n)((?:[|][^\n]*[|](?:\n|$)){2,})(?=(?:\n\n|\n[^|]|$))/', function($m) use (&$tables) {
+    $text = preg_replace_callback('/^[\t ]*\|[^\n]*\|[\t ]*(?:\n[\t ]*\|[^\n]*\|[\t ]*)+/m', function($m) use (&$tables) {
         $table_key = '__MD_TABLE_' . count($tables) . '__';
-        $tables[$table_key] = $m[1];
-        return $table_key;
+        $tables[$table_key] = trim($m[0]);
+        return "\n\n" . $table_key . "\n\n";
     }, $text);
     
-    // 逐个处理每个表格
+    // 🧩 逐个处理每个表格
     foreach ($tables as $key => $table_content) {
-        $lines = preg_split('/\n/', trim($table_content));
-        $thead = true;
-        $html = '<div class="md-table-wrapper"><table class="md-table"><thead>';
+        $lines = preg_split('/\n/', $table_content);
+        $rows = [];
         foreach ($lines as $line) {
-            if (preg_match('/^[|](.*)[|]$/', $line, $mm)) {
-                $cells = array_map('trim', explode('|', $mm[1]));
-                if ($thead) {
-                    $html .= '<tr>';
-                    foreach ($cells as $cell) {
-                        $html .= '<th>' . $cell . '</th>';
-                    }
-                    $html .= '</tr></thead><tbody>';
-                    $thead = false;
-                } else {
-                    $html .= '<tr>';
-                    foreach ($cells as $cell) {
-                        $html .= '<td>' . $cell . '</td>';
-                    }
-                    $html .= '</tr>';
+            if (preg_match('/^[\t ]*\|(.*)\|[\t ]*$/', $line, $mm)) {
+                $rows[] = array_map('trim', explode('|', $mm[1]));
+            }
+        }
+
+        $header_cells = array_shift($rows);
+        if (!$header_cells) {
+            $text = str_replace($key, $table_content, $text);
+            continue;
+        }
+
+        // 🧹 标准 Markdown 分隔行只定义表头，不渲染为数据行
+        if (isset($rows[0]) && count($rows[0]) === count($header_cells)) {
+            $is_separator = true;
+            foreach ($rows[0] as $cell) {
+                if (!preg_match('/^:?-{3,}:?$/', $cell)) {
+                    $is_separator = false;
+                    break;
                 }
             }
+            if ($is_separator) {
+                array_shift($rows);
+            }
+        }
+
+        $html = '<div class="md-table-wrapper"><table class="md-table"><thead><tr>';
+        foreach ($header_cells as $cell) {
+            $html .= '<th>' . $cell . '</th>';
+        }
+        $html .= '</tr></thead><tbody>';
+        foreach ($rows as $cells) {
+            $html .= '<tr>';
+            foreach ($cells as $cell) {
+                $html .= '<td>' . $cell . '</td>';
+            }
+            $html .= '</tr>';
         }
         $html .= '</tbody></table></div>';
         $text = str_replace($key, $html, $text);
@@ -211,7 +657,10 @@ function boxmoe_markdown_to_html($text){
     foreach($parts as &$p){
         // 🎯 检查是否是代码块占位符，如果是则不添加<p>标签
         if(!preg_match('/^\s*<(h\d|ul|ol|pre|blockquote|img|a|table|audio|video)/i',$p) && 
-           !preg_match('/^__MD_CODE_\d+__$/', $p)){
+           !preg_match('/^__MD_CODE_\d+__$/', $p) &&
+           !preg_match('/^__MD_HTML_\d+__$/', $p) &&
+           !preg_match('/^__MD_SAFE_BLOCK_\d+__$/', $p) &&
+           !preg_match('/^__MD_CARD_\d+__$/', $p)){
             $p = '<p>'.$p.'</p>';
         }
     }
@@ -222,18 +671,28 @@ function boxmoe_markdown_to_html($text){
         $text = str_replace($placeholder, $card_html, $text);
     }
     
-    // 修复：将包裹在<p>标签中的卡片HTML提取出来，移除<p>标签
-    $text = preg_replace('/<p>\s*(<a href=".+?" target="_blank" class="md-card-link-wrap">.+?<\/a>)\s*<\/p>/s', '$1', $text);
+    // 🛠️ 修复：将包裹在<p>标签中的卡片HTML提取出来，移除<p>标签
+    $text = preg_replace('/<p>\s*(<a[^>]*class="[^"]*md-card-link-wrap[^"]*"[^>]*>[\s\S]*?<\/a>)\s*<\/p>/s', '$1', $text);
     
-    // 处理代码块占位符
+    // 处理 HTML 区块与代码块占位符
     $html = $text;
+    $html = preg_replace('/<p>\s*(__MD_HTML_\d+__|__MD_SAFE_BLOCK_\d+__)\s*<\/p>/', '$1', $html);
+    foreach($html_blocks as $k=>$v){
+        $html = str_replace($k, $v, $html);
+    }
+    $html = boxmoe_restore_html_placeholders($html, $safe_html);
     foreach($blocks as $k=>$v){
         $html = str_replace($k,$v,$html);
     }
     
     // 🎯 修复：移除包裹在代码块HTML外的<p>标签
     $html = preg_replace('/<p>\s*(<pre class="prettyprint linenums.*?<\/pre>)\s*<\/p>/s', '$1', $html);
-    
+    // 移除包裹块级 HTML 区块的 <p> 标签
+    $html = preg_replace('/<p>\s*(<(div|section|style|table|ul|ol|h[1-6]|form|iframe|video|audio|nav|header|footer|main|article|aside|details|figure|blockquote)\b)/i', '$1', $html);
+    $html = preg_replace('/(<\/(?:div|section|style|table|ul|ol|h[1-6]|form|iframe|video|audio|nav|header|footer|main|article|aside|details|figure|blockquote)>)\s*<\/p>/i', '$1', $html);
+    // 移除空段落，避免占位符隔离产生的多余间距
+    $html = preg_replace('/<p>\s*<\/p>/', '', $html);
+
     return $html;
 }
 
@@ -268,9 +727,13 @@ add_filter('the_editor_content', 'boxmoe_fix_md_editor_content');
 if(get_boxmoe('boxmoe_md_editor_switch')){
     add_filter('use_block_editor_for_post', '__return_false');
     add_filter('user_can_richedit', '__return_false');
+    // Markdown 模式下禁用 wpautop，避免已渲染的 HTML 被再次插入 <p>/<br>
+    remove_filter('the_content', 'wpautop');
+    remove_filter('the_excerpt', 'wpautop');
     add_action('admin_enqueue_scripts', function($hook){
         if($hook==='post.php' || $hook==='post-new.php'){
-            wp_enqueue_style('boxmoe-md-editor', get_template_directory_uri().'/assets/css/markdown-editor.css', [], THEME_VERSION);
+            wp_enqueue_style('font-awesome', get_template_directory_uri().'/assets/css/font-awesome.min.css', [], '4.7.0');
+            wp_enqueue_style('boxmoe-md-editor', get_template_directory_uri().'/assets/css/markdown-editor.css', ['font-awesome'], THEME_VERSION);
             wp_enqueue_script('boxmoe-md-editor', get_template_directory_uri().'/assets/js/markdown-editor.js', ['jquery'], THEME_VERSION, true);
             wp_localize_script('boxmoe-md-editor','BoxmoeMdEditor',[
                 'enabled'=>true,

@@ -415,6 +415,7 @@ const ShirokiPageGrid = {
         
         /* 🎛️ 显示/隐藏批量操作工具栏 */
         const filterWrapper = document.querySelector('.shiroki-post-filter-wrapper');
+        const search = document.querySelector('.shiroki-post-search');
         
         if (count > 0) {
             /* 📦 显示批量操作，隐藏筛选 */
@@ -424,6 +425,9 @@ const ShirokiPageGrid = {
             if (filterWrapper) {
                 filterWrapper.style.display = 'none';
             }
+            if (search) {
+                search.style.display = 'none';
+            }
         } else {
             /* 📦 隐藏批量操作，显示筛选 */
             if (this.elements.bulkActions) {
@@ -431,6 +435,9 @@ const ShirokiPageGrid = {
             }
             if (filterWrapper) {
                 filterWrapper.style.display = 'flex';
+            }
+            if (search) {
+                search.style.display = '';
             }
         }
     },

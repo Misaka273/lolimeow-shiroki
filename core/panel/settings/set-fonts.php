@@ -14,7 +14,7 @@ $options[] = array(
     'id' => 'boxmoe_custom_font_switch',
     'type' => 'checkbox',
     'std' => 0,
-    'desc' => __('开启后自定义字体才会生效','ui_boxmoe_com')
+    'desc' => __('开启后自定义字体才会生效，并会等待字体就绪后再显示页面，避免字体闪烁','ui_boxmoe_com')
 );
 
 $options[] = array(
@@ -41,7 +41,12 @@ $options[] = array(
     'type' => 'select',
     'options' => array_merge(array('default' => __('默认字体','ui_boxmoe_com')), $font_options),
     'std'  => '',
-    'desc' => __('选择后将应用为全站默认字体（需启用自定义字体）','ui_boxmoe_com')
+    'desc' => __('选择后将应用为全站默认字体（需启用自定义字体）','ui_boxmoe_com'),
+    'append_checkbox' => array(
+        'id'   => 'boxmoe_admin_font_sync',
+        'std'  => 0,
+        'desc' => __('开启后后台页面将同步使用上方选择的站点默认字体（需启用自定义字体并选择字体）','ui_boxmoe_com')
+    )
 );
 
 // 欢迎语独立字体设置

@@ -92,20 +92,15 @@ navOffCanvas && (navOffCanvas.addEventListener('show.bs.offcanvas', function () 
     navOffCanvasBtn.forEach(btn => btn.classList.remove("active"));
 }));
 
-// 移动端导航：子菜单 ≤3 内联手风琴，>3 底部选择窗口
+// 📱 移动端导航：有子菜单的项统一弹出底部面板
 (function () {
     const MOBILE_MQ = window.matchMedia("(max-width: 991px)");
-    const CHILD_THRESHOLD = 3;
     const offcanvasNav = document.querySelector(".offcanvas-nav");
     const panelEl = document.getElementById("mobileNavPanel");
     let delegationBound = false;
 
     function isMobile() {
         return MOBILE_MQ.matches;
-    }
-
-    function countDirectChildren(menuUl) {
-        return menuUl ? menuUl.querySelectorAll(":scope > li").length : 0;
     }
 
     function getLinkInfo(link) {
@@ -218,42 +213,18 @@ navOffCanvas && (navOffCanvas.addEventListener('show.bs.offcanvas', function () 
         });
     }
 
-    function processNavItem(li, isNested) {
+    function processNavItem(li) {
         const menuUl = li.querySelector(":scope > ul.dropdown-menu");
         if (!menuUl) return;
 
         const toggle = li.querySelector(":scope > a");
         if (!toggle) return;
 
-        const count = countDirectChildren(menuUl);
-
-        if (count > CHILD_THRESHOLD) {
-            li.classList.add("mobile-nav-panel-trigger");
-            toggle.removeAttribute("data-bs-toggle");
-            toggle.setAttribute("href", "#");
-            toggle.setAttribute("role", "button");
-            toggle.setAttribute("aria-expanded", "false");
-            return;
-        }
-
-        if (isNested) {
-            li.classList.add("mobile-nav-nested-accordion");
-            menuUl.classList.add("mobile-nav-accordion-menu", "mobile-nav-nested-menu");
-        } else {
-            li.classList.add("mobile-nav-accordion");
-            menuUl.classList.add("mobile-nav-accordion-menu");
-        }
-
+        li.classList.add("mobile-nav-panel-trigger");
         toggle.removeAttribute("data-bs-toggle");
-        if (!getLinkInfo(toggle).href) {
-            toggle.setAttribute("href", "#");
-        }
+        toggle.setAttribute("href", "#");
         toggle.setAttribute("role", "button");
         toggle.setAttribute("aria-expanded", "false");
-
-        menuUl.querySelectorAll(":scope > li").forEach(function (childLi) {
-            processNavItem(childLi, true);
-        });
     }
 
     function classifyNavItems() {
@@ -263,19 +234,7 @@ navOffCanvas && (navOffCanvas.addEventListener('show.bs.offcanvas', function () 
 
         resetNavClasses(navList);
         navList.querySelectorAll(":scope > li").forEach(function (li) {
-            processNavItem(li, false);
-        });
-    }
-
-    function closeSiblingAccordions(li) {
-        const parent = li.parentElement;
-        if (!parent) return;
-        parent.querySelectorAll(":scope > li.mobile-nav-open").forEach(function (sibling) {
-            if (sibling !== li) {
-                sibling.classList.remove("mobile-nav-open");
-                const sibToggle = sibling.querySelector(":scope > a");
-                if (sibToggle) sibToggle.setAttribute("aria-expanded", "false");
-            }
+            processNavItem(li);
         });
     }
 
@@ -300,32 +259,6 @@ navOffCanvas && (navOffCanvas.addEventListener('show.bs.offcanvas', function () 
                 e.preventDefault();
                 e.stopPropagation();
                 openPanel(getLinkInfo(panelToggle).title, menuUl);
-            }
-            return;
-        }
-
-        const accToggle = e.target.closest(".offcanvas-nav .mobile-nav-accordion > a");
-        if (accToggle) {
-            const accLi = accToggle.closest(".mobile-nav-accordion");
-            if (accLi) {
-                e.preventDefault();
-                e.stopPropagation();
-                const isOpen = accLi.classList.toggle("mobile-nav-open");
-                accToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-                if (isOpen) closeSiblingAccordions(accLi);
-            }
-            return;
-        }
-
-        const nestedToggle = e.target.closest(".offcanvas-nav .mobile-nav-nested-accordion > a");
-        if (nestedToggle) {
-            const nestedLi = nestedToggle.closest(".mobile-nav-nested-accordion");
-            const menuUl = nestedLi?.querySelector(":scope > ul.dropdown-menu");
-            if (nestedLi && menuUl) {
-                e.preventDefault();
-                e.stopPropagation();
-                const isOpen = nestedLi.classList.toggle("mobile-nav-open");
-                nestedToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
             }
         }
     }
@@ -378,6 +311,252 @@ navOffCanvas && (navOffCanvas.addEventListener('show.bs.offcanvas', function () 
         initMobileNav();
     }
 })();
+
+// 📱 移动端 Dock：搜索 / 更多底部抽屉
+(function () {
+    const MOBILE_MQ = window.matchMedia("(max-width: 991px)");
+    const sheets = [
+        { id: "mobileDockSearch", openBtn: ".mobile-dock-search-btn", focus: ".mobile-search-input" },
+        { id: "mobileMoreDrawer", openBtn: ".mobile-dock-more-btn" },
+        { id: "mobileUserDrawer", openBtn: ".mobile-user-btn" }
+    ];
+    let bound = false;
+
+    function isMobile() {
+        return MOBILE_MQ.matches;
+    }
+
+    function getSheet(el) {
+        return el && el.closest ? el.closest(".mobile-dock-sheet") : null;
+    }
+
+    function finishClose(sheet) {
+        if (!sheet) return;
+        sheet.classList.remove("is-open", "is-active");
+        sheet.setAttribute("hidden", "");
+        sheet.setAttribute("aria-hidden", "true");
+        if (!document.querySelector(".mobile-dock-sheet.is-open")) {
+            document.body.classList.remove("mobile-dock-sheet-open");
+        }
+    }
+
+    function closeSheet(sheet) {
+        if (!sheet || !sheet.classList.contains("is-open")) return;
+        const wasActive = sheet.classList.contains("is-active");
+        sheet.classList.remove("is-active");
+        if (!wasActive) {
+            finishClose(sheet);
+            return;
+        }
+        const panel = sheet.querySelector(".mobile-dock-sheet__panel");
+        if (!panel) {
+            finishClose(sheet);
+            return;
+        }
+        let closed = false;
+        const onEnd = function (e) {
+            if (closed || e.target !== panel || e.propertyName !== "transform") return;
+            closed = true;
+            panel.removeEventListener("transitionend", onEnd);
+            finishClose(sheet);
+        };
+        panel.addEventListener("transitionend", onEnd);
+        setTimeout(function () {
+            if (!closed && sheet.classList.contains("is-open")) {
+                closed = true;
+                panel.removeEventListener("transitionend", onEnd);
+                finishClose(sheet);
+            }
+        }, 400);
+    }
+
+    function closeAllSheets() {
+        document.querySelectorAll(".mobile-dock-sheet.is-open").forEach(closeSheet);
+    }
+
+    function openSheet(sheet, focusSel) {
+        if (!sheet || !isMobile()) return;
+        document.querySelectorAll(".mobile-dock-sheet.is-open").forEach(function (other) {
+            if (other !== sheet) finishClose(other);
+        });
+        sheet.classList.remove("is-active");
+        sheet.classList.add("is-open");
+        sheet.removeAttribute("hidden");
+        sheet.setAttribute("aria-hidden", "false");
+        document.body.classList.add("mobile-dock-sheet-open");
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                sheet.classList.add("is-active");
+                if (focusSel) {
+                    const input = sheet.querySelector(focusSel);
+                    if (input) setTimeout(function () { input.focus(); }, 80);
+                }
+            });
+        });
+    }
+
+    function initMobileDockSheets() {
+        const dock = document.querySelector(".mobile-dock");
+        // 🎀 前端看板挂到 body，避免移动端被 Dock / overflow 影响看不见
+        const floatMenu = document.querySelector(".floating-action-menu");
+        if (floatMenu && floatMenu.parentElement !== document.body) {
+            document.body.appendChild(floatMenu);
+        }
+        if (!dock) return;
+
+        if (dock.parentElement !== document.body) {
+            document.body.appendChild(dock);
+        }
+        document.querySelectorAll(".mobile-dock-sheet").forEach(function (sheet) {
+            if (sheet.parentElement !== document.body) {
+                document.body.appendChild(sheet);
+            }
+        });
+
+        if (!bound) {
+            sheets.forEach(function (cfg) {
+                const btn = document.querySelector(cfg.openBtn);
+                const sheet = document.getElementById(cfg.id);
+                if (!btn || !sheet) return;
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!isMobile()) return;
+                    if (sheet.classList.contains("is-open")) {
+                        closeSheet(sheet);
+                    } else {
+                        openSheet(sheet, cfg.focus);
+                    }
+                });
+            });
+
+            document.addEventListener("click", function (e) {
+                const sidebarBtn = e.target.closest("[data-open-sidebar-modal]");
+                if (sidebarBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // ⚡ 先瞬时关掉更多抽屉，避免与 Bootstrap Modal 抢 body overflow / padding
+                    document.querySelectorAll(".mobile-dock-sheet.is-open").forEach(finishClose);
+                    const modalEl = document.getElementById("blog-sidebar-modal");
+                    if (modalEl && typeof bootstrap !== "undefined" && bootstrap.Modal) {
+                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                    }
+                    return;
+                }
+
+                const closeBtn = e.target.closest("[data-dock-sheet-close]");
+                if (closeBtn) {
+                    const sheet = getSheet(closeBtn) || document.querySelector(".mobile-dock-sheet.is-open");
+                    closeSheet(sheet);
+                    return;
+                }
+                if (e.target.classList && e.target.classList.contains("mobile-dock-sheet__backdrop")) {
+                    closeSheet(getSheet(e.target));
+                }
+            });
+
+            // 🛡️ Modal 打开时清掉 Bootstrap 写入的 padding-right，保留 Dock 的 padding-bottom
+            const sidebarModal = document.getElementById("blog-sidebar-modal");
+            if (sidebarModal) {
+                const clearModalPad = function () {
+                    document.body.style.paddingRight = "";
+                    document.querySelectorAll(".fixed-top, .sticky-top, .fixed-bottom, .mobile-dock, .boxmoe_header .navbar, .floating-action-menu").forEach(function (el) {
+                        el.style.paddingRight = "";
+                        el.style.marginRight = "";
+                    });
+                };
+                sidebarModal.addEventListener("show.bs.modal", clearModalPad);
+                sidebarModal.addEventListener("shown.bs.modal", clearModalPad);
+                sidebarModal.addEventListener("hidden.bs.modal", clearModalPad);
+            }
+
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape") closeAllSheets();
+            });
+
+            const offcanvasNav = document.querySelector(".offcanvas-nav");
+            if (offcanvasNav) {
+                offcanvasNav.addEventListener("show.bs.offcanvas", closeAllSheets);
+            }
+
+            MOBILE_MQ.addEventListener("change", function () {
+                if (!isMobile()) closeAllSheets();
+            });
+
+            bound = true;
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initMobileDockSheets);
+    } else {
+        initMobileDockSheets();
+    }
+
+    // 📤 供主题切换等外部调用：带动画向下收起抽屉
+    window.closeMobileDockSheet = closeSheet;
+    window.closeAllMobileDockSheets = closeAllSheets;
+})();
+
+// 🔒 锁定安全区，防止滚动时 env(safe-area-inset-bottom) 抖动导致底座上移、底部空隙变大
+(function () {
+    const MOBILE_MQ = window.matchMedia("(max-width: 991px)");
+    let lockedSafe = 0;
+
+    function measureSafeBottom() {
+        const probe = document.createElement("div");
+        probe.setAttribute("aria-hidden", "true");
+        probe.style.cssText = "position:fixed;left:0;bottom:0;visibility:hidden;pointer-events:none;padding-bottom:env(safe-area-inset-bottom,0px)";
+        document.body.appendChild(probe);
+        const px = parseFloat(window.getComputedStyle(probe).paddingBottom) || 0;
+        probe.remove();
+        return Math.max(0, Math.round(px));
+    }
+
+    function lockSafeBottom(force) {
+        if (!MOBILE_MQ.matches && !force) {
+            document.documentElement.style.setProperty("--mobile-dock-safe-bottom", "0px");
+            document.documentElement.style.setProperty("--mobile-dock-vv-bottom", "0px");
+            return;
+        }
+        // 🔒 只在首次锁定，并限制最大值，避免异常 env 值把底部撑高
+        if (!force && lockedSafe > 0) {
+            document.documentElement.style.setProperty("--mobile-dock-safe-bottom", lockedSafe + "px");
+            return;
+        }
+        const measured = Math.min(measureSafeBottom(), 34);
+        lockedSafe = measured;
+        document.documentElement.style.setProperty("--mobile-dock-safe-bottom", lockedSafe + "px");
+        document.documentElement.style.setProperty("--mobile-dock-vv-bottom", "0px");
+    }
+
+    function init() {
+        if (!document.querySelector(".mobile-dock")) return;
+        lockSafeBottom(true);
+
+        window.addEventListener("orientationchange", function () {
+            lockedSafe = 0;
+            window.setTimeout(function () {
+                lockSafeBottom(true);
+            }, 300);
+        });
+        MOBILE_MQ.addEventListener("change", function () {
+            if (MOBILE_MQ.matches) {
+                lockSafeBottom(true);
+            } else {
+                document.documentElement.style.setProperty("--mobile-dock-safe-bottom", "0px");
+                document.documentElement.style.setProperty("--mobile-dock-vv-bottom", "0px");
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+})();
+
 function showToast(message, isSuccess = true) {
     const toastId = 'toast-' + Date.now();
     // 动态读取当前网站设置的Favicon地址
@@ -439,8 +618,15 @@ function initSearchBox() {
     const searchBtns = document.querySelectorAll('.search-btn, .mobile-search-btn');
     const searchForms = document.querySelectorAll('.search-form, .mobile-search-form');
 
+    // 🎯 Dock 内搜索表单始终可提交
+    document.querySelectorAll('.mobile-dock-search-form').forEach(function (form) {
+        form.classList.add('active');
+    });
+
     searchBtns.forEach((btn, index) => {
-        const form = searchForms[index];
+        const form = btn.closest('.search-form, .mobile-search-form, .mobile-dock-search-form') || searchForms[index];
+        if (!form) return;
+        if (form.classList.contains('mobile-dock-search-form')) return;
         const input = form.querySelector('input[type="search"]');
 
         if (btn && form && input) {
@@ -477,6 +663,10 @@ function initSearchBox() {
 }
 // 📱 移动端用户按钮初始化
 function initMobileUserPanel() {
+    // 🛡️ 移动端账号统一使用 Dock 抽屉，清理旧版面板和下拉菜单
+    document.querySelectorAll('.mobile-user-dropdown-menu, .mobile-user-panel').forEach(panel => panel.remove());
+    return;
+
     const mobileUserBtn = document.querySelector('.mobile-user-btn');
     if(!mobileUserBtn) return;
     
@@ -519,8 +709,9 @@ function initMobileUserPanel() {
             dropdownMenu.className = 'mobile-user-dropdown-menu';
             dropdownMenu.style.cssText = `
                 position: fixed;
-                top: 70px;
-                right: 20px;
+                top: auto;
+                bottom: calc(var(--mobile-dock-height, 64px) + var(--mobile-dock-bump, 32px) + 12px + var(--mobile-dock-safe-bottom, 0px) + var(--mobile-dock-vv-bottom, 0px));
+                right: 12px;
                 background: white;
                 border-radius: 12px;
                 box-shadow: 0 8px 32px rgba(0,0,0,0.15);
@@ -528,7 +719,7 @@ function initMobileUserPanel() {
                 min-width: 220px;
                 opacity: 0;
                 visibility: hidden;
-                transform: translateY(-10px);
+                transform: translateY(10px);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 border: 1px solid rgba(0,0,0,0.1);
                 overflow: hidden;
@@ -668,7 +859,7 @@ function initMobileUserPanel() {
                 // 关闭菜单
                 dropdownMenu.style.opacity = '0';
                 dropdownMenu.style.visibility = 'hidden';
-                dropdownMenu.style.transform = 'translateY(-10px)';
+                dropdownMenu.style.transform = 'translateY(10px)';
             } else {
                 // 重新渲染菜单（确保链接最新）
                 renderMenu();
@@ -691,7 +882,7 @@ function initMobileUserPanel() {
             if (!dropdownMenu.contains(e.target) && !mobileUserBtnEl.contains(e.target)) {
                 dropdownMenu.style.opacity = '0';
                 dropdownMenu.style.visibility = 'hidden';
-                dropdownMenu.style.transform = 'translateY(-10px)';
+                dropdownMenu.style.transform = 'translateY(10px)';
             }
         }, false);
         
@@ -700,7 +891,7 @@ function initMobileUserPanel() {
             if (e.key === 'Escape') {
                 dropdownMenu.style.opacity = '0';
                 dropdownMenu.style.visibility = 'hidden';
-                dropdownMenu.style.transform = 'translateY(-10px)';
+                dropdownMenu.style.transform = 'translateY(10px)';
             }
         }, false);
         
@@ -759,8 +950,9 @@ function initMobileUserPanel() {
             dropdownMenu.className = 'mobile-user-dropdown-menu';
             dropdownMenu.style.cssText = `
                 position: fixed;
-                top: 70px;
-                right: 20px;
+                top: auto;
+                bottom: calc(var(--mobile-dock-height, 64px) + var(--mobile-dock-bump, 32px) + 12px + var(--mobile-dock-safe-bottom, 0px) + var(--mobile-dock-vv-bottom, 0px));
+                right: 12px;
                 background: white;
                 border-radius: 12px;
                 box-shadow: 0 8px 32px rgba(0,0,0,0.15);
@@ -768,7 +960,7 @@ function initMobileUserPanel() {
                 min-width: 220px;
                 opacity: 0;
                 visibility: hidden;
-                transform: translateY(-10px);
+                transform: translateY(10px);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 border: 1px solid rgba(0,0,0,0.1);
                 overflow: hidden;
@@ -806,7 +998,7 @@ function initMobileUserPanel() {
             
             dropdownMenu.innerHTML = `
                 <div class="mobile-dropdown-content" style="padding: 0;">
-                    <a href="${loginLink}" class="mobile-dropdown-item" style="
+                    <a href="${loginLink}" class="mobile-dropdown-item" data-no-swup style="
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
@@ -824,7 +1016,7 @@ function initMobileUserPanel() {
                         <i class="fa fa-sign-in" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
                         <span>登录</span>
                     </a>
-                    <a href="${registerLink}" class="mobile-dropdown-item" style="
+                    <a href="${registerLink}" class="mobile-dropdown-item" data-no-swup style="
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
@@ -868,7 +1060,7 @@ function initMobileUserPanel() {
                 // 关闭菜单
                 dropdownMenu.style.opacity = '0';
                 dropdownMenu.style.visibility = 'hidden';
-                dropdownMenu.style.transform = 'translateY(-10px)';
+                dropdownMenu.style.transform = 'translateY(10px)';
             } else {
                 // 重新渲染菜单
                 renderGuestMenu();
@@ -891,7 +1083,7 @@ function initMobileUserPanel() {
             if (!dropdownMenu.contains(e.target) && !mobileUserBtnEl.contains(e.target)) {
                 dropdownMenu.style.opacity = '0';
                 dropdownMenu.style.visibility = 'hidden';
-                dropdownMenu.style.transform = 'translateY(-10px)';
+                dropdownMenu.style.transform = 'translateY(10px)';
             }
         }, false);
         
@@ -900,7 +1092,7 @@ function initMobileUserPanel() {
             if (e.key === 'Escape') {
                 dropdownMenu.style.opacity = '0';
                 dropdownMenu.style.visibility = 'hidden';
-                dropdownMenu.style.transform = 'translateY(-10px)';
+                dropdownMenu.style.transform = 'translateY(10px)';
             }
         }, false);
         
@@ -1581,50 +1773,95 @@ function initPostCoverImages() {
         }
     });
 }
-// Headhesive初始化
+// Headhesive初始化「桌面端吸顶导航；移动端完全注销，避免破坏底部 Dock 的 fixed」
 function initStickyHeader() {
   const header = document.querySelector('.boxmoe_header .navbar');
   if (!header) return;
-  let lastScrollTop = 0;
-  const headerHeight = header.offsetHeight;
-  window.addEventListener('scroll', () => {
+
+  const mobileMq = window.matchMedia('(max-width: 991px)');
+  let bound = !!header.dataset.stickyHeaderBound;
+
+  function clearStickyState() {
+    header.classList.remove('boxed', 'mx-auto', 'scrolled', 'nav-up', 'nav-down');
+  }
+
+  function applyScrolledState() {
+    // 🧊 第二状态：吸顶毛玻璃卡片，下移页面立即套上
+    header.classList.add('scrolled', 'boxed', 'mx-auto', 'nav-down');
+    header.classList.remove('nav-up');
+  }
+
+  function onScroll() {
+    // 📱 移动端不跑吸顶，防止 scrolled/fixed 动画污染布局与底座定位
+    if (mobileMq.matches) {
+      clearStickyState();
+      return;
+    }
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    if (!header) return;
-
-    if (scrollTop > headerHeight) {
-      if (scrollTop > lastScrollTop) {
-        header.classList.add('scrolled');
-        header.classList.remove('boxed', 'mx-auto', 'nav-down');
-        header.classList.add('boxed', 'mx-auto', 'nav-up');
-      } else {
-        header.classList.add('scrolled');
-        header.classList.remove('boxed', 'mx-auto', 'nav-up');
-        header.classList.add('boxed', 'mx-auto', 'nav-down');
-      }
-
+    if (scrollTop > 0) {
+      applyScrolledState();
     } else {
-      header.classList.remove('boxed', 'mx-auto', 'scrolled', 'nav-up', 'nav-down');
-    }  
-    lastScrollTop = scrollTop;
-  });
+      clearStickyState();
+    }
+  }
+
+  function syncMode() {
+    if (mobileMq.matches) {
+      clearStickyState();
+      return;
+    }
+    onScroll();
+  }
+
+  if (!bound) {
+    header.dataset.stickyHeaderBound = '1';
+    window.addEventListener('scroll', onScroll, { passive: true });
+    mobileMq.addEventListener('change', syncMode);
+  }
+  syncMode();
 }
+window.initStickyHeader = initStickyHeader;
 
 // 文章导读初始化
+let tocAbortController = null;
+
 // 📊 文章导读初始化「带 SVG 阅读进度指示器和轮盘菜单」
 function initTableOfContents() {
-    const content = document.querySelector('.single-content');
-    const tocContainer = document.querySelector('.post-toc-container');
-    const tocBtn = document.querySelector('.post-toc-btn');
-    const toc = document.querySelector('.post-toc');
-    const tocList = document.querySelector('.toc-list');
-    const tocWheelMenu = document.querySelector('.toc-wheel-menu');
-    const progressBar = document.querySelector('.toc-progress-bar');
-    const progressText = document.querySelector('.toc-progress-text');
+    if (tocAbortController) {
+        tocAbortController.abort();
+    }
+    tocAbortController = new AbortController();
+    const { signal } = tocAbortController;
 
-    if(!content || !tocBtn || !toc || !tocList) return;
+    const tocWheelMenu = document.querySelector('.toc-wheel-menu');
+    const tocContainer = tocWheelMenu?.closest('.post-toc-container');
+    const tocBtn = tocContainer?.querySelector('.post-toc-btn');
+    const toc = tocContainer?.querySelector('.post-toc');
+    const tocList = tocContainer?.querySelector('.toc-list');
+    const tocWheelTocItem = tocWheelMenu?.querySelector('[data-action="toc"]');
+    const progressBar = tocContainer?.querySelector('.toc-progress-bar');
+    const progressText = tocContainer?.querySelector('.toc-progress-text');
+
+    if (!tocContainer || !tocBtn || !toc || !tocList) return;
+
+    tocContainer.style.display = '';
+    tocContainer.classList.remove('visible');
+    tocBtn.classList.remove('visible', 'active');
+    toc.classList.remove('show');
+    tocWheelMenu?.classList.remove('show');
+    tocList.innerHTML = '';
+    if (tocWheelTocItem) tocWheelTocItem.style.display = '';
+
+    const content = document.querySelector('#swup-container .single-content') ||
+        document.querySelector('.single-content');
+
+    if (!content) {
+        tocContainer.style.display = 'none';
+        return;
+    }
 
     const headers = content.querySelectorAll('h1, h2, h3, h4');
-    if(headers.length === 0) {
+    if (headers.length === 0) {
         tocContainer.style.display = 'none';
         return;
     }
@@ -1679,7 +1916,7 @@ function initTableOfContents() {
 
     window.addEventListener('scroll', () => {
         const scrollPos = window.scrollY;
-        const progress = updateReadingProgress();
+        updateReadingProgress();
 
         if(scrollPos > showOffset) {
             tocContainer.classList.add('visible');
@@ -1728,7 +1965,7 @@ function initTableOfContents() {
                 }
             }
         }, 50);
-    });
+    }, { signal });
 
     // 📖 目录链接点击事件
     tocList.addEventListener('click', (e) => {
@@ -1751,7 +1988,7 @@ function initTableOfContents() {
                 });
             }
         }
-    });
+    }, { signal });
 
     // 🎡 主按钮点击 - 展开/收起轮盘菜单
     tocBtn.addEventListener('click', (e) => {
@@ -1768,7 +2005,7 @@ function initTableOfContents() {
                 toc.classList.remove('show');
             }
         }
-    });
+    }, { signal });
 
     // 🎯 轮盘菜单项点击事件
     if(tocWheelMenu) {
@@ -1801,7 +2038,7 @@ function initTableOfContents() {
                     tocBtn.classList.remove('active');
                     break;
             }
-        });
+        }, { signal });
     }
 
     // 🌐 点击外部关闭所有菜单
@@ -1812,11 +2049,13 @@ function initTableOfContents() {
             tocBtn.classList.remove('active');
             wheelMenuOpen = false;
         }
-    });
+    }, { signal });
 
     // 🚀 初始化进度
     updateReadingProgress();
 }
+
+window.initTableOfContents = initTableOfContents;
 
 // 标签颜色初始化
 function initTagColors() {
@@ -1841,16 +2080,195 @@ function initTagColors() {
     });
 }
 
-// 一言初始化
+// 🌟 解析一言接口：兼容 hitokoto.cn JSON、自定义 JSON、纯文本
+function parseHitokotoResponse(raw) {
+    const body = String(raw || '').replace(/^\uFEFF/, '').trim();
+    if (!body) return '';
+
+    if (body.startsWith('{') || body.startsWith('[')) {
+        try {
+            const data = JSON.parse(body);
+
+            // 💫 hitokoto.cn：{"hitokoto":"..."}
+            if (data && typeof data.hitokoto === 'string' && data.hitokoto.trim()) {
+                return data.hitokoto.trim();
+            }
+
+            // 🎯 自定义 API：{"data":[{"text":"...","character":"...","episode":"..."}]}
+            const item = Array.isArray(data)
+                ? data[0]
+                : (data && Array.isArray(data.data) ? data.data[0] : null);
+            if (item && typeof item === 'object') {
+                if (typeof item.hitokoto === 'string' && item.hitokoto.trim()) {
+                    return item.hitokoto.trim();
+                }
+                if (typeof item.text === 'string' && item.text.trim()) {
+                    const text = item.text.trim();
+                    const character = typeof item.character === 'string' ? item.character.trim() : '';
+                    const episode = typeof item.episode === 'string' ? item.episode.trim() : '';
+                    if (character || episode) {
+                        return `${text} —— ${character}${episode ? '「' + episode + '」' : ''}`.trim();
+                    }
+                    return text;
+                }
+            }
+
+            // 🔍 常见兜底字段
+            if (typeof data.text === 'string' && data.text.trim()) return data.text.trim();
+            if (typeof data.content === 'string' && data.content.trim()) return data.content.trim();
+            if (typeof data.quote === 'string' && data.quote.trim()) return data.quote.trim();
+        } catch (e) {
+            // ✨ JSON 解析失败则按纯文本处理
+        }
+    }
+
+    return body;
+}
+
+// 🎨 一言文本切换：上移渐隐旧文 → 上移渐显新文（含星标图标）
+function setHitokotoText(stage, text) {
+    if (!stage || !text) return;
+
+    let rowEl = stage.querySelector('.hitokoto-row');
+    let textEl = stage.querySelector('.hitokoto-text');
+
+    // 🔧 兼容旧 DOM：补齐图标行结构
+    if (!rowEl || !textEl) {
+        const legacyText = ((textEl && textEl.textContent) || stage.textContent || '').trim();
+        stage.innerHTML = '';
+        stage.classList.add('hitokoto-stage');
+        rowEl = document.createElement('span');
+        rowEl.className = 'hitokoto-row';
+        const iconEl = document.createElement('i');
+        iconEl.className = 'fa fa-star spinner';
+        iconEl.setAttribute('aria-hidden', 'true');
+        textEl = document.createElement('span');
+        textEl.className = 'hitokoto-text text-gradient';
+        textEl.textContent = legacyText;
+        rowEl.appendChild(iconEl);
+        rowEl.appendChild(textEl);
+        stage.appendChild(rowEl);
+    }
+
+    const current = (textEl.textContent || '').trim();
+    if (current === text) return;
+
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const skipOut = !current || current === '加载中' || reduceMotion;
+
+    const clearAnimTimer = () => {
+        if (stage._hitokotoAnimTimer) {
+            clearTimeout(stage._hitokotoAnimTimer);
+            stage._hitokotoAnimTimer = null;
+        }
+    };
+
+    const done = () => {
+        clearAnimTimer();
+        stage._hitokotoAnimating = false;
+        flushPendingHitokoto(stage);
+    };
+
+    const applyEnter = (nextText) => {
+        clearAnimTimer();
+        if (reduceMotion) {
+            rowEl.classList.remove('is-leaving', 'is-enter-prep');
+            textEl.textContent = nextText;
+            done();
+            return;
+        }
+
+        rowEl.classList.remove('is-leaving');
+        rowEl.classList.add('is-enter-prep');
+        textEl.textContent = nextText;
+        void rowEl.offsetWidth;
+        rowEl.classList.remove('is-enter-prep');
+
+        const onIn = (e) => {
+            if (e.propertyName !== 'opacity') return;
+            rowEl.removeEventListener('transitionend', onIn);
+            done();
+        };
+        rowEl.addEventListener('transitionend', onIn);
+        stage._hitokotoAnimTimer = setTimeout(() => {
+            rowEl.removeEventListener('transitionend', onIn);
+            done();
+        }, 700);
+    };
+
+    if (stage._hitokotoAnimating) {
+        stage._hitokotoPending = text;
+        return;
+    }
+
+    if (skipOut) {
+        stage._hitokotoAnimating = !reduceMotion;
+        applyEnter(text);
+        return;
+    }
+
+    stage._hitokotoAnimating = true;
+    clearAnimTimer();
+    rowEl.classList.remove('is-enter-prep');
+    rowEl.classList.add('is-leaving');
+
+    const onOut = (e) => {
+        if (e.propertyName !== 'opacity') return;
+        rowEl.removeEventListener('transitionend', onOut);
+        applyEnter(text);
+    };
+    rowEl.addEventListener('transitionend', onOut);
+    stage._hitokotoAnimTimer = setTimeout(() => {
+        rowEl.removeEventListener('transitionend', onOut);
+        applyEnter(text);
+    }, 700);
+}
+
+// 📌 动画进行中若有新文案，结束后再切一次
+function flushPendingHitokoto(stage) {
+    if (!stage || !stage._hitokotoPending) return;
+    const pending = stage._hitokotoPending;
+    stage._hitokotoPending = null;
+    setHitokotoText(stage, pending);
+}
+
+// 一言初始化（每 10 秒切换一次）
 function initHitokoto() {
     if (!document.getElementById('hitokoto')) return;
     const hitokotoParam = window.ajax_object ? window.ajax_object.hitokoto : 'a';
-    fetch(`https://v1.hitokoto.cn/?c=${hitokotoParam}`)
-        .then(response => response.json())
-        .then(data => {
-            const hitokotoEl = document.getElementById('hitokoto');
-            hitokotoEl && (hitokotoEl.textContent = data.hitokoto);
-        })
+    const customApiUrl = window.ajax_object ? window.ajax_object.hitokoto_api_url : '';
+    const apiUrl = customApiUrl ? customApiUrl : `https://v1.hitokoto.cn/?c=${hitokotoParam}`;
+    // ⏱️ 后台自定义切换时间（秒），最少 3 秒
+    const intervalSec = Math.max(3, parseInt(window.ajax_object && window.ajax_object.hitokoto_interval, 10) || 10);
+    const refreshMs = intervalSec * 1000;
+
+    // 🚀 避免 Swup 重初始化叠多个定时器
+    if (window._shirokiHitokotoInterval) {
+        clearInterval(window._shirokiHitokotoInterval);
+        window._shirokiHitokotoInterval = null;
+    }
+
+    const loadHitokoto = () => {
+        const stage = document.getElementById('hitokoto');
+        if (!stage) {
+            if (window._shirokiHitokotoInterval) {
+                clearInterval(window._shirokiHitokotoInterval);
+                window._shirokiHitokotoInterval = null;
+            }
+            return;
+        }
+        fetch(apiUrl)
+            .then(response => response.text())
+            .then(raw => {
+                const el = document.getElementById('hitokoto');
+                const text = parseHitokotoResponse(raw);
+                if (el && text) setHitokotoText(el, text);
+            })
+            .catch(() => {});
+    };
+
+    loadHitokoto();
+    window._shirokiHitokotoInterval = setInterval(loadHitokoto, refreshMs);
 }
 
 // 🔐 登录状态管理
@@ -2035,7 +2453,13 @@ const LoginStatusManager = (() => {
             if (!signInLinkSwitch) {
                 return;
             }
-            
+
+            // 📱 移动端账号由 Dock 抽屉负责，禁止重新生成旧版面板
+            if (window.matchMedia("(max-width: 991px)").matches) {
+                document.querySelectorAll('.mobile-user-dropdown-menu, .mobile-user-panel').forEach(panel => panel.remove());
+                return;
+            }
+
             // 处理移动端用户面板
             const mobileUserBtn = document.querySelector('.mobile-user-btn');
             const mobileUserPanels = document.querySelectorAll('.mobile-user-panel');
@@ -2087,12 +2511,12 @@ const LoginStatusManager = (() => {
                                 <div class="mobile-logged-menu">
                                 <div class="user-wrapper d-lg-flex">
                             <div class="user-login-wrap">
-                            <a href="${getLoginLink()}" class="user-login">
+                            <a href="${getLoginLink()}" class="user-login" data-no-swup>
                             <span class="login-text">登录</span></a>
                             </div>
                             <span class="divider">or</span>
                             <div class="user-reg-wrap">
-                            <a href="${getRegisterLink()}" class="user-reg">
+                            <a href="${getRegisterLink()}" class="user-reg" data-no-swup>
                             <span class="reg-text">注册</span></a></div>
                             </div>
                                 </div>
@@ -2212,12 +2636,12 @@ const LoginStatusManager = (() => {
                         newWrapper.className = 'user-wrapper d-none d-lg-flex';
                         newWrapper.innerHTML = `
                             <div class="user-login-wrap">
-                            <a href="${getLoginLink()}" class="user-login">
+                            <a href="${getLoginLink()}" class="user-login" data-no-swup>
                             <span class="login-text">登录</span></a>
                             </div>
                             <span class="divider">or</span>
                             <div class="user-reg-wrap">
-                            <a href="${getRegisterLink()}" class="user-reg">
+                            <a href="${getRegisterLink()}" class="user-reg" data-no-swup>
                             <span class="reg-text">注册</span></a></div>
                             <img src="${themeUrl}/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
                         `;
@@ -2367,7 +2791,17 @@ const LoginStatusManager = (() => {
     /**
      * 初始化登录状态管理
      */
+    let loginStatusInterval = null;
+    let loginStatusInitialized = false;
+
     const init = () => {
+        // 避免重复初始化导致多个定时器
+        if (loginStatusInitialized) {
+            checkLoginStatus();
+            return;
+        }
+        loginStatusInitialized = true;
+
         // 页面加载时立即使用PHP渲染的初始状态
         const initialIsLoggedIn = window.ajax_object && window.ajax_object.is_user_logged_in === 'true';
         
@@ -2384,7 +2818,10 @@ const LoginStatusManager = (() => {
         checkLoginStatus();
         
         // 定期检查，确保登录状态始终最新
-        setInterval(() => {
+        if (loginStatusInterval) {
+            clearInterval(loginStatusInterval);
+        }
+        loginStatusInterval = setInterval(() => {
             checkLoginStatus();
         }, config.checkInterval);
         
@@ -2560,8 +2997,9 @@ const ThemeSwitcher = (() => {
         if (!themeSwitcher) return;
 
         document.querySelectorAll("[data-bs-theme-value]").forEach(btn => {
-            btn.classList.toggle("active", btn === themeSwitcher);
-            btn.setAttribute("aria-pressed", btn === themeSwitcher);
+            const isMatch = btn.getAttribute("data-bs-theme-value") === theme;
+            btn.classList.toggle("active", isMatch);
+            btn.setAttribute("aria-pressed", isMatch ? "true" : "false");
         });
         /* 🎨 更新主题切换按钮图标 - 根据当前主题显示对应的图标 */
         const bdThemeBtn = document.querySelector('.bd-theme');
@@ -2587,14 +3025,32 @@ const ThemeSwitcher = (() => {
         setTheme(preferredTheme);
         updateActiveState(preferredTheme);
         document.querySelectorAll("[data-bs-theme-value]").forEach(button => {
-            button.addEventListener("click", () => {
+            if (button.dataset.themeToggleBound === "1") return;
+            button.dataset.themeToggleBound = "1";
+            button.addEventListener("click", (e) => {
                 const theme = button.dataset.bsThemeValue;
                 const current = document.documentElement.getAttribute("data-bs-theme") || "light";
                 const nextEffective = theme === "auto" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : theme;
-                animateThemeToggle(button, current, nextEffective);
-                localStorage.setItem("theme", theme);
-                setTheme(theme);
-                updateActiveState(theme, true);
+                // 🎯 记下点击坐标；移动端先涟漪，结束后再关更多抽屉
+                const origin = {
+                    x: typeof e.clientX === "number" ? e.clientX : null,
+                    y: typeof e.clientY === "number" ? e.clientY : null
+                };
+                const sheet = button.closest(".mobile-dock-sheet");
+                const closeSheetAfterRipple = function () {
+                    if (!sheet) return;
+                    // 📱 向下收起，不要瞬间 hidden
+                    if (typeof window.closeMobileDockSheet === "function") {
+                        window.closeMobileDockSheet(sheet);
+                    } else {
+                        sheet.classList.remove("is-active");
+                    }
+                };
+                animateThemeToggle(button, current, nextEffective, function () {
+                    localStorage.setItem("theme", theme);
+                    setTheme(theme);
+                    updateActiveState(theme, false);
+                }, origin, closeSheetAfterRipple);
             });
         });
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
@@ -2725,56 +3181,122 @@ function initRunningDays() {
         secondsEl.textContent = seconds;
     };
     update();
-    setInterval(update, 1000);
+    if (window._shirokiRunningDaysInterval) {
+        clearInterval(window._shirokiRunningDaysInterval);
+    }
+    window._shirokiRunningDaysInterval = setInterval(update, 1000);
 }
 
-function animateThemeToggle(btn, cur, nxt){
-    try{
-        var vw = window.innerWidth||document.documentElement.clientWidth;
-        var vh = window.innerHeight||document.documentElement.clientHeight;
-        var r = btn && btn.getBoundingClientRect ? btn.getBoundingClientRect() : { left: vw/2, top: 60, width: 0, height: 0 };
-        var cx = Math.round(r.left + r.width/2);
-        var cy = Math.round(r.top + r.height/2);
+// 🌊 主题切换涟漪「对齐 RouxZhee：View Transition + clip-path，扫的是页面快照而非纯色遮罩」
+var _themeToggleBusy = false;
+var _themeToggleAnim = null;
+var _themeToggleVt = null;
+
+function cleanupThemeToggleTransition() {
+    try {
+        if (_themeToggleAnim) {
+            _themeToggleAnim.cancel();
+            _themeToggleAnim = null;
+        }
+    } catch (_) {}
+    try {
+        if (_themeToggleVt && typeof _themeToggleVt.skipTransition === "function") {
+            _themeToggleVt.skipTransition();
+        }
+    } catch (_) {}
+    _themeToggleVt = null;
+    document.documentElement.removeAttribute("data-theme-transition");
+}
+
+function animateThemeToggle(btn, cur, nxt, applyFn, origin, onDone) {
+    var apply = typeof applyFn === "function" ? applyFn : function () {};
+    var done = typeof onDone === "function" ? onDone : function () {};
+    var finish = function () {
+        cleanupThemeToggleTransition();
+        _themeToggleBusy = false;
+        try { done(); } catch (_) {}
+    };
+    try {
+        if (cur === nxt) {
+            apply();
+            done();
+            return;
+        }
+        if (_themeToggleBusy) return;
+        var vw = window.innerWidth || document.documentElement.clientWidth;
+        var vh = window.innerHeight || document.documentElement.clientHeight;
+        var cx;
+        var cy;
+        // 🎯 优先用真实点击坐标；没有再退到按钮中心
+        if (origin && typeof origin.x === "number" && typeof origin.y === "number" && isFinite(origin.x) && isFinite(origin.y)) {
+            cx = Math.round(origin.x);
+            cy = Math.round(origin.y);
+        } else {
+            var r = btn && btn.getBoundingClientRect ? btn.getBoundingClientRect() : { left: vw / 2, top: vh / 2, width: 0, height: 0 };
+            cx = Math.round(r.left + r.width / 2);
+            cy = Math.round(r.top + r.height / 2);
+            if (!isFinite(cx) || !isFinite(cy) || (r.width === 0 && r.height === 0 && cx === 0 && cy === 0)) {
+                cx = Math.round(vw / 2);
+                cy = Math.round(vh / 2);
+            }
+        }
+        cx = Math.max(0, Math.min(vw, cx));
+        cy = Math.max(0, Math.min(vh, cy));
         var dx = Math.max(cx, vw - cx);
         var dy = Math.max(cy, vh - cy);
         var radius = Math.ceil(Math.hypot(dx, dy));
-        var prevBg = (function(){
-            try{
-                var cs = window.getComputedStyle(document.body);
-                var bgFull = cs.getPropertyValue('background');
-                var bgImg = cs.getPropertyValue('background-image');
-                var bgCol = cs.getPropertyValue('background-color');
-                var val = String(bgFull||'').trim();
-                if (val) return val;
-                if (String(bgImg||'').trim() && String(bgCol||'').trim()) return String(bgImg).trim() + ', ' + String(bgCol).trim();
-                if (String(bgImg||'').trim()) return String(bgImg).trim();
-                if (String(bgCol||'').trim()) return String(bgCol).trim();
-            }catch(_){}
-            try{
-                var rs = window.getComputedStyle(document.documentElement);
-                var varBg = rs.getPropertyValue('--ish-bg');
-                if (varBg && String(varBg).trim()) return String(varBg).trim();
-            }catch(_){}
-            try{ var s2 = window.getComputedStyle(document.documentElement).backgroundColor; if (s2) return s2; }catch(_){}
-            return cur==='dark' ? 'rgb(18, 18, 18)' : 'rgb(255, 255, 255)';
-        })();
-        var overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.left = '0';
-        overlay.style.top = '0';
-        overlay.style.right = '0';
-        overlay.style.bottom = '0';
-        overlay.style.zIndex = '-1';
-        overlay.style.pointerEvents = 'none';
-        overlay.style.background = prevBg;
-        overlay.style.willChange = 'clip-path';
-        overlay.style.clipPath = 'circle('+radius+'px at '+cx+'px '+cy+'px)';
-        overlay.style.transition = 'clip-path 520ms ease-in-out';
-        if (document.body.firstChild) { document.body.insertBefore(overlay, document.body.firstChild); } else { document.body.appendChild(overlay); }
-        requestAnimationFrame(function(){ overlay.style.clipPath = 'circle(0px at '+cx+'px '+cy+'px)'; });
-        var cleanup = function(){ overlay.removeEventListener('transitionend', cleanup); if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay); };
-        overlay.addEventListener('transitionend', cleanup);
-    }catch(_){}
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var canVt = typeof document.startViewTransition === "function" && !reduceMotion;
+
+        if (!canVt) {
+            apply();
+            done();
+            return;
+        }
+
+        _themeToggleBusy = true;
+        cleanupThemeToggleTransition();
+        var html = document.documentElement;
+        var wasDark = cur === "dark";
+        html.setAttribute("data-theme-transition", wasDark ? "to-light" : "to-dark");
+
+        var transition = document.startViewTransition(function () {
+            apply();
+        });
+        _themeToggleVt = transition;
+
+        transition.ready.then(function () {
+            var expand = [
+                "circle(0px at " + cx + "px " + cy + "px)",
+                "circle(" + radius + "px at " + cx + "px " + cy + "px)"
+            ];
+            // 🌙→☀️ 旧暗色快照收缩；☀️→🌙 新暗色快照展开
+            var clipPath = wasDark ? expand.slice().reverse() : expand;
+            var pseudo = wasDark ? "::view-transition-old(root)" : "::view-transition-new(root)";
+            var animation = document.documentElement.animate(
+                { clipPath: clipPath },
+                {
+                    duration: 600,
+                    easing: "ease-in",
+                    fill: "both",
+                    pseudoElement: pseudo
+                }
+            );
+            _themeToggleAnim = animation;
+            return animation.finished.catch(function () {});
+        }).then(function () {
+            return transition.finished.catch(function () {});
+        }).catch(function () {
+            apply();
+        }).finally(function () {
+            finish();
+        });
+    } catch (_) {
+        cleanupThemeToggleTransition();
+        _themeToggleBusy = false;
+        apply();
+        try { done(); } catch (__) {}
+    }
 }
 
 // 📝 任务清单交互和自动保存功能 - Emoji版
@@ -4203,9 +4725,9 @@ function initPostUpdateTimer() {
     
     const modifiedDate = new Date(modifiedTime.replace(/-/g, '/'));
     const displayEl = timerEl.querySelector('.timer-display');
-    if (!displayEl) return;
+    if (!displayEl || isNaN(modifiedDate.getTime())) return;
     
-    // 格式化时间差的函数
+    // 🧩 格式化时间差
     function formatTimeDiff(diff) {
         const seconds = Math.floor(diff / 1000);
         const minutes = Math.floor(seconds / 60);
@@ -4235,25 +4757,27 @@ function initPostUpdateTimer() {
         }
     }
     
-    // 更新计时器显示
+    // 🕐 更新计时器显示（定时发布未到点时归零为 0 秒）
     function updateTimer() {
         const now = new Date();
         const diff = now.getTime() - modifiedDate.getTime();
         
         if (diff < 0) {
-            displayEl.textContent = '刚刚更新';
+            displayEl.textContent = '0秒';
             return;
         }
         
         displayEl.textContent = formatTimeDiff(diff);
     }
     
-    // 立即更新一次
     updateTimer();
     
-    // 每秒更新一次
-    setInterval(updateTimer, 1000);
+    if (window._shirokiPostUpdateTimerInterval) {
+        clearInterval(window._shirokiPostUpdateTimerInterval);
+    }
+    window._shirokiPostUpdateTimerInterval = setInterval(updateTimer, 1000);
 }
+window.initPostUpdateTimer = initPostUpdateTimer;
 
 // DOM加载完成后初始化
 document.addEventListener("DOMContentLoaded", () => {
@@ -4338,56 +4862,6 @@ document.addEventListener("DOMContentLoaded", () => {
     })();
 });
 
-// 🎨 主题切换动画效果
-function animateThemeToggle(btn, cur, nxt){
-    try{
-        var vw = window.innerWidth||document.documentElement.clientWidth;
-        var vh = window.innerHeight||document.documentElement.clientHeight;
-        var r = btn && btn.getBoundingClientRect ? btn.getBoundingClientRect() : { left: vw/2, top: 60, width: 0, height: 0 };
-        var cx = Math.round(r.left + r.width/2);
-        var cy = Math.round(r.top + r.height/2);
-        var dx = Math.max(cx, vw - cx);
-        var dy = Math.max(cy, vh - cy);
-        var radius = Math.ceil(Math.hypot(dx, dy));
-        var prevBg = (function(){
-            try{
-                var cs = window.getComputedStyle(document.body);
-                var bgFull = cs.getPropertyValue('background');
-                var bgImg = cs.getPropertyValue('background-image');
-                var bgCol = cs.getPropertyValue('background-color');
-                var val = String(bgFull||'').trim();
-                if (val) return val;
-                if (String(bgImg||'').trim() && String(bgCol||'').trim()) return String(bgImg).trim() + ', ' + String(bgCol).trim();
-                if (String(bgImg||'').trim()) return String(bgImg).trim();
-                if (String(bgCol||'').trim()) return String(bgCol).trim();
-            }catch(_){}
-            try{
-                var rs = window.getComputedStyle(document.documentElement);
-                var varBg = rs.getPropertyValue('--ish-bg');
-                if (varBg && String(varBg).trim()) return String(varBg).trim();
-            }catch(_){}
-            try{ var s2 = window.getComputedStyle(document.documentElement).backgroundColor; if (s2) return s2; }catch(_){}
-            return cur==='dark' ? 'rgb(18, 18, 18)' : 'rgb(255, 255, 255)';
-        })();
-        var overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.left = '0';
-        overlay.style.top = '0';
-        overlay.style.right = '0';
-        overlay.style.bottom = '0';
-        overlay.style.zIndex = '-1';
-        overlay.style.pointerEvents = 'none';
-        overlay.style.background = prevBg;
-        overlay.style.willChange = 'clip-path';
-        overlay.style.clipPath = 'circle('+radius+'px at '+cx+'px '+cy+'px)';
-        overlay.style.transition = 'clip-path 520ms ease-in-out';
-        if (document.body.firstChild) { document.body.insertBefore(overlay, document.body.firstChild); } else { document.body.appendChild(overlay); }
-        requestAnimationFrame(function(){ overlay.style.clipPath = 'circle(0px at '+cx+'px '+cy+'px)'; });
-        var cleanup = function(){ overlay.removeEventListener('transitionend', cleanup); if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay); };
-        overlay.addEventListener('transitionend', cleanup);
-    }catch(_){}
-}
-
 // 🌈 Banner打字动画效果
 // 🔒 使用立即执行函数表达式(IIFE)确保动画只执行一次，防止重复执行
 (function() {
@@ -4454,6 +4928,17 @@ function animateThemeToggle(btn, cur, nxt){
                 value: false
             });
         }
+
+        // 🛡️ 创建动画世代计数器，使旧实例的挂起超时失效
+        if (!window.hasOwnProperty('__boxmoeBannerAnimationGeneration')) {
+            Object.defineProperty(window, '__boxmoeBannerAnimationGeneration', {
+                writable: true,
+                configurable: true,
+                value: 0
+            });
+        }
+        window.__boxmoeBannerAnimationGeneration++;
+        const currentGeneration = window.__boxmoeBannerAnimationGeneration;
 
         // 🔒 设置可修改的元素标记，防止外部脚本干扰
         Object.defineProperty(target, '__bannerAnimationInitialized', {
@@ -4532,6 +5017,11 @@ function animateThemeToggle(btn, cur, nxt){
                 return;
             }
 
+            // 🛡️ 检查动画世代，旧实例直接退出
+            if (window.__boxmoeBannerAnimationGeneration !== currentGeneration) {
+                return;
+            }
+
             // 🔒 防止动画函数被多次调用
             if (animationRunning) {
                 return;
@@ -4564,6 +5054,9 @@ function animateThemeToggle(btn, cur, nxt){
                         
                         // ⏱️ 继续打字
                         setTimeout(() => {
+                            if (window.__boxmoeBannerAnimationGeneration !== currentGeneration) {
+                                return;
+                            }
                             animationRunning = false;
                             type();
                         }, 200);
@@ -4579,6 +5072,11 @@ function animateThemeToggle(btn, cur, nxt){
                         
                         // ⏱️ 等待3秒后开始删除
                         setTimeout(() => {
+                            // 🛡️ 检查动画世代，旧实例直接退出
+                            if (window.__boxmoeBannerAnimationGeneration !== currentGeneration) {
+                                return;
+                            }
+
                             // 🔄 从DOM恢复状态，确保isDeleting为true
                             const savedState = target.getAttribute('data-animation-state');
                             if (savedState) {
@@ -4590,8 +5088,7 @@ function animateThemeToggle(btn, cur, nxt){
                                     // 忽略解析错误，继续执行
                                 }
                             }
-                            
-    
+
                             animationRunning = false;
                             type();
                         }, 3000);
@@ -4616,6 +5113,9 @@ function animateThemeToggle(btn, cur, nxt){
                         
                         // ⏱️ 继续删除
                         setTimeout(() => {
+                            if (window.__boxmoeBannerAnimationGeneration !== currentGeneration) {
+                                return;
+                            }
                             animationRunning = false;
                             type();
                         }, 100);
@@ -4632,6 +5132,9 @@ function animateThemeToggle(btn, cur, nxt){
                         
                         // ⏱️ 等待500ms后重新开始
                         setTimeout(() => {
+                            if (window.__boxmoeBannerAnimationGeneration !== currentGeneration) {
+                                return;
+                            }
                             animationRunning = false;
                             type();
                         }, 500);
@@ -4641,6 +5144,9 @@ function animateThemeToggle(btn, cur, nxt){
                 animationRunning = false;
                 // 🔄 出错后重置状态，防止卡死
                 setTimeout(() => {
+                    if (window.__boxmoeBannerAnimationGeneration !== currentGeneration) {
+                        return;
+                    }
                     // 🔒 重置所有状态
                     animationState.isDeleting = false;
                     animationState.charIndex = 0;
@@ -4653,20 +5159,18 @@ function animateThemeToggle(btn, cur, nxt){
         }
 
         // 🔒 启动动画前的准备：
-        // 只有在第一次启动时才清空容器，避免影响正在运行的动画
-        if (!window.boxmoeCurrentAnimationInstance) {
-            // 🔍 检查容器是否已有内容
-            const existingSpans = target.querySelectorAll('span');
-            if (existingSpans.length === 0) {
-                target.innerHTML = '';
-                charIndex = 0;
-                isDeleting = false;
-                currentText = '';
-            }
-            
-            window.boxmoeCurrentAnimationInstance = true;
-            type(); // ⬅️ 启动动画
-        }
+        // 每次启动都清空容器并重置状态，防止旧内容造成重复文字
+        target.innerHTML = '';
+        animationState.isDeleting = false;
+        animationState.charIndex = 0;
+        animationState.currentText = '';
+        charIndex = 0;
+        isDeleting = false;
+        currentText = '';
+        target.removeAttribute('data-animation-state');
+
+        window.boxmoeCurrentAnimationInstance = true;
+        type(); // ⬅️ 启动动画
     }
     
     // 🔒 全局动画控制对象
@@ -4712,10 +5216,18 @@ function animateThemeToggle(btn, cur, nxt){
 
                 // 重置全局状态
                 window.boxmoeCurrentAnimationInstance = false;
+                // 更新目标元素（Swup切换后DOM可能变化）
+                this.target = document.querySelector('.boxmoe-typing-animation');
                 // 初始化动画
                 initBannerTypingAnimation();
                 this.isRunning = true;
             }
+        },
+
+        // 🔄 重置动画：停止并重新启动，用于Swup等无刷新切换后恢复状态
+        reset: function() {
+            this.stop();
+            this.start();
         }
     };
     

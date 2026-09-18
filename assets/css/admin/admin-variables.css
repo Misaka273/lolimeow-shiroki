@@ -8,11 +8,37 @@
    🌸 Shiroki 主题配色系统
    ============================================ */
 :root {
+  /* 🎨 链接分类随机背景色 */
+  --shiroki-category-color-1: oklch(0.94 0.06 5);
+  --shiroki-category-color-2: oklch(0.94 0.07 15);
+  --shiroki-category-color-3: oklch(0.95 0.08 25);
+  --shiroki-category-color-4: oklch(0.94 0.07 35);
+  --shiroki-category-color-5: oklch(0.93 0.08 175);
+  --shiroki-category-color-6: oklch(0.93 0.07 190);
+  --shiroki-category-color-7: oklch(0.93 0.08 205);
+  --shiroki-category-color-8: oklch(0.93 0.08 220);
+  --shiroki-category-color-9: oklch(0.94 0.08 235);
+  --shiroki-category-color-10: oklch(0.94 0.08 250);
+  --shiroki-category-color-11: oklch(0.94 0.07 265);
+  --shiroki-category-color-12: oklch(0.95 0.06 280);
+  --shiroki-category-color-13: oklch(0.91 0.08 295);
+  --shiroki-category-color-14: oklch(0.92 0.09 310);
+  --shiroki-category-color-15: oklch(0.92 0.09 325);
+  --shiroki-category-color-16: oklch(0.91 0.08 340);
+  --shiroki-category-color-17: oklch(0.91 0.08 350);
+  --shiroki-category-color-18: oklch(0.92 0.09 12);
+  --shiroki-category-color-19: oklch(0.92 0.09 198);
+  --shiroki-category-color-20: oklch(0.92 0.08 275);
+
   /* 🌸 粉色系 - 主题主色 */
-  --shiroki-pink-light: #ffb6c1;
-  --shiroki-pink-medium: #ffc0cb;
-  --shiroki-pink-dark: #ff69b4;
-  --shiroki-pink-deep: #ff1493;
+  --shiroki-pink-light: oklch(0.832 0.086 8.4);
+  --shiroki-pink-medium: oklch(0.858 0.073 7.3);
+  --shiroki-pink-dark: oklch(0.696 0.204 354.3);
+  --shiroki-pink-deep: oklch(0.592 0.257 348.1);
+  --shiroki-pink-pale: oklch(0.939 0.028 29);
+  --shiroki-pink-text: oklch(0.42 0.186 328);
+  --shiroki-pink-ring: color-mix(in oklch, var(--shiroki-pink-dark) 15%, transparent);
+  --shiroki-pink-glow: color-mix(in oklch, var(--shiroki-pink-dark) 10%, transparent);
 
   /* 🌑 灰色系 */
   --shiroki-gray-light: #f5f5f5;
@@ -39,7 +65,7 @@
   --shiroki-gradient-gray-transparent: linear-gradient(180deg, rgba(54, 53, 53, 0.95), rgba(105, 105, 105, 0.85));
 
   /* 📦 阴影 */
-  --shiroki-shadow-pink: 0 2px 10px rgba(255, 182, 193, 0.3);
+  --shiroki-shadow-pink: 0 2px 10px color-mix(in oklch, var(--shiroki-pink-light) 30%, transparent);
   --shiroki-shadow-black: 0 2px 10px rgba(0, 0, 0, 0.3);
 
   /* 🌊 页面背景渐变 - 亮色模式 */
@@ -71,6 +97,9 @@
   --admin-primary-shadow: rgba(99, 179, 237, 0.25);
   --admin-primary-text: #2b6cb0;
   --admin-primary-text-dark: #90cdf4;
+
+  /* 🗓️ 定时发布状态色 */
+  --admin-scheduled-bg: oklch(0.72 0.14 250 / 0.75);
 
   /* 🔵 浅蓝色系 - 媒体弹窗专用 */
   --admin-light-blue-1: #e0f2fe;

@@ -352,11 +352,30 @@
     font-size: 13px;
 }
 
-/* 🎨 卡片式内容样式 - 漫画风 */
+.boxmoe-md-preview .post-download-box .title i.fa,
+.single-content .post-download-box .title i.fa {
+    display: inline-block;
+    margin-right: 8px;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    width: 1.28571429em;
+    text-align: center;
+}
+
+.boxmoe-md-preview .link-title:before,
+.single-content .link-title:before {
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+}
+
 /* 编辑器预览中的卡片样式 */
 .boxmoe-md-preview .md-card {
     display: flex;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 12px;
     background: var(--shiroki-white);
     border: 2px solid var(--shiroki-pink-medium);
@@ -370,17 +389,22 @@
 }
 
 .boxmoe-md-preview .md-card-avatar {
+    flex: 0 0 60px;
+    width: 60px;
     flex-shrink: 0;
     position: relative;
 }
 
 .boxmoe-md-preview .md-card-avatar img {
+    display: block;
     width: 60px;
     height: 60px;
+    max-width: none;
     border-radius: 50%;
     border: 2px solid var(--shiroki-pink-light);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     object-fit: cover;
+    margin: 0;
 }
 
 /* 勋章样式 */
@@ -407,11 +431,17 @@
 }
 
 .boxmoe-md-preview .md-card-title {
+    display: block;
+    width: auto;
     margin: 0 0 6px 0;
     font-size: 16px;
     font-weight: 700;
     color: var(--shiroki-pink-dark);
     line-height: 1.3;
+}
+
+.boxmoe-md-preview .md-card-title::after {
+    display: none;
 }
 
 .boxmoe-md-preview .md-card-desc {
@@ -458,7 +488,8 @@
 /* 前端页面中的卡片样式 - 漫画风 */
 .single-content .md-card {
     display: flex;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
     gap: 20px;
     background: rgba(255, 255, 255, 0.95);
     border: 2px solid var(--shiroki-pink-medium);
@@ -488,17 +519,22 @@
 }
 
 .single-content .md-card-avatar {
+    flex: 0 0 60px;
+    width: 60px;
     flex-shrink: 0;
 }
 
 .single-content .md-card-avatar img {
-    width: 100px;
-    height: 100px;
+    display: block;
+    width: 60px;
+    height: 60px;
+    max-width: none;
     border-radius: 50%;
     border: 4px solid var(--shiroki-pink-light);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     object-fit: cover;
     transition: all 0.3s ease;
+    margin: 0;
 }
 
 .single-content .md-card:hover .md-card-avatar img {
@@ -512,12 +548,18 @@
 }
 
 .single-content .md-card-title {
+    display: block;
+    width: auto;
     margin: 0 0 12px 0;
     font-size: 22px;
     font-weight: 700;
     color: var(--shiroki-pink-dark);
     line-height: 1.3;
     font-family: 'Public Sans', sans-serif;
+}
+
+.single-content .md-card-title::after {
+    display: none;
 }
 
 .single-content .md-card-desc {
@@ -575,12 +617,17 @@
         overflow-x: hidden !important; /* ◀️ 📱 隐藏水平滚动条，防止内容超出页面 */
         overflow-y: auto !important; /* ◀️ 📱 允许垂直滚动 */
         resize: vertical !important; /* ◀️ 📱 允许用户手动调整高度 */
-        field-sizing: content !important; /* ◀️ ☀️ 现代浏览器：根据内容自动调整高度 */
+        field-sizing: fixed !important; /* ◀️ 📱 宽度随容器铺满，避免 content 模式压窄 */
         max-width: 100% !important; /* ◀️ 📱 确保不超出父容器宽度 */
         width: 100% !important; /* ◀️ 📱 强制宽度为100% */
         box-sizing: border-box !important; /* ◀️ 📱 确保内边距不增加总宽度 */
         word-wrap: break-word !important; /* ◀️ 📱 长文本自动换行 */
         white-space: pre-wrap !important; /* ◀️ 📱 保留换行符并自动换行 */
+    }
+
+    #wp-content-editor-container.mode-split .boxmoe-md-toolbar {
+        width: 100% !important;
+        margin-right: 0 !important;
     }
 
     /* 🌓 分屏模式调整 */
@@ -610,7 +657,7 @@
         overflow-x: hidden !important; /* ◀️ 📱 隐藏水平滚动条，防止内容超出页面 */
         overflow-y: auto !important; /* ◀️ 📱 允许垂直滚动 */
         resize: vertical !important; /* ◀️ 📱 允许用户手动调整高度 */
-        field-sizing: content !important; /* ◀️ ☀️ 现代浏览器：根据内容自动调整高度 */
+        field-sizing: fixed !important; /* ◀️ 📱 宽度随容器铺满，避免 content 模式压窄 */
         max-width: 100% !important; /* ◀️ 📱 确保不超出父容器宽度 */
         width: 100% !important; /* ◀️ 📱 强制宽度为100% */
         box-sizing: border-box !important; /* ◀️ 📱 确保内边距不增加总宽度 */
@@ -647,7 +694,7 @@
         overflow-x: hidden !important; /* ◀️ 📱 隐藏水平滚动条，防止内容超出页面 */
         overflow-y: auto !important; /* ◀️ 📱 允许垂直滚动 */
         resize: vertical !important; /* ◀️ 📱 允许用户手动调整高度 */
-        field-sizing: content !important; /* ◀️ ☀️ 现代浏览器：根据内容自动调整高度 */
+        field-sizing: fixed !important; /* ◀️ 📱 宽度随容器铺满，避免 content 模式压窄 */
         max-width: 100% !important; /* ◀️ 📱 确保不超出父容器宽度 */
         width: 100% !important; /* ◀️ 📱 强制宽度为100% */
         box-sizing: border-box !important; /* ◀️ 📱 确保内边距不增加总宽度 */

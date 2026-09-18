@@ -169,6 +169,11 @@
         this.options.onStart(url);
       }
 
+      document.dispatchEvent(new CustomEvent('shiroki:navigation:start', {
+        bubbles: true,
+        cancelable: true
+      }));
+
       /* 延迟跳转 */
       const navigateDelay = Math.min(this.options.duration, 800);
 
@@ -291,6 +296,11 @@
     /* 🔄 重置状态 */
     reset() {
       this.isAnimating = false;
+
+      document.dispatchEvent(new CustomEvent('shiroki:navigation:end', {
+        bubbles: true,
+        cancelable: true
+      }));
 
       /* 清除定时器 */
       if (this.navigateTimer) {

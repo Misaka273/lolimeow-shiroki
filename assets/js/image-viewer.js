@@ -1,6 +1,17 @@
 (()=>{
   const state={images:[],index:0,scale:1,rotation:0,tx:0,ty:0,isDragging:false,startX:0,startY:0,canvas:null,img:null,wrapper:null,info:null,actions:null,closeBtn:null,fullscreen:false};
   const createUI=()=>{
+    // 🔄 Swup 切换时复用已创建的 UI，避免重复创建
+    const existing=document.querySelector('.tk-image-viewer__wrapper');
+    if(existing){
+      state.wrapper=existing;
+      state.canvas=existing.querySelector('.tk-image-viewer__canvas');
+      state.img=existing.querySelector('img');
+      state.info=existing.querySelector('.tk-image-viewer__info');
+      state.actions=existing.querySelector('.tk-image-viewer__actions');
+      state.closeBtn=existing.querySelector('.tk-image-viewer__close');
+      return;
+    }
     const w=document.createElement('div');w.className='tk-image-viewer__wrapper';
     const c=document.createElement('div');c.className='tk-image-viewer__canvas';
     const i=document.createElement('img');
@@ -165,9 +176,17 @@
   const observeMutations=()=>{
     const container=document.querySelector('.single-content');
     if(!container)return;
+    // 🔄 断开旧观察器，避免 Swup 切换后观察已移除的容器
+    if(state.observer){
+      try{state.observer.disconnect();}catch(_){}
+    }
     const ob=new MutationObserver(()=>collectImages());
     ob.observe(container,{childList:true,subtree:true});
+    state.observer=ob;
   };
+  const reinit=()=>{collectImages();observeMutations()};
   const init=()=>{createUI();bindCanvasEvents();collectImages();observeMutations()};
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
+  if(document.readyState=='loading'){document.addEventListener('DOMContentLoaded',init)}else{init()}
+  // 🚀 Swup 无刷新切换后重新收集图片
+  document.addEventListener('shiroki:content:loaded',reinit);
 })();

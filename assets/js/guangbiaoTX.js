@@ -6,6 +6,12 @@
 (function() {
   'use strict';
 
+  // 🚫 防止 Swup 缓存页面后重复初始化导致特效重叠
+  if (window.__shirokiGuangbiaoTXInitialized) {
+    return;
+  }
+  window.__shirokiGuangbiaoTXInitialized = true;
+
   let fallDirection = 1;
 
   function initGuangbiaoTX() {

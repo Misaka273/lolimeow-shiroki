@@ -6,6 +6,12 @@
 (function() {
   'use strict';
 
+  // 🚫 防止 Swup 缓存页面后重复初始化导致特效重叠
+  if (window.__shirokiGuangbiaoClickInitialized) {
+    return;
+  }
+  window.__shirokiGuangbiaoClickInitialized = true;
+
   var COLORS = ['#E23636', '#001AFF', '#00FFEA', '#FF009D', '#FFD166', '#7B61FF', '#00C853', '#FF6D00'];
 
   var PRESETS = {

@@ -98,7 +98,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                       </div>
                       <?php if(get_boxmoe('boxmoe_post_update_timer_switch')): ?>
                       <!-- ⏱️ 文章最后更新时间计时器 -->
-                      <div class="post-update-timer mt-4" data-modified-time="<?php echo get_the_modified_time('Y-m-d H:i:s'); ?>">
+                      <div class="post-update-timer mt-4" data-modified-time="<?php echo esc_attr( shiroki_get_post_update_timer_anchor() ); ?>">
                           <div class="timer-icon">
                               <i class="fa fa-clock-o"></i>
                           </div>

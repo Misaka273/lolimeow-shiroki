@@ -16,6 +16,12 @@
   }
 
   function initPageLinks(container) {
+    // 🔄 避免 Swup 切换后重复绑定事件
+    if (container.getAttribute('data-shiroki-page-links-initialized') === 'true') {
+      return;
+    }
+    container.setAttribute('data-shiroki-page-links-initialized', 'true');
+
     var dataEl = container.querySelector('.page-links-data');
     var input = container.querySelector('.page-links-input');
     var btn = container.querySelector('.page-links-jump-btn');
@@ -61,4 +67,7 @@
   } else {
     boot();
   }
+
+  // 🚀 Swup 无刷新切换后重新初始化
+  document.addEventListener('shiroki:content:loaded', boot);
 })();

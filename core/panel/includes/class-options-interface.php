@@ -105,9 +105,15 @@ class Options_Framework_Interface {
 				}
 
                 if ( isset( $value['name'] ) ) {
-                    $heading = '<h4 class="heading"><span class="dashicons dashicons-shortcode"></span> ' . esc_html( $value['name'] );
+                    // 🚫 无刷新过渡动画开启时，在新窗口打开设置标题旁提示功能已失效
+                    $is_swup_disabled_hint = isset( $value['id'] ) && in_array( $value['id'], array( 'boxmoe_article_new_window_switch', 'boxmoe_nav_target_blank' ), true ) && function_exists( 'boxmoe_is_swup_mode' ) && boxmoe_is_swup_mode();
+                    $heading_style = $is_swup_disabled_hint ? ' style="flex-wrap:wrap;"' : '';
+                    $heading = '<h4 class="heading"' . $heading_style . '><span class="dashicons dashicons-shortcode"></span> ' . esc_html( $value['name'] );
                     if ( isset($value['type']) && $value['type'] === 'fonts_table' ) {
                         $heading .= ' <button type="button" id="boxmoe-fonts-add-btn" class="btn-pill btn-blue fonts-add-btn">新增</button>';
+                    }
+                    if ( $is_swup_disabled_hint ) {
+                        $heading .= ' <span class="boxmoe-swup-disabled-hint" style="display:inline-block;vertical-align:middle;margin-left:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;color:#e67e00;background:rgba(255,140,0,0.12);border:1px solid rgba(255,140,0,0.25);box-shadow:inset 0 1px 0 rgba(255,255,255,0.3),0 1px 2px rgba(0,0,0,0.06);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);">因为当前过渡动画设定，此功能已失效</span>';
                     }
                     $heading .= '</h4>' . "\n";
                     $output .= $heading;
@@ -188,7 +194,7 @@ class Options_Framework_Interface {
 						$preview_html = '<div class="screenshot" style="margin-top: 10px;">';
 					}
 					if ( $val ) {
-						$image = preg_match( '/(^.*\.jpg|jpeg|png|gif|ico|svg*)/i', $val );
+						$image = preg_match( '/\.(jpg|jpeg|png|gif|avif|webp|ico|svg)$/i', $val );
 						if ( $image ) {
 							$preview_html .= '<img src="' . esc_url( $val ) . '" alt="" style="max-width: 162px; max-height: 75px; object-fit: contain; background: #f5f5f5;" />';
 						}
@@ -236,6 +242,19 @@ class Options_Framework_Interface {
 						$output .= '<option'. selected( $val, $key, false ) .' value="' . esc_attr( $key ) . '">' . esc_html( $option ) . '</option>';
 					}
 					$output .= '</select>';
+
+					if ( isset($value['append_checkbox']) && is_array($value['append_checkbox']) && isset($value['append_checkbox']['id']) ) {
+						$append_checkbox = $value['append_checkbox'];
+						$append_settings = get_option($option_name);
+						$append_id = $append_checkbox['id'];
+						$append_val = isset($append_settings[$append_id]) ? $append_settings[$append_id] : (isset($append_checkbox['std']) ? $append_checkbox['std'] : 0);
+						$append_desc = isset($append_checkbox['desc']) ? $append_checkbox['desc'] : '';
+						$output .= '<div class="select-append-checkbox">';
+						$output .= '<input type="hidden" name="' . esc_attr( $option_name . '[' . $append_id . ']' ) . '" value="0" />';
+						$output .= '<input id="' . esc_attr( $append_id ) . '" class="checkbox of-input" type="checkbox" name="' . esc_attr( $option_name . '[' . $append_id . ']' ) . '" value="1" ' . checked( $append_val, 1, false ) . ' />';
+						$output .= '<label class="explain" for="' . esc_attr( $append_id ) . '">' . wp_kses( $append_desc, $allowedtags ) . '</label>';
+						$output .= '</div>';
+					}
 				}
 				break;
 

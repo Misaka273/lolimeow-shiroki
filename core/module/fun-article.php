@@ -12,6 +12,10 @@ if(!defined('ABSPATH')){
 
 // 文章新窗口打开开关--------------------------boxmoe.com--------------------------
 function boxmoe_article_new_window() {
+    // 🚫 无刷新过渡动画开启时，强制关闭文章新窗口打开
+    if (function_exists('boxmoe_is_swup_mode') && boxmoe_is_swup_mode()) {
+        return '';
+    }
     return get_boxmoe('boxmoe_article_new_window_switch', true) ? 'target="_blank"' : '';
 }
 
@@ -43,95 +47,80 @@ function boxmoe_article_thumbnail_size($size) {
 add_filter('post_thumbnail_size', 'boxmoe_article_thumbnail_size');
 }
 
+// 🎨 主题后台默认文章封面（随机 API / 本地随机图 / 默认缩略图）
+function boxmoe_article_default_cover_src() {
+    $src = '';
+
+    if (get_boxmoe('boxmoe_article_thumbnail_random_api')) {
+        $src = get_boxmoe('boxmoe_article_thumbnail_random_api_url');
+    } else {
+        $random_dir = get_template_directory() . '/assets/images/random';
+        $random_images = array();
+        $glob_images = array();
+        foreach (array('jpg', 'jpeg', 'png', 'gif') as $ext) {
+            $found = glob($random_dir . '/*.' . $ext);
+            if (!empty($found)) {
+                $glob_images = array_merge($glob_images, $found);
+            }
+        }
+
+        if (!empty($glob_images)) {
+            $random_images = $glob_images;
+        } elseif (is_dir($random_dir)) {
+            $dir = opendir($random_dir);
+            if ($dir) {
+                while (($file = readdir($dir)) !== false) {
+                    if ($file != '.' && $file != '..') {
+                        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                        if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) {
+                            $random_images[] = $random_dir . '/' . $file;
+                        }
+                    }
+                }
+                closedir($dir);
+            }
+        }
+
+        if (!empty($random_images)) {
+            $img_path = $random_images[array_rand($random_images)];
+            $src = str_replace(get_template_directory(), get_template_directory_uri(), $img_path);
+            $src = str_replace('\\', '/', $src);
+        }
+    }
+
+    if (empty($src) || strpos($src, 'http') !== 0) {
+        $src = boxmoe_theme_url() . '/assets/images/default-thumbnail.jpg';
+    }
+
+    return $src;
+}
+
 // 文章缩略图逻辑--------------------------boxmoe.com--------------------------
 function boxmoe_article_thumbnail_src() {
-    global $post;
-    $src='';
-    
+    $src = '';
+
     if ($thumbnail_id = get_post_thumbnail_id()) {
-        $src=wp_get_attachment_image_url($thumbnail_id, 'full');
-        // 检查返回的URL是否有效
+        $src = wp_get_attachment_image_url($thumbnail_id, 'full');
         if (empty($src) || strpos($src, 'http') !== 0) {
             $src = '';
         }
     }
-    
+
     if (empty($src)) {
-        if ($thumbnail_url = get_post_meta(get_the_ID(), '_thumbnail', true)) {
-            $src=$thumbnail_url;
+        $thumbnail_url = get_post_meta(get_the_ID(), '_thumbnail', true);
+        if ($thumbnail_url) {
+            $src = $thumbnail_url;
         }
     }
-    
+
     if (empty($src)) {
-        if (preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"].*>/i', $post->post_content, $matches)) {
-            // 遍历所有找到的图片，排除用户头像
-            foreach ($matches[1] as $img_src) {
-                // 排除包含 avatar、gravatar 等关键词的图片
-                if (strpos($img_src, 'avatar') === false && 
-                    strpos($img_src, 'gravatar') === false &&
-                    strpos($img_src, 'wp-content/uploads/avatar') === false) {
-                    $src = $img_src;
-                    break;
-                }
-            }
-        }
+        $src = boxmoe_article_default_cover_src();
     }
-    
-    if (empty($src)) {
-        if(get_boxmoe('boxmoe_article_thumbnail_random_api')){
-            $src=get_boxmoe('boxmoe_article_thumbnail_random_api_url');
-        }else{
-            // 改进的随机图片获取逻辑
-            $random_dir = get_template_directory() . '/assets/images/random';
-            $random_images = array();
-            
-            // 按扩展名分别 glob（Playground/部分 PHP 无 GLOB_BRACE）
-            $glob_images = array();
-            foreach (array('jpg', 'jpeg', 'png', 'gif') as $ext) {
-                $found = glob($random_dir . '/*.' . $ext);
-                if (!empty($found)) {
-                    $glob_images = array_merge($glob_images, $found);
-                }
-            }
-            
-            if (!empty($glob_images)) {
-                $random_images = $glob_images;
-            } else {
-                // 如果 glob 失败，尝试手动扫描目录
-                if (is_dir($random_dir)) {
-                    $dir = opendir($random_dir);
-                    if ($dir) {
-                        while (($file = readdir($dir)) !== false) {
-                            if ($file != '.' && $file != '..') {
-                                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-                                if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif'))) {
-                                    $random_images[] = $random_dir . '/' . $file;
-                                }
-                            }
-                        }
-                        closedir($dir);
-                    }
-                }
-            }
-            
-            if (!empty($random_images)) {
-                $random_key = array_rand($random_images);
-                $img_path = $random_images[$random_key];
-                // 确保路径替换正确
-                $src = str_replace(get_template_directory(), get_template_directory_uri(), $img_path);
-                // 修复路径分隔符
-                $src = str_replace('\\', '/', $src);
-            } else {
-                $src = boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
-            }
-        }
-    }
-    
-    // 最终检查，确保返回有效的URL
+
     if (empty($src) || strpos($src, 'http') !== 0) {
-        $src = boxmoe_theme_url().'/assets/images/default-thumbnail.jpg';
+        $src = boxmoe_theme_url() . '/assets/images/default-thumbnail.jpg';
     }
-    
+
     return $src;
 }
 
@@ -183,7 +172,7 @@ add_filter( 'excerpt_length', 'custom_excerpt_length');
 //文章、评论内容缩短--------------------------boxmoe.com--------------------------
 function _get_excerpt($limit = 60, $after = '...') { 
     if ( post_password_required() ) {
-        $fallback = '无法提供摘要。这是一篇受保护的文章。';
+        $fallback = '哎呀呀~摘要被拦截了呢，可恶的加密手段...';
         $text = get_boxmoe('boxmoe_article_password_excerpt_text', $fallback);
         return $text;
     }
@@ -196,7 +185,7 @@ function _get_excerpt($limit = 60, $after = '...') {
 
 function _get_full_excerpt() {
     if ( post_password_required() ) {
-        $fallback = '无法提供摘要。这是一篇受保护的文章。';
+        $fallback = '哎呀呀~摘要被拦截了呢，可恶的加密手段...';
         return get_boxmoe('boxmoe_article_password_excerpt_text', $fallback);
     }
 
@@ -212,13 +201,26 @@ function boxmoe_table_replace($text){
 		$md_tables[$key] = $matches[0];
 		return $key;
 	}, $text);
+
+	// 🔧 跳过 r-markdown 自定义 HTML 块中标记过的表格，保留原始样式
+	$preserved_tables = [];
+	$text = preg_replace_callback('/<table\b[^>]*?\bdata-no-table-replace="1"[^>]*>[\s\S]*?<\/table>/i', function($matches) use (&$preserved_tables) {
+		$key = '__MD_PRESERVED_TABLE_' . count($preserved_tables) . '__';
+		$preserved_tables[$key] = $matches[0];
+		return $key;
+	}, $text);
 	
-	// 处理其他表格
-	$replace = array( '<table>' => '<div class="table-responsive"><table class="table" >','</table>' => '</table></div>' );
-	$text = str_replace(array_keys($replace), $replace, $text);
+	// 处理其他表格（支持带属性的 <table> 标签）
+	$text = preg_replace('/<table\b([^>]*)>/i', '<div class="table-responsive"><table class="table"$1>', $text);
+	$text = str_replace('</table>', '</table></div>', $text);
 	
 	// 恢复Markdown表格
 	foreach ($md_tables as $key => $original) {
+		$text = str_replace($key, $original, $text);
+	}
+
+	// 恢复 r-markdown 自定义表格
+	foreach ($preserved_tables as $key => $original) {
 		$text = str_replace($key, $original, $text);
 	}
 	
@@ -246,26 +248,6 @@ function boxmoe_prettify_replace($text){
 	return $text;}
 add_filter('the_content', 'boxmoe_prettify_replace');
 
-// 自动设置特色图片--------------------------boxmoe.com--------------------------
-function autoset_featured_image() {
-    global $post;
-    if (!is_object($post)) return;
-    $already_has_thumb = has_post_thumbnail($post->ID);
-    if (!$already_has_thumb)  {
-        $attached_image = get_children( "post_parent=$post->ID&post_type=attachment&post_mime_type=image&numberposts=1" );
-        if ($attached_image) {
-            foreach ($attached_image as $attachment_id => $attachment) {
-                set_post_thumbnail($post->ID, $attachment_id);
-            }
-        }
-    }
-}
-add_action( 'the_post', 'autoset_featured_image' );
-add_action( 'save_post', 'autoset_featured_image' );
-add_action( 'draft_to_publish', 'autoset_featured_image' );
-add_action( 'new_to_publish', 'autoset_featured_image' );
-add_action( 'pending_to_publish', 'autoset_featured_image' );
-add_action( 'future_to_publish', 'autoset_featured_image' );
 
 
 // 📌 自适应图片与自定义尺寸支持--------------------------shiroki.com--------------------------
@@ -1212,3 +1194,37 @@ function boxmoe_external_link_redirect($content) {
 }
 
 add_filter('the_content', 'boxmoe_external_link_redirect', 99);
+
+// ⏱️ 文章更新计时器锚点时间（定时发布前归零，发布后从定时时间起算）
+if ( ! function_exists( 'shiroki_get_post_update_timer_anchor' ) ) :
+function shiroki_get_post_update_timer_anchor( $post = null ) {
+    $post = get_post( $post );
+    if ( ! $post ) {
+        return '';
+    }
+
+    $publish = get_post_time( 'Y-m-d H:i:s', false, $post );
+    $publish_ts = get_post_time( 'U', false, $post );
+    if ( ! $publish || ! $publish_ts ) {
+        return '';
+    }
+
+    $now_ts = current_time( 'timestamp' );
+
+    // 🗓️ 未到定时发布时间：仍输出发布时间，前端显示 0 秒，到点后自动起算
+    if ( 'future' === $post->post_status || $publish_ts > $now_ts ) {
+        return $publish;
+    }
+
+    $modified = get_post_modified_time( 'Y-m-d H:i:s', false, $post );
+    $modified_ts = get_post_modified_time( 'U', false, $post );
+
+    // ✨ 发布后若有更新且晚于发布时间，按更新时间重算；否则从发布时间起算
+    if ( $modified_ts && $modified_ts > $publish_ts ) {
+        return $modified;
+    }
+
+    return $publish;
+}
+endif;
+

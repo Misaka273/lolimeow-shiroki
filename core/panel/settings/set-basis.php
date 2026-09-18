@@ -78,7 +78,8 @@ $options[] = array(
 		'options' => array(
 			'none' => __('关闭过渡动画', 'ui_boxmoe_com'),
 			'sakura' => __('🌸 樱花过渡动画', 'ui_boxmoe_com'),
-			'ripple' => __('💧 涟漪式过渡动画', 'ui_boxmoe_com')
+			'ripple' => __('💧 涟漪式过渡动画', 'ui_boxmoe_com'),
+			'swup' => __('🚀 无刷新过渡动画', 'ui_boxmoe_com')
 		));    
     $options[] = array(
 		'name' => __('网页飘落动画', 'ui_boxmoe_com'),
@@ -117,6 +118,108 @@ $options[] = array(
 		'id' => 'boxmoe_body_grey_switch',
 		'type' => "checkbox",
 		'std' => false,
+		);
+	$options[] = array(
+        'group' => 'start',
+		'group_title' => '底部设置',
+		'name' => __('底部显示页面执行时间', 'ui_boxmoe_com'),
+		'desc' => __('（默认关闭，开启后底部显示页面执行时间）', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_footer_dataquery_switch',
+		'type' => "checkbox",
+		'std' => false,
+		);
+	$options[] = array(
+		'name' => __('底部隐藏 Copyright 文字', 'ui_boxmoe_com'),
+		'desc' => __('（开启后只显示 ©）', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_footer_copyright_hidden',
+		'type' => "checkbox",
+		'std' => false,
+		);
+	$options[] = array(
+		'name' => __('网站底部导航链接', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_footer_seo',
+		'std' => '<li class="nav-item"><a href="'.site_url('/sitemap.xml').'" target="_blank" class="nav-link">网站地图</a></li>'."\n",
+		'desc' => __('（网站地图可自行使用sitemap插件自动生成）', 'ui_boxmoe_com'),
+		'settings' => array('rows' => 3),
+		'type' => 'textarea');
+	$options[] = array(
+		'name' => __('网站底部自定义信息（如备案号支持HTML代码）', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_footer_info',
+		'std' => '本站使用Wordpress创作✨'."\n",
+		'settings' => array('rows' => 3),
+		'type' => 'textarea');
+	$options[] = array(
+		'name' => __('底部版权信息自定义', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_footer_theme_by_text',
+		'std' => '本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'🕊️ 主题版本：{THEME_VERSION}',
+		'desc' => __('自定义底部 Theme by 信息，支持HTML', 'ui_boxmoe_com'),
+		'type' => 'textarea',
+		'settings' => array('rows' => 2));
+    $options[] = array(
+		'name' => __('统计代码', 'ui_boxmoe_com'),
+		'desc' => __('（底部第三方流量数据统计代码）', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_trackcode',
+		'std' => '统计代码',
+		'settings' => array('rows' => 3),
+		'type' => 'textarea');
+	$options[] = array(
+        'group' => 'end',
+		'name' => __('自定义代码', 'ui_boxmoe_com'),
+		'desc' => __('（适用于自定义如css js代码置于底部加载）', 'ui_boxmoe_com'),
+		'id' => 'boxmoe_diy_code_footer',
+		'std' => '',
+		'settings' => array('rows' => 3),
+		'type' => 'textarea');
+		$options[] = array(
+			'group' => 'start',
+			'group_title' => '底部运行天数设置',
+			'name' => __('底部运行天数开关', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_switch',
+			'type' => 'checkbox',
+			'std' => false,
+		);
+		$options[] = array(
+			'name' => __('建站时间', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_time',
+			'type' => 'text',
+			'class' => 'mini',
+			'std' => '2025-01-01',
+		);
+		$options[] = array(
+			'name' => __('运行天数自定义文字前缀', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_prefix',
+			'type' => 'text',
+			'class' => 'small',
+			'std' => '本站已稳定运行了',
+		);
+		$options[] = array(
+			'name' => __('运行天数自定义文字后缀', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_suffix',
+			'type' => 'text',
+			'class' => 'small',
+			'std' => '天',
+		);
+		$options[] = array(
+			'name' => __('运行（时）自定义文字后缀', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_suffix_hours',
+			'type' => 'text',
+			'class' => 'small',
+			'std' => '时',
+		);
+		$options[] = array(
+			'name' => __('运行（分）自定义文字后缀', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_suffix_minutes',
+			'type' => 'text',
+			'class' => 'small',
+			'std' => '分',
+		);
+		$options[] = array(
+			'group' => 'end',
+			'name' => __('运行（秒）自定义文字后缀', 'ui_boxmoe_com'),
+			'id' => 'boxmoe_footer_running_days_suffix_seconds',
+			'type' => 'text',
+			'class' => 'small',
+			'std' => '秒',
 		);
     $options[] = array(
 		'name' => __( '自定义背景装饰图', 'ui_boxmoe_com' ),
@@ -221,7 +324,7 @@ $options[] = array(
     $options[] = array(
 		'name' => __( 'LOGO设置', 'ui_boxmoe_com' ),
 		'id' => 'boxmoe_logo_src',
-		'desc' => __(' ', 'ui_boxmoe_com'),
+		'desc' => __('同时作为 WordPress 站点图标使用，设置 → 常规 中的站点图标已由本项接管', 'ui_boxmoe_com'),
 		'std' => $image_path.'logo.png',
 		'type' => 'upload');
     $options[] = array(
@@ -230,109 +333,6 @@ $options[] = array(
 		'std' => $image_path.'favicon.ico',
 		'type' => 'upload');
 
-	$options[] = array(
-        'group' => 'start',
-		'group_title' => '底部设置',
-		'name' => __('底部显示页面执行时间', 'ui_boxmoe_com'),
-		'desc' => __('（默认关闭，开启后底部显示页面执行时间）', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_footer_dataquery_switch',
-		'type' => "checkbox",
-		'std' => false,
-		);	
-	$options[] = array(
-		'name' => __('底部隐藏 Copyright 文字', 'ui_boxmoe_com'),
-		'desc' => __('（开启后只显示 ©）', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_footer_copyright_hidden',
-		'type' => "checkbox",
-		'std' => false,
-		);
-	$options[] = array(
-		'name' => __('网站底部导航链接', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_footer_seo',
-		'std' => '<li class="nav-item"><a href="'.site_url('/sitemap.xml').'" target="_blank" class="nav-link">网站地图</a></li>'."\n",
-		'desc' => __('（网站地图可自行使用sitemap插件自动生成）', 'ui_boxmoe_com'),
-		'settings' => array('rows' => 3),
-		'type' => 'textarea');
-	$options[] = array(
-		'name' => __('网站底部自定义信息（如备案号支持HTML代码）', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_footer_info',
-		'std' => '本站使用Wordpress创作✨'."\n",
-		'settings' => array('rows' => 3),
-		'type' => 'textarea');	
-	$options[] = array(
-		'name' => __('底部版权信息自定义', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_footer_theme_by_text',
-		'std' => '本站主题作者 <a href="https://www.boxmoe.com" target="_blank">Boxmoe</a>'."\n".'🎉'."\n".'本站二次开发 <a href="https://gl.baimu.live" target="_blank">白木</a>'."\n".'🕊️ 主题版本：{THEME_VERSION}',
-		'desc' => __('自定义底部 Theme by 信息，支持HTML', 'ui_boxmoe_com'),
-		'type' => 'textarea',
-		'settings' => array('rows' => 2));
-    $options[] = array(
-		'name' => __('统计代码', 'ui_boxmoe_com'),
-		'desc' => __('（底部第三方流量数据统计代码）', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_trackcode',
-		'std' => '统计代码',
-		'settings' => array('rows' => 3),
-		'type' => 'textarea');
-	$options[] = array(
-        'group' => 'end',
-		'name' => __('自定义代码', 'ui_boxmoe_com'),
-		'desc' => __('（适用于自定义如css js代码置于底部加载）', 'ui_boxmoe_com'),
-		'id' => 'boxmoe_diy_code_footer',
-		'std' => '',
-		'settings' => array('rows' => 3),
-		'type' => 'textarea');   
-		$options[] = array(
-			'group' => 'start',
-			'group_title' => '底部运行天数设置',
-			'name' => __('底部运行天数开关', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_switch',
-			'type' => 'checkbox',
-			'std' => false,
-		);
-		$options[] = array(
-			'name' => __('建站时间', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_time',
-			'type' => 'text',
-			'class' => 'mini',
-			'std' => '2025-01-01',
-		);
-		$options[] = array(
-			'name' => __('运行天数自定义文字前缀', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_prefix',
-			'type' => 'text',
-			'class' => 'small',
-			'std' => '本站已稳定运行了',
-		);
-		$options[] = array(
-			'name' => __('运行天数自定义文字后缀', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_suffix',
-			'type' => 'text',
-			'class' => 'small',
-			'std' => '天',
-		);
-		$options[] = array(
-			'name' => __('运行（时）自定义文字后缀', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_suffix_hours',
-			'type' => 'text',
-			'class' => 'small',
-			'std' => '时',
-		);
-		$options[] = array(
-			'name' => __('运行（分）自定义文字后缀', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_suffix_minutes',
-			'type' => 'text',
-			'class' => 'small',
-			'std' => '分',
-		);
-		$options[] = array(
-			'group' => 'end',
-			'name' => __('运行（秒）自定义文字后缀', 'ui_boxmoe_com'),
-			'id' => 'boxmoe_footer_running_days_suffix_seconds',
-			'type' => 'text',
-			'class' => 'small',
-			'std' => '秒',
-		);
-		
 		// 🎯 页面焦点状态文字显示控制
 		$options[] = array(
 			'group' => 'start',

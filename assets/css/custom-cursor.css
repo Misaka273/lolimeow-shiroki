@@ -3,6 +3,14 @@
  * 白木 🔗gl.baimu.live 开发
  */
 
+/* ⏳ 首屏最早阶段：html 级别加载中光标（body 尚未渲染时也生效） */
+html.shiroki-custom-cursor.custom-cursor-loading,
+html.shiroki-custom-cursor.custom-cursor-loading *,
+html.shiroki-custom-cursor.custom-cursor-loading body,
+html.shiroki-custom-cursor.custom-cursor-loading body * {
+  cursor: var(--cursor-appstarting, var(--cursor-arrow, default)) !important;
+}
+
 /* 🎯 基础光标设置 - 默认状态 */
 body.custom-cursor-enabled,
 body.custom-cursor-enabled * {
@@ -19,7 +27,7 @@ body.custom-cursor-enabled input[type="tel"],
 body.custom-cursor-enabled input[type="number"],
 body.custom-cursor-enabled textarea,
 body.custom-cursor-enabled [contenteditable="true"] {
-  cursor: var(--cursor-handwriting, text) !important;
+  cursor: var(--cursor-handwriting, var(--cursor-arrow, default)) !important;
 }
 
 /* 📖 文本框选光标 - 可选中的文本元素 */
@@ -31,7 +39,7 @@ body.custom-cursor-enabled h3,
 body.custom-cursor-enabled h4,
 body.custom-cursor-enabled h5,
 body.custom-cursor-enabled h6 {
-  cursor: var(--cursor-ibeam, text) !important;
+  cursor: var(--cursor-ibeam, var(--cursor-arrow, default)) !important;
 }
 
 /* 📦 容器元素使用默认箭头光标 */
@@ -46,12 +54,6 @@ body.custom-cursor-enabled nav {
   cursor: var(--cursor-arrow, default) !important;
 }
 
-/* ⏳ 加载中光标 - 页面加载状态 */
-body.custom-cursor-enabled.custom-cursor-loading,
-body.custom-cursor-enabled.custom-cursor-loading * {
-  cursor: var(--cursor-appstarting, wait) !important;
-}
-
 /* 🔗 链接和按钮保持指针样式，但使用自定义光标 */
 body.custom-cursor-enabled a,
 body.custom-cursor-enabled button,
@@ -59,7 +61,7 @@ body.custom-cursor-enabled [role="button"],
 body.custom-cursor-enabled .btn,
 body.custom-cursor-enabled input[type="submit"],
 body.custom-cursor-enabled input[type="button"] {
-  cursor: var(--cursor-arrow, pointer) !important;
+  cursor: var(--cursor-arrow, default) !important;
 }
 
 /* 🖼️ 图片和多媒体元素 */
@@ -74,7 +76,7 @@ body.custom-cursor-enabled iframe {
 /* 🚫 禁用状态的元素 */
 body.custom-cursor-enabled *[disabled],
 body.custom-cursor-enabled .disabled {
-  cursor: var(--cursor-arrow, not-allowed) !important;
+  cursor: var(--cursor-arrow, default) !important;
 }
 
 /* 🎯 选中文本时的光标 - 使用默认箭头 */
@@ -82,7 +84,7 @@ body.custom-cursor-enabled ::selection {
   cursor: var(--cursor-arrow, default) !important;
 }
 
-/* 📌 鼠标按下拖拽选中文本时的光标 */
+/* 📌 鼠标按下时的光标（文本元素仍由下方 :active 规则使用 I 形光标） */
 body.custom-cursor-enabled:active,
 body.custom-cursor-enabled *:active {
   cursor: var(--cursor-arrow, default) !important;
@@ -99,5 +101,49 @@ body.custom-cursor-enabled h5:active,
 body.custom-cursor-enabled h6:active,
 body.custom-cursor-enabled li:active,
 body.custom-cursor-enabled td:active {
-  cursor: var(--cursor-ibeam, text) !important;
+  cursor: var(--cursor-ibeam, var(--cursor-arrow, default)) !important;
+}
+
+/* 📋 选中文本后移动鼠标：统一使用自定义默认箭头光标，避免回退系统样式 */
+body.custom-cursor-enabled.custom-cursor-text-selected,
+body.custom-cursor-enabled.custom-cursor-text-selected *:not(input):not(textarea):not([contenteditable="true"]) {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* 选区存在时，:active 也保持箭头，避免选区上移动时出现系统光标 */
+body.custom-cursor-enabled.custom-cursor-text-selected:active,
+body.custom-cursor-enabled.custom-cursor-text-selected *:active {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* 🛡️ 覆盖主题内硬编码 cursor:text/default，保持自定义光标 */
+body.custom-cursor-enabled .post-single pre.prettyprint,
+body.custom-cursor-enabled .post-single pre.prettyprint * {
+  cursor: var(--cursor-ibeam, var(--cursor-arrow, default)) !important;
+}
+
+body.custom-cursor-enabled.custom-cursor-text-selected .post-single pre.prettyprint,
+body.custom-cursor-enabled.custom-cursor-text-selected .post-single pre.prettyprint * {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+body.custom-cursor-enabled .md-task-item-static,
+body.custom-cursor-enabled .md-task-item-static .md-task-emoji {
+  cursor: var(--cursor-arrow, default) !important;
+}
+
+/* ⏳ 加载中光标 - 置于末尾并提高优先级，覆盖链接/按钮等规则 */
+html.shiroki-custom-cursor.custom-cursor-loading body.custom-cursor-enabled,
+html.shiroki-custom-cursor.custom-cursor-loading body.custom-cursor-enabled *,
+body.custom-cursor-enabled.custom-cursor-loading,
+body.custom-cursor-enabled.custom-cursor-loading *,
+body.custom-cursor-enabled.custom-cursor-loading a,
+body.custom-cursor-enabled.custom-cursor-loading button,
+body.custom-cursor-enabled.custom-cursor-loading [role="button"],
+body.custom-cursor-enabled.custom-cursor-loading .btn,
+body.custom-cursor-enabled.custom-cursor-loading input,
+body.custom-cursor-enabled.custom-cursor-loading textarea,
+body.custom-cursor-enabled.custom-cursor-loading img,
+body.custom-cursor-enabled.custom-cursor-loading iframe {
+  cursor: var(--cursor-appstarting, var(--cursor-arrow, default)) !important;
 }

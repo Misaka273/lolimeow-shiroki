@@ -199,7 +199,6 @@ class Options_Framework_Admin {
 		?>
 
 	  <div id="optionsframework-wrap" class="wrap">
-	  <?php settings_errors( 'options-framework' ); ?>
 
 			<!-- 顶部栏 -->
 			<div class="options-top-bar">
@@ -211,7 +210,7 @@ class Options_Framework_Admin {
 					<div class="el-button" style="padding: 8px 16px; line-height: 1.5; display: inline-block; text-align: center;">
 						<a href="https://www.boxmoe.com/706.html" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: none;">📃在线文档</a>
 						🚀V<?php echo THEME_VERSION; ?>
-						🎉更新日期：2026-07-24<br>
+						🎉更新日期：2026-08-09<br>
 						🥰本主题二次创作 <a href="https://gl.baimu.live/864" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: underline;">🕊️白木</a>
 					</div>
 				</div>
@@ -284,6 +283,28 @@ class Options_Framework_Admin {
 document.addEventListener('DOMContentLoaded', function() {
   var navon = document.querySelector('.navon');
   var wrapPlane = document.querySelector('#optionsframework-wrap');
+  var optionsSidebar = document.querySelector('.options-sidebar');
+
+  // 🧭 让侧栏滚动到边界后交给页面
+  if (optionsSidebar) {
+    optionsSidebar.addEventListener('wheel', function(event) {
+      var delta = event.deltaY;
+      if (event.deltaMode === 1) {
+        delta *= 16;
+      } else if (event.deltaMode === 2) {
+        delta *= window.innerHeight;
+      }
+
+      var canScrollUp = optionsSidebar.scrollTop > 0;
+      var canScrollDown = optionsSidebar.scrollTop < optionsSidebar.scrollHeight - optionsSidebar.clientHeight;
+      var shouldScrollSidebar = (delta < 0 && canScrollUp) || (delta > 0 && canScrollDown);
+
+      if (shouldScrollSidebar) {
+        event.preventDefault();
+        optionsSidebar.scrollTop += delta;
+      }
+    }, { passive: false });
+  }
 
   if (navon && wrapPlane) {
     navon.addEventListener('click', function(event) {
@@ -326,14 +347,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('settings-updated')) {
     // 判断操作类型并显示相应提示
-    if (urlParams.has('reset')) {
-      showTopBanner('所有设置已重置为默认值！', 5000);
-    } else if (urlParams.has('reset_slogan')) {
+    if (urlParams.has('reset_slogan')) {
       showTopBanner('页面标语已重置为默认值！', 5000);
     } else {
       // 直接显示默认的保存成功提示
       showTopBanner('设置已保存成功！', 5000);
     }
+  } else if (urlParams.has('reset')) {
+    showTopBanner('所有设置已重置为默认值！', 5000);
   }
   
   // 📡 获取并更新最新版本信息
@@ -505,6 +526,14 @@ document.addEventListener('DOMContentLoaded', function() {
 					$clean[$id] = $input[$id];
 				}
 			}
+
+			if ( isset( $option['append_checkbox']['id'] ) ) {
+				$append_id = preg_replace( '/[^a-zA-Z0-9._\-]/', '', strtolower( $option['append_checkbox']['id'] ) );
+				if ( ! isset( $input[$append_id] ) ) {
+					$input[$append_id] = false;
+				}
+				$clean[$append_id] = ! empty( $input[$append_id] ) ? 1 : 0;
+			}
 		}
 
 		// Hook to run after validation
@@ -555,6 +584,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			} else {
 				// 对于没有清理过滤器的选项，直接使用默认值
 				$output[$id] = $option['std'];
+			}
+
+			if ( isset( $option['append_checkbox']['id'] ) ) {
+				$append_id = preg_replace( '/[^a-zA-Z0-9._\-]/', '', strtolower( $option['append_checkbox']['id'] ) );
+				$output[$append_id] = isset( $option['append_checkbox']['std'] ) ? $option['append_checkbox']['std'] : 0;
 			}
 		}
 		return $output;

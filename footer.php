@@ -8,6 +8,7 @@
 //boxmoe.com===安全设置=阻止直接访问主题文件
 if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
         </div>
+        </div>
         </section>
 <footer class="mt-7">
     <hr class="horizontal dark">
@@ -30,13 +31,6 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
     <div class="floating-action-menu">
       <nav class="floating-menu-items">
         <ul>
-          <?php if(get_boxmoe('boxmoe_blog_layout')=='two'): ?>
-          <li class="d-lg-none">
-            <button class="float-btn" title="打开侧栏" data-bs-toggle="offcanvas" href="#blog-sidebar" aria-controls="blog-sidebar">
-              <i class="fa fa-outdent"></i>
-            </button>
-          </li>
-          <?php endif; ?>
           <?php if(get_boxmoe('boxmoe_lolijump_switch')): ?>
             <li>
             <a id="lolijump" href="#" title="返回顶部">
@@ -62,6 +56,21 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
         </ul>
       </nav>
     </div>
+    <?php if(get_boxmoe('boxmoe_blog_layout')=='two'): ?>
+    <div class="modal fade blog-sidebar-modal" id="blog-sidebar-modal" tabindex="-1" aria-labelledby="blog-sidebar-modal-label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="blog-sidebar-modal-label"><?php echo boxmoe_logo(); ?></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body blog-sidebar blog-sidebar-modal-body">
+            <?php shiroki_render_blog_sidebar_widgets(); ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <?php endif; ?>
     <?php 
     ob_start();
     wp_footer();

@@ -32,7 +32,13 @@ class widget_postlist extends WP_Widget {
 			'ignore_sticky_posts' => 1
 		);
 		query_posts($args);
-		while (have_posts()) : the_post(); 		
+		while (have_posts()) : the_post();
+		// ✂️ 文章标题超过 10 个中文字符空间自动省略
+		$post_title = get_the_title();
+		$plain_title = wp_strip_all_tags(html_entity_decode($post_title, ENT_QUOTES, 'UTF-8'));
+		$display_title = mb_strlen($plain_title, 'UTF-8') > 10
+			? mb_substr($plain_title, 0, 10, 'UTF-8') . '...'
+			: $post_title;
 		echo '<article class="widget-post">
 		               <div class="info">
                         <a href="'. get_the_permalink() .'" '. boxmoe_article_new_window() .' class="thumb">
@@ -40,7 +46,7 @@ class widget_postlist extends WP_Widget {
                         </a>
                         <div class="right">
                           <h4 class="title">
-                            <a '. boxmoe_article_new_window() .' href="'. get_the_permalink() .'">'. get_the_title() . get_the_subtitle() .'</a></h4>
+                            <a '. boxmoe_article_new_window() .' href="'. get_the_permalink() .'" title="'. esc_attr($post_title) .'">'. $display_title . get_the_subtitle() .'</a></h4>
                           <time datetime="'.get_the_time('Y-m-d').'">'.get_the_time('Y-m-d').'</time>
 						  </div>';
 		echo '</article>';					

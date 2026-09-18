@@ -280,7 +280,7 @@ body.shiroki-bubble-style-glass .tooltip .tooltip-inner {
 .shiroki-bubble-tooltip.is-panel {
   width: max-content;
   max-width: min(360px, calc(100vw - 24px));
-  white-space: normal;
+  white-space: pre-line;
   text-align: left;
 }
 

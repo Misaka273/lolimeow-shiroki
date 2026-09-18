@@ -169,7 +169,7 @@ function boxmoe_render_site_stats_dashboard() {
             <div class="shiroki-stats-card shiroki-stats-card-users">
                 <div class="shiroki-stats-card-icon">👥</div>
                 <div class="shiroki-stats-card-content">
-                    <div class="shiroki-stats-card-label">活跃用户</div>
+                    <div class="shiroki-stats-card-label">活跃用户与访客</div>
                     <div class="shiroki-stats-card-value"><?php echo number_format(count($user_activity_ranking)); ?></div>
                     <div class="shiroki-stats-card-change up">30天内</div>
                 </div>
@@ -226,7 +226,7 @@ function boxmoe_render_site_stats_dashboard() {
                 <div class="shiroki-stats-card-header">
                     <span class="shiroki-stats-card-icon">📥</span>
                     <span class="shiroki-stats-card-title">下载热度排行</span>
-                    <span class="shiroki-stats-card-subtitle">30天内</span>
+                    <span class="shiroki-stats-card-subtitle">30天内 · 下载/链接/卡片</span>
                 </div>
                 <div class="shiroki-stats-ranking-list">
                     <?php if (!empty($hot_downloads)) : ?>
@@ -288,7 +288,14 @@ function boxmoe_render_site_stats_dashboard() {
                                 <span class="ranking-number <?php echo $index < 3 ? 'top' : ''; ?>"><?php echo $index + 1; ?></span>
                                 <img src="<?php echo esc_url($user['avatar']); ?>" alt="" class="ranking-avatar">
                                 <div class="ranking-content">
-                                    <span class="ranking-title"><?php echo esc_html($user['name']); ?></span>
+                                    <span class="ranking-title">
+                                        <?php if (!empty($user['is_guest'])) : ?>
+                                            <?php echo esc_html($user['name'] . ' #' . intval($user['guest_number'])); ?>
+                                            <span class="shiroki-stats-guest-region"><?php echo esc_html($user['region']); ?></span>
+                                        <?php else : ?>
+                                            <?php echo esc_html($user['name']); ?>
+                                        <?php endif; ?>
+                                    </span>
                                     <span class="ranking-meta"><?php echo number_format($user['visit_count']); ?> 次访问</span>
                                 </div>
                             </div>

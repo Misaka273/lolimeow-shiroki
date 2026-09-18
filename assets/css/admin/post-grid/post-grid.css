@@ -59,6 +59,23 @@ body.post-type-post.edit-php.shiroki-post-grid-active #wpbody-content > .wrap > 
   padding: 0 var(--admin-space-2xl, 24px);
 }
 
+/* 🎯 标题与新建按钮保持同一行 */
+body.post-type-post.edit-php.shiroki-post-grid-active .wrap > h1.wp-heading-inline,
+body.post-type-page.edit-php .wrap > h1.wp-heading-inline {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-right: var(--admin-space-md);
+}
+
+/* 📦 新建按钮容器紧跟页面标题 */
+body.post-type-post.edit-php.shiroki-post-grid-active .wrap > .shiroki-post-add-container,
+body.post-type-page.edit-php .wrap > .shiroki-post-add-container {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
 body.post-type-post.edit-php.shiroki-post-grid-active .wrap .page-title-action {
   background: var(--admin-primary-bg) !important;
   border: 1px solid var(--admin-primary-border) !important;
@@ -103,6 +120,8 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 76px;
+  box-sizing: border-box;
   padding: var(--admin-space-lg) var(--admin-space-2xl);
   margin-bottom: var(--admin-space-md);
   gap: var(--admin-space-xl);
@@ -1353,6 +1372,7 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
 .shiroki-post-add-container {
   display: inline-flex;
   position: relative;
+  transform: translateY(2px);
   z-index: 101;
 }
 
@@ -1361,14 +1381,19 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
   display: inline-flex !important;
   align-items: center;
   gap: var(--admin-space-sm);
-  padding: var(--admin-space-md) var(--admin-space-xl);
+  width: fit-content;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  padding: var(--admin-space-sm) var(--admin-space-lg);
   background: var(--admin-primary-bg);
   backdrop-filter: var(--admin-glass-blur);
   border: 1px solid var(--admin-primary-border);
   border-radius: var(--admin-radius-full);
   color: var(--admin-primary-text);
-  font-size: var(--admin-font-size-md);
+  font-size: var(--admin-font-size-sm);
   font-weight: var(--admin-font-weight-semibold);
+  line-height: 1.4;
   text-decoration: none;
   cursor: pointer;
   transition: all var(--admin-transition-normal);
@@ -1402,17 +1427,10 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
   margin: var(--admin-space-lg) var(--admin-space-2xl);
 }
 
-/* 🔍 搜索框容器 - 独立行 */
-.shiroki-post-search-wrapper {
-  padding: var(--admin-space-lg) var(--admin-space-2xl);
-  margin: var(--admin-space-lg) var(--admin-space-2xl) 0;
-  display: flex;
-  justify-content: flex-end;
-}
-
 /* 🔍 搜索框 */
 .shiroki-post-search {
   width: 280px;
+  flex: 0 0 280px;
   position: relative;
 }
 
@@ -1927,6 +1945,11 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
   background: rgba(104, 211, 145, 0.7);
 }
 
+/* 🔵 定时发布 */
+.shiroki-post-status-future {
+  background: var(--admin-scheduled-bg);
+}
+
 /* 🟡 草稿 */
 .shiroki-post-status-draft {
   background: rgba(251, 191, 36, 0.7);
@@ -1945,6 +1968,16 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
 /* ⚪ 已删除 */
 .shiroki-post-status-trash {
   background: rgba(160, 174, 192, 0.7);
+}
+
+/* 🔐 加密标签（内容保护） */
+.shiroki-post-status-password {
+  background: rgba(159, 122, 234, 0.75);
+}
+
+/* 💎 付费标签（内容保护） */
+.shiroki-post-status-pay {
+  background: rgba(236, 112, 99, 0.75);
 }
 
 /* ============================================
@@ -1977,6 +2010,7 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
   /* 📱 顶部工具栏适配 */
   .shiroki-post-top-bar {
     flex-direction: column;
+    min-height: 128px;
     gap: var(--admin-space-md);
     padding: var(--admin-space-md);
   }
@@ -1986,8 +2020,16 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
     justify-content: center;
   }
 
-  .shiroki-post-add-wrapper {
-    justify-content: center;
+  body.post-type-post.edit-php.shiroki-post-grid-active .wrap > h1.wp-heading-inline,
+  body.post-type-page.edit-php .wrap > h1.wp-heading-inline {
+    display: flex;
+    margin-right: 0;
+    margin-bottom: var(--admin-space-sm);
+  }
+
+  body.post-type-post.edit-php.shiroki-post-grid-active .wrap > .shiroki-post-add-container,
+  body.post-type-page.edit-php .wrap > .shiroki-post-add-container {
+    display: flex;
   }
 
   /* 📱 批量操作工具栏适配 */
@@ -2004,14 +2046,9 @@ body.post-type-post.edit-php.shiroki-post-grid-active .wp-list-table.widefat {
     padding: var(--admin-space-md);
   }
 
-  .shiroki-post-search-wrapper {
-    padding: var(--admin-space-md);
-    margin: var(--admin-space-md) var(--admin-space-md) 0;
-    justify-content: stretch;
-  }
-
   .shiroki-post-search {
     width: 100%;
+    flex: 0 1 100%;
   }
 
   /* 📱 分类筛选按钮换行 */

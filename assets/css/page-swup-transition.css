@@ -1,0 +1,122 @@
+/**
+ * 🚀 Swup 无刷新页面切换动画样式
+ * 淡入淡出 + 位移动画
+ * 保留 Banner 区域与导航栏，仅替换 #swup-container 主内容区
+ */
+
+/* 切换过程中禁用平滑滚动，避免先滚动后过渡的分段感 */
+html.is-animating,
+html.is-animating body,
+html.is-animating * {
+  scroll-behavior: auto !important;
+}
+
+/* 🔝 Swup 顶部进度条
+ * 插件通过 transform: scaleX(var(--progress, 0)) 控制宽度，
+ * 这里只覆盖颜色、高度和层级，不干预 transform 动画。
+ */
+html body > .swup-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483647;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 0 12px rgba(102, 126, 234, 0.8);
+}
+
+/* 🎭 主内容容器 */
+#swup-container.transition-main {
+  will-change: opacity, transform;
+}
+
+/* 切换期间保持 will-change */
+html.is-changing #swup-container.transition-main {
+  will-change: opacity, transform;
+}
+
+/* 新内容进入：先隐藏并立即播放进入动画
+ * 使用 html.is-rendering 而非 html.is-animating.is-rendering，
+ * 确保 animation 在 is-animating 被移除后仍能完整播放到 visit:end
+ */
+html.is-rendering #swup-container.transition-main {
+  opacity: 0;
+  animation: swup-container-enter 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes swup-container-enter {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 旧内容离开：主容器向上淡出 */
+html.is-animating.is-leaving #swup-container.transition-main {
+  opacity: 0;
+  transform: translateY(-2rem);
+  transition:
+    transform 120ms cubic-bezier(0.55, 0.055, 0.675, 0.19),
+    opacity 120ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+/* 🎯 页面切换中禁用容器交互 */
+html.is-page-transitioning #swup-container.transition-main {
+  pointer-events: none;
+}
+
+/* 🗂️ 右侧边栏独立过渡：右移渐隐 / 左移渐显（仅主内容区侧栏列，不含弹窗） */
+#swup-container .blog-sidebar {
+  transition:
+    opacity 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 120ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform;
+}
+
+/* 旧内容离开：右侧边栏右移渐隐 */
+html.is-animating.is-leaving #swup-container .blog-sidebar {
+  opacity: 0;
+  transform: translateX(2rem);
+}
+
+/* 新内容进入：右侧边栏从右向左移渐显 */
+html.is-animating.is-rendering #swup-container .blog-sidebar {
+  opacity: 0;
+  transform: translateX(2rem);
+}
+
+/* ✨ 进入动画（页面初次加载/切换完成后） */
+.swup-fade-in-up {
+  animation: swup-fade-in-up 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes swup-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ♿ 减少动画偏好适配 */
+@media (prefers-reduced-motion: reduce) {
+  html.is-rendering #swup-container.transition-main,
+  html.is-animating.is-leaving #swup-container.transition-main,
+  html.is-animating.is-leaving #swup-container .blog-sidebar,
+  html.is-animating.is-rendering #swup-container .blog-sidebar,
+  #swup-container.transition-main,
+  #swup-container .blog-sidebar,
+  .swup-progress-bar,
+  .swup-fade-in-up {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -153,17 +153,21 @@ require_once  get_stylesheet_directory() . '/core/module/fun-shortcode.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-fonts.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-markdown.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-submenu.php'; // ⬅️ 引入子菜单整合功能
+require_once  get_stylesheet_directory() . '/core/module/anime-manager/fun-anime-manager.php'; // ⬅️ 📺 引入追番管理功能
+require_once  get_stylesheet_directory() . '/core/module/link-checker/fun-link-checker.php'; // ⬅️ 引入友链反链检测功能
 require_once  get_stylesheet_directory() . '/core/module/fun-post-follow.php'; // ⬅️ 引入关注文章功能
 require_once  get_stylesheet_directory() . '/core/module/fun-theme-update.php'; // ⬅️ 引入主题更新检查功能
 // 验证码功能模块，由初叶🍂www.chuyel.top构建集成
 require_once get_stylesheet_directory() . '/core/module/fun-captcha.php';
 // 🔽 由初叶🍂www.chuyel.top提供，白木🥰gl.baimu.live集成
 require_once  get_stylesheet_directory() . '/core/module/fun-music.php'; // ⬅️ 引入音乐播放器功能
+// 由 白木🥰gl.baimu.live 开发
 require_once  get_stylesheet_directory() . '/core/module/media-library/fun-media-library.php'; // ⬅️ 💎 引入拟态玻璃质感媒体库UI
 require_once  get_stylesheet_directory() . '/core/module/media-library/fun-media-modal.php'; // ⬅️ 🪟 引入拟态玻璃质感媒体弹窗UI
 require_once  get_stylesheet_directory() . '/core/module/post-grid/fun-post-grid.php'; // ⬅️ 📝 引入拟态玻璃质感文章列表网格UI
 require_once  get_stylesheet_directory() . '/core/module/page-grid/fun-page-grid.php'; // ⬅️ 📄 引入拟态玻璃质感页面列表网格UI
 require_once  get_stylesheet_directory() . '/core/module/comment-grid/fun-comment-grid.php'; // ⬅️ 💬 引入拟态玻璃质感评论列表网格UI
+require_once  get_stylesheet_directory() . '/core/module/link-grid/fun-link-grid.php'; // ⬅️ 🔗 引入拟态玻璃质感链接列表网格UI
 require_once  get_stylesheet_directory() . '/core/module/user-grid/fun-user-grid.php'; // ⬅️ 👥 引入拟态玻璃质感用户列表网格UI
 require_once  get_stylesheet_directory() . '/core/module/user-add/fun-user-add.php'; // ⬅️ ➕ 引入拟态玻璃质感添加用户UI
 require_once  get_stylesheet_directory() . '/core/module/widget-manager/fun-widget-manager.php'; // ⬅️ 🧩 引入拟态玻璃质感小工具管理UI
@@ -1068,6 +1072,25 @@ function boxmoe_enqueue_fix_prettify_script() {
 }
 add_action('wp_enqueue_scripts', 'boxmoe_enqueue_fix_prettify_script');
 
+/**
+ * 输出博客侧栏小部件（桌面侧栏与移动弹窗共用）
+ */
+function shiroki_render_blog_sidebar_widgets() {
+    if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_site_sidebar')) :
+    endif;
+
+    if (is_single()) {
+        if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_post_sidebar')) :
+        endif;
+    } elseif (is_page()) {
+        if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_page_sidebar')) :
+        endif;
+    } elseif (is_home()) {
+        if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_home_sidebar')) :
+        endif;
+    }
+}
+
 // 🎯 加载侧边栏滚动固定脚本
 function shiroki_enqueue_sidebar_sticky_script() {
     // 🎯 只在有侧边栏的页面加载此脚本
@@ -1083,17 +1106,27 @@ function shiroki_enqueue_sidebar_sticky_script() {
 }
 add_action('wp_enqueue_scripts', 'shiroki_enqueue_sidebar_sticky_script', 15); // ◀️ 设置稍高的优先级，确保在基础脚本后加载
 
-// 🌊 处理分割线注释，将其转换为HTML
+function shiroki_enqueue_blog_sidebar_modal_script() {
+    if (get_boxmoe('boxmoe_blog_layout') == 'two') {
+        wp_enqueue_script(
+            'shiroki-blog-sidebar-modal',
+            get_template_directory_uri() . '/assets/js/shiroki-blog-sidebar-modal.js',
+            array('theme-script'),
+            '1.0.0',
+            true
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_blog_sidebar_modal_script', 16);
+
+// 🌊 处理分割线注释，将其转换为HTML（兼容空白与被转义的注释）
 function shiroki_convert_divider_comment($content) {
-    // 🔍 查找分割线注释
-    $pattern = '/<!--shiroki-divider-->/';
-    
-    // 🔄 替换为分割线HTML
+    // 🔍 匹配原始注释与 &lt;!--...--&gt; 转义形态
+    $pattern = '/(?:<!--\s*shiroki-divider\s*-->|&lt;!--\s*shiroki-divider\s*--&gt;)/i';
     $replacement = '<div class="shiroki-divider"></div>';
-    
-    // 📝 执行替换
     $content = preg_replace($pattern, $replacement, $content);
-    
+    // 🧹 去掉误包在段落里的分割线，避免无效嵌套
+    $content = preg_replace('/<p>\s*(<div class="shiroki-divider"><\/div>)\s*<\/p>/i', '$1', $content);
     return $content;
 }
 
@@ -1101,17 +1134,25 @@ function shiroki_convert_divider_comment($content) {
 function shiroki_convert_markdown_divider($content) {
     // 🔍 查找Markdown分割线语法
     $pattern = '/^---$/m';
-    
-    // 🔄 替换为分割线HTML
-    $replacement = '<!--shiroki-divider-->';
-    
-    // 📝 执行替换
+    // 🔄 直接输出分割线 HTML，避免再依赖后续注释替换
+    $replacement = '<div class="shiroki-divider"></div>';
     $content = preg_replace($pattern, $replacement, $content);
-    
     return $content;
 }
-add_filter('the_content', 'shiroki_convert_divider_comment');
-add_filter('the_content', 'shiroki_convert_markdown_divider');
+// 📌 --- 先转分割线，再处理注释形态
+add_filter('the_content', 'shiroki_convert_markdown_divider', 9);
+add_filter('the_content', 'shiroki_convert_divider_comment', 10);
+
+// 经典编辑器模式下处理 <!--!html--> 自定义 HTML 区块（MD 模式由 boxmoe_markdown_to_html 处理）
+function shiroki_convert_html_blocks($content) {
+    if(get_boxmoe('boxmoe_md_editor_switch') || strpos($content, '<!--!html-->') === false){
+        return $content;
+    }
+    return preg_replace_callback('/<!--!html-->([\s\S]*?)<!--!html-->/', function($m){
+        return $m[1];
+    }, $content);
+}
+add_filter('the_content', 'shiroki_convert_html_blocks', 1);
 
 //自定义密码保护表单（区分页面和文章）
 function custom_password_protected_form($form) {
@@ -2938,40 +2979,269 @@ function shiroki_enqueue_guangbiao_click_script() {
 }
 add_action('wp_enqueue_scripts', 'shiroki_enqueue_guangbiao_click_script', 35);
 
-// 🖱️ 加载自定义鼠标光标样式
-function shiroki_enqueue_custom_cursor_script() {
-    // 🔍 检查是否开启自定义光标
-    if (get_boxmoe('boxmoe_custom_cursor_switch')) {
-        // 🎨 加载光标样式
-        wp_enqueue_style(
-            'shiroki-custom-cursor',
-            get_template_directory_uri() . '/assets/css/custom-cursor.css',
-            array(),
-            '1.0.0'
-        );
+// 🖱️ 自定义鼠标光标：默认资源与配置
+function shiroki_get_custom_cursor_uri($filename) {
+    $filename = ltrim((string) $filename, '/');
+    $file_path = get_template_directory() . '/assets/guangbiao/' . $filename;
 
-        // 📜 加载光标控制脚本
-        wp_enqueue_script(
-            'shiroki-custom-cursor',
-            get_template_directory_uri() . '/assets/js/custom-cursor.js',
-            array(),
-            '1.0.0',
-            true
-        );
-
-        // 🎯 准备光标配置数据
-        $cursor_config = array(
-            'arrow' => get_boxmoe('boxmoe_cursor_arrow') ?: get_template_directory_uri() . '/assets/guangbiao/Arrow.png',
-            'handwriting' => get_boxmoe('boxmoe_cursor_handwriting') ?: get_template_directory_uri() . '/assets/guangbiao/Handwriting.png',
-            'ibeam' => get_boxmoe('boxmoe_cursor_ibeam') ?: get_template_directory_uri() . '/assets/guangbiao/IBeam.png',
-            'appstarting' => get_boxmoe('boxmoe_cursor_appstarting') ?: get_template_directory_uri() . '/assets/guangbiao/AppStarting.png',
-        );
-
-        // 💉 注入配置到前端
-        wp_localize_script('shiroki-custom-cursor', 'shirokiCursorConfig', $cursor_config);
+    if (!file_exists($file_path)) {
+        return '';
     }
+
+    return get_template_directory_uri() . '/assets/guangbiao/' . $filename;
 }
-add_action('wp_enqueue_scripts', 'shiroki_enqueue_custom_cursor_script', 36);
+
+function shiroki_is_custom_cursor_enabled() {
+    $value = get_boxmoe('boxmoe_custom_cursor_switch');
+
+    return $value === '1' || $value === 1 || $value === true;
+}
+
+function shiroki_is_valid_cursor_asset_url($url) {
+    if (!is_string($url) || $url === '') {
+        return false;
+    }
+
+    $url = trim($url);
+
+    return (bool) preg_match('/\.(png|gif|avif|webp|cur)(\?|#|$)/i', $url);
+}
+
+function shiroki_get_custom_cursor_url($option_key, $default_file) {
+    $default_uri = shiroki_get_custom_cursor_uri($default_file);
+    $value = get_boxmoe($option_key);
+
+    if (is_string($value)) {
+        $value = trim($value);
+    }
+
+    if ($value === false || $value === null || $value === '' || !shiroki_is_valid_cursor_asset_url($value)) {
+        return $default_uri;
+    }
+
+    return $value;
+}
+
+function shiroki_get_custom_cursor_png_defaults() {
+    return array(
+        'arrow' => shiroki_get_custom_cursor_uri('Arrow.png'),
+        'handwriting' => shiroki_get_custom_cursor_uri('Handwriting.png'),
+        'ibeam' => shiroki_get_custom_cursor_uri('IBeam.png'),
+        'appstarting' => shiroki_get_custom_cursor_uri('AppStarting.png'),
+    );
+}
+
+function shiroki_get_custom_cursor_config() {
+    return array(
+        'arrow' => shiroki_get_custom_cursor_url('boxmoe_cursor_arrow', 'Arrow.png'),
+        'handwriting' => shiroki_get_custom_cursor_url('boxmoe_cursor_handwriting', 'Handwriting.png'),
+        'ibeam' => shiroki_get_custom_cursor_url('boxmoe_cursor_ibeam', 'IBeam.png'),
+        'appstarting' => shiroki_get_custom_cursor_url('boxmoe_cursor_appstarting', 'AppStarting.png'),
+    );
+}
+
+function shiroki_is_avif_cursor_url($url) {
+    return (bool) preg_match('/\.avif(\?|#|$)/i', (string) $url);
+}
+
+function shiroki_esc_css_url($url) {
+    $url = esc_url_raw((string) $url);
+    return str_replace(array('"', "'"), '', $url);
+}
+
+function shiroki_build_custom_cursor_value($url, $type, $hotspots, $png_defaults) {
+    $parts = array();
+    $seen = array();
+    $type_hotspot = isset($hotspots[$type]) ? $hotspots[$type] : array(0, 0);
+    $arrow_hotspot = isset($hotspots['arrow']) ? $hotspots['arrow'] : array(5, 5);
+
+    $add_url = function($cursor_url, $x, $y) use (&$parts, &$seen) {
+        if (empty($cursor_url) || isset($seen[$cursor_url])) {
+            return;
+        }
+
+        $seen[$cursor_url] = true;
+        $parts[] = sprintf('url("%s") %d %d', shiroki_esc_css_url($cursor_url), (int) $x, (int) $y);
+    };
+
+    $add_url($url, $type_hotspot[0], $type_hotspot[1]);
+
+    if (shiroki_is_avif_cursor_url($url) && !empty($png_defaults[$type])) {
+        $add_url($png_defaults[$type], $type_hotspot[0], $type_hotspot[1]);
+    }
+
+    if (!empty($png_defaults[$type])) {
+        $add_url($png_defaults[$type], $type_hotspot[0], $type_hotspot[1]);
+    }
+
+    if ($type !== 'arrow' && !empty($png_defaults['arrow'])) {
+        $add_url($png_defaults['arrow'], $arrow_hotspot[0], $arrow_hotspot[1]);
+    }
+
+    if (empty($parts) && !empty($png_defaults[$type])) {
+        $add_url($png_defaults[$type], $type_hotspot[0], $type_hotspot[1]);
+    }
+
+    if (empty($parts) && !empty($png_defaults['arrow'])) {
+        $add_url($png_defaults['arrow'], $arrow_hotspot[0], $arrow_hotspot[1]);
+    }
+
+    $parts[] = 'default';
+
+    return implode(', ', $parts);
+}
+
+function shiroki_custom_cursor_html_class($output) {
+    if (!shiroki_is_custom_cursor_enabled()) {
+        return $output;
+    }
+
+    if (strpos($output, 'class=') !== false) {
+        return preg_replace(
+            '/class="([^"]*)"/',
+            'class="$1 shiroki-custom-cursor custom-cursor-loading"',
+            $output,
+            1
+        );
+    }
+
+    return $output . ' class="shiroki-custom-cursor custom-cursor-loading"';
+}
+add_filter('language_attributes', 'shiroki_custom_cursor_html_class');
+
+function shiroki_custom_cursor_boot_script() {
+    if (!shiroki_is_custom_cursor_enabled()) {
+        return;
+    }
+
+    echo "<script id=\"shiroki-custom-cursor-boot\">document.documentElement.classList.add('shiroki-custom-cursor','custom-cursor-loading');</script>\n";
+}
+add_action('wp_head', 'shiroki_custom_cursor_boot_script', 0);
+
+function shiroki_custom_cursor_body_class($classes) {
+    if (shiroki_is_custom_cursor_enabled()) {
+        $classes[] = 'custom-cursor-enabled';
+        $classes[] = 'custom-cursor-loading';
+    }
+
+    return $classes;
+}
+add_filter('body_class', 'shiroki_custom_cursor_body_class');
+
+function shiroki_custom_cursor_early_output() {
+    if (!shiroki_is_custom_cursor_enabled()) {
+        return;
+    }
+
+    $cursor_config = shiroki_get_custom_cursor_config();
+    $png_defaults = shiroki_get_custom_cursor_png_defaults();
+
+    if (empty(array_filter($png_defaults))) {
+        return;
+    }
+    $hotspots = array(
+        'arrow' => array(5, 5),
+        'handwriting' => array(6, 24),
+        'ibeam' => array(16, 15),
+        'appstarting' => array(5, 5),
+    );
+
+    foreach ($png_defaults as $png_url) {
+        printf(
+            '<link rel="preload" href="%s" as="image" fetchpriority="high">' . "\n",
+            esc_url($png_url)
+        );
+    }
+
+    foreach ($cursor_config as $key => $url) {
+        if (in_array($url, $png_defaults, true)) {
+            continue;
+        }
+
+        printf(
+            '<link rel="preload" href="%s" as="image">' . "\n",
+            esc_url($url)
+        );
+    }
+
+    echo '<style id="shiroki-custom-cursor-critical">' . "\n";
+    echo ":root {\n";
+    foreach ($cursor_config as $key => $url) {
+        printf(
+            "  --cursor-%s: %s;\n",
+            esc_attr($key),
+            shiroki_build_custom_cursor_value($url, $key, $hotspots, $png_defaults)
+        );
+    }
+    echo "}\n";
+
+    $css_file = get_template_directory() . '/assets/css/custom-cursor.css';
+    if (is_readable($css_file)) {
+        echo wp_strip_all_tags((string) file_get_contents($css_file));
+    }
+    echo "</style>\n";
+
+    $warmup_urls = array_values(array_unique(array_merge(array_values($png_defaults), array_values($cursor_config))));
+    echo '<script id="shiroki-custom-cursor-warmup">';
+    echo '(function(){var urls=' . wp_json_encode($warmup_urls) . ';';
+    echo 'function warm(url){try{var img=new Image();img.decoding="async";img.src=url;}catch(e){}}';
+    echo 'urls.forEach(warm);})();';
+    echo '</script>' . "\n";
+}
+add_action('wp_head', 'shiroki_custom_cursor_early_output', 1);
+
+function shiroki_enqueue_custom_cursor_script() {
+    if (!shiroki_is_custom_cursor_enabled()) {
+        return;
+    }
+
+    $script_path = get_template_directory() . '/assets/js/custom-cursor.js';
+    wp_enqueue_script(
+        'shiroki-custom-cursor',
+        get_template_directory_uri() . '/assets/js/custom-cursor.js',
+        array(),
+        file_exists($script_path) ? filemtime($script_path) : '1.0.0',
+        false
+    );
+
+    wp_script_add_data('shiroki-custom-cursor', 'defer', true);
+
+    wp_localize_script(
+        'shiroki-custom-cursor',
+        'shirokiCursorConfig',
+        array(
+            'urls' => shiroki_get_custom_cursor_config(),
+            'pngFallbacks' => shiroki_get_custom_cursor_png_defaults(),
+            'themeBase' => get_template_directory_uri() . '/assets/guangbiao/',
+        )
+    );
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_custom_cursor_script', 1);
+
+// 📺 追番页面样式与脚本
+function shiroki_enqueue_anime_page_assets() {
+    $theme_dir = get_template_directory();
+    $theme_uri = get_template_directory_uri();
+    $css_path = $theme_dir . '/assets/css/anime-page.css';
+    $js_path = $theme_dir . '/assets/js/anime-page.js';
+
+    // 🧩 全站加载，避免 Swup 只替换主内容区时样式和脚本未注入
+    wp_enqueue_style(
+        'shiroki-anime-page',
+        $theme_uri . '/assets/css/anime-page.css',
+        array(),
+        file_exists($css_path) ? (string) filemtime($css_path) : '1.2.3'
+    );
+
+    wp_enqueue_script(
+        'shiroki-anime-page',
+        $theme_uri . '/assets/js/anime-page.js',
+        array(),
+        file_exists($js_path) ? (string) filemtime($js_path) : '1.2.3',
+        true
+    );
+}
+add_action('wp_enqueue_scripts', 'shiroki_enqueue_anime_page_assets', 15);
 
 // 🌟 LOGO呼吸动画 - 输出动态CSS变量和脚本
 function shiroki_logo_breathe_output() {

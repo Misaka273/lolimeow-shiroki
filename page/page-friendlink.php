@@ -569,7 +569,234 @@ get_header();
 
 <!-- 🌸 新增暗色模式适配样式 -->
 <style>
+/* 本站信息 + 双栏布局 */
+.fl-site-info {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #f0f0f0;
+}
+.fl-site-info-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.fl-site-info-desc {
+    font-size: 14px;
+    color: #888;
+    margin: 0 0 16px;
+}
+.fl-site-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+.fl-site-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    min-width: 0;
+}
+.fl-site-info-label {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    min-width: 72px;
+}
+.fl-site-info-value {
+    flex: 1;
+    font-size: 13px;
+    color: #333;
+    word-break: break-all;
+    line-height: 1.4;
+    min-width: 0;
+}
+.fl-site-info-copy {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #fff;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+.fl-site-info-copy:hover {
+    background: linear-gradient(45deg, #ff6b9d, #fecfef);
+    border-color: transparent;
+    color: #fff;
+}
+.fl-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 20px;
+}
+.fl-form-grid .fl-form-full {
+    grid-column: 1 / -1;
+}
+.fl-panels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    border-top: 1px solid #eee;
+    padding-top: 40px;
+    align-items: start;
+}
+.fl-panels-grid.fl-panels-single {
+    grid-template-columns: 1fr;
+}
+.fl-notice-section,
+.fl-apply-section {
+    max-width: none;
+    margin: 0;
+    border-top: none;
+    padding-top: 0;
+}
+.fl-panel-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    height: 100%;
+    box-sizing: border-box;
+}
+.fl-notice-section .fl-panel-card {
+    background: #f0f8fb;
+    border: 1px solid #007cba;
+}
+.fl-panel-title {
+    color: #444;
+    font-size: 22px;
+    margin: 0 0 20px;
+}
+.fl-form-field {
+    margin-bottom: 15px;
+}
+.fl-form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+.fl-form-field input,
+.fl-form-field textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+.fl-form-actions {
+    grid-column: 1 / -1;
+    margin-top: 5px;
+}
+.fl-form-actions button {
+    background: #007cba;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+.fl-apply-intro {
+    margin-bottom: 20px;
+    color: #666;
+    line-height: 1.8;
+}
+.fl-apply-intro p:first-child {
+    color: #444;
+    margin: 0 0 8px;
+}
+.fl-apply-intro p:last-child {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+}
+.fl-captcha-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.fl-captcha-row input {
+    flex: 1;
+    min-width: 120px;
+}
+.fl-captcha-row span {
+    font-size: 12px;
+    color: #666;
+}
+.fl-notice-alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    grid-column: 1 / -1;
+}
+.fl-notice-alert-success {
+    background: #d4edda;
+    color: #155724;
+}
+.fl-notice-alert-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+.fl-site-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    object-fit: contain;
+    border: 1px solid #e0e0e0;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+@media (max-width: 768px) {
+    .fl-site-info-grid,
+    .fl-form-grid,
+    .fl-panels-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (prefers-color-scheme: dark) {
+    /* 🌆 本站信息区域 */
+    .fl-site-info {
+        background: #2d2d2d !important;
+        border-color: #404040 !important;
+    }
+    .fl-site-info-title { color: #e0e0e0 !important; }
+    .fl-site-info-desc { color: #999 !important; }
+    .fl-site-info-item {
+        background: #333 !important;
+        border-color: #444 !important;
+    }
+    .fl-site-info-label { color: #999 !important; }
+    .fl-site-info-value { color: #e0e0e0 !important; }
+    .fl-site-info-copy {
+        background: #3d3d3d !important;
+        border-color: #555 !important;
+        color: #b0b0b0 !important;
+    }
+
     /* 🌆 全局容器样式 */
     .yikan-friendlink-page {
         color: #e0e0e0 !important;
@@ -580,6 +807,41 @@ get_header();
         color: #e0e0e0 !important;
     }
     
+    /* 🌆 双栏板块容器 */
+    .fl-panels-grid {
+        border-top-color: #404040 !important;
+    }
+    .fl-panel-card {
+        background: #2d2d2d !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+    }
+    .fl-notice-section .fl-panel-card {
+        background: #2d2d2d !important;
+        border-color: #404040 !important;
+    }
+    .fl-panel-title {
+        color: #e0e0e0 !important;
+    }
+    .fl-apply-intro,
+    .fl-apply-intro p:first-child {
+        color: #b0b0b0 !important;
+    }
+    .fl-apply-intro p:last-child {
+        color: #888 !important;
+    }
+    .fl-form-field label {
+        color: #e0e0e0 !important;
+    }
+    .fl-form-field input,
+    .fl-form-field textarea {
+        background: #333 !important;
+        border-color: #555 !important;
+        color: #e0e0e0 !important;
+    }
+    .fl-captcha-row span {
+        color: #b0b0b0 !important;
+    }
+
     /* 🌆 管理员邮件发送模块 */
     .fl-notice-section > div {
         background: #2d2d2d !important;
@@ -604,7 +866,8 @@ get_header();
     
     /* 🌆 按钮样式 */
     .fl-notice-section button,
-    .fl-apply-section button {
+    .fl-apply-section button,
+    .fl-form-actions button {
         background: #007cba !important;
         color: #fff !important;
     }
@@ -660,6 +923,42 @@ get_header();
 </style>
 
 <div class="yikan-friendlink-page" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+    <?php
+    $fl_site_name = get_option('blogname');
+    $fl_site_url = home_url('/');
+    $fl_site_desc = get_option('blogdescription');
+    $fl_site_icon = get_site_icon_url();
+    $fl_site_info_items = [
+        ['label' => '网站名称', 'value' => $fl_site_name, 'copy' => $fl_site_name],
+        ['label' => '网站地址', 'value' => $fl_site_url, 'copy' => $fl_site_url],
+        ['label' => '网站描述', 'value' => $fl_site_desc, 'copy' => $fl_site_desc],
+        ['label' => '网站 ICO', 'value' => $fl_site_icon, 'copy' => $fl_site_icon, 'is_icon' => true],
+    ];
+    ?>
+    <!-- 📋 本站信息 -->
+    <div class="fl-site-info">
+        <h2 class="fl-site-info-title"><span>📋</span><span>本站信息</span></h2>
+        <p class="fl-site-info-desc">申请友链前，请先在您的网站添加本站链接。点击右侧按钮可快速复制对应信息。</p>
+        <div class="fl-site-info-grid">
+            <?php foreach ($fl_site_info_items as $item) : ?>
+            <div class="fl-site-info-item">
+                <span class="fl-site-info-label"><?php echo esc_html($item['label']); ?></span>
+                <span class="fl-site-info-value">
+                    <?php if (!empty($item['is_icon']) && !empty($item['value'])) : ?>
+                        <img src="<?php echo esc_url($item['value']); ?>" alt="<?php echo esc_attr($fl_site_name); ?> ICO" class="fl-site-icon">
+                        <span><?php echo esc_html($item['value']); ?></span>
+                    <?php else : ?>
+                        <?php echo esc_html($item['value']); ?>
+                    <?php endif; ?>
+                </span>
+                <?php if (!empty($item['copy'])) : ?>
+                <button type="button" class="fl-site-info-copy copy-btn" data-copy-text="<?php echo esc_attr($item['copy']); ?>" data-copy-label="<?php echo esc_attr($item['label']); ?>" title="复制<?php echo esc_attr($item['label']); ?>">📋</button>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
     <!-- 友联列表区域 | YI KAN搜索导航yy4y.com博客44y4.com -->
     <!-- <div class="fl-list-section" style="margin-bottom: 50px;">
         <h1 style="color: #333; font-size: 28px; margin-bottom: 30px; text-align: center;"><?php the_title(); ?></h1>
@@ -695,153 +994,131 @@ get_header();
         </p>
     </div> -->
 
-    <!-- 管理员专属：邮件发送模块 | YI KAN搜索导航yy4y.com博客44y4.com -->
+    <!-- 管理员通知 + 友链申请（双栏布局） -->
+    <div class="fl-panels-grid<?php echo (is_user_logged_in() && current_user_can('manage_options')) ? '' : ' fl-panels-single'; ?>">
     <?php if (is_user_logged_in() && current_user_can('manage_options')) : ?>
-    <div class="fl-notice-section" style="max-width: 800px; margin: 0 auto 50px; border-top: 1px solid #eee; padding-top: 40px;">
-        <h2 style="color: #444; font-size: 22px; margin-bottom: 20px;">📧 友联审核通过通知发送（管理员专用）</h2>
-        <div style="background: #f0f8fb; padding: 30px; border: 1px solid #007cba; border-radius: 8px;">
-            <?php if (isset($notice_success)) : ?>
-                <div style="padding: 10px; background: #d4edda; color: #155724; border-radius: 4px; margin-bottom: 15px;">
-                    <?php echo $notice_success; ?>
-                </div>
-            <?php endif; ?>
-            <?php if (isset($notice_error)) : ?>
-                <div style="padding: 10px; background: #f8d7da; color: #721c24; border-radius: 4px; margin-bottom: 15px;">
-                    <?php echo $notice_error; ?>
-                </div>
-            <?php endif; ?>
-            
-            <form method="post" action="" style="margin-top: 15px;">
+    <div class="fl-notice-section">
+        <h2 class="fl-panel-title">📧 友联审核通过通知发送（管理员专用）</h2>
+        <div class="fl-panel-card">
+            <form method="post" action="">
                 <?php wp_nonce_field('send_friendlink_notice_front_action', 'friendlink_notice_nonce'); ?>
                 <input type="hidden" name="send_friendlink_notice_front" value="1">
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">申请人邮箱 *</label>
-                    <input type="email" name="friendlink_notice_email" required
-                           placeholder="粘贴申请人的联系邮箱"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-grid">
+                <?php if (isset($notice_success)) : ?>
+                    <div class="fl-notice-alert fl-notice-alert-success"><?php echo $notice_success; ?></div>
+                <?php endif; ?>
+                <?php if (isset($notice_error)) : ?>
+                    <div class="fl-notice-alert fl-notice-alert-error"><?php echo $notice_error; ?></div>
+                <?php endif; ?>
+
+                <div class="fl-form-field">
+                    <label>申请人邮箱 *</label>
+                    <input type="email" name="friendlink_notice_email" required placeholder="粘贴申请人的联系邮箱">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">申请人站点名 *</label>
-                    <input type="text" name="friendlink_notice_sitename" required
-                           placeholder="输入申请人的站点名称"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field">
+                    <label>申请人站点名 *</label>
+                    <input type="text" name="friendlink_notice_sitename" required placeholder="输入申请人的站点名称">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">申请人站点地址 *</label>
-                    <input type="url" name="friendlink_notice_siteurl" required
-                           placeholder="输入申请人的站点地址"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field">
+                    <label>申请人站点地址 *</label>
+                    <input type="url" name="friendlink_notice_siteurl" required placeholder="输入申请人的站点地址">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">你的站点名</label>
-                    <input type="text" name="friendlink_notice_mysitename" value="<?php echo get_option('blogname'); ?>"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field">
+                    <label>你的站点名</label>
+                    <input type="text" name="friendlink_notice_mysitename" value="<?php echo esc_attr(get_option('blogname')); ?>">
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">你的站点地址</label>
-                    <input type="url" name="friendlink_notice_mysiteurl" value="<?php echo get_option('siteurl'); ?>"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field fl-form-full">
+                    <label>你的站点地址</label>
+                    <input type="url" name="friendlink_notice_mysiteurl" value="<?php echo esc_attr(get_option('siteurl')); ?>">
                 </div>
 
-                <button type="submit" style="background: #007cba; color: #fff; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 16px; transition: background 0.3s;">
-                    发送审核通过通知
-                </button>
+                <div class="fl-form-actions">
+                    <button type="submit">发送审核通过通知</button>
+                </div>
+                </div>
             </form>
         </div>
     </div>
     <?php endif; ?>
 
-    <!-- 友联申请区域（带图形验证码+限流+按钮加载） | YI KAN搜索导航yy4y.com博客44y4.com -->
-    <div class="fl-apply-section" style="max-width: 800px; margin: 0 auto; border-top: 1px solid #eee; padding-top: 40px;">
-        <h2 style="color: #444; font-size: 22px; margin-bottom: 20px;">友链申请-YIKAN出品</h2>
-        <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-            <div style="margin-bottom: 20px; color: #666; line-height: 1.8;">
-            <p style="color: #444;">请填写以下信息申请友联，申请前请先在你的站点添加本站链接（名称：<?php echo get_option('blogname'); ?>，地址：<?php echo get_option('siteurl'); ?>），审核通过后会第一时间邮件通知你。</p>
-                <!-- 版权提示 | YI KAN搜索导航yy4y.com博客44y4.com -->
-                <p style="font-size: 12px; color: #999;">
-                    本友联系统由 <?php echo FL_COPYRIGHT_TEXT; ?> 开发提供
-                </p>
+    <!-- 友联申请区域（带图形验证码+限流+按钮加载） -->
+    <div class="fl-apply-section">
+        <h2 class="fl-panel-title">友链申请-YIKAN出品</h2>
+        <div class="fl-panel-card">
+            <div class="fl-apply-intro">
+                <p>请填写以下信息申请友联，申请前请先在你的站点添加上方「本站信息」中的链接，审核通过后会第一时间邮件通知你。</p>
+                <p>本友联系统由 <?php echo FL_COPYRIGHT_TEXT; ?> 开发提供</p>
             </div>
 
-            <form id="fl-apply-form" method="post" action="" style="margin-top: 20px;">
+            <form id="fl-apply-form" method="post" action="">
                 <?php wp_nonce_field('yikan_fl_nonce', 'yikan_fl_nonce_field'); ?>
                 <input type="hidden" name="yikan_fl_action" value="send_email">
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">网站名称：*</label>
-                    <input type="text" name="site_name" required
-                           placeholder="比如：YI KAN博客"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-grid">
+                <div class="fl-form-field">
+                    <label>网站名称：*</label>
+                    <input type="text" name="site_name" required placeholder="比如：YI KAN博客">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">网站地址：*</label>
-                    <input type="url" name="site_url" required
-                           placeholder="比如：https://www.44y4.com"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field">
+                    <label>网站地址：*</label>
+                    <input type="url" name="site_url" required placeholder="比如：https://www.44y4.com">
                 </div>
 
-                <!-- 🏞️ 新增ICO表单项   | 灵阈研都-纸鸢社开发 gl.baimu.live -->
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">网站ICO：*</label>
-                    <input type="url" name="site_ico" required
-                           placeholder="比如：https://www.44y4.com/favicon.ico"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field">
+                    <label>网站ICO：*</label>
+                    <input type="url" name="site_ico" required placeholder="比如：https://www.44y4.com/favicon.ico">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">联系邮箱：*</label>
-                    <input type="email" name="contact_email" required
-                           placeholder="比如：1909824@qq.com"
-                           style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
+                <div class="fl-form-field">
+                    <label>联系邮箱：*</label>
+                    <input type="email" name="contact_email" required placeholder="比如：1909824@qq.com">
                 </div>
 
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">备注：</label>
-                    <textarea name="remarks" rows="4"
-                              placeholder="这里是您的网站的介绍"
-                              style="width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; resize: vertical; box-sizing: border-box;"></textarea>
+                <div class="fl-form-field fl-form-full">
+                    <label>备注：</label>
+                    <textarea name="remarks" rows="4" placeholder="这里是您的网站的介绍"></textarea>
                 </div>
 
-                <!-- 图形验证码区域 | YI KAN搜索导航yy4y.com博客44y4.com -->
-                <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
-                    <label style="display: block; margin-bottom: 0; font-weight: 500; color: #333;">验证码：*</label>
-                    <input type="text" name="fl_captcha" required
-                           placeholder="请输入图形中的字符"
-                           style="flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box;">
-                    <img src="<?php echo get_permalink(); ?>?fl_captcha_img=1" alt="验证码" 
-                         style="width: <?php echo FL_CAPTCHA_WIDTH; ?>px; height: <?php echo FL_CAPTCHA_HEIGHT; ?>px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;"
-                         onclick="this.src='<?php echo get_permalink(); ?>?fl_captcha_img=1&t='+Math.random()">
-                    <span style="font-size: 12px; color: #666;">点击验证码刷新</span>
+                <div class="fl-form-field fl-form-full">
+                    <label>验证码：*</label>
+                    <div class="fl-captcha-row">
+                        <input type="text" name="fl_captcha" required placeholder="请输入图形中的字符">
+                        <img src="<?php echo get_permalink(); ?>?fl_captcha_img=1" alt="验证码"
+                             style="width: <?php echo FL_CAPTCHA_WIDTH; ?>px; height: <?php echo FL_CAPTCHA_HEIGHT; ?>px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;"
+                             onclick="this.src='<?php echo get_permalink(); ?>?fl_captcha_img=1&t='+Math.random()">
+                        <span>点击验证码刷新</span>
+                    </div>
                 </div>
 
-                <button type="submit" id="fl-submit-btn" style="background: #007cba; color: #fff; border: none; padding: 12px 30px; border-radius: 4px; cursor: pointer; font-size: 16px; transition: background 0.3s;">
-                    提交申请
-                </button>
+                <div class="fl-form-actions">
+                    <button type="submit" id="fl-submit-btn">提交申请</button>
+                </div>
+                </div>
 
                 <?php if (isset($_GET['fl_msg'])) : ?>
                     <div style="margin-top: 15px; font-size: 14px; color: <?php echo (isset($_GET['fl_type']) && $_GET['fl_type'] === 'success') ? '#28a745' : '#dc3545'; ?>;">
-                        <?php echo urldecode($_GET['fl_msg']); ?>
+                        <?php echo esc_html(urldecode($_GET['fl_msg'])); ?>
                     </div>
                 <?php endif; ?>
             </form>
 
-            <!-- 按钮加载状态JS | YI KAN搜索导航yy4y.com博客44y4.com -->
             <script>
                 const form = document.getElementById('fl-apply-form');
                 const btn = document.getElementById('fl-submit-btn');
-                form.addEventListener('submit', function(e) {
+                form.addEventListener('submit', function() {
                     btn.disabled = true;
                     btn.innerHTML = '提交中...';
                     btn.style.backgroundColor = '#6c757d';
                 });
             </script>
         </div>
+    </div>
     </div>
 </div>
 

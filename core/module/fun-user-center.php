@@ -141,6 +141,18 @@ function boxmoe_update_user_profile() {
         return;
     }
 
+    // 🏷️ 显示名称需唯一，避免登录时歧义
+    global $wpdb;
+    $display_name_taken = (int) $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(ID) FROM {$wpdb->users} WHERE display_name = %s AND ID != %d",
+        $display_name,
+        $user_id
+    ));
+    if ($display_name_taken > 0) {
+        wp_send_json_error(['message' => '该昵称已被使用，请更换一个']);
+        return;
+    }
+
     $user_data = array(
         'ID' => $user_id,
         'display_name' => $display_name,

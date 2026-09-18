@@ -11,26 +11,10 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
     $article_layout = get_boxmoe('boxmoe_article_layout_style');
     $sidebar_class = ($article_layout == 'three') ? 'col-lg-3' : 'col-lg-4';
     ?>
-    <div class="<?php echo $sidebar_class; ?> blog-sidebar">
+    <div class="<?php echo $sidebar_class; ?> blog-sidebar d-none d-lg-block">
           <div class="position-sticky top">
-            <div class="offcanvas-lg offcanvas-end" id="blog-sidebar" tabindex="-1" aria-labelledby="blog-sidebar">
-              <div class="offcanvas-header">
-                <h5 class="offcanvas-title h4" id="blog-sidebar">
-                <?php echo boxmoe_logo(); ?></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#blog-sidebar"></button>
-              </div>
-              <div class="offcanvas-body flex-column">
-              <?php 
-                    if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_site_sidebar')) : endif; 
-                    if (is_single()){
-	                        if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_post_sidebar')) : endif; 
-                        }else if (is_page()){
-	                        if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_page_sidebar')) : endif; 
-                        }else if (is_home()){
-	                        if (function_exists('dynamic_sidebar') && dynamic_sidebar('widget_home_sidebar')) : endif; 
-                        }
-                ?>
-              </div>
+            <div class="blog-sidebar-inner">
+              <?php shiroki_render_blog_sidebar_widgets(); ?>
             </div>
           </div>
         </div>

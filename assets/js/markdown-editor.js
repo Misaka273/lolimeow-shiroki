@@ -42,6 +42,7 @@
     $bar.append(btn('卡片').on('click',function(){insert('名称：\n头像链接：\n描述：\n链接：\n勋章：\n\n','','');}));
     /* 🌊 添加分割线按钮 */
     $bar.append(btn('分割线','md-divider').on('click',function(){insert('\n<!--shiroki-divider-->\n','','');}));
+    $bar.append(btn('HTML','md-html').on('click',function(){insert('\n<!--!html-->\n','\n<!--!html-->\n','<div class="custom-block"></div>');}));
     
     // 视图切换按钮组
     var $btnEdit = btn('编辑', 'md-view-btn active').data('mode', 'edit');

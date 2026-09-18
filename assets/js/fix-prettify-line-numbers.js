@@ -1,13 +1,17 @@
 // 🎯 修复Prettify代码块行号显示问题
 
-
 (function() {
+    'use strict';
+
     // 等待页面加载完成
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', fixPrettifyLineNumbers);
     } else {
         fixPrettifyLineNumbers();
     }
+
+    // 🚀 Swup 无刷新切换
+    document.addEventListener('shiroki:content:loaded', fixPrettifyLineNumbers);
 
     function fixPrettifyLineNumbers() {
         // 检查是否存在prettify相关元素
