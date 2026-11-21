@@ -132,7 +132,7 @@ class widget_postauthor extends WP_Widget {
 		echo '    left: -50%;';
 		echo '    width: 200%;';
 		echo '    height: 200%;';
-		echo '    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);';
+		echo '    background: linear-gradient(45deg in srgb, oklch(0 0 0 / 0), oklch(1 0 0 / 0.3), oklch(0 0 0 / 0));';
 		echo '    transform: rotate(45deg);';
 		echo '    transition: left 0.5s ease, opacity 0.3s ease;';
 		echo '    opacity: 0;';

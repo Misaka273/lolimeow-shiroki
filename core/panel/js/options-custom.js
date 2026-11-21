@@ -8,22 +8,22 @@ jQuery(document).ready(function($) {
 	// 拟态网格布局下不再注入彩色边框（由 optionsframework.css 统一管理）
 	/*
 	var colors = [
-		{border: '#d56ec7', top: '#50aaee'},
-		{border: '#d56ec7', top: '#d56ec7'},
-		{border: '#e37e55', top: '#e37e55'},
-		{border: '#ebbd41', top: '#ebbd41'},
-		{border: '#6f4869', top: '#6f4869'},
-		{border: '#d510b7', top: '#d510b7'},
-		{border: '#6c69e3', top: '#6c69e3'},
-		{border: '#234521', top: '#234521'},
-		{border: '#2271b1', top: '#2271b1'},
-		{border: '#4f94d4', top: '#4f94d4'},
-		{border: '#a7aaad', top: '#a7aaad'},
-		{border: '#eb2d0c', top: '#eb2d0c'},
-		{border: '#70291d', top: '#70291d'},
-		{border: '#6594db', top: '#6594db'},
-		{border: '#b3d41d', top: '#b3d41d'},
-		{border: '#d352c2', top: '#d352c2'}
+		{border: 'oklch(0.6865 0.1683 332.54)', top: 'oklch(0.7122 0.1316 244.08)'},
+		{border: 'oklch(0.6865 0.1683 332.54)', top: 'oklch(0.6865 0.1683 332.54)'},
+		{border: 'oklch(0.6967 0.1369 42.3)', top: 'oklch(0.6967 0.1369 42.3)'},
+		{border: 'oklch(0.8182 0.1455 87.74)', top: 'oklch(0.8182 0.1455 87.74)'},
+		{border: 'oklch(0.4576 0.0717 332.28)', top: 'oklch(0.4576 0.0717 332.28)'},
+		{border: 'oklch(0.5987 0.2585 336.54)', top: 'oklch(0.5987 0.2585 336.54)'},
+		{border: 'oklch(0.5869 0.1801 280.4)', top: 'oklch(0.5869 0.1801 280.4)'},
+		{border: 'oklch(0.3543 0.0721 142.75)', top: 'oklch(0.3543 0.0721 142.75)'},
+		{border: 'oklch(0.5339 0.1249 247.74)', top: 'oklch(0.5339 0.1249 247.74)'},
+		{border: 'oklch(0.6494 0.1191 248.52)', top: 'oklch(0.6494 0.1191 248.52)'},
+		{border: 'oklch(0.7365 0.0055 247.9)', top: 'oklch(0.7365 0.0055 247.9)'},
+		{border: 'oklch(0.6071 0.2265 31.66)', top: 'oklch(0.6071 0.2265 31.66)'},
+		{border: 'oklch(0.383 0.1035 31.77)', top: 'oklch(0.383 0.1035 31.77)'},
+		{border: 'oklch(0.6634 0.1181 258.41)', top: 'oklch(0.6634 0.1181 258.41)'},
+		{border: 'oklch(0.8171 0.1891 120.56)', top: 'oklch(0.8171 0.1891 120.56)'},
+		{border: 'oklch(0.6463 0.2056 333.2)', top: 'oklch(0.6463 0.2056 333.2)'}
 	];
 	$('.section.col').each(function(index) {
 		var color = colors[index % colors.length];
@@ -431,13 +431,13 @@ jQuery(document).ready(function($) {
 		var themeUri = $('#direct-reset-button').data('theme-uri') || '/wp-content/themes/lolimeow-shiroki';
 		
 		// 🔧 显示加载提示窗口
-		var loadingHtml = '<div id="shiroki-reset-loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999999;display:flex;align-items:center;justify-content:center;">' +
-			'<div style="background:#fff;padding:30px;border-radius:5px;text-align:center;max-width:400px;">' +
+		var loadingHtml = '<div id="shiroki-reset-loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:oklch(0 0 0 / 0.8);z-index:999999;display:flex;align-items:center;justify-content:center;">' +
+			'<div style="background:oklch(1 0 0);padding:30px;border-radius:5px;text-align:center;max-width:400px;">' +
 			'<h3>正在重置设置...</h3>' +
 			'<p>请稍候，这可能需要几秒钟时间。</p>' +
 			'<div style="margin:20px 0;">' +
-			'<div style="width:100%;height:10px;background:#f1f1f1;border-radius:5px;overflow:hidden;">' +
-			'<div id="shiroki-reset-progress" style="width:0%;height:100%;background:#2271b1;transition:width 0.3s;"></div>' +
+			'<div style="width:100%;height:10px;background:oklch(0.9581 0 0);border-radius:5px;overflow:hidden;">' +
+			'<div id="shiroki-reset-progress" style="width:0%;height:100%;background:oklch(0.5339 0.1249 247.74);transition:width 0.3s;"></div>' +
 			'</div>' +
 			'</div>' +
 			'<p id="shiroki-reset-status">正在初始化...</p>' +
@@ -522,13 +522,13 @@ jQuery(document).ready(function($) {
 		var themeUri = $('#super-fast-reset-button').data('theme-uri') || '/wp-content/themes/lolimeow-shiroki';
 		
 		// 🔧 加载提示
-		var loadingHtml = '<div id="shiroki-reset-loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999999;display:flex;align-items:center;justify-content:center;">' +
-			'<div style="background:#fff;padding:30px;border-radius:5px;text-align:center;max-width:400px;">' +
+		var loadingHtml = '<div id="shiroki-reset-loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:oklch(0 0 0 / 0.8);z-index:999999;display:flex;align-items:center;justify-content:center;">' +
+			'<div style="background:oklch(1 0 0);padding:30px;border-radius:5px;text-align:center;max-width:400px;">' +
 			'<h3>🚀 重置中...</h3>' +
 			'<p>🌏即将重置主题设置~✍🏻</p>' +
 			'<div style="margin:20px 0;">' +
-			'<div style="width:100%;height:10px;background:#f1f1f1;border-radius:5px;overflow:hidden;">' +
-			'<div id="shiroki-reset-progress" style="width:0%;height:100%;background:#2271b1;transition:width 0.3s;"></div>' +
+			'<div style="width:100%;height:10px;background:oklch(0.9581 0 0);border-radius:5px;overflow:hidden;">' +
+			'<div id="shiroki-reset-progress" style="width:0%;height:100%;background:oklch(0.5339 0.1249 247.74);transition:width 0.3s;"></div>' +
 			'</div>' +
 			'</div>' +
 			'<p id="shiroki-reset-status">正在初始化...</p>' +

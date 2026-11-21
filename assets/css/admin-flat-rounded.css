@@ -1,13 +1,13 @@
 /* 引入配色管理css */
 @import url('admin/admin-shiroki.css');
 
-#wpadminbar{background:var(--shiroki-gradient-black-transparent) ;border-bottom:1px solid rgba(255,255,255,0.2) }
+#wpadminbar{background:var(--shiroki-gradient-black-transparent) ;border-bottom:1px solid oklch(1 0 0 / 0.2) }
 #wpadminbar .ab-item, #wpadminbar a.ab-item{color:var(--shiroki-white) }
-#wpadminbar .ab-item:hover, #wpadminbar a.ab-item:hover{background:rgba(255,255,255,0.1) ;color:var(--shiroki-white) }
+#wpadminbar .ab-item:hover, #wpadminbar a.ab-item:hover{background:oklch(1 0 0 / 0.1);color:var(--shiroki-white) }
 
 /* 🎨 左侧菜单背景 */
 #adminmenuback {
-    background: transparent ;
+    background: oklch(0 0 0 / 0);
     box-shadow: none ;
     border-top-right-radius: 20px ; /* ◀️ 与菜单wrap保持一致 */
     border-bottom-right-radius: 20px ; /* ◀️ 与菜单wrap保持一致 */
@@ -18,23 +18,23 @@
     background: var(--shiroki-gradient-black-transparent) ;
     backdrop-filter: blur(20px) ; /* ◀️ 玻璃拟态模糊 */
     -webkit-backdrop-filter: blur(20px) ;
-    border-right: 1px solid rgba(255, 255, 255, 0.2) ; /* ◀️ 玻璃质感边框 */
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1) ; /* ◀️ 柔和投影 */
+    border-right: 1px solid oklch(1 0 0 / 0.2); /* ◀️ 玻璃质感边框 */
+    box-shadow: 4px 0 20px oklch(0 0 0 / 0.1); /* ◀️ 柔和投影 */
     border-top-right-radius: 20px ; /* ◀️ 右上圆角 */
     border-bottom-right-radius: 20px ; /* ◀️ 右下圆角 */
 }
-#adminmenu, #adminmenu .wp-submenu{background:transparent }
+#adminmenu, #adminmenu .wp-submenu{background:oklch(0 0 0 / 0) }
 #adminmenu .wp-submenu {
     background: var(--shiroki-gradient-gray-transparent) ;
     border-radius: 12px ; /* ⬅️ 子菜单圆角 */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2) ;
+    box-shadow: 0 4px 15px oklch(0 0 0 / 0.2);
     margin-top: 5px ; /* ⬅️ 微调位置避免贴合过紧 */
 }
 #adminmenu a{color:var(--shiroki-white) }
-#adminmenu li.menu-top:hover, #adminmenu li.opensub > a.menu-top, #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu{background:rgba(255,255,255,0.1) ;color:var(--shiroki-white) }
+#adminmenu li.menu-top:hover, #adminmenu li.opensub > a.menu-top, #adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu{background:oklch(1 0 0 / 0.1);color:var(--shiroki-white) }
 #adminmenu .wp-submenu a:hover, #adminmenu .wp-submenu li.current a{color:var(--shiroki-white) }
 
-.wrap h1, .wrap h2, .wrap h3{color:#333333}
+.wrap h1, .wrap h2, .wrap h3{color:oklch(0.321093 0 0)}
 
 .postbox, .metabox-holder .postbox{border-radius:12px ;border:1px solid var(--shiroki-gray-medium) ;box-shadow:none }
 .postbox .hndle{border-bottom:1px solid var(--shiroki-gray-dark) ;background:var(--shiroki-gradient-gray) ;color:var(--shiroki-black-medium) }
@@ -43,7 +43,7 @@
 
 .notice, .updated, .error, .update-nag{border-radius:10px ;border:1px solid var(--shiroki-gray-medium) ;background:var(--shiroki-gray-light) ;color:var(--shiroki-black-medium) }
 .notice-success{background:var(--shiroki-gray-light) ;border-color:var(--shiroki-gray-medium) ;color:var(--shiroki-black-medium) }
-.notice-error{background:#fee2e2 ;border-color:#fca5a5 ;color:#7f1d1d }
+.notice-error{background:oklch(0.935641 0.030896 17.717);border-color:oklch(0.80769 0.103486 19.571);color:oklch(0.395843 0.133073 25.723) }
 
 .wp-core-ui .button{border-radius:8px ;border:1px solid var(--shiroki-gray-medium) ;background:var(--shiroki-white) ;color:var(--shiroki-black-medium) ;box-shadow:none }
 .wp-core-ui .button:hover{background:var(--shiroki-pink-light) ;border-color:var(--shiroki-pink-dark) ;color:var(--shiroki-black-medium) }
@@ -116,7 +116,7 @@ textarea:focus {
     outline: none ;
 }
 
-input:focus, textarea:focus, select:focus{border-color:var(--shiroki-black-light) ;box-shadow:0 0 0 3px rgba(0,0,0,0.15) }
+input:focus, textarea:focus, select:focus{border-color:var(--shiroki-black-light) ;box-shadow:0 0 0 3px oklch(0 0 0 / 0.15) }
 
 .theme-browser .theme{border-radius:12px ;border:1px solid var(--shiroki-gray-medium) }
 .theme-browser .theme .theme-actions .button-primary{background:var(--shiroki-gradient-pink) ;border-color:var(--shiroki-pink-dark) }
@@ -267,14 +267,14 @@ input:focus, textarea:focus, select:focus{border-color:var(--shiroki-black-light
 
 /* 修复handle-actions按钮背景色 */
 .postbox-header .handle-actions button {
-    background: transparent ;
+    background: oklch(0 0 0 / 0);
     color: var(--shiroki-black-medium) ;
     border: none ;
 }
 
 /* 修复handle-actions按钮悬停效果 */
 .postbox-header .handle-actions button:hover {
-    background: rgba(0, 0, 0, 0.1) ;
+    background: oklch(0 0 0 / 0.1);
     color: var(--shiroki-black-medium) ;
     border-radius: 4px ;
 }
@@ -302,7 +302,7 @@ body select:not(.mm):not(.jj):not(.aa),
     -moz-appearance: none ;
     
     /* 背景图：自定义箭头 + 纯白背景色 */
-    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff69b4%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background: oklch(1 0 0) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22oklch(0.728297%200.197075%20351.995)%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center;
     background-size: 16px 16px ;
     
     padding: 0 32px 0 12px ; /* ⬅️ 明确内边距 */
@@ -328,9 +328,9 @@ body select:not(.mm):not(.jj):not(.aa):hover,
 [name="gravatar"]:hover,
 [name="google_fonts"]:hover {
     border-color: var(--shiroki-black-light) ;
-    background: var(--shiroki-gradient-gray) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23333333%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background: var(--shiroki-gradient-gray) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22oklch(0.321093%200%200)%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
     background-size: 16px 16px ;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) ;
+    box-shadow: 0 2px 8px oklch(0 0 0 / 0.15);
 }
 
 /* 聚焦 */
@@ -346,7 +346,7 @@ body select:not(.mm):not(.jj):not(.aa):focus,
     border-color: var(--shiroki-pink-dark) ;
     box-shadow: 0 0 0 3px var(--shiroki-pink-ring) ;
     outline: none ;
-    background: var(--shiroki-white) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff1493%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background: var(--shiroki-white) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22oklch(0.654935%200.261336%20356.945)%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
     background-size: 16px 16px ;
 }
 
@@ -366,7 +366,7 @@ body select.pt_month, body select.pt_day, body select.pt_year,
     -moz-appearance: none ;
     
     /* 背景和箭头 */
-    background: #ffffff url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff69b4%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background: oklch(1 0 0) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22oklch(0.728297%200.197075%20351.995)%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center;
     background-size: 14px 14px ;
     
     /* 内边距和尺寸 */
@@ -396,7 +396,7 @@ body select.pt_month:hover, body select.pt_day:hover, body select.pt_year:hover,
 .wp-core-ui select.mm:hover, .wp-core-ui select.jj:hover, .wp-core-ui select.aa:hover,
 .wp-core-ui select.pt_month:hover, .wp-core-ui select.pt_day:hover, .wp-core-ui select.pt_year:hover {
     border-color: var(--shiroki-black-light) ;
-    background: var(--shiroki-gradient-gray) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23333333%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
+    background: var(--shiroki-gradient-gray) url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22oklch(0.321093%200%200)%22%2F%3E%3C%2Fsvg%3E") no-repeat right 8px center ;
     background-size: 14px 14px ;
 }
 
@@ -411,7 +411,7 @@ body select.pt_month:focus, body select.pt_day:focus, body select.pt_year:focus,
 .wp-core-ui select.mm:focus, .wp-core-ui select.jj:focus, .wp-core-ui select.aa:focus,
 .wp-core-ui select.pt_month:focus, .wp-core-ui select.pt_day:focus, .wp-core-ui select.pt_year:focus {
     border-color: var(--shiroki-black-light) ;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15) ;
+    box-shadow: 0 0 0 3px oklch(0 0 0 / 0.15);
     outline: none ;
 }
 
@@ -421,8 +421,8 @@ body input.pt_hour, body input.pt_minute, body input.pt_second,
 #timestampdiv input[name="hh"], #timestampdiv input[name="mn"], #timestampdiv input[name="ss"] {
     /* 适配 WordPress 默认时间输入框尺寸 */
     border-radius: 6px ;
-    border: 1px solid #e0e0e0 ;
-    color: #333333 ;
+    border: 1px solid oklch(0.906701 0 0);
+    color: oklch(0.321093 0 0);
     padding: 2px 4px ; /* 减小内边距 */
     height: auto ; /* 自动高度 */
     min-height: auto ; /* 移除最小高度限制 */
@@ -431,7 +431,7 @@ body input.pt_hour, body input.pt_minute, body input.pt_second,
     min-width: 30px ; /* 最小宽度适配时间输入 */
     max-width: 50px ; /* 最大宽度限制 */
     transition: all 0.2s ease ;
-    background-color: #ffffff ;
+    background-color: oklch(1 0 0);
     box-shadow: none ;
     font-size: 14px ; /* 合适的字体大小 */
 }
@@ -447,7 +447,7 @@ body input[name="hh"]:focus, body input[name="mn"]:focus, body input[name="ss"]:
 body input.pt_hour:focus, body input.pt_minute:focus, body input.pt_second:focus,
 #timestampdiv input[name="hh"]:focus, #timestampdiv input[name="mn"]:focus, #timestampdiv input[name="ss"]:focus {
     border-color: var(--shiroki-black-light) ;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.15) ;
+    box-shadow: 0 0 0 3px oklch(0 0 0 / 0.15);
     outline: none ;
 }
 
@@ -503,7 +503,7 @@ body select[multiple] {
     transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23ff69b4%22%2F%3E%3C%2Fsvg%3E");
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22oklch(0.728297%200.197075%20351.995)%22%2F%3E%3C%2Fsvg%3E");
     background-size: contain;
     background-repeat: no-repeat;
     transition: transform 0.2s ease;
@@ -561,7 +561,7 @@ body select[multiple] {
 .boxmoe-select-dropdown li {
     padding: 8px 12px;
     font-size: 13px;
-    color: #334155;
+    color: oklch(0.371696 0.039156 257.287);
     cursor: pointer;
     transition: background 0.1s;
     margin: 0 ;
@@ -600,7 +600,7 @@ body select[multiple] {
     top: auto ;
     bottom: 0 ;
     border-bottom: none ;
-    border-top: 1px solid rgba(255,255,255,0.2) ;
+    border-top: 1px solid oklch(1 0 0 / 0.2);
 }
 
 /* Fix body/html padding */
@@ -625,7 +625,7 @@ html.wp-toolbar {
 #wpadminbar .quicklinks .menupop .ab-sub-wrapper {
     top: auto ;
     bottom: 32px ;
-    box-shadow: 0 -4px 8px rgba(0,0,0,0.1) ;
+    box-shadow: 0 -4px 8px oklch(0 0 0 / 0.1);
 }
 
 /* Responsive fixes */
@@ -654,11 +654,11 @@ html.wp-toolbar {
     bottom: 42px ; /* ⬅️ 悬浮抬高 */
     margin: 0 20px 10px 20px ; /* ⬅️ 左右留白形成悬浮感 */
     border-radius: 20px ; /* ⬅️ 大圆角 */
-    background: rgba(255, 105, 180, 0.212) ; /* ⬅️ 半透明粉色背景 */
+    background: oklch(0.728297 0.197075 351.995 / 0.212); /* ⬅️ 半透明粉色背景 */
     backdrop-filter: blur(5px) ; /* ⬅️ 玻璃拟态模糊 */
     -webkit-backdrop-filter: blur(20px) ;
-    border: 1px solid rgba(255, 255, 255, 0.4) ; /* ⬅️ 玻璃质感边框 */
-    box-shadow: 0 8px 32px rgba(255, 105, 180, 0.1) ; /* ⬅️ 柔和投影 */
+    border: 1px solid oklch(1 0 0 / 0.4); /* ⬅️ 玻璃质感边框 */
+    box-shadow: 0 8px 32px oklch(0.728297 0.197075 351.995 / 0.1); /* ⬅️ 柔和投影 */
 }
 
 @media screen and (max-width: 782px) {
@@ -715,7 +715,7 @@ html.wp-toolbar {
 
 /* 📝 确保编辑器容器内部没有分隔线 */
 #wp-content-editor-container {
-    background: transparent ;
+    background: oklch(0 0 0 / 0);
 }
 
 /* 📝 移除WordPress默认的编辑器工具分隔线 */
@@ -742,7 +742,7 @@ html.wp-toolbar {
     z-index: 1003 ;
     margin: 0 ;
     padding: 5px ;
-    background: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) ;
+    background: linear-gradient(135deg in srgb, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) ;
     border: 1px solid var(--shiroki-gray-medium) ;
     border-radius: 8px 8px 0 0 ;
     width: 100% ;
@@ -761,7 +761,7 @@ html.wp-toolbar {
     z-index: 1002 ;
     margin: 0 ;
     padding: 5px ;
-    background: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) ;
+    background: linear-gradient(135deg in srgb, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) ;
     border: 1px solid var(--shiroki-gray-medium) ;
     border-radius: 8px 8px 0 0 ;
     width: 100% ;
@@ -843,7 +843,7 @@ html.wp-toolbar {
 .wp-editor-expand #wp-content-editor-container {
     border-radius: 12px ;
     /* 原生内容编辑区域及工具栏的边框色 */
-    border: 1px solid #fbfbfb;
+    border: 1px solid oklch(0.988087 0 0);
     box-shadow: none ;
     margin-top: 0 ;
     overflow: visible ;

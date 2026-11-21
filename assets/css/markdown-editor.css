@@ -10,7 +10,7 @@
     padding: 10px;
     position: relative;
     z-index: 200;
-    background: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark));
+    background: linear-gradient(135deg in srgb, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark));
     border: 1px solid var(--shiroki-gray-medium);
     border-radius: 8px; /* ⬅️ 圆角 */
     box-sizing: border-box;
@@ -26,7 +26,7 @@
     top: 48px !important;
     z-index: 1001 !important;
     /* box-shadow: var(--shiroki-shadow-black) !important; */
-    background: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) !important;
+    background: linear-gradient(135deg in srgb, var(--shiroki-gray-light), var(--shiroki-gray-medium), var(--shiroki-gray-dark)) !important;
     border: 1px solid var(--shiroki-gray-medium) !important;
     border-radius: 8px !important;
     margin: 0 !important;
@@ -55,7 +55,7 @@
     border-radius: 6px; /* ⬅️ 按钮圆角 */
     cursor: pointer;
     font-size: 13px;
-    color: #374151;
+    color: oklch(0.37292706 0.03062046 259.73285);
     transition: all 0.2s ease;
     display: inline-block;
     height: auto;
@@ -67,7 +67,7 @@
 .boxmoe-md-toolbar .md-btn:hover {
     background: var(--shiroki-pink-light);
     border-color: var(--shiroki-pink-dark);
-    color: #111827;
+    color: oklch(0.21008449 0.03176261 264.66453);
 }
 
 /* 视图切换按钮激活状态 */
@@ -98,7 +98,7 @@
     padding: 20px;
     margin-top: 15px;
     background: var(--shiroki-white);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.1);
     clear: both; /* ⬅️ 清除浮动 */
     min-height: 300px;
     width: 100%;
@@ -169,8 +169,8 @@
 }
 
 .boxmoe-md-preview pre {
-    background: #1f2937;
-    color: #f3f4f6;
+    background: oklch(0.27807804 0.02959565 256.84796);
+    color: oklch(0.96695564 0.00287404 264.542);
     padding: 15px;
     border-radius: 8px;
     overflow: auto;
@@ -181,7 +181,7 @@
 .boxmoe-md-preview blockquote {
     border-left: 4px solid var(--shiroki-pink-dark); /* ⬅️ 引用左边框 */
     padding-left: 15px;
-    color: #4b5563;
+    color: oklch(0.446112 0.0263125 256.80176);
     margin: 10px 0;
     background: var(--shiroki-pink-light);
     padding: 10px 15px;
@@ -222,18 +222,18 @@
 
 .boxmoe-md-preview .md-task-item[data-task-status="completed"] .md-task-text {
     text-decoration: line-through;
-    color: #6b7280;
+    color: oklch(0.55101911 0.02336092 264.36375);
     opacity: 0.8;
 }
 
 /* 进行中状态样式 */
 .boxmoe-md-preview .md-task-item[data-task-status="in-progress"] {
-    background: rgba(255, 235, 59, 0.1);
-    border-left: 4px solid #ffeb3b;
+    background: oklch(0.92846393 0.18026478 102.49744 / 0.1);
+    border-left: 4px solid oklch(0.92846393 0.18026478 102.49744);
 }
 
 .boxmoe-md-preview .md-task-item[data-task-status="in-progress"] .md-task-text {
-    color: #ff6b35;
+    color: oklch(0.70451667 0.19259458 39.230782);
     font-weight: 500;
 }
 
@@ -251,9 +251,9 @@
     line-height: 1.6;
     position: relative;
     padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.8);
+    background: oklch(1 0 0 / 0.8);
     border-radius: 20px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 8px oklch(0 0 0 / 0.1);
     transition: all 0.3s ease;
 }
 
@@ -264,7 +264,7 @@
 
 .single-content .md-task-item-static:hover {
     transform: none;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 8px oklch(0 0 0 / 0.1);
 }
 
 .single-content .md-task-item-static .md-task-emoji {
@@ -282,7 +282,7 @@
 
 .single-content .md-task-item-interactive:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 12px oklch(0 0 0 / 0.15);
 }
 
 .single-content .md-task-emoji {
@@ -301,7 +301,7 @@
 
 .single-content .md-task-item[data-task-status="completed"] .md-task-text {
     text-decoration: line-through;
-    color: #6b7280;
+    color: oklch(0.55101911 0.02336092 264.36375);
     opacity: 0.8;
     font-style: italic;
 }
@@ -319,7 +319,7 @@
     background: var(--shiroki-white);
     border-radius: 6px;
     font-size: 13px;
-    color: #374151;
+    color: oklch(0.37292706 0.03062046 259.73285);
     transition: all 0.2s ease;
 }
 
@@ -333,7 +333,7 @@
 .md-shortcode-select:focus {
     outline: none;
     border-color: var(--shiroki-pink-dark);
-    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.2);
+    box-shadow: 0 0 0 3px oklch(0.84738781 0.08579244 9.0865258 / 0.2);
 }
 
 .boxmoe-md-shortcodes {
@@ -348,7 +348,7 @@
 
 .boxmoe-md-shortcodes .md-sc-label {
     font-weight: 600;
-    color: #4b5563;
+    color: oklch(0.446112 0.0263125 256.80176);
     font-size: 13px;
 }
 
@@ -382,7 +382,7 @@
     border-radius: 16px;
     padding: 15px;
     margin: 12px auto;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px oklch(0 0 0 / 0.1);
     transition: all 0.3s ease;
     max-width: 400px;
     width: 100%;
@@ -402,7 +402,7 @@
     max-width: none;
     border-radius: 50%;
     border: 2px solid var(--shiroki-pink-light);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px oklch(0 0 0 / 0.3);
     object-fit: cover;
     margin: 0;
 }
@@ -418,7 +418,7 @@
     font-weight: 700;
     padding: 2px 5px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.2);
     z-index: 10;
     transform: rotate(-10deg);
     border: 1px solid var(--shiroki-white);
@@ -447,7 +447,7 @@
 .boxmoe-md-preview .md-card-desc {
     margin: 0;
     font-size: 12px;
-    color: #4b5563;
+    color: oklch(0.446112 0.0263125 256.80176);
     line-height: 1.4;
 }
 
@@ -466,7 +466,7 @@
 
 .boxmoe-md-preview .md-card-link-wrap:hover .md-card {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(139, 61, 255, 0.25);
+    box-shadow: 0 6px 16px oklch(0.57522728 0.2628706 294.90116 / 0.25);
 }
 
 /* 移除卡片上下的虚线 */
@@ -491,12 +491,12 @@
     flex-direction: row;
     align-items: center;
     gap: 20px;
-    background: rgba(255, 255, 255, 0.95);
+    background: oklch(1 0 0 / 0.95);
     border: 2px solid var(--shiroki-pink-medium);
     border-radius: 24px;
     padding: 25px;
     margin: 25px 0;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 16px oklch(0 0 0 / 0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -515,7 +515,7 @@
 
 .single-content .md-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 10px 24px oklch(0 0 0 / 0.25);
 }
 
 .single-content .md-card-avatar {
@@ -531,7 +531,7 @@
     max-width: none;
     border-radius: 50%;
     border: 4px solid var(--shiroki-pink-light);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 12px oklch(0 0 0 / 0.4);
     object-fit: cover;
     transition: all 0.3s ease;
     margin: 0;
@@ -539,7 +539,7 @@
 
 .single-content .md-card:hover .md-card-avatar img {
     transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 6px 16px oklch(0 0 0 / 0.5);
 }
 
 .single-content .md-card-content {
@@ -565,7 +565,7 @@
 .single-content .md-card-desc {
     margin: 0 0 16px 0;
     font-size: 16px;
-    color: #4b5563;
+    color: oklch(0.446112 0.0263125 256.80176);
     line-height: 1.6;
 }
 
@@ -579,7 +579,7 @@
     font-size: 14px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 8px oklch(0 0 0 / 0.3);
     border: none;
     cursor: pointer;
     font-family: 'Public Sans', sans-serif;
@@ -587,7 +587,7 @@
 
 .single-content .md-card-link:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 6px 12px oklch(0 0 0 / 0.45);
     background: var(--shiroki-gradient-black-deep);
     color: var(--shiroki-white);
     text-decoration: none;
@@ -595,7 +595,7 @@
 
 .single-content .md-card-link:active {
     transform: translateY(-1px);
-    box-shadow: 0 3px 6px rgba(255, 182, 193, 0.35);
+    box-shadow: 0 3px 6px oklch(0.84738781 0.08579244 9.0865258 / 0.35);
 }
 
 /* ============================================

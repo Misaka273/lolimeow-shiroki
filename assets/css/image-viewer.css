@@ -1,17 +1,17 @@
-body .tk-image-viewer__wrapper{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:9999;opacity:0;transition:opacity .2s ease}
+body .tk-image-viewer__wrapper{position:fixed;inset:0;background:oklch(0 0 0 / 0.65);display:none;align-items:center;justify-content:center;z-index:9999;opacity:0;transition:opacity .2s ease}
 body .tk-image-viewer__wrapper--visible{display:flex;opacity:1}
 body .tk-image-viewer__wrapper--fade-out{opacity:0}
-.tk-image-viewer__canvas{position:relative;display:flex;align-items:center;justify-content:center;cursor:grab;overflow:visible;background:transparent}
+.tk-image-viewer__canvas{position:relative;display:flex;align-items:center;justify-content:center;cursor:grab;overflow:visible;background:oklch(0 0 0 / 0)}
 .tk-image-viewer__canvas.grabbing{cursor:grabbing}
 .tk-image-viewer__canvas img{max-width:none;max-height:none;object-fit:contain;transition:transform .2s ease;border-radius:16px;user-select:none;pointer-events:none}
 .tk-image-viewer__wrapper--fullscreen .tk-image-viewer__canvas img{max-width:100vw;max-height:100vh}
-.tk-image-viewer__close{position:fixed;top:24px;right:24px;width:40px;height:40px;border-radius:999px;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);cursor:pointer;transform:scale(1);transition:transform .15s ease}
-.tk-image-viewer__close:focus{outline:2px solid #3b82f6}
+.tk-image-viewer__close{position:fixed;top:24px;right:24px;width:40px;height:40px;border-radius:999px;background:oklch(1 0 0);color:oklch(0.17763777 0 0);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px oklch(0 0 0 / 0.3);cursor:pointer;transform:scale(1);transition:transform .15s ease}
+.tk-image-viewer__close:focus{outline:2px solid oklch(0.62308303 0.18801473 259.81453)}
 .tk-image-viewer__close:hover{transform:scale(1.08)}
-.tk-image-viewer__actions{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(6px);border-radius:16px;display:flex;gap:12px;padding:8px 12px;box-shadow:0 4px 16px rgba(0,0,0,.2)}
-.tk-image-viewer__actions button{border:none;background:#fff;color:#111;border-radius:12px;padding:8px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:transform .12s ease}
+.tk-image-viewer__actions{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:oklch(1 0 0 / 0.9);backdrop-filter:saturate(180%) blur(6px);border-radius:16px;display:flex;gap:12px;padding:8px 12px;box-shadow:0 4px 16px oklch(0 0 0 / 0.2)}
+.tk-image-viewer__actions button{border:none;background:oklch(1 0 0);color:oklch(0.17763777 0 0);border-radius:12px;padding:8px 12px;cursor:pointer;box-shadow:0 2px 8px oklch(0 0 0 / 0.15);transition:transform .12s ease}
 .tk-image-viewer__actions button:hover{transform:translateY(-1px)}
-.tk-image-viewer__info{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;background:rgba(0,0,0,.35);padding:6px 10px;border-radius:12px}
+.tk-image-viewer__info{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);color:oklch(1 0 0);font-size:14px;background:oklch(0 0 0 / 0.35);padding:6px 10px;border-radius:12px}
 /* 📱 移动端适配样式 */
 @media (max-width:985px){
   .tk-image-viewer__actions{gap:8px;padding:6px 10px}

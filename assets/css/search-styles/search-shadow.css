@@ -7,35 +7,35 @@
 /* 🔗 基础变量定义 */
 :root {
   /* ☀️ 亮色模式变量 */
-  --search-shadow-bg: rgba(255, 255, 255, 0.8);
-  --search-shadow-bg-hover: rgba(255, 255, 255, 0.95);
-  --search-shadow-bg-focus: #ffffff;
-  --search-shadow-border: rgba(255, 255, 255, 0.5);
-  --search-shadow-border-focus: rgba(139, 92, 246, 0.3);
-  --search-shadow-outer: 0 4px 20px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
-  --search-shadow-outer-hover: 0 8px 30px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
-  --search-shadow-outer-focus: 0 12px 40px rgba(139, 92, 246, 0.15), 0 6px 16px rgba(139, 92, 246, 0.1);
-  --search-shadow-inner: inset 0 1px 2px rgba(255, 255, 255, 0.8);
-  --search-shadow-text: #333333;
-  --search-shadow-placeholder: #888888;
-  --search-shadow-icon: #666666;
+  --search-shadow-bg: oklch(1 0 0 / 0.8);
+  --search-shadow-bg-hover: oklch(1 0 0 / 0.95);
+  --search-shadow-bg-focus: oklch(1 0 0);
+  --search-shadow-border: oklch(1 0 0 / 0.5);
+  --search-shadow-border-focus: oklch(0.60563076 0.21891508 292.71722 / 0.3);
+  --search-shadow-outer: 0 4px 20px oklch(0 0 0 / 0.08), 0 2px 8px oklch(0 0 0 / 0.04);
+  --search-shadow-outer-hover: 0 8px 30px oklch(0 0 0 / 0.12), 0 4px 12px oklch(0 0 0 / 0.06);
+  --search-shadow-outer-focus: 0 12px 40px oklch(0.60563076 0.21891508 292.71722 / 0.15), 0 6px 16px oklch(0.60563076 0.21891508 292.71722 / 0.1);
+  --search-shadow-inner: inset 0 1px 2px oklch(1 0 0 / 0.8);
+  --search-shadow-text: oklch(0.32109251 0 0);
+  --search-shadow-placeholder: oklch(0.62675354 0 0);
+  --search-shadow-icon: oklch(0.51027836 0 0);
   --search-shadow-radius: 20px;
 }
 
 /* 🌆 暗色模式变量 */
 [data-bs-theme="dark"] {
-  --search-shadow-bg: rgba(40, 40, 55, 0.6);
-  --search-shadow-bg-hover: rgba(50, 50, 70, 0.7);
-  --search-shadow-bg-focus: rgba(40, 40, 55, 0.85);
-  --search-shadow-border: rgba(255, 255, 255, 0.08);
-  --search-shadow-border-focus: rgba(139, 92, 246, 0.4);
-  --search-shadow-outer: 0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.2);
-  --search-shadow-outer-hover: 0 8px 30px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.25);
-  --search-shadow-outer-focus: 0 12px 40px rgba(139, 92, 246, 0.2), 0 6px 16px rgba(139, 92, 246, 0.15);
-  --search-shadow-inner: inset 0 1px 2px rgba(255, 255, 255, 0.05);
-  --search-shadow-text: #ffffff;
-  --search-shadow-placeholder: rgba(255, 255, 255, 0.5);
-  --search-shadow-icon: rgba(255, 255, 255, 0.8);
+  --search-shadow-bg: oklch(0.28359675 0.02737967 284.52002 / 0.6);
+  --search-shadow-bg-hover: oklch(0.32599221 0.03526201 284.27443 / 0.7);
+  --search-shadow-bg-focus: oklch(0.28359675 0.02737967 284.52002 / 0.85);
+  --search-shadow-border: oklch(1 0 0 / 0.08);
+  --search-shadow-border-focus: oklch(0.60563076 0.21891508 292.71722 / 0.4);
+  --search-shadow-outer: 0 4px 20px oklch(0 0 0 / 0.3), 0 2px 8px oklch(0 0 0 / 0.2);
+  --search-shadow-outer-hover: 0 8px 30px oklch(0 0 0 / 0.4), 0 4px 12px oklch(0 0 0 / 0.25);
+  --search-shadow-outer-focus: 0 12px 40px oklch(0.60563076 0.21891508 292.71722 / 0.2), 0 6px 16px oklch(0.60563076 0.21891508 292.71722 / 0.15);
+  --search-shadow-inner: inset 0 1px 2px oklch(1 0 0 / 0.05);
+  --search-shadow-text: oklch(1 0 0);
+  --search-shadow-placeholder: oklch(1 0 0 / 0.5);
+  --search-shadow-icon: oklch(1 0 0 / 0.8);
 }
 
 /* 🌑 导航栏搜索框容器 */
@@ -93,7 +93,7 @@
   min-height: 40px;
   border: none;
   border-radius: 0;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   cursor: pointer;
   z-index: 1;
   display: flex;
@@ -109,7 +109,7 @@
 
 /* 🌑 搜索按钮悬停效果 */
 .boxmoe_header .search-form.search-style-shadow .search-btn:hover {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   transform: translateY(-2px);
 }
 
@@ -134,7 +134,7 @@
 
 /* 🌑 激活状态 - 搜索按钮定位 */
 .boxmoe_header .search-form.search-style-shadow.active .search-btn {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   position: absolute;
   right: 0;
 }
@@ -157,7 +157,7 @@
   border: none;
   outline: none;
   border-radius: var(--search-shadow-radius);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   box-shadow: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
@@ -177,7 +177,7 @@
 .boxmoe_header .mobile-search-form.search-style-shadow .search-submit.mobile-search-btn,
 .boxmoe_header .mobile-search-form.search-style-shadow .search-wrap .search-submit.mobile-search-btn {
   border: none !important;
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 8px;
@@ -198,7 +198,7 @@
 /* 🌑 移动端搜索按钮图标 */
 .boxmoe_header .mobile-search-form.search-style-shadow .mobile-search-btn i,
 .boxmoe_header .mobile-search-form.search-style-shadow .search-submit.mobile-search-btn i {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   color: inherit;
 }
 
@@ -206,7 +206,7 @@
 .boxmoe_header .mobile-search-form.search-style-shadow .mobile-search-btn:hover,
 .boxmoe_header .mobile-search-form.search-style-shadow .search-submit.mobile-search-btn:hover,
 .boxmoe_header .mobile-search-form.search-style-shadow .search-wrap .search-submit.mobile-search-btn:hover {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   transform: translateY(calc(-50% - 2px));
 }
 
@@ -229,7 +229,7 @@
 .boxmoe_header .mobile-search-form.search-style-shadow.active .mobile-search-btn,
 .boxmoe_header .mobile-search-form.search-style-shadow.active .search-submit.mobile-search-btn,
 .boxmoe_header .mobile-search-form.search-style-shadow.active .search-wrap .search-submit.mobile-search-btn {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -281,7 +281,7 @@
   height: 36px;
   border: none;
   border-radius: 50%;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   cursor: pointer;
   color: var(--search-shadow-icon);
   transition: all 0.3s ease;
@@ -291,8 +291,8 @@
 }
 
 .search-form.search-style-shadow .search-submit:hover {
-  background: rgba(139, 92, 246, 0.1);
-  color: var(--bs-primary, #8b3dff);
+  background: oklch(0.60563076 0.21891508 292.71722 / 0.1);
+  color: var(--bs-primary, oklch(0.57522728 0.2628706 294.90116));
 }
 
 /* 🌑 通用搜索按钮图标 - 保持默认样式 */

@@ -205,7 +205,7 @@ class Shiroki_Post_Edit_Layout {
 
         echo '.post-new-php .shiroki-editor-sidebar #side-sortables > .postbox,';
         echo '.post-php .shiroki-editor-sidebar #side-sortables > .postbox {';
-        echo '  background: transparent !important;';
+        echo '  background: oklch(0 0 0 / 0) !important;';
         echo '  border: none !important;';
         echo '  border-radius: 0 !important;';
         echo '  box-shadow: none !important;';
@@ -217,7 +217,7 @@ class Shiroki_Post_Edit_Layout {
 
         echo '.post-new-php .shiroki-editor-sidebar #side-sortables .postbox .inside,';
         echo '.post-php .shiroki-editor-sidebar #side-sortables .postbox .inside {';
-        echo '  background: transparent !important;';
+        echo '  background: oklch(0 0 0 / 0) !important;';
         echo '  border-radius: 0 !important;';
         echo '  overflow: hidden !important;';
         echo '  max-width: 100% !important;';
@@ -229,7 +229,7 @@ class Shiroki_Post_Edit_Layout {
         echo '.post-php .shiroki-editor-sidebar #side-sortables .postbox .postbox-header,';
         echo '.post-new-php .shiroki-editor-sidebar #side-sortables .postbox > .hndle,';
         echo '.post-php .shiroki-editor-sidebar #side-sortables .postbox > .hndle {';
-        echo '  background: transparent !important;';
+        echo '  background: oklch(0 0 0 / 0) !important;';
         echo '  border-radius: 0 !important;';
         echo '  border-bottom: 1px solid var(--admin-current-border);';
         echo '  color: var(--admin-current-text-primary);';
@@ -286,7 +286,7 @@ class Shiroki_Post_Edit_Layout {
 
         /* 🧰 工具栏元素样式 */
         echo '#toolbar-media-content #wp-content-media-buttons {';
-        echo '  background: transparent;';
+        echo '  background: oklch(0 0 0 / 0);';
         echo '  border: none;';
         echo '  padding: 0;';
         echo '  margin: 0;';
@@ -322,7 +322,7 @@ class Shiroki_Post_Edit_Layout {
         echo '}';
 
         echo '#toolbar-md-content .boxmoe-md-toolbar {';
-        echo '  background: transparent;';
+        echo '  background: oklch(0 0 0 / 0);';
         echo '  border: none;';
         echo '  padding: 0;';
         echo '  margin: 0;';
@@ -354,7 +354,7 @@ class Shiroki_Post_Edit_Layout {
         echo '}';
 
         echo '#toolbar-quicktags-content #ed_toolbar {';
-        echo '  background: transparent;';
+        echo '  background: oklch(0 0 0 / 0);';
         echo '  border: none;';
         echo '  padding: 0;';
         echo '  margin: 0;';

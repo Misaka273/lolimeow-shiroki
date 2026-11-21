@@ -351,7 +351,7 @@
   align-items: center;
   gap: var(--admin-space-md);
   padding: var(--admin-space-md) var(--admin-space-lg);
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
   border-bottom: 1px solid var(--admin-current-border);
 }
 
@@ -403,7 +403,7 @@
   width: 24px;
   height: 24px;
   border-radius: var(--admin-radius-full);
-  background: rgba(255, 255, 255, 0.9);
+  background: oklch(1 0 0 / 0.9);
   border: 2px solid var(--admin-primary-border);
   cursor: pointer;
   opacity: 0;
@@ -693,7 +693,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--admin-space-sm) var(--admin-space-lg);
-  background: rgba(255, 255, 255, 0.05);
+  background: oklch(1 0 0 / 0.05);
 }
 
 /* 📅 日期 */
@@ -762,7 +762,7 @@
   gap: var(--admin-space-sm);
   padding: var(--admin-space-md) var(--admin-space-lg);
   border-top: 1px solid var(--admin-current-border);
-  background: rgba(255, 255, 255, 0.05);
+  background: oklch(1 0 0 / 0.05);
 }
 
 /* 🔘 操作按钮 */
@@ -1127,7 +1127,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: oklch(0 0 0 / 0.5);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
@@ -1168,7 +1168,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--admin-space-lg) var(--admin-space-xl);
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
   border-bottom: 1px solid var(--admin-current-border);
 }
 
@@ -1356,7 +1356,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: oklch(0 0 0 / 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -1389,7 +1389,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--admin-space-lg) var(--admin-space-xl);
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
   border-bottom: 1px solid var(--admin-current-border);
 }
 
@@ -1462,7 +1462,7 @@
   padding: var(--admin-space-lg) var(--admin-space-xl);
   border-top: 1px solid var(--admin-current-border);
   justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
+  background: oklch(1 0 0 / 0.03);
 }
 
 /* 🔘 弹窗按钮 */
@@ -1500,7 +1500,7 @@
 .shiroki-comment-bulk-confirm-danger:hover {
   background: var(--admin-danger-bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 101, 101, 0.3);
+  box-shadow: 0 4px 12px oklch(0.68817 0.177631 22.946 / 0.3);
 }
 
 /* ⚠️ 警告操作按钮（移至回收站） */
@@ -1513,7 +1513,7 @@
 .shiroki-comment-bulk-confirm-warning:hover {
   background: var(--admin-warning-bg-solid);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+  box-shadow: 0 4px 12px oklch(0.72437 0.153399 56.072 / 0.3);
 }
 
 /* 🚫 紫色操作按钮（标记垃圾） */
@@ -1526,7 +1526,7 @@
 .shiroki-comment-bulk-confirm-purple:hover {
   background: var(--admin-purple-bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(159, 122, 234, 0.3);
+  box-shadow: 0 4px 12px oklch(0.663693 0.163442 296.963 / 0.3);
 }
 
 /* ✅ 成功操作按钮（恢复/还原） */
@@ -1539,5 +1539,5 @@
 .shiroki-comment-bulk-confirm-success:hover {
   background: var(--admin-success-bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+  box-shadow: 0 4px 12px oklch(0.709577 0.143366 154.532 / 0.3);
 }

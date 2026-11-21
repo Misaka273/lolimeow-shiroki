@@ -30,26 +30,26 @@ global $wpdb, $current_user;
                                              echo "<tr>\n";
                                              echo "<td>$value->ice_money</td>\n";
                                              if(intval($value->ice_note)==0){
-                                                echo "<td>".__('在线线充值','erphpdown')."</td>\n";
+                                                echo "<td>".__('在线线充值','zuslolimeow')."</td>\n";
                                              }elseif(intval($value->ice_note)==1){
-                                                echo "<td>".__('后台充值','erphpdown')."</td>\n";
+                                                echo "<td>".__('后台充值','zuslolimeow')."</td>\n";
                                              }elseif(intval($value->ice_note)==4){
-                                                echo "<td>".__('积分兑换','erphpdown')."</td>\n";
+                                                echo "<td>".__('积分兑换','zuslolimeow')."</td>\n";
                                              }elseif(intval($value->ice_note)==6){
-                                                echo "<td>".__('充值卡','erphpdown')."</td>\n";
+                                                echo "<td>".__('充值卡','zuslolimeow')."</td>\n";
                                              }else{
-                                                echo "<td>".__('未知','erphpdown')."</td>\n";
+                                                echo "<td>".__('未知','zuslolimeow')."</td>\n";
                                              }
                                              echo "<td>$value->ice_time</td>\n";
                                              echo "</tr>";
                                           }
                                        }else{
-                                          echo '<tr><td colspan="3" align="center">'.__('暂无记录','erphpdown').'</td></tr>';
+                                          echo '<tr><td colspan="3" align="center">'.__('暂无记录','zuslolimeow').'</td></tr>';
                                        }
                               ?> 
                            </tbody>
                            </table>
                            </div>
                            <div class="mt-4">
-                           <?php mobantu_paging('recharge',$page,$pages);?>	
+                           <?php zuslolimeow_user_center_paging('recharge',$page,$pages);?>	
                            </div>  

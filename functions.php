@@ -145,6 +145,7 @@ require_once  get_stylesheet_directory() . '/core/module/fun-user-center.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-comments.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-seo.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-geo.php'; // ⬅️ 引入Geo生成式搜索引擎优化功能
+require_once  get_stylesheet_directory() . '/core/module/fun-llms.php'; // ⬅️ 引入 llms.txt（给 AI 的站点导览）
 require_once  get_stylesheet_directory() . '/core/module/fun-article.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-smtp.php';
 require_once  get_stylesheet_directory() . '/core/module/fun-msg.php';
@@ -292,12 +293,7 @@ if (!function_exists('user_login_action_callback')) {
         wp_set_auth_cookie($user->ID, $remember); // ◀️ 设置认证cookie
         do_action('wp_login', $user->user_login, $user); // ◀️ 触发登录钩子
 
-        // 🔗 设置重定向URL：管理员到后台，普通用户到首页或指定页面
-        if (user_can($user, 'manage_options')) {
-            $redirect_url = admin_url(); // ◀️ 管理员跳转到后台
-        } else {
-            $redirect_url = !empty($form_data['redirect_to']) ? esc_url_raw($form_data['redirect_to']) : home_url(); // ◀️ 普通用户跳转到指定页面或首页
-        }
+        $redirect_url = boxmoe_auth_success_redirect($form_data['redirect_to'] ?? '', $user);
         
         wp_send_json_success(array(
             'message' => '登录成功',
@@ -492,24 +488,24 @@ function boxmoe_admin_login_captcha_field() {
                                required
                                maxlength="6"
                                autocomplete="off"
-                               style="flex: 1; padding: 10px 15px; border: 1px solid #ddd; border-radius: 5px;">
+                               style="flex: 1; padding: 10px 15px; border: 1px solid oklch(0.8975 0 0); border-radius: 5px;">
                         <div style="display: flex; align-items: center; gap: 5px;">
                             <img src="<?php echo esc_url($captcha_image_url . '&t=' . time()); ?>" 
                                  class="captcha-image" 
                                  alt="验证码"
                                  id="admin-login-captcha-image"
                                  onclick="refreshAdminLoginCaptcha()"
-                                 style="height: 40px; width: 120px; cursor: pointer; border: 1px solid #ddd; border-radius: 5px;">
+                                 style="height: 40px; width: 120px; cursor: pointer; border: 1px solid oklch(0.8975 0 0); border-radius: 5px;">
                             <button type="button" 
                                     class="captcha-refresh" 
                                     title="刷新验证码" 
                                     onclick="refreshAdminLoginCaptcha()"
-                                    style="background: #2271b1; color: white; border: none; border-radius: 5px; padding: 8px 12px; cursor: pointer;">
+                                    style="background: oklch(0.5339 0.1249 247.74); color: oklch(1 0 0); border: none; border-radius: 5px; padding: 8px 12px; cursor: pointer;">
                                 ↻
                             </button>
                         </div>
                     </div>
-                    <div class="captcha-message" id="admin-login-captcha-message" style="font-size: 12px; color: #ff0000; min-height: 20px;"></div>
+                    <div class="captcha-message" id="admin-login-captcha-message" style="font-size: 12px; color: oklch(0.628 0.2577 29.23); min-height: 20px;"></div>
                     
                     <script>
                     function refreshAdminLoginCaptcha() {
@@ -552,7 +548,7 @@ function boxmoe_admin_login_captcha_field() {
                         tempImg.onerror = function() {
                             imgElement.style.opacity = '1';
                             if (messageElement) {
-                                messageElement.innerHTML = '<span style="color: #ff0000;">验证码加载失败，请重试</span>';
+                                messageElement.innerHTML = '<span style="color: oklch(0.628 0.2577 29.23);">验证码加载失败，请重试</span>';
                             }
                         };
                         tempImg.src = newUrl;
@@ -590,29 +586,29 @@ function boxmoe_admin_login_captcha_style() {
         .captcha-input {
             width: 100%;
             padding: 10px 15px;
-            border: 1px solid #ddd;
+            border: 1px solid oklch(0.8975 0 0);
             border-radius: 5px;
             font-size: 14px;
-            background: #f8f9fa;
-            color: #333;
+            background: oklch(0.9816 0.0017 247.84);
+            color: oklch(0.3211 0 0);
             outline: none;
             transition: all 0.3s ease;
         }
         
         .captcha-input:focus {
-            border-color: #2271b1;
-            box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.2);
-            background: #fff;
+            border-color: oklch(0.5339 0.1249 247.74);
+            box-shadow: 0 0 0 2px oklch(0.5339 0.1249 247.74 / 0.2);
+            background: oklch(1 0 0);
         }
         
         .captcha-input.error {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+            border-color: oklch(0.5915 0.202 21.24);
+            box-shadow: 0 0 0 2px oklch(0.5915 0.202 21.24 / 0.2);
         }
         
         .captcha-message {
             font-size: 12px;
-            color: #ff0000;
+            color: oklch(0.628 0.2577 29.23);
             margin-top: 5px;
             min-height: 20px;
         }
@@ -622,8 +618,8 @@ function boxmoe_admin_login_captcha_style() {
             width: 120px;
             border-radius: 5px;
             cursor: pointer;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
+            background: oklch(0.9702 0 0);
+            border: 1px solid oklch(0.8975 0 0);
             transition: all 0.3s ease;
         }
         
@@ -632,8 +628,8 @@ function boxmoe_admin_login_captcha_style() {
         }
         
         .captcha-refresh {
-            background: #2271b1;
-            color: white;
+            background: oklch(0.5339 0.1249 247.74);
+            color: oklch(1 0 0);
             border: none;
             border-radius: 5px;
             padding: 8px 12px;
@@ -644,7 +640,7 @@ function boxmoe_admin_login_captcha_style() {
         }
         
         .captcha-refresh:hover {
-            background: #1a5f8f;
+            background: oklch(0.468 0.1022 244.18);
         }
     </style>
     <?php
@@ -667,12 +663,12 @@ function boxmoe_custom_admin_login_style() {
             <style>
                 /* 验证码容器美化 */
                 .captcha-container {
-                    background: rgba(255, 255, 255, 0.9);
+                    background: oklch(1 0 0 / 0.9);
                     border-radius: 10px;
                     padding: 15px;
                     margin: 15px 0;
-                    border: 1px solid #e5e5e5;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+                    border: 1px solid oklch(0.9219 0 0);
+                    box-shadow: 0 2px 10px oklch(0 0 0 / 0.05);
                 }
                 
                 .login-action-login .captcha-container {
@@ -684,7 +680,7 @@ function boxmoe_custom_admin_login_style() {
                     display: block;
                     margin-bottom: 8px;
                     font-weight: 600;
-                    color: #555;
+                    color: oklch(0.4495 0 0);
                     font-size: 14px;
                 }
                 
@@ -692,17 +688,17 @@ function boxmoe_custom_admin_login_style() {
                 .captcha-container input[type="text"] {
                     width: 100%;
                     padding: 12px 15px;
-                    border: 2px solid #e1e5e9;
+                    border: 2px solid oklch(0.92 0.0069 247.9);
                     border-radius: 8px;
                     font-size: 14px;
-                    background: #fff;
+                    background: oklch(1 0 0);
                     transition: all 0.3s ease;
                     box-sizing: border-box;
                 }
                 
                 .captcha-container input[type="text"]:focus {
-                    border-color: #2271b1;
-                    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.1);
+                    border-color: oklch(0.5339 0.1249 247.74);
+                    box-shadow: 0 0 0 2px oklch(0.5339 0.1249 247.74 / 0.1);
                     outline: none;
                 }
                 
@@ -720,37 +716,37 @@ function boxmoe_custom_admin_login_style() {
                     min-height: 65px;
                     display: flex;
                     justify-content: center;
-                    background: #fff;
+                    background: oklch(1 0 0);
                     border-radius: 8px;
-                    border: 1px solid #e1e5e9;
+                    border: 1px solid oklch(0.92 0.0069 247.9);
                     padding: 5px;
                 }
                 
                 /* 暗色模式适配 */
                 @media (prefers-color-scheme: dark) {
                     .captcha-container {
-                        background: rgba(40, 44, 52, 0.9);
-                        border-color: #4a4d55;
+                        background: oklch(0.2925 0.0157 264.3 / 0.9);
+                        border-color: oklch(0.4204 0.0138 269.36);
                     }
                     
                     .captcha-container label {
-                        color: #e0e0e0;
+                        color: oklch(0.9067 0 0);
                     }
                     
                     .captcha-container input[type="text"] {
-                        background: #2c2f36;
-                        border-color: #4a4d55;
-                        color: #e0e0e0;
+                        background: oklch(0.3051 0.0133 267.11);
+                        border-color: oklch(0.4204 0.0138 269.36);
+                        color: oklch(0.9067 0 0);
                     }
                     
                     .captcha-container input[type="text"]:focus {
-                        border-color: #4f94d4;
-                        box-shadow: 0 0 0 2px rgba(79, 148, 212, 0.2);
+                        border-color: oklch(0.6494 0.1191 248.52);
+                        box-shadow: 0 0 0 2px oklch(0.6494 0.1191 248.52 / 0.2);
                     }
                     
                     .cf-turnstile-container {
-                        background: #2c2f36;
-                        border-color: #4a4d55;
+                        background: oklch(0.3051 0.0133 267.11);
+                        border-color: oklch(0.4204 0.0138 269.36);
                     }
                 }
                 
@@ -1112,7 +1108,7 @@ function shiroki_enqueue_blog_sidebar_modal_script() {
             'shiroki-blog-sidebar-modal',
             get_template_directory_uri() . '/assets/js/shiroki-blog-sidebar-modal.js',
             array('theme-script'),
-            '1.0.0',
+            filemtime(get_template_directory() . '/assets/js/shiroki-blog-sidebar-modal.js'),
             true
         );
     }
@@ -1515,12 +1511,12 @@ function lolimeow_custom_logout_page() {
         
         /* 主题颜色变量 */
         :root {
-            --primary-color: #8b3dff;
-            --secondary-color: #f0f2f5;
-            --dark-color: #0f172a;
-            --light-color: #ffffff;
-            --gray-color: #64748b;
-            --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            --primary-color: oklch(0.5752 0.2629 294.9);
+            --secondary-color: oklch(0.9605 0.0046 258.32);
+            --dark-color: oklch(0.2077 0.0398 265.75);
+            --light-color: oklch(1 0 0);
+            --gray-color: oklch(0.5544 0.0407 257.42);
+            --shadow: 0 8px 32px oklch(0.3382 0.1582 271.28 / 0.15);
             --border-radius: 24px;
         }
         
@@ -1550,17 +1546,17 @@ function lolimeow_custom_logout_page() {
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: oklch(0 0 0 / 0.5);
             z-index: -1;
         }
         
         /* 玻璃拟态卡片 */
         .logout-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: oklch(1 0 0 / 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid oklch(1 0 0 / 0.6);
             box-shadow: var(--shadow);
             width: 100%;
             max-width: 460px;
@@ -1573,7 +1569,7 @@ function lolimeow_custom_logout_page() {
         
         .logout-container:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(31, 38, 135, 0.2);
+            box-shadow: 0 12px 40px oklch(0.3382 0.1582 271.28 / 0.2);
         }
         
         /* Logo区域 */
@@ -1627,13 +1623,13 @@ function lolimeow_custom_logout_page() {
         .btn-primary {
             background-color: var(--primary-color);
             color: var(--light-color);
-            box-shadow: 0 4px 12px rgba(139, 61, 255, 0.3);
+            box-shadow: 0 4px 12px oklch(0.5752 0.2629 294.9 / 0.3);
         }
         
         .btn-primary:hover {
-            background-color: #7a20ff;
+            background-color: oklch(0.5351 0.2829 291.13);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(139, 61, 255, 0.4);
+            box-shadow: 0 6px 16px oklch(0.5752 0.2629 294.9 / 0.4);
         }
         
         .btn-secondary {
@@ -1642,7 +1638,7 @@ function lolimeow_custom_logout_page() {
         }
         
         .btn-secondary:hover {
-            background-color: #e2e8f0;
+            background-color: oklch(0.9288 0.0126 255.51);
             transform: translateY(-2px);
         }
         
@@ -1650,7 +1646,7 @@ function lolimeow_custom_logout_page() {
         .footer {
             margin-top: 2rem;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-top: 1px solid oklch(1 0 0 / 0.3);
         }
         
         .footer-text {
@@ -1806,14 +1802,13 @@ function lolimeow_custom_login_page() {
         $login_bg = get_boxmoe('boxmoe_user_login_bg') ? get_boxmoe('boxmoe_user_login_bg') : 'https://api.boxmoe.com/random.php';
         
         // 获取注册和重置密码链接
-        $register_link = boxmoe_sign_up_link_page();
-        $reset_password_link = boxmoe_reset_password_link_page();
+        $redirect_to = boxmoe_auth_redirect_source();
+        $register_link = boxmoe_auth_entry_url(boxmoe_sign_up_link_page(), $redirect_to);
+        $reset_password_link = boxmoe_auth_entry_url(boxmoe_reset_password_link_page(), $redirect_to);
         
         // 检查是否为管理员入口访问
         $is_admin_redirect = false;
-        $redirect_to = '';
-        if (isset($_GET['redirect_to'])) {
-            $redirect_to = urldecode($_GET['redirect_to']);
+        if ($redirect_to !== '') {
             if (strpos($redirect_to, 'wp-admin') !== false) {
                 $is_admin_redirect = true;
             }
@@ -1847,7 +1842,7 @@ function lolimeow_custom_login_page() {
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            background-color: #f0f2f5;
+            background-color: oklch(0.9605 0.0046 258.32);
         }
         .login-page-bg {
             position: fixed;
@@ -1868,7 +1863,7 @@ function lolimeow_custom_login_page() {
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.2); /* ⬅️ 背景遮罩，提升文字可读性 */
+            background: oklch(0 0 0 / 0.2); /* ⬅️ 背景遮罩，提升文字可读性 */
             backdrop-filter: blur(8px); /* ⬅️ 全局背景模糊 */
             -webkit-backdrop-filter: blur(8px);
         }
@@ -1883,12 +1878,12 @@ function lolimeow_custom_login_page() {
         }
         /* ✨ 玻璃拟态卡片 */
         .glass-card {
-            background: radial-gradient(circle at top left, rgba(255, 192, 203, 0.75), rgba(173, 216, 230, 0.75)); /* ⬅️ 浅粉色到浅蓝色圆形扩散渐变 */
+            background: radial-gradient(circle at top left in srgb, oklch(0.8677 0.0735 7.09 / 0.75), oklch(0.8562 0.0489 219.65 / 0.75)); /* ⬅️ 浅粉色到浅蓝色圆形扩散渐变 */
             backdrop-filter: blur(20px); /* ⬅️ 局部高斯模糊 */
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px; /* ⬅️ 圆角风格 */
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            border: 1px solid oklch(1 0 0 / 0.6);
+            box-shadow: 0 8px 32px 0 oklch(0.3382 0.1582 271.28 / 0.15);
             width: 100%;
             max-width: 460px;
             padding: 3rem 2.5rem;
@@ -1897,17 +1892,17 @@ function lolimeow_custom_login_page() {
         }
         .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+            box-shadow: 0 12px 40px 0 oklch(0.3382 0.1582 271.28 / 0.2);
         }
         /* 🌙 暗色模式适配 */
         [data-bs-theme="dark"] .glass-card {
-            background: rgba(30, 30, 35, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            color: #e0e0e0;
+            background: oklch(0.2372 0.0095 285.65 / 0.75);
+            border: 1px solid oklch(1 0 0 / 0.08);
+            box-shadow: 0 8px 32px 0 oklch(0 0 0 / 0.3);
+            color: oklch(0.9067 0 0);
         }
         [data-bs-theme="dark"] .text-body-tertiary {
-            color: #adb5bd !important;
+            color: oklch(0.7692 0.0145 248.02) !important;
         }
         
         /* 验证码样式 */
@@ -1926,30 +1921,30 @@ function lolimeow_custom_login_page() {
         .captcha-input {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #e1e5e9;
+            border: 2px solid oklch(0.92 0.0069 247.9);
             border-radius: 8px;
             font-size: 14px;
-            background: #fff;
-            color: #333;
+            background: oklch(1 0 0);
+            color: oklch(0.3211 0 0);
             outline: none;
             transition: all 0.3s ease;
             box-sizing: border-box;
         }
         
         .captcha-input:focus {
-            border-color: #2271b1;
-            box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.1);
+            border-color: oklch(0.5339 0.1249 247.74);
+            box-shadow: 0 0 0 2px oklch(0.5339 0.1249 247.74 / 0.1);
             outline: none;
         }
         
         .captcha-input.error {
-            border-color: #dc3545;
-            box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+            border-color: oklch(0.5915 0.202 21.24);
+            box-shadow: 0 0 0 2px oklch(0.5915 0.202 21.24 / 0.2);
         }
         
         .captcha-message {
             font-size: 12px;
-            color: #ff0000;
+            color: oklch(0.628 0.2577 29.23);
             margin-top: 5px;
             min-height: 20px;
         }
@@ -1959,8 +1954,8 @@ function lolimeow_custom_login_page() {
             width: 120px;
             border-radius: 5px;
             cursor: pointer;
-            background: #f5f5f5;
-            border: 1px solid #ddd;
+            background: oklch(0.9702 0 0);
+            border: 1px solid oklch(0.8975 0 0);
             transition: all 0.3s ease;
         }
         
@@ -1969,8 +1964,8 @@ function lolimeow_custom_login_page() {
         }
         
         .captcha-refresh {
-            background: #2271b1;
-            color: white;
+            background: oklch(0.5339 0.1249 247.74);
+            color: oklch(1 0 0);
             border: none;
             border-radius: 5px;
             padding: 8px 12px;
@@ -1981,7 +1976,7 @@ function lolimeow_custom_login_page() {
         }
         
         .captcha-refresh:hover {
-            background: #1a5f8f;
+            background: oklch(0.468 0.1022 244.18);
         }
         
         /* 🏷️ 浮动标签与动态文本 */
@@ -1992,25 +1987,25 @@ function lolimeow_custom_login_page() {
         .floating-label-group .form-control {
             height: 3.5rem;
             padding: 1.25rem 1rem 0.75rem;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3); /* ⬅️ 增加边框线，配合浮动标签 */
+            background: oklch(1 0 0 / 0.6);
+            border: 1px solid oklch(1 0 0 / 0.3); /* ⬅️ 增加边框线，配合浮动标签 */
             border-radius: 12px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: inset 0 2px 4px oklch(0 0 0 / 0.02);
             transition: all 0.3s ease;
         }
         [data-bs-theme="dark"] .floating-label-group .form-control {
-            background: rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: oklch(0 0 0 / 0.2);
+            border-color: oklch(1 0 0 / 0.1);
+            color: oklch(1 0 0);
         }
         .floating-label-group .form-control:focus {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.2);
+            background: oklch(1 0 0 / 0.95);
+            box-shadow: 0 0 0 3px oklch(var(--bs-primary-oklch) / 0.2);
             border-color: var(--bs-primary);
             transform: translateY(-1px);
         }
         [data-bs-theme="dark"] .floating-label-group .form-control:focus {
-            background: rgba(0, 0, 0, 0.4);
+            background: oklch(0 0 0 / 0.4);
             border-color: var(--bs-primary);
         }
         .floating-label-group label {
@@ -2020,7 +2015,7 @@ function lolimeow_custom_login_page() {
             transform: translateY(-50%);
             pointer-events: none;
             transition: 0.2s ease all;
-            color: #6c757d;
+            color: oklch(0.5575 0.0165 244.89);
             padding: 0 5px;
             z-index: 5;
             margin: 0;
@@ -2041,13 +2036,13 @@ function lolimeow_custom_login_page() {
             font-size: 0.75rem;
             transform: translateY(-50%); /* ⬅️ 垂直居中于边框 */
             color: var(--bs-primary);
-            background: rgba(255, 255, 255, 0.8); /* ⬅️ 添加背景遮挡边框线，保持玻璃感 */
+            background: oklch(1 0 0 / 0.8); /* ⬅️ 添加背景遮挡边框线，保持玻璃感 */
             backdrop-filter: blur(4px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px oklch(0 0 0 / 0.05);
         }
         [data-bs-theme="dark"] .floating-label-group .form-control:focus ~ label,
         [data-bs-theme="dark"] .floating-label-group .form-control:not(:placeholder-shown) ~ label {
-            background: rgba(45, 45, 50, 0.8);
+            background: oklch(0.2991 0.0089 285.85 / 0.8);
             color: var(--bs-primary);
         }
         .floating-label-group .form-control:focus ~ label::after,
@@ -2065,7 +2060,7 @@ function lolimeow_custom_login_page() {
             transform: translateY(-50%);
             cursor: pointer;
             z-index: 10;
-            color: #6c757d;
+            color: oklch(0.5575 0.0165 244.89);
             padding: 5px;
         }
         .btn-primary {
@@ -2074,14 +2069,14 @@ function lolimeow_custom_login_page() {
             font-weight: 600;
             letter-spacing: 0.5px;
             border: none;
-            box-shadow: 0 4px 6px rgba(var(--bs-primary-rgb), 0.3);
+            box-shadow: 0 4px 6px oklch(var(--bs-primary-oklch) / 0.3);
             transition: all 0.3s ease;
             position: relative; /* ⬅️ 为扫光动画定位 */
             overflow: hidden;   /* ⬅️ 隐藏溢出的扫光 */
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(var(--bs-primary-rgb), 0.4);
+            box-shadow: 0 6px 12px oklch(var(--bs-primary-oklch) / 0.4);
         }
         /* ✨ 按钮扫光动画 */
         .btn-primary::after {
@@ -2092,10 +2087,10 @@ function lolimeow_custom_login_page() {
             width: 100%;
             height: 100%;
             background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.6),
-                transparent
+                120deg in srgb,
+                oklch(0 0 0 / 0),
+                oklch(1 0 0 / 0.6),
+                oklch(0 0 0 / 0)
             );
             transition: all 0.6s;
         }
@@ -2164,7 +2159,7 @@ function lolimeow_custom_login_page() {
             } else {
                 $html .= '
                <div class="captcha-container">
-                   <label for="custom-login-captcha-input" style="display: block; margin-bottom: 8px; font-weight: 600; color: #555; font-size: 14px;">验证码</label>
+                   <label for="custom-login-captcha-input" style="display: block; margin-bottom: 8px; font-weight: 600; color: oklch(0.4495 0 0); font-size: 14px;">验证码</label>
                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
                        <input type="text" 
                               id="custom-login-captcha-input" 
@@ -2174,19 +2169,19 @@ function lolimeow_custom_login_page() {
                               required
                               maxlength="6"
                               autocomplete="off"
-                              style="flex: 1; padding: 12px 15px; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 14px; background: #fff;">
+                              style="flex: 1; padding: 12px 15px; border: 2px solid oklch(0.92 0.0069 247.9); border-radius: 8px; font-size: 14px; background: oklch(1 0 0);">
                        <div style="display: flex; align-items: center; gap: 5px;">
                            <img src="' . esc_url($captcha_image_url . '&t=' . time()) . '" 
                                 class="captcha-image" 
                                 alt="验证码"
                                 id="custom-login-captcha-image"
                                 onclick="refreshCustomLoginCaptcha()"
-                                style="height: 40px; width: 120px; cursor: pointer; border: 1px solid #ddd; border-radius: 5px;">
+                                style="height: 40px; width: 120px; cursor: pointer; border: 1px solid oklch(0.8975 0 0); border-radius: 5px;">
                            <button type="button" 
                                    class="captcha-refresh" 
                                    title="刷新验证码" 
                                    onclick="refreshCustomLoginCaptcha()"
-                                   style="background: #2271b1; color: white; border: none; border-radius: 5px; padding: 8px 12px; cursor: pointer; height: 40px;">
+                                   style="background: oklch(0.5339 0.1249 247.74); color: oklch(1 0 0); border: none; border-radius: 5px; padding: 8px 12px; cursor: pointer; height: 40px;">
                                ↻
                            </button>
                        </div>
@@ -2319,7 +2314,7 @@ function lolimeow_custom_login_page() {
           tempImg.onerror = function() {
               imgElement.style.opacity = \'1\';
               if (messageElement) {
-                  messageElement.innerHTML = \'<span style="color: #ff0000;">验证码加载失败，请重试</span>\';
+                  messageElement.innerHTML = \'<span style="color: oklch(0.628 0.2577 29.23);">验证码加载失败，请重试</span>\';
               }
           };
           tempImg.src = newUrl;
@@ -2418,11 +2413,9 @@ function lolimeow_custom_login_page() {
                 document.getElementById(\'login-message\').innerHTML = 
                     \'<div class="alert alert-success mt-3">\' + response.data.message + \'，正在跳转...</div>\';
                 setTimeout(() => {
-                    // 🔗 优先跳转到后端返回的地址，其次尝试 URL 参数，最后回落到 referrer 或首页
+                    // Use the destination validated by the login handler.
                     if (response.data.redirect_url) {
                         window.location.href = response.data.redirect_url;
-                    } else if (redirect_to) {
-                        window.location.href = redirect_to;
                     } else {
                          window.location.href = \'/\';
                     }

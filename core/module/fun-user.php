@@ -5,6 +5,8 @@ if(!defined('ABSPATH')){
     exit;
 }
 
+require_once __DIR__ . '/fun-auth-redirect.php';
+
 // 用户中心链接设置--------------------------boxmoe.com--------------------------
 function boxmoe_user_center_link_page(){
     $boxmoe_user_center_link_page = get_boxmoe('boxmoe_user_center_link_page');
@@ -224,7 +226,7 @@ function boxmoe_render_login_not_bound_modal(){
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: oklch(0 0 0 / 0.6);
             backdrop-filter: blur(4px);
             z-index: 99999;
             display: none;
@@ -241,13 +243,13 @@ function boxmoe_render_login_not_bound_modal(){
         
         /* 🪟 弹窗容器 */
         .boxmoe-modal-container {
-            background: #fff;
+            background: oklch(1 0 0);
             border-radius: 16px;
             max-width: 480px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 25px 50px -12px oklch(0 0 0 / 0.25);
             animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
@@ -264,8 +266,8 @@ function boxmoe_render_login_not_bound_modal(){
         
         /* 🌆 暗色模式适配 */
         [data-bs-theme="dark"] .boxmoe-modal-container {
-            background: #2d2d2d;
-            color: #e0e0e0;
+            background: oklch(0.2972 0 0);
+            color: oklch(0.9067 0 0);
         }
         
         /* 🪟 弹窗头部 */
@@ -273,12 +275,12 @@ function boxmoe_render_login_not_bound_modal(){
             display: flex;
             align-items: center;
             padding: 20px 24px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid oklch(0.9276 0.0058 264.53);
             position: relative;
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-header {
-            border-bottom-color: #444;
+            border-bottom-color: oklch(0.3867 0 0);
         }
         
         .boxmoe-modal-icon {
@@ -291,11 +293,11 @@ function boxmoe_render_login_not_bound_modal(){
             margin: 0;
             font-size: 18px;
             font-weight: 600;
-            color: #111827;
+            color: oklch(0.2101 0.0318 264.66);
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-header h3 {
-            color: #e0e0e0;
+            color: oklch(0.9067 0 0);
         }
         
         .boxmoe-modal-close {
@@ -306,7 +308,7 @@ function boxmoe_render_login_not_bound_modal(){
             background: none;
             border: none;
             font-size: 24px;
-            color: #9ca3af;
+            color: oklch(0.7137 0.0192 261.32);
             cursor: pointer;
             width: 32px;
             height: 32px;
@@ -318,13 +320,13 @@ function boxmoe_render_login_not_bound_modal(){
         }
         
         .boxmoe-modal-close:hover {
-            background: #f3f4f6;
-            color: #374151;
+            background: oklch(0.967 0.0029 264.54);
+            color: oklch(0.3729 0.0306 259.73);
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-close:hover {
-            background: #444;
-            color: #e0e0e0;
+            background: oklch(0.3867 0 0);
+            color: oklch(0.9067 0 0);
         }
         
         /* 🪟 弹窗内容 */
@@ -334,46 +336,46 @@ function boxmoe_render_login_not_bound_modal(){
         
         .boxmoe-modal-desc {
             margin: 0 0 20px 0;
-            color: #6b7280;
+            color: oklch(0.551 0.0234 264.36);
             font-size: 14px;
             line-height: 1.6;
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-desc {
-            color: #aaa;
+            color: oklch(0.738 0 0);
         }
         
         .boxmoe-modal-steps {
-            background: #f9fafb;
+            background: oklch(0.9846 0.0017 247.84);
             border-radius: 12px;
             padding: 16px 20px;
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-steps {
-            background: #3d3d3d;
+            background: oklch(0.36 0 0);
         }
         
         .boxmoe-modal-steps h4 {
             margin: 0 0 12px 0;
             font-size: 14px;
             font-weight: 600;
-            color: #374151;
+            color: oklch(0.3729 0.0306 259.73);
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-steps h4 {
-            color: #e0e0e0;
+            color: oklch(0.9067 0 0);
         }
         
         .boxmoe-modal-steps ol {
             margin: 0;
             padding-left: 18px;
-            color: #6b7280;
+            color: oklch(0.551 0.0234 264.36);
             font-size: 13px;
             line-height: 2;
         }
         
         [data-bs-theme="dark"] .boxmoe-modal-steps ol {
-            color: #aaa;
+            color: oklch(0.738 0 0);
         }
         
         .boxmoe-modal-steps li {
@@ -404,34 +406,34 @@ function boxmoe_render_login_not_bound_modal(){
         }
         
         .boxmoe-btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
+            background: linear-gradient(135deg in srgb, oklch(0.6271 0.1638 271.53) 0%, oklch(0.5012 0.1384 304.73) 100%);
+            color: oklch(1 0 0);
         }
         
         .boxmoe-btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-            color: #fff;
+            box-shadow: 0 4px 12px oklch(0.6271 0.1638 271.53 / 0.4);
+            color: oklch(1 0 0);
         }
         
         .boxmoe-btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
+            background: oklch(0.967 0.0029 264.54);
+            color: oklch(0.3729 0.0306 259.73);
         }
         
         .boxmoe-btn-secondary:hover {
-            background: #e5e7eb;
-            color: #111827;
+            background: oklch(0.9276 0.0058 264.53);
+            color: oklch(0.2101 0.0318 264.66);
         }
         
         [data-bs-theme="dark"] .boxmoe-btn-secondary {
-            background: #4a4a4a;
-            color: #e0e0e0;
+            background: oklch(0.4091 0 0);
+            color: oklch(0.9067 0 0);
         }
         
         [data-bs-theme="dark"] .boxmoe-btn-secondary:hover {
-            background: #555;
-            color: #fff;
+            background: oklch(0.4495 0 0);
+            color: oklch(1 0 0);
         }
         
         /* 📱 移动端适配 */
@@ -696,22 +698,7 @@ function handle_user_login() {
     wp_set_auth_cookie($user->ID, $remember, is_ssl()); // ◀️ 设置认证cookie，这是关键！
     do_action('wp_login', $user->user_login, $user); // ◀️ 触发登录钩子，让其他插件/主题知道用户已登录
 
-    // 🔗 获取并验证重定向地址
-    $redirect_to = !empty($formData['redirect_to']) ? $formData['redirect_to'] : '';
-
-    // 👮 判断用户类型并设置对应的重定向地址
-    if (empty($redirect_to)) {
-        // 🔄 没有指定重定向地址时，根据用户类型设置默认跳转
-        if (user_can($user, 'manage_options')) {
-            // 🔒 管理员用户：跳转到后台
-            $redirect_to = admin_url();
-        } else {
-            // 🔗 非管理员用户：跳转到会员中心
-            $redirect_to = boxmoe_user_center_link_page();
-        }
-    }
-
-    $redirect_to = wp_validate_redirect($redirect_to, boxmoe_user_center_link_page());
+    $redirect_to = boxmoe_auth_success_redirect($formData['redirect_to'] ?? '', $user);
 
     wp_send_json_success(array(
         'message' => '登录成功',
@@ -866,7 +853,8 @@ function handle_user_signup() {
     wp_set_current_user($user_id);
     wp_set_auth_cookie($user_id, true);
     wp_send_json_success(array(
-        'message' => '注册成功并已自动登录'
+        'message' => '注册成功并已自动登录',
+        'redirect_url' => boxmoe_auth_success_redirect($formData['redirect_to'] ?? '', $user)
     ));
     exit;
 }
@@ -1001,7 +989,7 @@ function boxmoe_customize_login_page() {
                         top: 0;
                         left: 0;
                         z-index: 0;
-                        background: transparent;
+                        background: oklch(0 0 0 / 0);
                     }
                 </style>');
             }
@@ -1044,7 +1032,7 @@ function boxmoe_customize_login_page() {
                     if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
                     
                     // 绘制粒子
-                    ctx.fillStyle = 'rgba(139, 61, 255, ' + p.opacity + ')';
+                    ctx.fillStyle = 'oklch(0.5752 0.2629 294.9 / ' + p.opacity + ')';
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
@@ -1057,7 +1045,7 @@ function boxmoe_customize_login_page() {
                         var dist = Math.sqrt(dx * dx + dy * dy);
                         
                         if (dist < 100) {
-                            ctx.strokeStyle = 'rgba(139, 61, 255, ' + (0.3 - dist / 333) + ')';
+                            ctx.strokeStyle = 'oklch(0.5752 0.2629 294.9 / ' + (0.3 - dist / 333) + ')';
                             ctx.lineWidth = 0.5;
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
@@ -1130,7 +1118,7 @@ function boxmoe_custom_login_content() {
     // 直接输出HTML，确保代码被执行，设置高z-index显示在遮罩层上面
     ?>
     <div class="login-logo" style="display: block !important; margin: 0 auto 1.5rem auto !important; text-align: center !important; position: relative !important; z-index: 10 !important;">
-        <img src="<?php echo esc_url($site_logo); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>" style="width: 60px !important; height: 60px !important; border-radius: 12px !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; display: block !important; margin: 0 auto !important;">
+        <img src="<?php echo esc_url($site_logo); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>" style="width: 60px !important; height: 60px !important; border-radius: 12px !important; box-shadow: 0 4px 12px oklch(0 0 0 / 0.15) !important; display: block !important; margin: 0 auto !important;">
     </div>
     
     <h2><?php echo esc_html($page_title); ?></h2>
@@ -1284,8 +1272,11 @@ function boxmoe_disable_default_login_page() {
             return;
         }
         
-        /* 🚫 其他情况：重定向到自定义登录页面 */
-        wp_safe_redirect($custom_login_url);
+        if ($action === 'register') {
+            $custom_login_url = add_query_arg('mode', 'signup', $custom_login_url);
+        }
+        /* Preserve the destination when forwarding a WordPress login URL. */
+        wp_safe_redirect(boxmoe_auth_entry_url($custom_login_url));
         exit;
     }
 }
@@ -1304,12 +1295,7 @@ function boxmoe_custom_login_url($login_url, $redirect) {
         return $login_url;
     }
     
-    /* 🔗 如果有重定向参数，添加到自定义登录URL */
-    if (!empty($redirect)) {
-        $custom_login_url = add_query_arg('redirect_to', urlencode($redirect), $custom_login_url);
-    }
-    
-    return $custom_login_url;
+    return boxmoe_auth_entry_url($custom_login_url, $redirect !== '' ? $redirect : null);
 }
 
 /* 🔒 替换WordPress默认注册URL
@@ -1327,7 +1313,7 @@ function boxmoe_custom_register_url($register_url) {
     }
     
     /* 🔗 添加注册模式参数 */
-    return add_query_arg('mode', 'signup', $custom_login_url);
+    return boxmoe_auth_entry_url(add_query_arg('mode', 'signup', $custom_login_url));
 }
 
 /* 🔒 替换WordPress默认找回密码URL
@@ -1338,12 +1324,7 @@ function boxmoe_custom_lostpassword_url($lostpassword_url, $redirect) {
     /* 🔗 获取自定义重置密码页面URL */
     $custom_reset_url = boxmoe_reset_password_link_page();
     
-    /* 🔗 如果有重定向参数，添加到自定义重置密码URL */
-    if (!empty($redirect)) {
-        $custom_reset_url = add_query_arg('redirect_to', urlencode($redirect), $custom_reset_url);
-    }
-    
-    return $custom_reset_url;
+    return boxmoe_auth_entry_url($custom_reset_url, $redirect !== '' ? $redirect : null);
 }
 
 /* 🔒 退出登录后重定向到首页

@@ -22,8 +22,8 @@ html body > .swup-progress-bar {
   z-index: 2147483647;
   width: 100%;
   height: 4px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 0 12px rgba(102, 126, 234, 0.8);
+  background: linear-gradient(90deg in srgb, oklch(0.62705653 0.1638298 271.52866) 0%, oklch(0.50117581 0.13842852 304.72922) 100%);
+  box-shadow: 0 0 12px oklch(0.62705653 0.1638298 271.52866 / 0.8);
 }
 
 /* 🎭 主内容容器 */

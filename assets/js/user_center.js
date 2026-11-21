@@ -476,23 +476,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existingOverlay) existingOverlay.remove();
 
         const popupHtml = `
-        <div id="custom-popup-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998; backdrop-filter: blur(2px);"></div>
-        <div id="custom-error-popup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; padding: 25px 50px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 9999; text-align: center; min-width: 320px; animation: popupFadeIn 0.3s ease-out;">
-            <div style="margin-bottom: 15px; color: #ff4757; font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+        <div id="custom-popup-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: oklch(0 0 0 / 0.5); z-index: 9998; backdrop-filter: blur(2px);"></div>
+        <div id="custom-error-popup" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: oklch(1 0 0); padding: 25px 50px; border-radius: 20px; box-shadow: 0 10px 30px oklch(0 0 0 / 0.15); z-index: 9999; text-align: center; min-width: 320px; animation: popupFadeIn 0.3s ease-out;">
+            <div style="margin-bottom: 15px; color: oklch(0.6689 0.2189 20.91); font-size: 20px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16" style="margin-right: 10px;">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                 </svg>
                 提示
             </div>
-            <div style="margin-bottom: 25px; color: #555; font-size: 16px;">${message}</div>
-            <button id="close-custom-popup" style="background: linear-gradient(45deg, #ff4757, #ff6b81); color: #fff; border: none; padding: 10px 35px; border-radius: 25px; cursor: pointer; transition: all 0.3s; font-weight: 500; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);">关闭</button>
+            <div style="margin-bottom: 25px; color: oklch(0.4495 0 0); font-size: 16px;">${message}</div>
+            <button id="close-custom-popup" style="background: linear-gradient(45deg in srgb, oklch(0.6689 0.2189 20.91), oklch(0.7162 0.1805 13.83)); color: oklch(1 0 0); border: none; padding: 10px 35px; border-radius: 25px; cursor: pointer; transition: all 0.3s; font-weight: 500; box-shadow: 0 4px 15px oklch(0.6689 0.2189 20.91 / 0.3);">关闭</button>
         </div>
         <style>
             @keyframes popupFadeIn {
                 from { opacity: 0; transform: translate(-50%, -60%); }
                 to { opacity: 1; transform: translate(-50%, -50%); }
             }
-            #close-custom-popup:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4); }
+            #close-custom-popup:hover { transform: translateY(-2px); box-shadow: 0 6px 20px oklch(0.6689 0.2189 20.91 / 0.4); }
         </style>
         `;
 

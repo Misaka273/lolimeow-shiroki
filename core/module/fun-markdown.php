@@ -28,17 +28,40 @@ function boxmoe_parse_html_attrs($attr_str){
 }
 
 /**
- * 将十六进制颜色转为 rgba 字符串。
+ * 将旧设置和 Markdown 参数中的十六进制颜色转为 OKLCH CSS 颜色。
  */
-function boxmoe_hex_to_rgba($hex, $alpha = 1){
+function boxmoe_hex_to_oklch($hex, $alpha = 1){
     $hex = ltrim($hex, '#');
     if(strlen($hex) === 3){
         $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
     }
-    $r = isset($hex[0]) ? hexdec(substr($hex, 0, 2)) : 0;
-    $g = isset($hex[2]) ? hexdec(substr($hex, 2, 2)) : 0;
-    $b = isset($hex[4]) ? hexdec(substr($hex, 4, 2)) : 0;
-    return "rgba($r,$g,$b,$alpha)";
+    if(strlen($hex) !== 6 || !ctype_xdigit($hex)){
+        $hex = '000000';
+    }
+    $linear = function($v){
+        $v = $v / 255;
+        return $v <= 0.04045 ? $v / 12.92 : pow(($v + 0.055) / 1.055, 2.4);
+    };
+    $r = $linear(hexdec(substr($hex, 0, 2)));
+    $g = $linear(hexdec(substr($hex, 2, 2)));
+    $b = $linear(hexdec(substr($hex, 4, 2)));
+    $l = pow(0.4122214708 * $r + 0.5363325363 * $g + 0.0514459929 * $b, 1 / 3);
+    $m = pow(0.2119034982 * $r + 0.6806995451 * $g + 0.1073969566 * $b, 1 / 3);
+    $s = pow(0.0883024619 * $r + 0.2817188376 * $g + 0.6299787005 * $b, 1 / 3);
+    $lightness = 0.2104542553 * $l + 0.7936177850 * $m - 0.0040720468 * $s;
+    $a = 1.9779984951 * $l - 2.4285922050 * $m + 0.4505937099 * $s;
+    $bb = 0.0259040371 * $l + 0.7827717662 * $m - 0.8086757660 * $s;
+    $chroma = sqrt($a * $a + $bb * $bb);
+    $hue = $chroma < 0.00001 ? 0 : fmod(rad2deg(atan2($bb, $a)) + 360, 360);
+    if($alpha >= 1){
+        return sprintf('oklch(%.4f %.4f %.2f)', $lightness, $chroma, $hue);
+    }
+    return sprintf('oklch(%.4f %.4f %.2f / %.4f)', $lightness, $chroma, $hue, max(0, $alpha));
+}
+
+function boxmoe_markdown_css_color($color){
+    return is_string($color) && preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/', $color)
+        ? boxmoe_hex_to_oklch($color) : $color;
 }
 
 /**
@@ -96,7 +119,7 @@ function boxmoe_resolve_size($size){
  */
 function boxmoe_render_r_markdown_component($tag, $attrs, $body){
     $accent = boxmoe_get_theme_accent();
-    $accent_dark = boxmoe_hex_to_rgba($accent, 1);
+    $accent_css = boxmoe_hex_to_oklch($accent);
     // 简单加深：直接沿用原色，保持组件可见
     $text = trim($body);
     if($text === '' && isset($attrs['text'])) $text = $attrs['text'];
@@ -104,7 +127,7 @@ function boxmoe_render_r_markdown_component($tag, $attrs, $body){
     switch($tag){
         case 'text':
             $styles = [];
-            if(isset($attrs['color'])) $styles[] = 'color:'.$attrs['color'];
+            if(isset($attrs['color'])) $styles[] = 'color:'.boxmoe_markdown_css_color($attrs['color']);
             $weight = boxmoe_resolve_weight(isset($attrs['weight']) ? $attrs['weight'] : '');
             if($weight) $styles[] = 'font-weight:'.$weight;
             $size = boxmoe_resolve_size(isset($attrs['size']) ? $attrs['size'] : '');
@@ -113,47 +136,46 @@ function boxmoe_render_r_markdown_component($tag, $attrs, $body){
             return '<span'.$style.'>'.esc_html($text).'</span>';
 
         case 'pill-text':
-            $accent_rgba = boxmoe_hex_to_rgba($accent, 1);
-            return '<span style="background:linear-gradient(90deg,'.boxmoe_hex_to_rgba($accent, 0.85).' 0%,'.$accent_rgba.' 100%);padding:0px 6px;border-radius:4px;font-weight:700;color:#fff">'.esc_html($text).'</span>';
+            return '<span style="background:linear-gradient(90deg in srgb,'.boxmoe_hex_to_oklch($accent, 0.85).' 0%,'.$accent_css.' 100%);padding:0px 6px;border-radius:4px;font-weight:700;color:oklch(1 0 0)">'.esc_html($text).'</span>';
 
         case 'strong-text':
-            return '<strong style="color:'.$accent.'">'.esc_html($text).'</strong>';
+            return '<strong style="color:'.$accent_css.'">'.esc_html($text).'</strong>';
 
         case 'soft-text':
-            return '<span style="color:'.$accent.';font-weight:700;background:'.boxmoe_hex_to_rgba($accent, 0.08).';padding:1px 6px;border-radius:4px">'.esc_html($text).'</span>';
+            return '<span style="color:'.$accent_css.';font-weight:700;background:'.boxmoe_hex_to_oklch($accent, 0.08).';padding:1px 6px;border-radius:4px">'.esc_html($text).'</span>';
 
         case 'underline-text':
-            return '<span style="text-decoration:underline;text-decoration-color:'.$accent.';text-underline-offset:3px">'.esc_html($text).'</span>';
+            return '<span style="text-decoration:underline;text-decoration-color:'.$accent_css.';text-underline-offset:3px">'.esc_html($text).'</span>';
 
         case 'strike-text':
-            return '<del style="color:#9ca3af">'.esc_html($text).'</del>';
+            return '<del style="color:oklch(0.7137 0.0192 261.32)">'.esc_html($text).'</del>';
 
         case 'gradient-text':
             $color = isset($attrs['color']) ? $attrs['color'] : '';
             if($color && preg_match('/^#[0-9a-fA-F]{6}$/', $color)){
-                return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($color, 0.3).' 0%,'.boxmoe_hex_to_rgba($color, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$color.'">'.esc_html($text).'</span>';
+                return '<span style="background:linear-gradient(120deg in srgb,'.boxmoe_hex_to_oklch($color, 0.3).' 0%,'.boxmoe_hex_to_oklch($color, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.boxmoe_hex_to_oklch($color).'">'.esc_html($text).'</span>';
             }
-            return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($accent, 0.3).' 0%,'.boxmoe_hex_to_rgba($accent, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$accent.'">'.esc_html($text).'</span>';
+            return '<span style="background:linear-gradient(120deg in srgb,'.boxmoe_hex_to_oklch($accent, 0.3).' 0%,'.boxmoe_hex_to_oklch($accent, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$accent_css.'">'.esc_html($text).'</span>';
 
         case 'gradient-text-2':
             $from = isset($attrs['from']) ? $attrs['from'] : $accent;
             $to = isset($attrs['to']) ? $attrs['to'] : $accent;
-            $text_color = isset($attrs['textcolor']) ? $attrs['textcolor'] : 'var(--text-primary)';
-            return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($from, 0.3).' 0%,'.boxmoe_hex_to_rgba($to, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$text_color.'">'.esc_html($text).'</span>';
+            $text_color = boxmoe_markdown_css_color(isset($attrs['textcolor']) ? $attrs['textcolor'] : 'var(--text-primary)');
+            return '<span style="background:linear-gradient(120deg in srgb,'.boxmoe_hex_to_oklch($from, 0.3).' 0%,'.boxmoe_hex_to_oklch($to, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$text_color.'">'.esc_html($text).'</span>';
 
         case 'gradient-text-3':
             $color = isset($attrs['color']) ? $attrs['color'] : $accent;
-            $text_color = isset($attrs['textcolor']) ? $attrs['textcolor'] : 'var(--text-primary)';
-            return '<span style="background:linear-gradient(120deg,'.boxmoe_hex_to_rgba($color, 0.3).' 0%,'.boxmoe_hex_to_rgba($color, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$text_color.'">'.esc_html($text).'</span>';
+            $text_color = boxmoe_markdown_css_color(isset($attrs['textcolor']) ? $attrs['textcolor'] : 'var(--text-primary)');
+            return '<span style="background:linear-gradient(120deg in srgb,'.boxmoe_hex_to_oklch($color, 0.3).' 0%,'.boxmoe_hex_to_oklch($color, 0.5).' 100%);padding:2px 8px;border-radius:4px;font-weight:700;color:'.$text_color.'">'.esc_html($text).'</span>';
 
         case 'pill-btn':
             $link = isset($attrs['link']) ? $attrs['link'] : '';
-            $color = isset($attrs['color']) ? $attrs['color'] : '';
+            $color = isset($attrs['color']) ? boxmoe_markdown_css_color($attrs['color']) : '';
             $gradient = $color
-                ? 'linear-gradient(135deg,'.$color.','.$color.')'
-                : (isset($attrs['gradient']) ? $attrs['gradient'] : 'linear-gradient(135deg,'.$accent.','.$accent.')');
-            $style = 'display:inline-flex;align-items:center;font-size:13px;padding:4px 14px;font-weight:500;color:#fff;border-radius:50px;border:none;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.15);background:'.$gradient.';cursor:pointer;vertical-align:middle;';
-            $hover = 'onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.2)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'0 2px 6px rgba(0,0,0,0.15)\'"';
+                ? 'linear-gradient(135deg in srgb,'.$color.','.$color.')'
+                : (isset($attrs['gradient']) ? $attrs['gradient'] : 'linear-gradient(135deg in srgb,'.$accent_css.','.$accent_css.')');
+            $style = 'display:inline-flex;align-items:center;font-size:13px;padding:4px 14px;font-weight:500;color:oklch(1 0 0);border-radius:50px;border:none;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);text-decoration:none;box-shadow:0 2px 6px oklch(0 0 0 / 0.15);background:'.$gradient.';cursor:pointer;vertical-align:middle;';
+            $hover = 'onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px oklch(0 0 0 / 0.2)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'0 2px 6px oklch(0 0 0 / 0.15)\'"';
             if($link){
                 return '<a href="'.esc_url($link).'" target="_blank" rel="noopener" style="'.$style.'" '.$hover.'>'.esc_html($text).'</a>';
             }
@@ -161,10 +183,10 @@ function boxmoe_render_r_markdown_component($tag, $attrs, $body){
 
         case 'pill-btn-2':
             $link = isset($attrs['link']) ? $attrs['link'] : '';
-            $color = isset($attrs['color']) ? $attrs['color'] : $accent;
-            $text_color = isset($attrs['textcolor']) ? $attrs['textcolor'] : '#fff';
-            $style = 'display:inline-flex;align-items:center;font-size:13px;padding:4px 14px;font-weight:500;color:'.$text_color.';border-radius:50px;border:none;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,0.15);background:'.$color.';cursor:pointer;vertical-align:middle;';
-            $hover = 'onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px rgba(0,0,0,0.2)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'0 2px 6px rgba(0,0,0,0.15)\'"';
+            $color = boxmoe_markdown_css_color(isset($attrs['color']) ? $attrs['color'] : $accent);
+            $text_color = boxmoe_markdown_css_color(isset($attrs['textcolor']) ? $attrs['textcolor'] : 'oklch(1 0 0)');
+            $style = 'display:inline-flex;align-items:center;font-size:13px;padding:4px 14px;font-weight:500;color:'.$text_color.';border-radius:50px;border:none;transition:all 0.3s cubic-bezier(.5,2.5,.7,.7);text-decoration:none;box-shadow:0 2px 6px oklch(0 0 0 / 0.15);background:'.$color.';cursor:pointer;vertical-align:middle;';
+            $hover = 'onmouseenter="this.style.transform=\'translateY(-2px)\';this.style.boxShadow=\'0 4px 12px oklch(0 0 0 / 0.2)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'0 2px 6px oklch(0 0 0 / 0.15)\'"';
             if($link){
                 return '<section style="margin:10px 0;text-align:center;"><a href="'.esc_url($link).'" target="_blank" rel="noopener" style="'.$style.'" '.$hover.'>'.esc_html($text).'</a></section>';
             }
@@ -172,14 +194,14 @@ function boxmoe_render_r_markdown_component($tag, $attrs, $body){
 
         case 'statement':
             $title = isset($attrs['title']) ? $attrs['title'] : (isset($attrs['text']) ? $attrs['text'] : $text);
-            return '<section style="padding:28px 24px;margin:20px 0;text-align:center;border-radius:12px;background:linear-gradient(135deg,'.boxmoe_hex_to_rgba($accent, 0.06).','.boxmoe_hex_to_rgba($accent, 0.02).');border-left:4px solid '.$accent.'">
+            return '<section style="padding:28px 24px;margin:20px 0;text-align:center;border-radius:12px;background:linear-gradient(135deg in srgb,'.boxmoe_hex_to_oklch($accent, 0.06).','.boxmoe_hex_to_oklch($accent, 0.02).');border-left:4px solid '.$accent_css.'">
       <p style="margin:0;font-size:17px;font-weight:600;color:var(--text-primary);line-height:1.8">'.esc_html($title).'</p>
     </section>';
 
         case 'lead':
             $title = isset($attrs['title']) ? $attrs['title'] : (isset($attrs['text']) ? $attrs['text'] : $text);
-            return '<section style="margin:16px 0;padding:12px 16px;border-left:3px solid '.$accent.';background:rgba(0,0,0,0.02);border-radius:0 8px 8px 0">
-      <p style="margin:0;font-size:15px;color:#555;line-height:1.8;font-style:italic">'.esc_html($title).'</p>
+            return '<section style="margin:16px 0;padding:12px 16px;border-left:3px solid '.$accent_css.';background:oklch(0 0 0 / 0.02);border-radius:0 8px 8px 0">
+      <p style="margin:0;font-size:15px;color:oklch(0.4495 0 0);line-height:1.8;font-style:italic">'.esc_html($title).'</p>
     </section>';
     }
 

@@ -25,11 +25,11 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                                  <label for="formGroupRoleInput" class="form-label">支付方式</label>
                                  <select class="form-select fontsize" name="paytype" id="formGroupRoleInput" required="" >
                                     <?php 
-                                    			$erphpdown_recharge_order = get_option('erphpdown_recharge_order');
-                                             if($erphpdown_recharge_order){
-                                                $erphpdown_recharge_order_arr = explode(',', str_replace('，', ',', trim($erphpdown_recharge_order)));
+                                    			$zuslolimeow_recharge_order = get_option('zuslolimeow_recharge_order');
+                                             if($zuslolimeow_recharge_order){
+                                                $zuslolimeow_recharge_order_arr = explode(',', str_replace('，', ',', trim($zuslolimeow_recharge_order)));
                                                 $pi = 0;
-                                                foreach ($erphpdown_recharge_order_arr as $payment) {
+                                                foreach ($zuslolimeow_recharge_order_arr as $payment) {
                                                   
                                                    if($pi == 0) $checked = 'selected=""'; else $checked = '';
                                                    switch ($payment) {
@@ -114,19 +114,19 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                                                 }                                                
                                              }else{
                                                 $checked='';
-                                                if(get_option('erphpdown_usdt_address')){
+                                                if(get_option('zuslolimeow_usdt_address')){
                                                      echo '<option value="50" '.$checked.'>USDT</option>';
                                                   }
                                              if(get_option('ice_payapl_api_uid')){
                                                 echo '<option value="2" '.$checked.'>PayPal</option>';
                                              }
-                                             if(get_option('erphpdown_stripe_pk')){
+                                             if(get_option('zuslolimeow_stripe_pk')){
                                                 echo '<option value="60" '.$checked.'>信用卡</option>';
                                                   }
-                                          if(plugin_check_ecpay() && get_option('erphpdown_ecpay_MerchantID')){
+                                          if(plugin_check_ecpay() && get_option('zuslolimeow_ecpay_MerchantID')){
                                              echo '<option value="70" '.$checked.'>新台币</option>';
                                                   }
-                                         if(plugin_check_newebpay() && get_option('erphpdown_newebpay_MerchantID')){
+                                         if(plugin_check_newebpay() && get_option('zuslolimeow_newebpay_MerchantID')){
                                           echo '<option value="80" '.$checked.'>新台币</option>';
                                                   }
                                              if(get_option('ice_weixin_mchid')){ 
@@ -135,55 +135,55 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
                                              if(get_option('ice_ali_partner') || get_option('ice_ali_app_id')){ 
                                                 echo '<option value="1" '.$checked.'>支付宝</option>';
                                              }
-                                             if(get_option('erphpdown_f2fpay_id')){
+                                             if(get_option('zuslolimeow_f2fpay_id')){
                                                 echo '<option value="5" '.$checked.'>支付宝</option>';
                                                   }
-                                                  if(get_option('erphpdown_payjs_appid')){
-                                                     if(!get_option('erphpdown_payjs_alipay')){ 
+                                                  if(get_option('zuslolimeow_payjs_appid')){
+                                                     if(!get_option('zuslolimeow_payjs_alipay')){ 
                                                       echo '<option value="20" '.$checked.'>支付宝</option>'; }
-                                                     if(!get_option('erphpdown_payjs_wxpay')){ 
+                                                     if(!get_option('zuslolimeow_payjs_wxpay')){ 
                                                       echo '<option value="19" '.$checked.'>微信</option>';
                                                   }
-                                                  if(get_option('erphpdown_xhpay_appid31')){
+                                                  if(get_option('zuslolimeow_xhpay_appid31')){
                                                    echo '<option value="18" '.$checked.'>微信</option>'; }
                                                   }
-                                                  if(get_option('erphpdown_xhpay_appid32')){
+                                                  if(get_option('zuslolimeow_xhpay_appid32')){
                                                    echo '<option value="17" '.$checked.'>支付宝</option>';
                                                   }
-                                             if(get_option('erphpdown_codepay_appid')){
-                                                if(!get_option('erphpdown_codepay_alipay')){ 
+                                             if(get_option('zuslolimeow_codepay_appid')){
+                                                if(!get_option('zuslolimeow_codepay_alipay')){ 
                                                    echo '<option value="13" '.$checked.'>支付宝</option>'; }
-                                                if(!get_option('erphpdown_codepay_wxpay')){
+                                                if(!get_option('zuslolimeow_codepay_wxpay')){
                                                    echo '<option value="14" '.$checked.'>微信</option>'; }
-                                                if(!get_option('erphpdown_codepay_qqpay')){
+                                                if(!get_option('zuslolimeow_codepay_qqpay')){
                                                    echo '<option value="15" '.$checked.'>QQ钱包</option>'; }
                                              }
-                                             if(get_option('erphpdown_paypy_key')){
-                                                if(!get_option('erphpdown_paypy_alipay')){ 
+                                             if(get_option('zuslolimeow_paypy_key')){
+                                                if(!get_option('zuslolimeow_paypy_alipay')){ 
                                                    echo '<option value="8" '.$checked.'>支付宝</option>'; }
-                                                     if(!get_option('erphpdown_paypy_wxpay')){ 
+                                                     if(!get_option('zuslolimeow_paypy_wxpay')){ 
                                                       echo '<option value="7" '.$checked.'>微信</option>'; }
                                                   }
-                                                  if(get_option('erphpdown_epay_id')){
-                                                     if(!get_option('erphpdown_epay_alipay')){ 
+                                                  if(get_option('zuslolimeow_epay_id')){
+                                                     if(!get_option('zuslolimeow_epay_alipay')){ 
                                                       echo '<option value="21" '.$checked.'>支付宝</option>'; }
-                                                     if(!get_option('erphpdown_epay_qqpay')){ 
+                                                     if(!get_option('zuslolimeow_epay_qqpay')){ 
                                                       echo '<option value="23" '.$checked.'>QQ钱包</option>'; }
-                                                     if(!get_option('erphpdown_epay_wxpay')){ 
+                                                     if(!get_option('zuslolimeow_epay_wxpay')){ 
                                                       echo '<option value="22" '.$checked.'>微信</option>'; }
                                                   }
-                                                  if(get_option('erphpdown_easepay_id')){
-                                                     if(!get_option('erphpdown_easepay_usdt')){ 
+                                                  if(get_option('zuslolimeow_easepay_id')){
+                                                     if(!get_option('zuslolimeow_easepay_usdt')){ 
                                                       echo '<option value="43" '.$checked.'>USDT</option>'; }
-                                                     if(!get_option('erphpdown_easepay_alipay')){ 
+                                                     if(!get_option('zuslolimeow_easepay_alipay')){ 
                                                       echo '<option value="41" '.$checked.'>支付宝</option>'; }
-                                                     if(!get_option('erphpdown_easepay_wxpay')){ 
+                                                     if(!get_option('zuslolimeow_easepay_wxpay')){ 
                                                       echo '<option value="42" '.$checked.'>微信</option>'; }
                                                   }
-                                             if(get_option('erphpdown_vpay_key')){
-                                                     if(!get_option('erphpdown_vpay_alipay')){ 
+                                             if(get_option('zuslolimeow_vpay_key')){
+                                                     if(!get_option('zuslolimeow_vpay_alipay')){ 
                                                       echo '<option value="2" '.$checked.'>支付宝</option>'; }
-                                                     if(!get_option('erphpdown_vpay_wxpay')){ 
+                                                     if(!get_option('zuslolimeow_vpay_wxpay')){ 
                                                       echo '<option value="32" '.$checked.'>微信</option>'; }
                                                   }
                                                }                                              

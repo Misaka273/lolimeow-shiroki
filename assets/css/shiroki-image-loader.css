@@ -4,7 +4,7 @@
 .shiroki-image-container {
     position: relative;
     overflow: hidden;
-    background: transparent;
+    background: oklch(0 0 0 / 0);
 }
 
 /* 🎭 图片占位符动画 */
@@ -51,7 +51,7 @@ figure.zoom-img .shiroki-image-placeholder {
 
 /* 🌆 暗色模式占位符 */
 [data-bs-theme="dark"] .shiroki-image-placeholder {
-    background: var(--bs-dark, #1a1a1a);
+    background: var(--bs-dark, oklch(0.2177865 0 0));
 }
 
 /* ✨ 占位符消失动画 */
@@ -266,10 +266,10 @@ img.lazy.loaded {
     right: 0;
     bottom: 0;
     background: linear-gradient(
-        45deg,
-        rgba(114, 229, 244, 0.1),
-        rgba(60, 89, 251, 0.1),
-        rgba(218, 234, 255, 0.1)
+        45deg in srgb,
+        oklch(0.86029661 0.10623185 206.70541 / 0.1),
+        oklch(0.54989365 0.24113069 268.72539 / 0.1),
+        oklch(0.93152358 0.03331499 255.20776 / 0.1)
     );
     z-index: 2;
     opacity: 0;
@@ -289,8 +289,8 @@ img.lazy.loaded {
     transform: translate(-50%, -50%);
     width: 40px;
     height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid var(--bs-primary, #007bff);
+    border: 3px solid oklch(1 0 0 / 0.3);
+    border-top: 3px solid var(--bs-primary, oklch(0.6048144 0.21655855 257.21355));
     border-radius: 50%;
     animation: shiroki-spin 1s linear infinite;
     z-index: 3;
@@ -325,7 +325,7 @@ img.shiroki-error {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: var(--bs-gray-500, #6c757d);
+    color: var(--bs-gray-500, oklch(0.5575351 0.016495 244.89338));
     font-size: 14px;
     z-index: 4;
 }
@@ -446,7 +446,7 @@ img {
 .footer-widgets .widget_media_image img:hover,
 .footer-widgets .widget_ads img:hover {
     transform: scale(1.02); /* ◀️ 悬停时轻微放大 */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* ◀️ 添加阴影效果 */
+    box-shadow: 0 4px 15px oklch(0 0 0 / 0.1); /* ◀️ 添加阴影效果 */
 }
 
 /* 🌆 暗色模式下图片小工具样式 */
@@ -454,5 +454,5 @@ img {
 [data-bs-theme="dark"] .blog-sidebar .widget_ads img,
 [data-bs-theme="dark"] .footer-widgets .widget_media_image img,
 [data-bs-theme="dark"] .footer-widgets .widget_ads img {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* ◀️ 🌆 暗色模式下更深的阴影 */
+    box-shadow: 0 4px 15px oklch(0 0 0 / 0.3); /* ◀️ 🌆 暗色模式下更深的阴影 */
 }

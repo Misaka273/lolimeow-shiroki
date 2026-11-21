@@ -25,7 +25,7 @@ body.boxmoe-nav-menus-ui #wpcontent,
 body.boxmoe-nav-menus-ui #wpbody,
 body.boxmoe-nav-menus-ui #wpbody-content,
 body.boxmoe-nav-menus-ui #wpfooter {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
 }
 
 body.nav-menus-php.shiroki-nav-menu-active #wpbody-content,
@@ -47,7 +47,7 @@ body.boxmoe-nav-menus-ui #wpbody-content > .wrap.boxmoe-nav-menus-page {
   max-width: 1600px;
   padding: 16px;
   box-sizing: border-box;
-  background: #e4e7ec;
+  background: oklch(0.927111 0.007494 260.732);
   border-radius: 20px;
 }
 
@@ -60,10 +60,10 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top.options-top-bar {
   min-height: 64px;
   margin-bottom: 16px;
   gap: 16px;
-  background: #f8f9fb;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: oklch(0.981921 0.002863 264.542);
+  border: 1px solid oklch(0 0 0 / 0.06);
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.05);
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .header-set-title {
@@ -73,8 +73,8 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .header-set-title {
   flex: 1;
   gap: 12px;
   padding: 0 !important;
-  background: transparent !important;
-  color: #1d2327 !important;
+  background: oklch(0 0 0 / 0) !important;
+  color: oklch(0.25187 0.011549 237.143) !important;
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .themes-name {
@@ -83,11 +83,11 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .themes-name {
   gap: 8px;
   font-size: 17px;
   font-weight: 600;
-  color: #1d2327 !important;
+  color: oklch(0.25187 0.011549 237.143) !important;
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .themes-name .dashicons {
-  color: #2271b1;
+  color: oklch(0.533891 0.124946 247.744);
   font-size: 20px;
   width: 20px;
   height: 20px;
@@ -105,8 +105,8 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .el-button {
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
-  background: #f0f0f1;
-  color: #1d2327;
+  background: oklch(0.955422 0.00133 286.375);
+  color: oklch(0.25187 0.011549 237.143);
   border: none;
   outline: 0;
   margin: 0;
@@ -116,24 +116,24 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .el-button {
   border-radius: 10px;
   text-decoration: none;
   line-height: 1.4;
-  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.07), -3px -3px 7px rgba(255, 255, 255, 0.8);
+  box-shadow: 3px 3px 7px oklch(0 0 0 / 0.07), -3px -3px 7px oklch(1 0 0 / 0.8);
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .el-button:hover {
-  color: #2271b1;
+  color: oklch(0.533891 0.124946 247.744);
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-top .boxmoe-nav-menus-live-preview {
-  background: rgba(255, 77, 79, 0.12) !important;
-  color: #cf1322 !important;
+  background: oklch(0.673245 0.214344 24.465 / 0.12) !important;
+  color: oklch(0.543411 0.213155 25.86) !important;
 }
 
 /* 工作区容器 */
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace {
-  background: #f8f9fb;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: oklch(0.981921 0.002863 264.542);
+  border: 1px solid oklch(0 0 0 / 0.06);
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.05);
   padding: 18px 20px 20px;
   box-sizing: border-box;
   overflow: hidden;
@@ -145,7 +145,7 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace > .nav-tab-wrapper {
   margin: 0 0 16px;
   padding: 0;
   border: none;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -159,21 +159,21 @@ body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace > .nav-tab-wrapper .nav-tab
   line-height: 40px;
   border: none;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.78);
-  color: #50575e;
+  background: oklch(1 0 0 / 0.78);
+  color: oklch(0.453087 0.014493 248.148);
   font-weight: 500;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.06);
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace > .nav-tab-wrapper .nav-tab:hover,
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace > .nav-tab-wrapper .nav-tab:focus {
-  background: rgba(255, 255, 255, 0.95);
-  color: #2271b1;
+  background: oklch(1 0 0 / 0.95);
+  color: oklch(0.533891 0.124946 247.744);
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace > .nav-tab-wrapper .nav-tab-active {
-  background: rgba(99, 179, 237, 0.28) !important;
-  color: #1a5a96 !important;
+  background: oklch(0.739179 0.115418 242.053 / 0.28) !important;
+  color: oklch(0.460058 0.116249 250.957) !important;
   font-weight: 600;
 }
 
@@ -192,9 +192,9 @@ body.boxmoe-nav-menus-ui #menu-settings-column {
   clear: both;
   float: left;
   padding-top: 0;
-  background: #f0f0f1;
+  background: oklch(0.955422 0.00133 286.375);
   border-radius: 14px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.04);
   box-sizing: border-box;
   position: relative;
   z-index: 2;
@@ -217,8 +217,8 @@ body.boxmoe-nav-menus-ui #menu-management .menu-edit {
   margin-bottom: 20px;
   border-radius: 16px;
   overflow: hidden;
-  background: #f0f0f1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: oklch(0.955422 0.00133 286.375);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.06);
 }
 
 /* 菜单结构面板 */
@@ -226,7 +226,7 @@ body.boxmoe-nav-menus-ui .nav-menus-php #post-body {
   padding: 0;
   border: none;
   border-radius: 0;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   box-shadow: none;
   overflow: visible;
 }
@@ -235,30 +235,30 @@ body.boxmoe-nav-menus-ui #nav-menu-header,
 body.boxmoe-nav-menus-ui #nav-menu-footer {
   padding: 12px 16px;
   margin: 0;
-  background: rgba(255, 255, 255, 0.72);
+  background: oklch(1 0 0 / 0.72);
   border: none;
 }
 
 body.boxmoe-nav-menus-ui #nav-menu-header {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid oklch(0 0 0 / 0.06);
   border-radius: 16px 16px 0 0;
 }
 
 body.boxmoe-nav-menus-ui #nav-menu-footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid oklch(0 0 0 / 0.06);
   border-radius: 0 0 16px 16px;
 }
 
 body.boxmoe-nav-menus-ui .nav-menus-php #post-body-content {
   padding: 16px;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 /* 手风琴 */
 body.boxmoe-nav-menus-ui #menu-settings-column .accordion-container,
 body.boxmoe-nav-menus-ui #menu-settings-column .postbox {
   border: none;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   box-shadow: none;
 }
 
@@ -270,26 +270,26 @@ body.boxmoe-nav-menus-ui #menu-settings-column .accordion-section {
 body.boxmoe-nav-menus-ui #menu-settings-column .accordion-section-title {
   border: none;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.72);
+  background: oklch(1 0 0 / 0.72);
   font-weight: 600;
-  color: #1d2327;
+  color: oklch(0.25187 0.011549 237.143);
 }
 
 body.boxmoe-nav-menus-ui #menu-settings-column .accordion-section-content {
-  background: rgba(255, 255, 255, 0.55);
+  background: oklch(1 0 0 / 0.55);
   border-radius: 0 0 10px 10px;
 }
 
 /* 菜单项 */
 body.boxmoe-nav-menus-ui .menu-item-handle {
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid oklch(0 0 0 / 0.06);
+  background: oklch(1 0 0 / 0.9);
 }
 
 body.boxmoe-nav-menus-ui .menu-item-settings {
   border-radius: 0 0 10px 10px;
-  background: rgba(255, 255, 255, 0.72);
+  background: oklch(1 0 0 / 0.72);
 }
 
 /* 表单控件 — 覆盖工作区与左右栏全部原生输入 */
@@ -311,9 +311,9 @@ body.boxmoe-nav-menus-ui #nav-menu-footer select,
 body.boxmoe-nav-menus-ui .manage-menus select,
 body.boxmoe-nav-menus-ui .quick-search {
   border-radius: 10px !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid oklch(0 0 0 / 0.08) !important;
+  background: oklch(1 0 0 / 0.92) !important;
+  box-shadow: inset 2px 2px 4px oklch(0 0 0 / 0.04) !important;
   min-height: 32px;
   box-sizing: border-box;
 }
@@ -339,13 +339,13 @@ body.boxmoe-nav-menus-ui .menu-settings input[type="checkbox"] {
   margin: 0 8px 0 0 !important;
   padding: 0 !important;
   border-radius: 999px !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  background: rgba(255, 255, 255, 0.52) !important;
+  border: 1px solid oklch(0 0 0 / 0.08) !important;
+  background: oklch(1 0 0 / 0.52) !important;
   backdrop-filter: blur(10px) saturate(160%);
   -webkit-backdrop-filter: blur(10px) saturate(160%);
   box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.06),
-    0 1px 2px rgba(255, 255, 255, 0.75) !important;
+    inset 0 1px 3px oklch(0 0 0 / 0.06),
+    0 1px 2px oklch(1 0 0 / 0.75) !important;
   vertical-align: middle;
   flex-shrink: 0;
   pointer-events: auto;
@@ -371,40 +371,40 @@ body.boxmoe-nav-menus-ui input[type="checkbox"]::after {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
+  background: oklch(1 0 0 / 0.96);
   box-shadow:
-    0 1px 4px rgba(15, 23, 42, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 1px 4px oklch(0.207682 0.039824 265.755 / 0.16),
+    inset 0 1px 0 oklch(1 0 0 / 0.95);
   transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
 
 body.boxmoe-nav-menus-ui input[type="checkbox"]:checked {
-  background: rgba(99, 179, 237, 0.45) !important;
-  border-color: rgba(99, 179, 237, 0.58) !important;
+  background: oklch(0.739179 0.115418 242.053 / 0.45) !important;
+  border-color: oklch(0.739179 0.115418 242.053 / 0.58) !important;
   box-shadow:
-    inset 0 1px 3px rgba(34, 113, 177, 0.14),
-    0 0 0 2px rgba(99, 179, 237, 0.14) !important;
+    inset 0 1px 3px oklch(0.533891 0.124946 247.744 / 0.14),
+    0 0 0 2px oklch(0.739179 0.115418 242.053 / 0.14) !important;
 }
 
 body.boxmoe-nav-menus-ui input[type="checkbox"]:checked::after {
   transform: translateX(18px);
   box-shadow:
-    0 1px 5px rgba(34, 113, 177, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 1px 5px oklch(0.533891 0.124946 247.744 / 0.28),
+    inset 0 1px 0 oklch(1 0 0 / 0.95);
 }
 
 body.boxmoe-nav-menus-ui input[type="checkbox"]:focus {
   outline: none !important;
   box-shadow:
-    inset 0 1px 3px rgba(0, 0, 0, 0.06),
-    0 0 0 2px rgba(99, 179, 237, 0.32) !important;
+    inset 0 1px 3px oklch(0 0 0 / 0.06),
+    0 0 0 2px oklch(0.739179 0.115418 242.053 / 0.32) !important;
 }
 
 body.boxmoe-nav-menus-ui input[type="checkbox"]:focus:checked {
   box-shadow:
-    inset 0 1px 3px rgba(34, 113, 177, 0.14),
-    0 0 0 2px rgba(99, 179, 237, 0.32) !important;
+    inset 0 1px 3px oklch(0.533891 0.124946 247.744 / 0.14),
+    0 0 0 2px oklch(0.739179 0.115418 242.053 / 0.32) !important;
 }
 
 body.boxmoe-nav-menus-ui input[type="checkbox"]:disabled {
@@ -414,15 +414,15 @@ body.boxmoe-nav-menus-ui input[type="checkbox"]:disabled {
 
 body.boxmoe-nav-menus-ui.wp-dark-mode input[type="checkbox"],
 body.boxmoe-nav-menus-ui .wp-dark-mode input[type="checkbox"] {
-  background: rgba(255, 255, 255, 0.12) !important;
-  border-color: rgba(255, 255, 255, 0.14) !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28) !important;
+  background: oklch(1 0 0 / 0.12) !important;
+  border-color: oklch(1 0 0 / 0.14) !important;
+  box-shadow: inset 0 1px 3px oklch(0 0 0 / 0.28) !important;
 }
 
 body.boxmoe-nav-menus-ui.wp-dark-mode input[type="checkbox"]:checked,
 body.boxmoe-nav-menus-ui .wp-dark-mode input[type="checkbox"]:checked {
-  background: rgba(99, 179, 237, 0.38) !important;
-  border-color: rgba(99, 179, 237, 0.52) !important;
+  background: oklch(0.739179 0.115418 242.053 / 0.38) !important;
+  border-color: oklch(0.739179 0.115418 242.053 / 0.52) !important;
 }
 
 body.boxmoe-nav-menus-ui .bulk-select,
@@ -434,8 +434,8 @@ body.boxmoe-nav-menus-ui #menu-items-select-all-bottom {
   padding: 8px 10px;
   margin: 0 0 10px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: oklch(1 0 0 / 0.72);
+  border: 1px solid oklch(0 0 0 / 0.06);
 }
 
 body.boxmoe-nav-menus-ui .bulk-select label,
@@ -448,7 +448,7 @@ body.boxmoe-nav-menus-ui .bulk-actions label {
   gap: 8px;
   margin: 0;
   font-size: 13px;
-  color: #50575e;
+  color: oklch(0.453087 0.014493 248.148);
   cursor: pointer;
 }
 
@@ -470,9 +470,9 @@ body.boxmoe-nav-menus-ui .manage-menus {
   padding: 12px 14px;
   margin: 0 0 14px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  background: oklch(1 0 0 / 0.78);
+  border: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow: 0 1px 4px oklch(0 0 0 / 0.04);
 }
 
 body.boxmoe-nav-menus-ui .manage-menus .selected-menu,
@@ -503,7 +503,7 @@ body.boxmoe-nav-menus-ui #menu-settings-column .category-tabs li {
   margin: 0;
   padding: 0;
   border: none;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 body.boxmoe-nav-menus-ui #menu-settings-column .add-menu-item-tabs a,
@@ -511,28 +511,28 @@ body.boxmoe-nav-menus-ui #menu-settings-column .category-tabs a {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  background: rgba(255, 255, 255, 0.85);
-  color: #50575e;
+  border: 1px solid oklch(0 0 0 / 0.06);
+  background: oklch(1 0 0 / 0.85);
+  color: oklch(0.453087 0.014493 248.148);
   text-decoration: none;
   font-size: 12px;
   line-height: 1.4;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.04);
 }
 
 body.boxmoe-nav-menus-ui #menu-settings-column .add-menu-item-tabs a:hover,
 body.boxmoe-nav-menus-ui #menu-settings-column .category-tabs a:hover,
 body.boxmoe-nav-menus-ui #menu-settings-column .add-menu-item-tabs .tabs a:focus,
 body.boxmoe-nav-menus-ui #menu-settings-column .category-tabs .tabs a:focus {
-  color: #2271b1;
-  background: rgba(255, 255, 255, 0.98);
+  color: oklch(0.533891 0.124946 247.744);
+  background: oklch(1 0 0 / 0.98);
 }
 
 body.boxmoe-nav-menus-ui #menu-settings-column .add-menu-item-tabs li.tabs a,
 body.boxmoe-nav-menus-ui #menu-settings-column .category-tabs li.tabs a {
-  background: rgba(99, 179, 237, 0.22) !important;
-  color: #1a5a96 !important;
-  border-color: rgba(99, 179, 237, 0.45) !important;
+  background: oklch(0.739179 0.115418 242.053 / 0.22) !important;
+  color: oklch(0.460058 0.116249 250.957) !important;
+  border-color: oklch(0.739179 0.115418 242.053 / 0.45) !important;
   font-weight: 600;
 }
 
@@ -545,9 +545,9 @@ body.boxmoe-nav-menus-ui .tabs-panel-active {
   max-height: 200px;
   overflow: auto;
   border-radius: 10px !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.03);
+  border: 1px solid oklch(0 0 0 / 0.06) !important;
+  background: oklch(1 0 0 / 0.92) !important;
+  box-shadow: inset 2px 2px 4px oklch(0 0 0 / 0.03);
 }
 
 body.boxmoe-nav-menus-ui .categorychecklist,
@@ -578,19 +578,19 @@ body.boxmoe-nav-menus-ui .categorychecklist label.menu-item-title {
   font-size: 13px;
   cursor: pointer;
   pointer-events: auto;
-  border: 1px solid transparent;
+  border: 1px solid oklch(0 0 0 / 0);
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 body.boxmoe-nav-menus-ui .categorychecklist li:hover label.menu-item-title {
-  background: rgba(255, 255, 255, 0.55);
-  border-color: rgba(0, 0, 0, 0.05);
+  background: oklch(1 0 0 / 0.55);
+  border-color: oklch(0 0 0 / 0.05);
 }
 
 body.boxmoe-nav-menus-ui .categorychecklist li:has(input[type="checkbox"]:checked) label.menu-item-title {
-  background: rgba(99, 179, 237, 0.16);
-  border-color: rgba(99, 179, 237, 0.28);
-  color: #1a5a96;
+  background: oklch(0.739179 0.115418 242.053 / 0.16);
+  border-color: oklch(0.739179 0.115418 242.053 / 0.28);
+  color: oklch(0.460058 0.116249 250.957);
 }
 
 body.boxmoe-nav-menus-ui .quick-search-wrap {
@@ -608,8 +608,8 @@ body.boxmoe-nav-menus-ui .menu-item-settings input[type="url"],
 body.boxmoe-nav-menus-ui .menu-item-settings textarea,
 body.boxmoe-nav-menus-ui .menu-item-settings select {
   border-radius: 10px !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid oklch(0 0 0 / 0.08) !important;
+  background: oklch(1 0 0 / 0.92) !important;
 }
 
 body.boxmoe-nav-menus-ui .menu-item-settings label:has(input[type="checkbox"]) {
@@ -624,7 +624,7 @@ body.boxmoe-nav-menus-ui .accordion-section-content .howto,
 body.boxmoe-nav-menus-ui .accordion-section-content p.description {
   margin: 8px 0;
   font-size: 12px;
-  color: #646970;
+  color: oklch(0.518854 0.012633 256.735);
 }
 
 body.boxmoe-nav-menus-ui #menu-settings-column .button-link {
@@ -645,9 +645,9 @@ body.boxmoe-nav-menus-ui #nav-menu-footer .button,
 body.boxmoe-nav-menus-ui #nav-menu-header .button {
   border-radius: 10px !important;
   border: none !important;
-  background: #f0f0f1 !important;
-  color: #1d2327 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  background: oklch(0.955422 0.00133 286.375) !important;
+  color: oklch(0.25187 0.011549 237.143) !important;
+  box-shadow: 0 1px 3px oklch(0 0 0 / 0.08) !important;
 }
 
 /* 保存菜单 — 浅橙 */
@@ -677,10 +677,10 @@ body.boxmoe-nav-menus-ui input.submit-add-to-menu,
 body.boxmoe-nav-menus-ui .submit-add-to-menu,
 body.boxmoe-nav-menus-ui [id^="submit-posttype-"].submit-add-to-menu {
   border-radius: 10px !important;
-  background: var(--admin-replace-bg, rgba(252, 231, 243, 0.92)) !important;
-  color: var(--admin-replace-text, #9d174d) !important;
-  border: 1px solid var(--admin-replace-border, rgba(249, 168, 212, 0.55)) !important;
-  box-shadow: 0 1px 4px rgba(249, 168, 212, 0.35) !important;
+  background: var(--admin-replace-bg, oklch(0.948201 0.027645 342.258 / 0.92)) !important;
+  color: var(--admin-replace-text, oklch(0.458704 0.169677 3.815)) !important;
+  border: 1px solid var(--admin-replace-border, oklch(0.82284 0.109505 346.018 / 0.55)) !important;
+  box-shadow: 0 1px 4px oklch(0.82284 0.109505 346.018 / 0.35) !important;
 }
 
 body.boxmoe-nav-menus-ui #menu-settings-column input[type="submit"].button.submit-add-to-menu:hover,
@@ -689,9 +689,9 @@ body.boxmoe-nav-menus-ui input[type="submit"].button.submit-add-to-menu:hover,
 body.boxmoe-nav-menus-ui input.submit-add-to-menu:hover,
 body.boxmoe-nav-menus-ui .submit-add-to-menu:hover,
 body.boxmoe-nav-menus-ui [id^="submit-posttype-"].submit-add-to-menu:hover {
-  background: var(--admin-replace-bg-hover, rgba(251, 207, 232, 0.88)) !important;
-  color: var(--admin-replace-text, #9d174d) !important;
-  border-color: var(--admin-replace-border, rgba(249, 168, 212, 0.55)) !important;
+  background: var(--admin-replace-bg-hover, oklch(0.899407 0.058873 343.231 / 0.88)) !important;
+  color: var(--admin-replace-text, oklch(0.458704 0.169677 3.815)) !important;
+  border-color: var(--admin-replace-border, oklch(0.82284 0.109505 346.018 / 0.55)) !important;
 }
 
 body.boxmoe-nav-menus-ui .boxmoe-nav-menus-workspace .button:hover,
@@ -700,9 +700,9 @@ body.boxmoe-nav-menus-ui #menu-settings-column .button:not(.submit-add-to-menu):
 body.boxmoe-nav-menus-ui #nav-menus-frame .button:not(.submit-add-to-menu):hover,
 body.boxmoe-nav-menus-ui #nav-menu-footer .button:hover,
 body.boxmoe-nav-menus-ui #nav-menu-header .button:hover {
-  background: #e8e8e9 !important;
-  color: #2271b1 !important;
-  border-color: transparent !important;
+  background: oklch(0.931283 0.001339 286.374) !important;
+  color: oklch(0.533891 0.124946 247.744) !important;
+  border-color: oklch(0 0 0 / 0) !important;
 }
 
 /* 管理位置页 */
@@ -713,26 +713,26 @@ body.boxmoe-nav-menus-ui #menu-locations-wrap {
 body.boxmoe-nav-menus-ui #menu-locations-table {
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid oklch(0 0 0 / 0.06);
 }
 
 body.boxmoe-nav-menus-ui #menu-locations-table th,
 body.boxmoe-nav-menus-ui #menu-locations-table td {
-  background: rgba(255, 255, 255, 0.72);
+  background: oklch(1 0 0 / 0.72);
 }
 
 /* 菜单图标 meta box */
 body.boxmoe-nav-menus-ui #shiroki_menu_item_icon {
   border: none;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: oklch(1 0 0 / 0.72);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.05);
 }
 
 body.boxmoe-nav-menus-ui #shiroki_menu_item_icon .postbox-header,
 body.boxmoe-nav-menus-ui #shiroki_menu_item_icon > .hndle {
   border: none;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   font-weight: 600;
 }
 
@@ -757,7 +757,7 @@ body.boxmoe-nav-menus-ui.is-menu-dragging .menu-item-handle {
 }
 
 body.boxmoe-nav-menus-ui .ui-sortable-helper {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 12px oklch(0 0 0 / 0.12) !important;
   will-change: transform;
 }
 

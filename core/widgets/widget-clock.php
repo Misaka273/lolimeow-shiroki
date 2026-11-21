@@ -70,7 +70,7 @@ class widget_clock extends WP_Widget {
 								line-height: 1.2 !important;
 								background: none !important;
 								-webkit-background-clip: text !important;
-								-webkit-text-fill-color: transparent !important;
+								-webkit-text-fill-color: oklch(0 0 0 / 0) !important;
 								background-clip: text !important;
 								position: relative !important;
 								z-index: 1 !important;
@@ -80,19 +80,19 @@ class widget_clock extends WP_Widget {
 							
 							/* 亮色模式：蓝色渐变 */
 							#time-<?php echo $this->id; ?>.time {
-								background: linear-gradient(135deg, #3b82f6, #10b981) !important;
+								background: linear-gradient(135deg in srgb, oklch(0.6231 0.188 259.81), oklch(0.6959 0.1491 162.48)) !important;
 								-webkit-background-clip: text !important;
-								-webkit-text-fill-color: transparent !important;
+								-webkit-text-fill-color: oklch(0 0 0 / 0) !important;
 								background-clip: text !important;
 							}
 							
 							/* 暗色模式：紫色渐变 */
 							[data-bs-theme="dark"] #time-<?php echo $this->id; ?>.time {
-								background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
+								background: linear-gradient(135deg in srgb, oklch(0.6056 0.2189 292.72), oklch(0.6559 0.2118 354.31)) !important;
 								-webkit-background-clip: text !important;
-								-webkit-text-fill-color: transparent !important;
+								-webkit-text-fill-color: oklch(0 0 0 / 0) !important;
 								background-clip: text !important;
-								color: transparent !important;
+								color: oklch(0 0 0 / 0) !important;
 							}
 							
 							/* 确保暗色模式下没有额外的背景色 */

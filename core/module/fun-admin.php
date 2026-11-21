@@ -79,7 +79,7 @@ function boxmoe_admin_post_thumbnail_column_content($column_name, $post_id) {
             $image = wp_get_attachment_image_src($post_thumbnail_id, 'thumbnail');
             echo '<img src="' . $image[0] . '" style="width:50px;height:50px;border-radius:3px;object-fit:cover;" />';
         } else {
-            echo '<span style="color:#ddd;font-size:30px;">🖼️</span>';
+            echo '<span style="color:oklch(0.8975 0 0);font-size:30px;">🖼️</span>';
         }
     }
 }
@@ -362,7 +362,7 @@ function boxmoe_admin_error_modal_script() {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: oklch(0 0 0 / 0.5);
             z-index: 99999;
             display: flex;
             align-items: center;
@@ -370,10 +370,10 @@ function boxmoe_admin_error_modal_script() {
             backdrop-filter: blur(2px);
         }
         .boxmoe-admin-modal {
-            background: #fff;
+            background: oklch(1 0 0);
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 25px oklch(0 0 0 / 0.2);
             text-align: center;
             max-width: 400px;
             width: 90%;
@@ -381,13 +381,13 @@ function boxmoe_admin_error_modal_script() {
         }
         .boxmoe-admin-modal h3 {
             margin-top: 0;
-            color: #ff4d4f;
+            color: oklch(0.6732 0.2143 24.47);
             font-size: 20px;
             margin-bottom: 15px;
         }
         .boxmoe-admin-modal-content {
             font-size: 15px;
-            color: #555;
+            color: oklch(0.4495 0 0);
             margin-bottom: 25px;
             line-height: 1.6;
         }
@@ -395,8 +395,8 @@ function boxmoe_admin_error_modal_script() {
             margin: 5px 0;
         }
         .boxmoe-admin-modal-btn {
-            background: #1890ff;
-            color: #fff;
+            background: oklch(0.6512 0.191 252.78);
+            color: oklch(1 0 0);
             border: none;
             padding: 10px 25px;
             border-radius: 20px;
@@ -407,7 +407,7 @@ function boxmoe_admin_error_modal_script() {
             display: inline-block;
         }
         .boxmoe-admin-modal-btn:hover {
-            background: #40a9ff;
+            background: oklch(0.7139 0.1576 247.28);
             transform: translateY(-2px);
         }
         @keyframes boxmoeScaleIn {
@@ -462,23 +462,129 @@ function boxmoe_admin_error_modal_script() {
 }
 add_action('admin_footer', 'boxmoe_admin_error_modal_script'); // ⬅️ 注入弹窗脚本
 
+/* ============================================================
+   🔑 应用程序密码（Application Passwords）
+   ============================================================ */
+
+/**
+ * 🔐 本地开发环境启用应用程序密码
+ *
+ * WordPress 默认只在 HTTPS 或 WP_ENVIRONMENT_TYPE=local 时开放应用程序密码。
+ * 本地 Playground / 局域网调试站点通常走 HTTP，这里对本地环境放行，
+ * 方便调试 REST API、XML-RPC 与第三方客户端；正式站点仍保持核心的 HTTPS 要求。
+ *
+ * @param bool $available 核心的可用性判断结果。
+ * @return bool
+ */
+function boxmoe_local_application_passwords_available($available) {
+    if ($available) {
+        return $available;
+    }
+
+    $host        = wp_parse_url(home_url(), PHP_URL_HOST);
+    $is_loopback = $host && in_array(strtolower($host), array('localhost', '127.0.0.1', '::1'), true);
+    $is_dev_env  = function_exists('wp_get_environment_type')
+        && in_array(wp_get_environment_type(), array('local', 'development'), true);
+
+    /**
+     * 🎛️ 允许主题/插件进一步控制本地放行策略。
+     *
+     * @param bool $enabled 是否在本地环境放开应用程序密码。
+     */
+    $enabled = (bool) apply_filters('shiroki_local_application_passwords', $is_loopback || $is_dev_env);
+
+    return $enabled ? true : $available;
+}
+add_filter('wp_is_application_passwords_available', 'boxmoe_local_application_passwords_available');
+
+/**
+ * 🔑 获取个人资料页「应用程序密码」卡片所需的数据
+ *
+ * @param int $user_id 用户 ID。
+ * @return array
+ */
+function boxmoe_get_profile_application_passwords_data($user_id) {
+    $user_id = (int) $user_id;
+
+    // 🛟 低版本 WordPress 没有应用程序密码功能，直接返回空数据
+    if (!function_exists('wp_is_application_passwords_available_for_user') || !class_exists('WP_Application_Passwords')) {
+        return array(
+            'restBase'    => '',
+            'nonce'       => wp_create_nonce('wp_rest'),
+            'timezone'    => wp_timezone_string(),
+            'available'   => false,
+            'localBypass' => false,
+            'items'       => array(),
+        );
+    }
+
+    $can_manage = $user_id && current_user_can('edit_user', $user_id);
+    $available  = $can_manage && wp_is_application_passwords_available_for_user($user_id);
+
+    $items = array();
+    if ($available) {
+        $passwords = WP_Application_Passwords::get_user_application_passwords($user_id);
+        if (!empty($passwords)) {
+            // 🕒 最新的排在最前面
+            usort(
+                $passwords,
+                function ($a, $b) {
+                    return (int) $b['created'] <=> (int) $a['created'];
+                }
+            );
+
+            foreach ($passwords as $password) {
+                $items[] = array(
+                    'uuid'      => $password['uuid'],
+                    'name'      => $password['name'],
+                    'created'   => !empty($password['created']) ? gmdate('c', (int) $password['created']) : null,
+                    'last_used' => !empty($password['last_used']) ? gmdate('c', (int) $password['last_used']) : null,
+                    'last_ip'   => !empty($password['last_ip']) ? $password['last_ip'] : null,
+                );
+            }
+        }
+    }
+
+    return array(
+        'restBase'    => rest_url('wp/v2/users/' . $user_id . '/application-passwords'),
+        'nonce'       => wp_create_nonce('wp_rest'),
+        'timezone'    => wp_timezone_string(),
+        'available'   => (bool) $available,
+        'localBypass' => (bool) ($available && !wp_is_application_passwords_supported()),
+        'items'       => $items,
+    );
+}
+
 // 🔗 后台加载媒体库脚本
 function boxmoe_admin_profile_enqueue($hook){
     if ($hook === 'profile.php' || $hook === 'user-edit.php') {
         wp_enqueue_media(); // ⬅️ 加载 WP 媒体库
 
-        // 🎨 加载个人资料页面自定义UI样式
+        // 🎨 加载个人资料页面自定义UI样式（用文件时间做版本号，避免缓存旧样式）
+        $profile_css      = get_template_directory() . '/assets/css/admin/user-profile/user-profile.css';
+        $profile_css_ver  = file_exists($profile_css) ? filemtime($profile_css) : THEME_VERSION;
         wp_enqueue_style('admin-variables', get_template_directory_uri() . '/assets/css/admin/admin-variables.css', array(), THEME_VERSION);
-        wp_enqueue_style('shiroki-user-profile', get_template_directory_uri() . '/assets/css/admin/user-profile/user-profile.css', array('admin-variables'), THEME_VERSION);
+        wp_enqueue_style('shiroki-user-profile', get_template_directory_uri() . '/assets/css/admin/user-profile/user-profile.css', array('admin-variables'), $profile_css_ver);
 
         // 📦 加载个人资料页面交互脚本
-        wp_enqueue_script('shiroki-user-profile', get_template_directory_uri() . '/assets/js/admin/user-profile/user-profile.js', array('jquery'), THEME_VERSION, true);
+        $profile_js      = get_template_directory() . '/assets/js/admin/user-profile/user-profile.js';
+        $profile_js_ver  = file_exists($profile_js) ? filemtime($profile_js) : THEME_VERSION;
+        wp_enqueue_script('shiroki-user-profile', get_template_directory_uri() . '/assets/js/admin/user-profile/user-profile.js', array('jquery'), $profile_js_ver, true);
 
         // 🎯 传递AJAX配置
         wp_localize_script('shiroki-user-profile', 'shirokiProfileConfig', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('shiroki_profile_nonce')
         ));
+
+        // 🔑 应用程序密码：交互脚本 + 初始数据
+        $profile_ap_user_id = isset($_GET['user_id']) ? absint($_GET['user_id']) : get_current_user_id();
+        if ($profile_ap_user_id) {
+            $profile_ap_js     = get_template_directory() . '/assets/js/admin/user-profile/app-passwords.js';
+            $profile_ap_js_ver = file_exists($profile_ap_js) ? filemtime($profile_ap_js) : THEME_VERSION;
+            wp_enqueue_script('shiroki-app-passwords', get_template_directory_uri() . '/assets/js/admin/user-profile/app-passwords.js', array('jquery'), $profile_ap_js_ver, true);
+            wp_localize_script('shiroki-app-passwords', 'shirokiAppPasswords', boxmoe_get_profile_application_passwords_data($profile_ap_user_id));
+        }
     }
 }
 add_action('admin_enqueue_scripts', 'boxmoe_admin_profile_enqueue');
@@ -975,14 +1081,14 @@ function boxmoe_admin_top_banner_notice() {
     ?>  
     <style>
     /* 确保样式被正确加载 */
-    .copy-banner{position:fixed;top:0;left:0;right:0;z-index:9999;transform:translateY(-100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);padding:10px 16px;text-align:center;background-color:#e6f2ff;color:var(--bs-dark);border-bottom:1px solid var(--bs-dark);box-shadow:0 1px 6px rgba(32,33,36,0.28);overflow:hidden;}
+    .copy-banner{position:fixed;top:0;left:0;right:0;z-index:9999;transform:translateY(-100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);padding:10px 16px;text-align:center;background-color:oklch(0.956 0.0217 250.21);color:var(--bs-dark);border-bottom:1px solid var(--bs-dark);box-shadow:0 1px 6px oklch(0.2479 0.0058 271.18 / 0.28);overflow:hidden;}
     .copy-banner i{margin-right:8px;color:var(--bs-dark);}
-    .copy-banner::after{content:"";position:absolute;left:0;top:0;height:100%;width:0;background:rgba(139,61,255,0.35);border-radius:0 18px 18px 0;}
+    .copy-banner::after{content:"";position:absolute;left:0;top:0;height:100%;width:0;background:oklch(0.5752 0.2629 294.9 / 0.35);border-radius:0 18px 18px 0;}
     .copy-banner.mask-run::after{animation:copyMaskSweep 1100ms ease forwards;}
     .copy-banner.show{transform:translateY(0);}
     @keyframes copyMaskSweep{0%{width:0;border-radius:0 18px 18px 0}80%{width:100%;border-radius:0 18px 18px 0}100%{width:calc(100% + 40px);border-radius:0}}
-    [data-bs-theme="dark"] .copy-banner{background-color:#e6f2ff;color:#000;border-bottom:1px solid rgba(255,255,255,0.1);box-shadow:0 1px 6px rgba(255,255,255,0.15);}
-    [data-bs-theme="dark"] .copy-banner i{color:#000;}
+    [data-bs-theme="dark"] .copy-banner{background-color:oklch(0.956 0.0217 250.21);color:oklch(0 0 0);border-bottom:1px solid oklch(1 0 0 / 0.1);box-shadow:0 1px 6px oklch(1 0 0 / 0.15);}
+    [data-bs-theme="dark"] .copy-banner i{color:oklch(0 0 0);}
     @media (max-width:991px){.copy-banner{font-size:0.9rem;padding:8px 12px;}}
     </style>
     <script>
@@ -1234,6 +1340,9 @@ function boxmoe_profile_custom_ui() {
     $is_own_profile = ($user_id === get_current_user_id());
     $page_title = $is_own_profile ? '👤 个人资料' : '👤 编辑用户';
     $subtitle = $is_own_profile ? '管理您的个人信息和偏好设置' : '编辑用户信息和权限设置';
+
+    /* 🔑 应用程序密码卡片数据 */
+    $profile_app_passwords = boxmoe_get_profile_application_passwords_data($user_id);
     ?>
     <script type="text/javascript">
     jQuery(document).ready(function($) {
@@ -1375,6 +1484,59 @@ function boxmoe_profile_custom_ui() {
                                     <div class="shiroki-profile-pass-strength" id="shiroki-profile-pass-strength"></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- 🔑 应用程序密码卡片 -->
+                    <div class="shiroki-profile-card shiroki-ap-card" id="shiroki-app-passwords">
+                        <div class="shiroki-profile-card-header">
+                            <span class="shiroki-profile-card-icon">🔑</span>
+                            <span class="shiroki-profile-card-title">应用程序密码</span>
+                        </div>
+                        <div class="shiroki-profile-card-body">
+                            <p class="shiroki-ap-description">为第三方应用（HermesAgent、openclow、REST API、XML-RPC 等）创建独立密码。应用程序密码无法用于登录后台，并且可以随时撤销。</p>
+                            <?php if ($profile_app_passwords['available']) : ?>
+                            <?php if ($profile_app_passwords['localBypass']) : ?>
+                            <p class="shiroki-ap-local-note">ℹ️ 当前站点未启用 HTTPS，已为本地开发环境临时开启应用程序密码。</p>
+                            <?php endif; ?>
+                            <div class="shiroki-ap-create" id="shiroki-ap-create">
+                                <div class="shiroki-ap-create-field">
+                                    <label for="shiroki-ap-name">应用名称</label>
+                                    <div class="shiroki-profile-input-wrapper">
+                                        <span class="shiroki-profile-input-icon">🏷️</span>
+                                        <input type="text" id="shiroki-ap-name" placeholder="例如：HermesAgent、openclow 同步" autocomplete="off" maxlength="100">
+                                    </div>
+                                </div>
+                                <button type="button" class="shiroki-profile-generate-pw shiroki-ap-create-btn" id="shiroki-ap-create-btn">➕ 添加应用程序密码</button>
+                            </div>
+                            <div class="shiroki-ap-new is-hidden" id="shiroki-ap-new"></div>
+                            <div class="shiroki-ap-notice is-hidden" id="shiroki-ap-notice" role="status"></div>
+                            <div class="shiroki-ap-list-head is-hidden" id="shiroki-ap-list-head">
+                                <span class="shiroki-ap-list-title">已创建的应用程序密码</span>
+                                <button type="button" class="shiroki-ap-revoke-all" id="shiroki-ap-revoke-all">撤销全部</button>
+                            </div>
+                            <div class="shiroki-ap-list" id="shiroki-ap-list"></div>
+                            <div class="shiroki-ap-empty is-hidden" id="shiroki-ap-empty">🕳️ 暂无应用程序密码，创建后会显示在这里。</div>
+                            <p class="shiroki-ap-hint">提示：应用程序密码只在创建时显示一次，请及时复制保存。</p>
+                            <?php else : ?>
+                            <?php if (function_exists('wp_is_application_passwords_supported') && wp_is_application_passwords_supported()) : ?>
+                            <div class="shiroki-ap-unavailable">
+                                <span class="shiroki-ap-unavailable-icon">🔒</span>
+                                <div class="shiroki-ap-unavailable-body">
+                                    <strong>当前账户未启用应用程序密码</strong>
+                                    <p>站点已支持应用程序密码，但当前账户被限制使用该功能，请联系站点管理员。</p>
+                                </div>
+                            </div>
+                            <?php else : ?>
+                            <div class="shiroki-ap-unavailable">
+                                <span class="shiroki-ap-unavailable-icon">🔒</span>
+                                <div class="shiroki-ap-unavailable-body">
+                                    <strong>当前环境未启用应用程序密码</strong>
+                                    <p>WordPress 要求站点使用 HTTPS，或把 WP_ENVIRONMENT_TYPE 设置为 local。若这是本地开发站点，请启用 HTTPS 或调整环境类型后再创建。</p>
+                                </div>
+                            </div>
+                            <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 

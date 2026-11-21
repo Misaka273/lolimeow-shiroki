@@ -27,7 +27,7 @@ if (!is_user_logged_in()){
         exit;
     }
     
-    wp_safe_redirect( boxmoe_sign_in_link_page() );
+    wp_safe_redirect(boxmoe_auth_entry_url(boxmoe_sign_in_link_page()));
     exit;
  }
 get_header();
@@ -115,7 +115,7 @@ function boxmoe_vip_time() {
       echo '永久';
    }
    }
-   function mobantu_paging($type, $paged, $max_page) {
+   function zuslolimeow_user_center_paging($type, $paged, $max_page) {
     if ($max_page <= 1) return;
     if (empty($paged)) $paged = 1;
     
@@ -167,7 +167,7 @@ echo '<link rel="stylesheet" href="'.boxmoe_theme_url().'/assets/css/user_center
 $items = isset($_GET["items"]) ? $_GET["items"] : 'home';
 $current_user = wp_get_current_user();
 ?>
-   <?php if(function_exists( 'mobantu_erphp_menu' )  ) {?>
+   <?php if(function_exists( 'zuslolimeow_erphp_menu' )  ) {?>
     <section class="py-lg-7 py-5 user_center">
          <div class="container">
             <div class="row">
@@ -192,7 +192,7 @@ $current_user = wp_get_current_user();
                             ?></h3>
                            <div class="mt-3 mt-lg-0 d-md-flex">
                               <?php if(get_option('ice_ali_money_checkin')):?>
-                                 <?php if(erphpdown_check_checkin($current_user->ID)):?>
+                                 <?php if(zuslolimeow_check_checkin($current_user->ID)):?>
                                     <span class="btn btn btn-secondary me-2">已签到</span>
                                  <?php else:?>
                                     <a href="javascript:;" id="boxmoe-checkin-today" class="btn btn-outline-primary me-2">今日签到</a>
@@ -270,7 +270,7 @@ $current_user = wp_get_current_user();
 				<div class="col-lg-10 col-md-10 ml-auto mx-auto">		
 				<div class="alert alert-warning d-flex align-items-center" role="alert">
   				<span class="alert-icon"><i class="fa fa-bell"></i></span>
-   				<span class="alert-text"> 提示：会员中心必须配套Erphpdown插件使用，检测网站未启用或者未安装该插件！<a href="https://www.boxmoe.com/468.html" target="_blank" style="font-weight: bold;color: #121211;font-size: 15px;">详细点击查看说明</a> 
+   				<span class="alert-text"> 提示：会员中心必须配套zuslolimeow插件使用，检测网站未启用或者未安装该插件！<a href="https://www.boxmoe.com/468.html" target="_blank" style="font-weight: bold;color: oklch(0.1818 0.002 106.6);font-size: 15px;">详细点击查看说明</a> 
                <a href="https://www.boxmoe.com/443.html" target="_blank" style="font-weight: bold;font-size: 15px;">破解版插件购买</a></span>
 				</div>
 				</div>

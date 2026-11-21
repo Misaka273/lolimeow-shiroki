@@ -126,7 +126,7 @@
   align-items: center;
   gap: var(--admin-space-sm);
   padding: var(--admin-space-lg) var(--admin-space-xl);
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
   border-bottom: 1px solid var(--admin-current-border);
 }
 
@@ -153,7 +153,7 @@
 
 /* 🎴 个人信息头部卡片 */
 .shiroki-profile-header-card {
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.15) 0%, rgba(183, 148, 244, 0.15) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.15) 0%, oklch(0.735825 0.139368 299.78 / 0.15) 100%);
   border: var(--admin-border-glass);
   border-radius: var(--admin-radius-xl);
   padding: var(--admin-space-2xl);
@@ -172,7 +172,7 @@
   border-radius: var(--admin-radius-full);
   overflow: hidden;
   box-shadow: var(--admin-shadow-lg);
-  border: 4px solid rgba(255, 255, 255, 0.5);
+  border: 4px solid oklch(1 0 0 / 0.5);
   background: var(--admin-current-bg);
 }
 
@@ -378,7 +378,7 @@
   border-radius: var(--admin-radius-full);
   overflow: hidden;
   box-shadow: var(--admin-shadow-sm);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  border: 3px solid oklch(1 0 0 / 0.5);
 }
 
 .shiroki-profile-current-avatar img {
@@ -892,4 +892,329 @@
   gap: var(--admin-space-sm);
   color: var(--admin-success-text);
   font-weight: var(--admin-font-weight-medium);
+}
+
+/* ============================================
+   🔑 应用程序密码
+   ============================================ */
+
+/* 🙈 通用隐藏 */
+.shiroki-ap-card .is-hidden {
+  display: none !important;
+}
+
+/* 📝 说明文字 */
+.shiroki-ap-description {
+  margin: 0 0 var(--admin-space-lg) 0;
+  font-size: var(--admin-font-size-md);
+  line-height: 1.7;
+  color: var(--admin-current-text-secondary);
+}
+
+/* ℹ️ 本地开发提示 */
+.shiroki-ap-local-note {
+  margin: 0 0 var(--admin-space-lg) 0;
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-warning-bg);
+  border: 1px solid var(--admin-warning-border);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-warning-text);
+}
+
+/* ➕ 创建区域 */
+.shiroki-ap-create {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: var(--admin-space-md);
+  padding: var(--admin-space-lg);
+  margin-bottom: var(--admin-space-lg);
+  background: var(--admin-current-glass);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-lg);
+}
+
+.shiroki-ap-create-field {
+  flex: 1 1 260px;
+  min-width: 200px;
+}
+
+.shiroki-ap-create-field label {
+  display: block;
+  margin-bottom: var(--admin-space-sm);
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-current-text-primary);
+}
+
+.shiroki-ap-create-field .shiroki-profile-input-wrapper input[type="text"] {
+  padding-left: 40px;
+}
+
+.shiroki-ap-create-btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* ✅ 新密码展示 */
+.shiroki-ap-new {
+  padding: var(--admin-space-lg);
+  margin-bottom: var(--admin-space-lg);
+  background: var(--admin-success-bg);
+  border: 1px solid var(--admin-success-border);
+  border-radius: var(--admin-radius-lg);
+  animation: shiroki-ap-pop 0.25s ease;
+}
+
+@keyframes shiroki-ap-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.shiroki-ap-new-title {
+  margin-bottom: var(--admin-space-sm);
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-success-text);
+  word-break: break-word;
+}
+
+.shiroki-ap-password-row {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-sm);
+}
+
+.shiroki-ap-password {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  background: var(--admin-current-bg);
+  border: 1px solid var(--admin-success-border);
+  border-radius: var(--admin-radius-md);
+  font-family: Consolas, Monaco, monospace;
+  font-size: var(--admin-font-size-md);
+  color: var(--admin-current-text-primary);
+  letter-spacing: 0.5px;
+}
+
+.shiroki-ap-copy {
+  flex: 0 0 auto;
+  padding: var(--admin-space-sm) var(--admin-space-lg);
+  background: var(--admin-success-bg-hover);
+  border: 1px solid var(--admin-success-border);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-medium);
+  color: var(--admin-success-text);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-ap-copy:hover {
+  background: var(--admin-success-bg);
+  transform: translateY(-1px);
+}
+
+.shiroki-ap-new-hint {
+  margin: var(--admin-space-sm) 0 0 0;
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-success-text);
+}
+
+/* 🔔 操作提示 */
+.shiroki-ap-notice {
+  margin-bottom: var(--admin-space-lg);
+  padding: var(--admin-space-sm) var(--admin-space-md);
+  border-radius: var(--admin-radius-md);
+  font-size: var(--admin-font-size-md);
+}
+
+.shiroki-ap-notice.is-error {
+  background: var(--admin-danger-bg);
+  border: 1px solid var(--admin-danger-border);
+  color: var(--admin-danger-text);
+}
+
+.shiroki-ap-notice.is-success {
+  background: var(--admin-success-bg);
+  border: 1px solid var(--admin-success-border);
+  color: var(--admin-success-text);
+}
+
+/* 📋 列表标题 */
+.shiroki-ap-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--admin-space-md);
+  margin-bottom: var(--admin-space-sm);
+}
+
+.shiroki-ap-list-title {
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-primary);
+}
+
+.shiroki-ap-revoke-all {
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-danger-text);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.shiroki-ap-revoke-all:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* 🔑 单条记录 */
+.shiroki-ap-item {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-space-md);
+  padding: var(--admin-space-md) var(--admin-space-lg);
+  margin-bottom: var(--admin-space-sm);
+  background: var(--admin-current-glass);
+  border: var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  transition: box-shadow var(--admin-transition-fast), transform var(--admin-transition-fast);
+}
+
+.shiroki-ap-item:hover {
+  box-shadow: var(--admin-shadow-sm);
+  transform: translateY(-1px);
+}
+
+.shiroki-ap-item-icon {
+  flex: 0 0 auto;
+  font-size: 18px;
+}
+
+.shiroki-ap-item-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.shiroki-ap-item-name {
+  font-size: var(--admin-font-size-md);
+  font-weight: var(--admin-font-weight-semibold);
+  color: var(--admin-current-text-primary);
+  word-break: break-word;
+}
+
+.shiroki-ap-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--admin-space-xs) var(--admin-space-md);
+  margin-top: 4px;
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-muted);
+}
+
+.shiroki-ap-revoke {
+  flex: 0 0 auto;
+  padding: var(--admin-space-xs) var(--admin-space-md);
+  background: transparent;
+  border: 1px solid var(--admin-danger-border);
+  border-radius: var(--admin-radius-sm);
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-danger-text);
+  cursor: pointer;
+  transition: all var(--admin-transition-fast);
+}
+
+.shiroki-ap-revoke:hover {
+  background: var(--admin-danger-bg);
+}
+
+.shiroki-ap-revoke:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* 🕳️ 空状态 */
+.shiroki-ap-empty {
+  padding: var(--admin-space-xl);
+  background: var(--admin-current-glass);
+  border: 1px dashed var(--admin-current-border);
+  border-radius: var(--admin-radius-md);
+  text-align: center;
+  font-size: var(--admin-font-size-md);
+  color: var(--admin-current-text-muted);
+}
+
+/* 📌 底部提示 */
+.shiroki-ap-hint {
+  margin: var(--admin-space-md) 0 0 0;
+  font-size: var(--admin-font-size-sm);
+  color: var(--admin-current-text-muted);
+}
+
+/* 🔒 不可用提示 */
+.shiroki-ap-unavailable {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--admin-space-md);
+  padding: var(--admin-space-lg);
+  background: var(--admin-warning-bg);
+  border: 1px solid var(--admin-warning-border);
+  border-radius: var(--admin-radius-lg);
+}
+
+.shiroki-ap-unavailable-icon {
+  flex: 0 0 auto;
+  font-size: 20px;
+}
+
+.shiroki-ap-unavailable-body strong {
+  display: block;
+  margin-bottom: var(--admin-space-xs);
+  font-size: var(--admin-font-size-md);
+  color: var(--admin-warning-text);
+}
+
+.shiroki-ap-unavailable-body p {
+  margin: 0;
+  font-size: var(--admin-font-size-sm);
+  line-height: 1.7;
+  color: var(--admin-warning-text);
+}
+
+@media screen and (max-width: 782px) {
+  .shiroki-ap-create {
+    align-items: stretch;
+  }
+
+  .shiroki-ap-create-btn {
+    width: 100%;
+  }
+
+  .shiroki-ap-item {
+    flex-wrap: wrap;
+  }
+
+  .shiroki-ap-revoke {
+    width: 100%;
+  }
+
+  .shiroki-ap-password-row {
+    flex-wrap: wrap;
+  }
+
+  .shiroki-ap-copy {
+    width: 100%;
+  }
 }

@@ -12,7 +12,7 @@
 
 /* 🎨 验证码输入区域 - 适配双面板布局 */
 .captcha-field {
-    background-color: #f0f0f0;
+    background-color: oklch(0.95514005 0 0);
     height: 55px;
     border-radius: 55px;
     display: grid;
@@ -32,13 +32,13 @@
     font-weight: 600;
     font-size: 1.1rem;
     padding-left: 10px;
-    color: #333;
+    color: oklch(0.32109251 0 0);
     font-size: 16px;
     width: 100%;
 }
 
 .captcha-input::placeholder {
-    color: #aaa;
+    color: oklch(0.73801867 0 0);
     font-weight: 500;
 }
 
@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    background: transparent;
+    background: oklch(0 0 0 / 0);
 }
 
 .captcha-image {
@@ -64,8 +64,8 @@
 .captcha-refresh {
     position: absolute;
     right: -10px;
-    background: #5995fd;
-    color: white;
+    background: oklch(0.67856207 0.16643462 260.63623);
+    color: oklch(1 0 0);
     border: none;
     border-radius: 50%;
     width: 24px;
@@ -79,7 +79,7 @@
 }
 
 .captcha-refresh:hover {
-    background: #4d84e2;
+    background: oklch(0.62129196 0.1539652 260.41651);
 }
 
 /* ☁️ Cloudflare Turnstile 样式 */
@@ -109,28 +109,28 @@
 
 /* 🌙 暗色模式适配 */
 [data-bs-theme="dark"] .captcha-field {
-    background-color: #3d3d3d;
+    background-color: oklch(0.36002337 0 0);
 }
 
 [data-bs-theme="dark"] .captcha-input {
-    color: #e0e0e0;
+    color: oklch(0.90670069 0 0);
 }
 
 [data-bs-theme="dark"] .captcha-input::placeholder {
-    color: #888;
+    color: oklch(0.62675354 0 0);
 }
 
 [data-bs-theme="dark"] .captcha-refresh {
-    background: #6e9eff;
+    background: oklch(0.70843076 0.1516716 263.15103);
 }
 
 [data-bs-theme="dark"] .captcha-refresh:hover {
-    background: #5a87e3;
+    background: oklch(0.63441002 0.14728736 263.16691);
 }
 
 [data-bs-theme="dark"] .cf-turnstile iframe {
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: oklch(1 0 0 / 0.1) !important;
+    background: oklch(0 0 0 / 0.3) !important;
 }
 
 /* 📱 响应式设计 */
@@ -189,13 +189,13 @@
 
 @keyframes captchaSuccessPulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+        box-shadow: 0 0 0 0 oklch(0.64012769 0.17507649 146.74256 / 0.4);
     }
     70% {
-        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+        box-shadow: 0 0 0 10px oklch(0.64012769 0.17507649 146.74256 / 0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+        box-shadow: 0 0 0 0 oklch(0.64012769 0.17507649 146.74256 / 0);
     }
 }
 

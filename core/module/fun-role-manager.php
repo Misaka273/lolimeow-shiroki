@@ -234,18 +234,18 @@ function boxmoe_role_manager_script() {
                 // 移除现有的 toast
                 $('.boxmoe-toast-wrapper').remove();
 
-                var icon = type === 'success' ? '<span class="dashicons dashicons-yes-alt" style="color:#4caf50;font-size:24px;width:24px;height:24px;"></span>' : '<span class="dashicons dashicons-dismiss" style="color:#f44336;font-size:24px;width:24px;height:24px;"></span>';
-                var color = type === 'success' ? '#4caf50' : '#f44336';
+                var icon = type === 'success' ? '<span class="dashicons dashicons-yes-alt" style="color:oklch(0.6731 0.1624 144.21);font-size:24px;width:24px;height:24px;"></span>' : '<span class="dashicons dashicons-dismiss" style="color:oklch(0.6427 0.2153 28.81);font-size:24px;width:24px;height:24px;"></span>';
+                var color = type === 'success' ? 'oklch(0.6731 0.1624 144.21)' : 'oklch(0.6427 0.2153 28.81)';
                 
                 var html = `
                 <div class="boxmoe-toast-wrapper" style="position:fixed;top:50px;left:50%;transform:translateX(-50%);z-index:99999;opacity:0;transition:opacity 0.3s ease;">
-                    <div class="boxmoe-toast" style="background:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.15);border-radius:50px;padding:12px 24px;display:flex;align-items:center;gap:12px;min-width:300px;border:1px solid #eee;">
+                    <div class="boxmoe-toast" style="background:oklch(1 0 0);box-shadow:0 4px 12px oklch(0 0 0 / 0.15);border-radius:50px;padding:12px 24px;display:flex;align-items:center;gap:12px;min-width:300px;border:1px solid oklch(0.9491 0 0);">
                         ${icon}
                         <div class="boxmoe-toast-content" style="flex-grow:1;">
-                            <div style="font-size:14px;font-weight:600;color:#333;">${message}</div>
-                            ${reloadAfter ? '<div class="boxmoe-toast-timer" style="font-size:12px;color:#999;margin-top:2px;">3秒后自动刷新...</div>' : ''}
+                            <div style="font-size:14px;font-weight:600;color:oklch(0.3211 0 0);">${message}</div>
+                            ${reloadAfter ? '<div class="boxmoe-toast-timer" style="font-size:12px;color:oklch(0.683 0 0);margin-top:2px;">3秒后自动刷新...</div>' : ''}
                         </div>
-                        <button type="button" class="boxmoe-toast-close" style="background:none;border:none;cursor:pointer;color:#ccc;padding:0;"><span class="dashicons dashicons-no-alt"></span></button>
+                        <button type="button" class="boxmoe-toast-close" style="background:none;border:none;cursor:pointer;color:oklch(0.8452 0 0);padding:0;"><span class="dashicons dashicons-no-alt"></span></button>
                     </div>
                 </div>
                 `;
@@ -449,7 +449,7 @@ function boxmoe_role_manager_script() {
                         rolesHtml += '</div>';
                     } else {
                         rolesHtml = '<div class="boxmoe-role-editor" data-userid="' + user.ID + '" data-currentrole="">';
-                        rolesHtml += '<span class="current-role-label" style="color:#999;" title="点击设置角色">无角色 <span class="dashicons dashicons-edit"></span></span>';
+                        rolesHtml += '<span class="current-role-label" style="color:oklch(0.683 0 0);" title="点击设置角色">无角色 <span class="dashicons dashicons-edit"></span></span>';
                         rolesHtml += '</div>';
                     }
 
@@ -460,7 +460,7 @@ function boxmoe_role_manager_script() {
                     html += '<img src="' + user.avatar + '" style="width:40px;height:40px;border-radius:50%;margin-right:10px;">';
                     html += '<div>';
                     html += '<div style="font-weight:bold;">' + user.display_name + '</div>';
-                    html += '<div style="font-size:12px;color:#999;">@' + user.user_login + '</div>';
+                    html += '<div style="font-size:12px;color:oklch(0.683 0 0);">@' + user.user_login + '</div>';
                     html += '</div>';
                     html += '</div>';
 
@@ -528,13 +528,13 @@ function boxmoe_role_manager_script() {
                             } else if (typeof response === 'string') {
                                 errorMsg = '服务器返回错误：' + response.substring(0, 100) + '...';
                             }
-                            usersListContainer.html('<div class="fonts-table-row" style="color:red;justify-content:center;padding:20px;">' + errorMsg + '</div>');
+                            usersListContainer.html('<div class="fonts-table-row" style="color:oklch(0.628 0.2577 29.23);justify-content:center;padding:20px;">' + errorMsg + '</div>');
                         }
                     },
                     error: function(xhr, status, error) {
                         var msg = '请求失败';
                         if(error) msg += ': ' + error;
-                        usersListContainer.html('<div class="fonts-table-row" style="color:red;justify-content:center;padding:20px;">' + msg + '</div>');
+                        usersListContainer.html('<div class="fonts-table-row" style="color:oklch(0.628 0.2577 29.23);justify-content:center;padding:20px;">' + msg + '</div>');
                     }
                 });
             }
@@ -659,10 +659,10 @@ function boxmoe_role_manager_script() {
                 display: inline-block;
                 font-size: 13px;
                 padding: 5px;
-                color: #333;
-                background-color: #fff;
+                color: oklch(0.3211 0 0);
+                background-color: oklch(1 0 0);
                 border-radius: 5px;
-                border: 1px #efefef solid;
+                border: 1px oklch(0.9521 0 0) solid;
                 line-height: 17px;
                 margin-bottom: 0;
             }
@@ -671,7 +671,7 @@ function boxmoe_role_manager_script() {
                 line-height: 17px;
                 vertical-align: middle;
                 margin-right: 3px;
-                color: #555;
+                color: oklch(0.4495 0 0);
             }
             .boxmoe-role-manager-form .option {
                 padding: 10px 0;
@@ -681,14 +681,14 @@ function boxmoe_role_manager_script() {
             }
             .boxmoe-role-manager-form .explain {
                 font-size: 12px;
-                color: #999;
+                color: oklch(0.683 0 0);
                 margin-top: 5px;
             }
             /* 输入框样式修正 */
             .boxmoe-role-manager-form input.of-input,
             .boxmoe-role-manager-form select.of-input {
-                background-color: #efefef;
-                border: 1px solid transparent;
+                background-color: oklch(0.9521 0 0);
+                border: 1px solid oklch(0 0 0 / 0);
                 border-radius: 5px;
                 padding: 8px 10px;
                 box-shadow: none;
@@ -696,15 +696,15 @@ function boxmoe_role_manager_script() {
             }
             .boxmoe-role-manager-form input.of-input:focus,
             .boxmoe-role-manager-form select.of-input:focus {
-                background-color: #fff;
-                border-color: #ccc;
+                background-color: oklch(1 0 0);
+                border-color: oklch(0.8452 0 0);
                 outline: none;
-                box-shadow: 0 0 5px rgba(0,0,0,0.1);
+                box-shadow: 0 0 5px oklch(0 0 0 / 0.1);
             }
             .boxmoe-delete-role-btn {
-                color: #ef4444;
-                border: 1px solid #fca5a5;
-                background: #fef2f2;
+                color: oklch(0.6368 0.2078 25.33);
+                border: 1px solid oklch(0.8077 0.1035 19.57);
+                background: oklch(0.9705 0.0129 17.38);
                 border-radius: 4px;
                 padding: 2px 8px;
                 cursor: pointer;
@@ -712,8 +712,8 @@ function boxmoe_role_manager_script() {
                 margin-left: 10px;
             }
             .boxmoe-delete-role-btn:hover {
-                background: #fee2e2;
-                border-color: #ef4444;
+                background: oklch(0.9356 0.0309 17.72);
+                border-color: oklch(0.6368 0.2078 25.33);
             }
         </style>
         <?php

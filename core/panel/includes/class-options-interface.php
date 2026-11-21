@@ -113,7 +113,7 @@ class Options_Framework_Interface {
                         $heading .= ' <button type="button" id="boxmoe-fonts-add-btn" class="btn-pill btn-blue fonts-add-btn">新增</button>';
                     }
                     if ( $is_swup_disabled_hint ) {
-                        $heading .= ' <span class="boxmoe-swup-disabled-hint" style="display:inline-block;vertical-align:middle;margin-left:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;color:#e67e00;background:rgba(255,140,0,0.12);border:1px solid rgba(255,140,0,0.25);box-shadow:inset 0 1px 0 rgba(255,255,255,0.3),0 1px 2px rgba(0,0,0,0.06);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);">因为当前过渡动画设定，此功能已失效</span>';
+                        $heading .= ' <span class="boxmoe-swup-disabled-hint" style="display:inline-block;vertical-align:middle;margin-left:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:500;color:oklch(0.6947 0.1655 58.44);background:oklch(0.7505 0.1791 58.28 / 0.12);border:1px solid oklch(0.7505 0.1791 58.28 / 0.25);box-shadow:inset 0 1px 0 oklch(1 0 0 / 0.3),0 1px 2px oklch(0 0 0 / 0.06);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);">因为当前过渡动画设定，此功能已失效</span>';
                     }
                     $heading .= '</h4>' . "\n";
                     $output .= $heading;
@@ -196,7 +196,7 @@ class Options_Framework_Interface {
 					if ( $val ) {
 						$image = preg_match( '/\.(jpg|jpeg|png|gif|avif|webp|ico|svg)$/i', $val );
 						if ( $image ) {
-							$preview_html .= '<img src="' . esc_url( $val ) . '" alt="" style="max-width: 162px; max-height: 75px; object-fit: contain; background: #f5f5f5;" />';
+							$preview_html .= '<img src="' . esc_url( $val ) . '" alt="" style="max-width: 162px; max-height: 75px; object-fit: contain; background: oklch(0.9702 0 0);" />';
 						}
 					}
 					$preview_html .= '</div>';

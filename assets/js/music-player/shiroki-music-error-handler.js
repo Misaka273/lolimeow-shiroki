@@ -156,8 +156,8 @@ class ShirokiMusicErrorHandler {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
+            background: oklch(0 0 0 / 0.7);
+            color: oklch(1 0 0);
             padding: 8px 12px;
             border-radius: 4px;
             font-size: 12px;
@@ -188,13 +188,13 @@ class ShirokiMusicErrorHandler {
         notification.textContent = message;
         
         // 设置样式
-        let bgColor = 'rgba(0, 0, 0, 0.8)';
+        let bgColor = 'oklch(0 0 0 / 0.8)';
         if (type === 'warning') {
-            bgColor = 'rgba(255, 152, 0, 0.8)';
+            bgColor = 'oklch(0.7703 0.1741 64.05 / 0.8)';
         } else if (type === 'error') {
-            bgColor = 'rgba(244, 67, 54, 0.8)';
+            bgColor = 'oklch(0.6427 0.2153 28.81 / 0.8)';
         } else if (type === 'success') {
-            bgColor = 'rgba(76, 175, 80, 0.8)';
+            bgColor = 'oklch(0.6731 0.1624 144.21 / 0.8)';
         }
         
         notification.style.cssText = `
@@ -202,7 +202,7 @@ class ShirokiMusicErrorHandler {
             top: 20px;
             right: 20px;
             background: ${bgColor};
-            color: white;
+            color: oklch(1 0 0);
             padding: 10px 15px;
             border-radius: 5px;
             font-size: 14px;
@@ -210,7 +210,7 @@ class ShirokiMusicErrorHandler {
             max-width: 300px;
             transform: translateX(0);
             transition: transform 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 5px oklch(0 0 0 / 0.2);
         `;
 
         // 添加到页面

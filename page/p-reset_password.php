@@ -43,7 +43,7 @@ if (is_user_logged_in()){
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            background-color: #f0f2f5;
+            background-color: oklch(0.9605 0.0046 258.32);
         }
         .login-page-bg {
             position: fixed;
@@ -64,7 +64,7 @@ if (is_user_logged_in()){
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.2); /* ⬅️ 背景遮罩，提升文字可读性 */
+            background: oklch(0 0 0 / 0.2); /* ⬅️ 背景遮罩，提升文字可读性 */
             backdrop-filter: blur(8px); /* ⬅️ 全局背景模糊 */
             -webkit-backdrop-filter: blur(8px);
         }
@@ -79,12 +79,12 @@ if (is_user_logged_in()){
         }
         /* ✨ 玻璃拟态卡片 */
         .glass-card {
-            background: radial-gradient(circle at top left, rgba(255, 192, 203, 0.75), rgba(173, 216, 230, 0.75)); /* ⬅️ 浅粉色到浅蓝色圆形扩散渐变 */
+            background: radial-gradient(circle at top left in srgb, oklch(0.8677 0.0735 7.09 / 0.75), oklch(0.8562 0.0489 219.65 / 0.75)); /* ⬅️ 浅粉色到浅蓝色圆形扩散渐变 */
             backdrop-filter: blur(20px); /* ⬅️ 局部高斯模糊 */
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px; /* ⬅️ 圆角风格 */
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            border: 1px solid oklch(1 0 0 / 0.6);
+            box-shadow: 0 8px 32px 0 oklch(0.3382 0.1582 271.28 / 0.15);
             width: 100%;
             max-width: 460px;
             padding: 3rem 2.5rem;
@@ -93,17 +93,17 @@ if (is_user_logged_in()){
         }
         .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+            box-shadow: 0 12px 40px 0 oklch(0.3382 0.1582 271.28 / 0.2);
         }
         /* 🌙 暗色模式适配 */
         [data-bs-theme="dark"] .glass-card {
-            background: rgba(30, 30, 35, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            color: #e0e0e0;
+            background: oklch(0.2372 0.0095 285.65 / 0.75);
+            border: 1px solid oklch(1 0 0 / 0.08);
+            box-shadow: 0 8px 32px 0 oklch(0 0 0 / 0.3);
+            color: oklch(0.9067 0 0);
         }
         [data-bs-theme="dark"] .text-body-tertiary {
-            color: #adb5bd !important;
+            color: oklch(0.7692 0.0145 248.02) !important;
         }
         
         /* 🏷️ 浮动标签与动态文本 */
@@ -114,25 +114,25 @@ if (is_user_logged_in()){
         .floating-label-group .form-control {
             height: 3.5rem;
             padding: 1.25rem 1rem 0.75rem;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3); /* ⬅️ 增加边框线，配合浮动标签 */
+            background: oklch(1 0 0 / 0.6);
+            border: 1px solid oklch(1 0 0 / 0.3); /* ⬅️ 增加边框线，配合浮动标签 */
             border-radius: 12px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: inset 0 2px 4px oklch(0 0 0 / 0.02);
             transition: all 0.3s ease;
         }
         [data-bs-theme="dark"] .floating-label-group .form-control {
-            background: rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: oklch(0 0 0 / 0.2);
+            border-color: oklch(1 0 0 / 0.1);
+            color: oklch(1 0 0);
         }
         .floating-label-group .form-control:focus {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 0 3px rgba(var(--bs-primary-rgb), 0.2);
+            background: oklch(1 0 0 / 0.95);
+            box-shadow: 0 0 0 3px oklch(var(--bs-primary-oklch) / 0.2);
             border-color: var(--bs-primary);
             transform: translateY(-1px);
         }
         [data-bs-theme="dark"] .floating-label-group .form-control:focus {
-            background: rgba(0, 0, 0, 0.4);
+            background: oklch(0 0 0 / 0.4);
             border-color: var(--bs-primary);
         }
         .floating-label-group label {
@@ -142,7 +142,7 @@ if (is_user_logged_in()){
             transform: translateY(-50%);
             pointer-events: none;
             transition: 0.2s ease all;
-            color: #6c757d;
+            color: oklch(0.5575 0.0165 244.89);
             padding: 0 5px;
             z-index: 5;
             margin: 0;
@@ -163,13 +163,13 @@ if (is_user_logged_in()){
             font-size: 0.75rem;
             transform: translateY(-50%); /* ⬅️ 垂直居中于边框 */
             color: var(--bs-primary);
-            background: rgba(255, 255, 255, 0.8); /* ⬅️ 添加背景遮挡边框线，保持玻璃感 */
+            background: oklch(1 0 0 / 0.8); /* ⬅️ 添加背景遮挡边框线，保持玻璃感 */
             backdrop-filter: blur(4px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px oklch(0 0 0 / 0.05);
         }
         [data-bs-theme="dark"] .floating-label-group .form-control:focus ~ label,
         [data-bs-theme="dark"] .floating-label-group .form-control:not(:placeholder-shown) ~ label {
-            background: rgba(45, 45, 50, 0.8);
+            background: oklch(0.2991 0.0089 285.85 / 0.8);
             color: var(--bs-primary);
         }
         .floating-label-group .form-control:focus ~ label::after,
@@ -183,14 +183,14 @@ if (is_user_logged_in()){
             font-weight: 600;
             letter-spacing: 0.5px;
             border: none;
-            box-shadow: 0 4px 6px rgba(var(--bs-primary-rgb), 0.3);
+            box-shadow: 0 4px 6px oklch(var(--bs-primary-oklch) / 0.3);
             transition: all 0.3s ease;
             position: relative; /* ⬅️ 为扫光动画定位 */
             overflow: hidden;   /* ⬅️ 隐藏溢出的扫光 */
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(var(--bs-primary-rgb), 0.4);
+            box-shadow: 0 6px 12px oklch(var(--bs-primary-oklch) / 0.4);
         }
         /* ✨ 按钮扫光动画 */
         .btn-primary::after {
@@ -201,10 +201,10 @@ if (is_user_logged_in()){
             width: 100%;
             height: 100%;
             background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.6),
-                transparent
+                120deg in srgb,
+                oklch(0 0 0 / 0),
+                oklch(1 0 0 / 0.6),
+                oklch(0 0 0 / 0)
             );
             transition: all 0.6s;
         }
@@ -257,7 +257,7 @@ if (is_user_logged_in()){
 
             <!-- 返回登录链接 -->
             <div class="text-center mt-3">
-               <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="text-primary fw-bold text-decoration-none">
+               <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_in_link_page())); ?>" class="text-primary fw-bold text-decoration-none">
                   <i class="bi bi-arrow-left me-1"></i> 返回登录
                </a>
             </div>
@@ -295,7 +295,7 @@ if (is_user_logged_in()){
                 </li>
                 <li>
                     <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" data-swindex="0"><g stroke-dasharray="2"><path d="M12 21v1M21 12h1M12 3v-1M3 12h-1"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.2s" values="4;2"/></path><path d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.2s" dur="0.2s" values="4;2"/></path></g><path fill="currentColor" d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z" opacity="0"><set attributeName="opacity" begin="0.5s" to="1"/></path></g><g fill="currentColor" fill-opacity="0"><path d="m15.22 6.03l2.53-1.94L14.56 4L13.5 1l-1.06 3l-3.19.09l2.53 1.94l-.91 3.06l2.63-1.81l2.63 1.81z"><animate id="lineMdSunnyFilledLoopToMoonFilledLoopTransition0" fill="freeze" attributeName="fill-opacity" begin="0.6s;lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+6s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.2s" dur="0.4s" values="1;0"/></path><path d="M13.61 5.25L15.25 4l-2.06-.05L12.5 2l-.69 1.95L9.75 4l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.2s" dur="0.4s" values="1;0"/></path><path d="M19.61 12.25L21.25 11l-2.06-.05L18.5 9l-.69 1.95l-2.06.05l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+0.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.8s" dur="0.4s" values="1;0"/></path><path d="m20.828 9.731l1.876-1.439l-2.366-.067L19.552 6l-.786 2.225l-2.366.067l1.876 1.439L17.601 12l1.951-1.342L21.503 12z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.6s" dur="0.4s" values="1;0"/></path></g><mask id="lineMdSunnyFilledLoopToMoonFilledLoopTransition1"><circle cx="12" cy="12" r="12" fill="#fff"/><circle cx="22" cy="2" r="3" fill="#fff"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="3;12"/></circle><circle cx="22" cy="2" r="1"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="1;10"/></circle></mask><circle cx="12" cy="12" r="6" fill="currentColor" mask="url(#lineMdSunnyFilledLoopToMoonFilledLoopTransition1)"><set attributeName="opacity" begin="0.5s" to="0"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="6;10"/></circle></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" data-swindex="0"><g stroke-dasharray="2"><path d="M12 21v1M21 12h1M12 3v-1M3 12h-1"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.2s" values="4;2"/></path><path d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.2s" dur="0.2s" values="4;2"/></path></g><path fill="currentColor" d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z" opacity="0"><set attributeName="opacity" begin="0.5s" to="1"/></path></g><g fill="currentColor" fill-opacity="0"><path d="m15.22 6.03l2.53-1.94L14.56 4L13.5 1l-1.06 3l-3.19.09l2.53 1.94l-.91 3.06l2.63-1.81l2.63 1.81z"><animate id="lineMdSunnyFilledLoopToMoonFilledLoopTransition0" fill="freeze" attributeName="fill-opacity" begin="0.6s;lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+6s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.2s" dur="0.4s" values="1;0"/></path><path d="M13.61 5.25L15.25 4l-2.06-.05L12.5 2l-.69 1.95L9.75 4l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.2s" dur="0.4s" values="1;0"/></path><path d="M19.61 12.25L21.25 11l-2.06-.05L18.5 9l-.69 1.95l-2.06.05l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+0.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.8s" dur="0.4s" values="1;0"/></path><path d="m20.828 9.731l1.876-1.439l-2.366-.067L19.552 6l-.786 2.225l-2.366.067l1.876 1.439L17.601 12l1.951-1.342L21.503 12z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.6s" dur="0.4s" values="1;0"/></path></g><mask id="lineMdSunnyFilledLoopToMoonFilledLoopTransition1"><circle cx="12" cy="12" r="12" fill="oklch(1 0 0)"/><circle cx="22" cy="2" r="3" fill="oklch(1 0 0)"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="3;12"/></circle><circle cx="22" cy="2" r="1"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="1;10"/></circle></mask><circle cx="12" cy="12" r="6" fill="currentColor" mask="url(#lineMdSunnyFilledLoopToMoonFilledLoopTransition1)"><set attributeName="opacity" begin="0.5s" to="0"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="6;10"/></circle></svg>
                         <span class="ms-2">暗色</span>
                     </button>
                 </li>

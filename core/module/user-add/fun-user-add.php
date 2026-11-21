@@ -212,7 +212,7 @@ class Shiroki_User_Add_UI {
         <script type="text/javascript">
         jQuery(document).ready(function($) {
             /* 🔧 隐藏原版表单 */
-            $('#createuser, #adduser').hide();
+            $('#createuser, oklch(0.8622 0.0525 196.22)user').hide();
             $('.wrap > h1').hide();
             $('.wrap > p').hide();
 

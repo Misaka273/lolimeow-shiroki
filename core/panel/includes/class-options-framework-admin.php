@@ -210,7 +210,7 @@ class Options_Framework_Admin {
 					<div class="el-button" style="padding: 8px 16px; line-height: 1.5; display: inline-block; text-align: center;">
 						<a href="https://www.boxmoe.com/706.html" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: none;">📃在线文档</a>
 						🚀V<?php echo THEME_VERSION; ?>
-						🎉更新日期：2026-08-09<br>
+						🎉更新日期：2026-11-21<br>
 						🥰本主题二次创作 <a href="https://gl.baimu.live/864" target="_blank" rel="external nofollow" style="color: inherit; text-decoration: underline;">🕊️白木</a>
 					</div>
 				</div>
@@ -269,13 +269,13 @@ class Options_Framework_Admin {
 
 	</div>
 <style id="of-slogan-modal-style">
-.of-modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.25);display:none;align-items:center;justify-content:center;z-index:100000}
-.of-modal{background:#fff;border-radius:12px;max-width:420px;width:90%;box-shadow:0 12px 24px rgba(0,0,0,.08);padding:20px;font-size:14px}
+.of-modal-mask{position:fixed;inset:0;background:oklch(0 0 0 / .25);display:none;align-items:center;justify-content:center;z-index:100000}
+.of-modal{background:oklch(1 0 0);border-radius:12px;max-width:420px;width:90%;box-shadow:0 12px 24px oklch(0 0 0 / .08);padding:20px;font-size:14px}
 .of-modal-header{font-weight:600;margin-bottom:8px}
 .of-modal-actions{margin-top:16px;display:flex;gap:8px;justify-content:flex-end}
 .of-btn{border:none;border-radius:999px;padding:8px 14px;cursor:pointer}
-.of-btn-primary{background:#2271b1;color:#fff}
-.of-btn-secondary{background:#f0f0f1;color:#1d2327}
+.of-btn-primary{background:oklch(0.5339 0.1249 247.74);color:oklch(1 0 0)}
+.of-btn-secondary{background:oklch(0.9554 0.0013 286.37);color:oklch(0.2519 0.0115 237.14)}
 .boxmoe_tab_header{position:relative;min-height:32px;padding-right:96px}
 #of-reset-slogan-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);height:28px;line-height:26px;padding:0 10px;font-size:12px;z-index:10}
 </style>

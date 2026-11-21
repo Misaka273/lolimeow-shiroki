@@ -109,7 +109,7 @@ $delay = get_boxmoe('boxmoe_external_link_countdown', 3);
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3); /* ⬅️ 背景遮罩，提升文字可读性 */
+    background: oklch(0 0 0 / 0.3); /* ⬅️ 背景遮罩，提升文字可读性 */
     backdrop-filter: blur(12px); /* ⬅️ 全局背景模糊 */
     -webkit-backdrop-filter: blur(12px);
     z-index: -1;
@@ -122,7 +122,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent; /* ⬅️ 透明背景，显示下层背景图 */
+    background: oklch(0 0 0 / 0); /* ⬅️ 透明背景，显示下层背景图 */
     position: relative;
     overflow: hidden;
 }
@@ -230,7 +230,7 @@ body {
     width: inherit;
     height: inherit;
     border-radius: 15%;
-    box-shadow: 0 0 .1em rgba(0, 0, 0, .3)
+    box-shadow: 0 0 .1em oklch(0 0 0 / .3)
 }
 
 .girl:before {
@@ -238,7 +238,7 @@ body {
 }
 
 .boys span:before {
-    background-color: #1e90ff;
+    background-color: oklch(0.652 0.1901 253.21);
     animation: var(--duration) ease-in-out infinite alternate
 }
 

@@ -162,7 +162,7 @@
                 transform: translateY(-50%);
                 width: 4px;
                 height: 60px;
-                background: rgba(255, 255, 255, 0.2);
+                background: oklch(1 0 0 / 0.2);
                 border-radius: 2px;
                 z-index: 100;
                 opacity: 0;
@@ -177,7 +177,7 @@
             scrollBar.style.cssText = `
                 width: 100%;
                 height: 100%;
-                background: rgba(255, 255, 255, 0.2);
+                background: oklch(1 0 0 / 0.2);
                 border-radius: 2px;
                 position: relative;
                 overflow: hidden;
@@ -185,7 +185,7 @@
             
             scrollThumb.style.cssText = `
                 width: 100%;
-                background: linear-gradient(to bottom, #5995fd, #4d84e2);
+                background: linear-gradient(to bottom in srgb, oklch(0.6786 0.1664 260.64), oklch(0.6213 0.154 260.42));
                 border-radius: 2px;
                 position: absolute;
                 top: 0;
@@ -197,8 +197,8 @@
                 position: absolute;
                 right: 10px;
                 top: -25px;
-                background: rgba(0, 0, 0, 0.7);
-                color: white;
+                background: oklch(0 0 0 / 0.7);
+                color: oklch(1 0 0);
                 padding: 4px 8px;
                 border-radius: 4px;
                 font-size: 10px;

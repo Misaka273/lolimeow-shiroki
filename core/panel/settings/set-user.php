@@ -79,9 +79,9 @@ $options[] = array(
         'name' => __('验证设置说明', 'ui_boxmoe_com'), 
         'id' => 'boxmoe_msg_notice_info',
         'desc' => __('
-         <p>1.Cloudflare Turnstile需要前往<span style="color: #0073aa;cursor: pointer;" onclick="window.open(\'https://dash.cloudflare.com/?to=/:account/turnstile\')">Cloudflare</span>进行添加</p>
+         <p>1.Cloudflare Turnstile需要前往<span style="color: oklch(0.5296 0.1212 239.95);cursor: pointer;" onclick="window.open(\'https://dash.cloudflare.com/?to=/:account/turnstile\')">Cloudflare</span>进行添加</p>
          <p>2.小组件模式选择 托管/非交互式 之一即可</p>
-         <p>3.此模块由<span style="color: #0073aa;cursor: pointer;" onclick="window.open(\'https://www.chuyel.top\')">初叶🍂竹叶</span>进行构建集成与Bug修复</p>
+         <p>3.此模块由<span style="color: oklch(0.5296 0.1212 239.95);cursor: pointer;" onclick="window.open(\'https://www.chuyel.top\')">初叶🍂竹叶</span>进行构建集成与Bug修复</p>
         ', 'ui_boxmoe_com'),
         'type' => 'info');
 
@@ -109,7 +109,7 @@ $options[] = array(
 
 $options[] = array(
     'name' => 'Cloudflare 站点密钥',
-    'desc' => 'Cloudflare Turnstile 站点密钥。<br>在<a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank" style="color:#007cba;">Cloudflare控制台</a>创建验证码后获取',
+    'desc' => 'Cloudflare Turnstile 站点密钥。<br>在<a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank" style="color:oklch(0.5608 0.1315 241.32);">Cloudflare控制台</a>创建验证码后获取',
     'id' => 'captcha_cloudflare_site_key',
     'std' => '',
     'type' => 'text'
@@ -186,7 +186,7 @@ add_action('admin_footer', function() {
     <style type="text/css">
     /* 隐藏标题的边框 */
     #heading-captcha_enabled {
-        border-bottom: 2px solid #007cba;
+        border-bottom: 2px solid oklch(0.5608 0.1315 241.32);
         margin-top: 20px;
     }
     
@@ -200,8 +200,8 @@ add_action('admin_footer', function() {
     #section-captcha_login_enabled,
     #section-captcha_register_enabled {
         padding: 15px;
-        background: #f9f9f9;
-        border: 1px solid #e5e5e5;
+        background: oklch(0.9821 0 0);
+        border: 1px solid oklch(0.9219 0 0);
         margin-bottom: 10px;
         border-radius: 5px;
     }
@@ -210,15 +210,15 @@ add_action('admin_footer', function() {
     #section-captcha_enabled input:checked,
     #section-captcha_login_enabled input:checked,
     #section-captcha_register_enabled input:checked {
-        background-color: #FFE92C !important;
-        border-color: #FFE92C !important;
+        background-color: oklch(0.9237 0.1849 102.05) !important;
+        border-color: oklch(0.9237 0.1849 102.05) !important;
     }
     
     /* 为开关添加悬停效果 */
     #section-captcha_enabled input:hover,
     #section-captcha_login_enabled input:hover,
     #section-captcha_register_enabled input:hover {
-        border-color: #FFE92C;
+        border-color: oklch(0.9237 0.1849 102.05);
     }
     </style>
     <?php

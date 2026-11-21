@@ -267,7 +267,7 @@ jQuery(function($){
     var table = $(this).closest('.boxmoe-fonts-table');
     $(this).closest('.fonts-table-row').remove();
     if(table.find('.fonts-table-row').length===0){
-      table.append('<div class="fonts-empty" style="padding:12px;color:#717783">当前为空列表，点击“新增”添加自定义字体</div>');
+      table.append('<div class="fonts-empty" style="padding:12px;color:oklch(0.5683 0.0198 264.41)">当前为空列表，点击“新增”添加自定义字体</div>');
     }
   });
 });

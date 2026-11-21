@@ -20,7 +20,7 @@ if (isset($_POST['Submit']) && $_POST['Submit'] == '确认购买') {
         $price = get_option($priceType);
         
         // 跳转到支付页面
-        $paymentUrl = constant("erphpdown") . "payment/" . $payType . ".php?ice_money=" . $price . "&user_type=" . $userType;
+        $paymentUrl = constant("zuslolimeow") . "payment/" . $payType . ".php?ice_money=" . $price . "&user_type=" . $userType;
         wp_redirect($paymentUrl);
         exit;
     } else {
@@ -34,8 +34,8 @@ if (isset($_POST['Submit']) && $_POST['Submit'] == '确认升级') {
     $vipCard = isset($_POST['vipCard']) ? trim($_POST['vipCard']) : '';
     if ($vipCard) {
         // 调用充值卡处理函数
-        if (function_exists('erphpdown_vipcard_exchange')) {
-            $result = erphpdown_vipcard_exchange($vipCard);
+        if (function_exists('zuslolimeow_vipcard_exchange')) {
+            $result = zuslolimeow_vipcard_exchange($vipCard);
             if ($result === true) {
                 $error = '<div class="updated settings-error"><p>VIP充值卡使用成功！</p></div>';
             } else {

@@ -112,11 +112,11 @@ if(get_boxmoe('boxmoe_no_admin_switch')){
                 exit;
             }
             
-            // 检查是否已经由erphpdown插件处理过重定向
-            if (function_exists('erphpdown_noadmin_redirect')) {
-                $erphpdown_front_noadmin = get_option('erphp_url_front_noadmin');
-                if ($erphpdown_front_noadmin == 'yes') {
-                    // 如果erphpdown插件已经设置了重定向，就不再执行主题的重定向
+            // 检查是否已经由zuslolimeow插件处理过重定向
+            if (function_exists('zuslolimeow_noadmin_redirect')) {
+                $zuslolimeow_front_noadmin = get_option('erphp_url_front_noadmin');
+                if ($zuslolimeow_front_noadmin == 'yes') {
+                    // 如果zuslolimeow插件已经设置了重定向，就不再执行主题的重定向
                     return;
                 }
             }

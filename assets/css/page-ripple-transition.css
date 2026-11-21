@@ -39,7 +39,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: oklch(0 0 0 / 0.3);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -52,11 +52,11 @@
 .page-ripple-transition__ripple {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: oklch(1 0 0 / 0.25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(248, 195, 205, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  border: 1px solid oklch(1 0 0 / 0.3);
+  box-shadow: 0 8px 32px oklch(0.8668398 0.06177978 5.8087921 / 0.3), inset 0 0 0 1px oklch(1 0 0 / 0.2);
   transform: translate(-50%, -50%) scale(0);
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
@@ -102,9 +102,9 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #fff;
+  background: oklch(1 0 0);
   animation: marble-bounce 1s ease-in-out infinite;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 8px oklch(1 0 0 / 0.4);
 }
 
 .page-ripple-transition__marble:nth-child(1) { animation-delay: 0s; animation-duration: 0.8s; }
@@ -138,21 +138,21 @@
   align-items: center;
   gap: 8px;
   padding: 14px 28px;
-  background: rgba(255, 255, 255, 0.85);
+  background: oklch(1 0 0 / 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px rgba(248, 195, 205, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border: 1px solid oklch(1 0 0 / 0.5);
+  box-shadow: 0 8px 32px oklch(0.8668398 0.06177978 5.8087921 / 0.25), inset 0 1px 0 oklch(1 0 0 / 0.6);
 }
 
 .page-ripple-transition__dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #e0e0e0;
+  background: oklch(0.90670069 0 0);
   animation: dot-pulse 1.2s ease-in-out infinite;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 3px oklch(0 0 0 / 0.1);
 }
 
 .page-ripple-transition__dot:nth-child(1) { animation-delay: 0s; }
@@ -168,13 +168,13 @@
   0%, 100% {
     transform: scale(0.6);
     opacity: 0.4;
-    background: #e0e0e0;
+    background: oklch(0.90670069 0 0);
   }
   40% {
     transform: scale(1);
     opacity: 1;
-    background: #f8c3cd;
-    box-shadow: 0 0 10px rgba(248, 195, 205, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: oklch(0.8668398 0.06177978 5.8087921);
+    box-shadow: 0 0 10px oklch(0.8668398 0.06177978 5.8087921 / 0.6), inset 0 1px 0 oklch(1 0 0 / 0.4);
   }
 }
 
@@ -182,12 +182,12 @@
 .page-ripple-transition__percentage {
   font-size: 18px;
   font-weight: 700;
-  color: #e75480;
+  color: oklch(0.65285455 0.18451936 5.3866497);
   margin-left: 16px;
   min-width: 50px;
   text-align: right;
   font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 2px oklch(1 0 0 / 0.8);
 }
 
 /* 📊 进度条容器 */
@@ -200,10 +200,10 @@
 .page-ripple-transition__target {
   margin-top: 24px;
   padding: 16px 24px;
-  background: rgba(255, 255, 255, 0.1);
+  background: oklch(1 0 0 / 0.1);
   backdrop-filter: blur(10px);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid oklch(1 0 0 / 0.2);
   max-width: 90%;
   text-align: center;
   opacity: 0;
@@ -218,7 +218,7 @@
 
 .page-ripple-transition__target-label {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
+  color: oklch(1 0 0 / 0.7);
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -227,7 +227,7 @@
 
 .page-ripple-transition__target-url {
   font-size: 14px;
-  color: #fff;
+  color: oklch(1 0 0);
   word-break: break-all;
   line-height: 1.6;
   font-weight: 500;
@@ -255,7 +255,7 @@
   height: 60px;
   margin: 0 auto 16px;
   border-radius: 50%;
-  background: #fff;
+  background: oklch(1 0 0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -274,47 +274,47 @@
 .page-ripple-transition__success-icon::after {
   content: '✓';
   font-size: 28px;
-  color: #f8c3cd;
+  color: oklch(0.8668398 0.06177978 5.8087921);
   font-weight: bold;
 }
 
 .page-ripple-transition__success-text {
   font-size: 16px;
-  color: #fff;
+  color: oklch(1 0 0);
   font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
 }
 
 /* 🌆 暗色模式适配 */
 [data-bs-theme="dark"] .page-ripple-transition__ripple {
-  background: rgba(30, 41, 59, 0.4);
+  background: oklch(0.27949524 0.03684813 260.03099 / 0.4);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid oklch(1 0 0 / 0.15);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.4), inset 0 0 0 1px oklch(1 0 0 / 0.1);
 }
 
 [data-bs-theme="dark"] .page-ripple-transition__marble {
-  background: #e8e8e8;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: oklch(0.93099914 0 0);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.3);
 }
 
 [data-bs-theme="dark"] .page-ripple-transition__loader {
-  background: rgba(30, 41, 59, 0.85);
+  background: oklch(0.27949524 0.03684813 260.03099 / 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid oklch(1 0 0 / 0.2);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.4), inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
 
 [data-bs-theme="dark"] .page-ripple-transition__dot {
-  background: #475569;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  background: oklch(0.4455331 0.03744668 257.28084);
+  box-shadow: inset 0 1px 3px oklch(0 0 0 / 0.3);
 }
 
 [data-bs-theme="dark"] .page-ripple-transition__percentage {
-  color: #f4a6b5;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  color: oklch(0.80470895 0.09377116 6.766436);
+  text-shadow: 0 1px 2px oklch(0 0 0 / 0.5);
 }
 
 /* 🌆 暗色模式dot动画 */
@@ -322,23 +322,23 @@
   0%, 100% {
     transform: scale(0.6);
     opacity: 0.4;
-    background: #475569;
+    background: oklch(0.4455331 0.03744668 257.28084);
   }
   40% {
     transform: scale(1);
     opacity: 1;
-    background: #f4a6b5;
-    box-shadow: 0 0 10px rgba(244, 166, 181, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: oklch(0.80470895 0.09377116 6.766436);
+    box-shadow: 0 0 10px oklch(0.80470895 0.09377116 6.766436 / 0.6), inset 0 1px 0 oklch(1 0 0 / 0.3);
   }
 }
 
 [data-bs-theme="dark"] .page-ripple-transition__target {
-  background: rgba(30, 41, 59, 0.5);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: oklch(0.27949524 0.03684813 260.03099 / 0.5);
+  border-color: oklch(1 0 0 / 0.15);
 }
 
 [data-bs-theme="dark"] .page-ripple-transition__target-label {
-  color: rgba(255, 255, 255, 0.6);
+  color: oklch(1 0 0 / 0.6);
 }
 
 /* 📱 移动端适配 */

@@ -25,7 +25,7 @@
     
     /* 确保卡片内部元素正确布局 */
     .layout-single .post-list-card {
-        background: transparent !important;
+        background: oklch(0 0 0 / 0) !important;
         border-radius: var(--bs-border-radius-lg) !important;
         overflow: hidden !important;
         box-shadow: none !important;

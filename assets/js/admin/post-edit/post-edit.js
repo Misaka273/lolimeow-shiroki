@@ -442,7 +442,7 @@ const ShirokiPostEdit = {
             height: ${size}px;
             left: ${x}px;
             top: ${y}px;
-            background: rgba(255, 255, 255, 0.3);
+            background: oklch(1 0 0 / 0.3);
             border-radius: 50%;
             transform: scale(0);
             animation: shiroki-ripple 0.6s ease-out;
@@ -484,10 +484,10 @@ const ShirokiPostEdit = {
         notification.textContent = message;
 
         const colors = {
-            success: 'rgba(104, 211, 145, 0.9)',
-            error: 'rgba(245, 101, 101, 0.9)',
-            warning: 'rgba(251, 191, 36, 0.9)',
-            info: 'rgba(99, 179, 237, 0.9)'
+            success: 'oklch(0.786 0.1379 154.52 / 0.9)',
+            error: 'oklch(0.6882 0.1776 22.95 / 0.9)',
+            warning: 'oklch(0.8369 0.1644 84.43 / 0.9)',
+            info: 'oklch(0.7392 0.1154 242.05 / 0.9)'
         };
 
         notification.style.cssText = `
@@ -496,7 +496,7 @@ const ShirokiPostEdit = {
             right: 20px;
             padding: 12px 24px;
             background: ${colors[type] || colors.success};
-            color: white;
+            color: oklch(1 0 0);
             border-radius: var(--admin-radius-md);
             font-weight: 500;
             z-index: 99999;

@@ -71,7 +71,7 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            background-color: #f0f2f5;
+            background-color: oklch(0.9605 0.0046 258.32);
         }
         .login-page-bg {
             position: fixed;
@@ -104,7 +104,7 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.2); /* ⬅️ 背景遮罩，提升文字可读性 */
+            background: oklch(0 0 0 / 0.2); /* ⬅️ 背景遮罩，提升文字可读性 */
             backdrop-filter: blur(8px); /* ⬅️ 全局背景模糊 */
             -webkit-backdrop-filter: blur(8px);
         }
@@ -119,12 +119,12 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
         }
         /* ✨ 玻璃拟态卡片 */
         .glass-card {
-            background: radial-gradient(circle at top left, rgba(255, 192, 203, 0.75), rgba(173, 216, 230, 0.75)); /* ⬅️ 浅粉色到浅蓝色圆形扩散渐变 */
+            background: radial-gradient(circle at top left in srgb, oklch(0.8677 0.0735 7.09 / 0.75), oklch(0.8562 0.0489 219.65 / 0.75)); /* ⬅️ 浅粉色到浅蓝色圆形扩散渐变 */
             backdrop-filter: blur(20px); /* ⬅️ 局部高斯模糊 */
             -webkit-backdrop-filter: blur(20px);
             border-radius: 24px; /* ⬅️ 圆角风格 */
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            border: 1px solid oklch(1 0 0 / 0.6);
+            box-shadow: 0 8px 32px 0 oklch(0.3382 0.1582 271.28 / 0.15);
             width: 100%;
             max-width: 460px;
             padding: 3rem 2.5rem;
@@ -133,43 +133,43 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
         }
         .glass-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.2);
+            box-shadow: 0 12px 40px 0 oklch(0.3382 0.1582 271.28 / 0.2);
         }
         /* 🌙 暗色模式适配 */
         [data-bs-theme="dark"] .glass-card {
-            background: rgba(30, 30, 35, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            color: #e0e0e0;
+            background: oklch(0.2372 0.0095 285.65 / 0.75);
+            border: 1px solid oklch(1 0 0 / 0.08);
+            box-shadow: 0 8px 32px 0 oklch(0 0 0 / 0.3);
+            color: oklch(0.9067 0 0);
         }
         [data-bs-theme="dark"] .text-body-tertiary {
-            color: #adb5bd !important;
+            color: oklch(0.7692 0.0145 248.02) !important;
         }
         [data-bs-theme="dark"] .text-danger {
-            color: #ff8369 !important;
+            color: oklch(0.7446 0.1564 33.13) !important;
         }
         [data-bs-theme="dark"] .text-primary {
-            color: #6c8cff !important;
+            color: oklch(0.6711 0.1733 269.58) !important;
         }
         [data-bs-theme="dark"] .btn-primary {
-            background-color: #6c8cff;
-            border-color: #6c8cff;
+            background-color: oklch(0.6711 0.1733 269.58);
+            border-color: oklch(0.6711 0.1733 269.58);
         }
         [data-bs-theme="dark"] .btn-primary:hover {
-            background-color: #5a77e6;
-            border-color: #5a77e6;
+            background-color: oklch(0.6037 0.1705 269.68);
+            border-color: oklch(0.6037 0.1705 269.68);
         }
 
         /* 🔔 警告图标 */
         .warning-icon {
             font-size: 4rem;
-            color: #ffc107;
+            color: oklch(0.8442 0.1722 84.93);
             margin-bottom: 1.5rem;
             display: block;
             text-align: center;
         }
         [data-bs-theme="dark"] .warning-icon {
-            color: #ffd54f;
+            color: oklch(0.8859 0.1539 91.23);
         }
 
         /* 📱 响应式调整 */
@@ -184,19 +184,19 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
 
         /* 🏷️ 跳转信息样式 */
         .redirect-info {
-            background: rgba(255, 255, 255, 0.6);
+            background: oklch(1 0 0 / 0.6);
             border-radius: 12px;
             padding: 1.5rem;
             margin: 1.5rem 0;
             word-break: break-all;
             font-family: monospace;
             font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid oklch(1 0 0 / 0.3);
         }
         [data-bs-theme="dark"] .redirect-info {
-            background: rgba(0, 0, 0, 0.2);
-            border-color: rgba(255, 255, 255, 0.1);
-            color: #e0e0e0;
+            background: oklch(0 0 0 / 0.2);
+            border-color: oklch(1 0 0 / 0.1);
+            color: oklch(0.9067 0 0);
         }
 
         /* ⏱️ 倒计时样式 */
@@ -216,14 +216,14 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
             font-weight: 600;
             letter-spacing: 0.5px;
             border: none;
-            box-shadow: 0 4px 6px rgba(var(--bs-primary-rgb), 0.3);
+            box-shadow: 0 4px 6px oklch(var(--bs-primary-oklch) / 0.3);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(var(--bs-primary-rgb), 0.4);
+            box-shadow: 0 6px 12px oklch(var(--bs-primary-oklch) / 0.4);
         }
         /* ✨ 按钮扫光动画 */
         .btn-primary::after {
@@ -234,10 +234,10 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
             width: 100%;
             height: 100%;
             background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.6),
-                transparent
+                120deg in srgb,
+                oklch(0 0 0 / 0),
+                oklch(1 0 0 / 0.6),
+                oklch(0 0 0 / 0)
             );
             transition: all 0.6s;
         }
@@ -303,7 +303,7 @@ $url = 'https://'.$_SERVER['HTTP_HOST'];
             <?php }else{ ?>
             <!-- 错误提醒内容 -->
             <div class="text-center">
-                <i class="bi bi-x-circle warning-icon" style="color: #dc3545;"></i>
+                <i class="bi bi-x-circle warning-icon" style="color: oklch(0.5915 0.202 21.24);"></i>
                 <h4 class="mb-3 text-danger">目标网址未通过检测</h4>
                 <p class="mb-4"><?php echo $title;?></p>
                 <p class="mt-3">

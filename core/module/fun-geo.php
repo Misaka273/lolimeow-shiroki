@@ -11,6 +11,8 @@ if(!defined('ABSPATH')){
     exit;
 }
 
+require_once __DIR__ . '/fun-geo-content.php';
+
 // 🌍 Geo友好的Meta标签输出--------------------------gl.baimu.live--------------------------
 function boxmoe_geo_meta_tags(){
     global $post;
@@ -30,26 +32,24 @@ function boxmoe_geo_meta_tags(){
     $reading_time = '';
     $word_count = '';
     
-    if(is_singular() && !is_front_page()){
+    if(is_singular() && !is_front_page() && $post instanceof WP_Post){
+        $public_data = boxmoe_geo_public_post_data($post);
         $title = get_the_title();
         $content_type = is_page() ? 'page' : 'article';
         
-        if(has_post_thumbnail($post->ID)){
-            $image_url = get_the_post_thumbnail_url($post->ID, 'full');
-            if(!empty($image_url) && strpos($image_url, 'http') !== 0){
-                $image_url = site_url($image_url);
-            }
+        if(!$public_data['restricted'] && has_post_thumbnail($post->ID)){
+            $image_url = boxmoe_geo_image_url(get_the_post_thumbnail_url($post->ID, 'full'));
         }
         
-        if(empty($image_url)){
+        if(empty($image_url) && !$public_data['restricted']){
             $image_url = boxmoe_get_first_image_from_content($post->ID);
         }
         
         if(empty($description)){
-            if(!empty($post->post_excerpt)){
-                $description = $post->post_excerpt;
+            if($public_data['excerpt'] !== ''){
+                $description = wp_strip_all_tags(strip_shortcodes($public_data['excerpt']));
             } else {
-                $description = wp_trim_words(strip_tags($post->post_content), 50);
+                $description = wp_trim_words(wp_strip_all_tags(strip_shortcodes($public_data['content'])), 50);
             }
         }
         
@@ -57,22 +57,27 @@ function boxmoe_geo_meta_tags(){
         $modified_date = get_the_modified_date('c', $post->ID);
         $author = get_the_author_meta('display_name', $post->post_author);
         
-        if(get_the_tags($post->ID)){
-            foreach(get_the_tags($post->ID) as $tag){
-                $keywords .= $tag->name . ', ';
+        $post_tags = get_the_tags($post->ID);
+        if(is_array($post_tags)){
+            foreach($post_tags as $tag){
+                if(is_object($tag) && isset($tag->name)){
+                    $keywords .= wp_strip_all_tags($tag->name) . ', ';
+                }
             }
         }
         $keywords = rtrim($keywords, ', ');
         
-        $content = strip_tags($post->post_content);
-        $word_count = mb_strlen($content, 'UTF-8');
-        $reading_time = ceil($word_count / 500);
+        $content = wp_strip_all_tags(strip_shortcodes($public_data['content']));
+        if($content !== ''){
+            $word_count = mb_strlen($content, 'UTF-8');
+            $reading_time = ceil($word_count / 500);
+        }
         
     } elseif(is_home() || is_front_page()){
         $title = get_bloginfo('name');
         $description = get_bloginfo('description');
         $content_type = 'website';
-        $image_url = boxmoe_get_logo_url();
+        $image_url = boxmoe_geo_image_url(boxmoe_get_logo_url());
     }
     
     if(empty($title)){
@@ -112,95 +117,304 @@ function boxmoe_geo_meta_tags(){
     }
     
     echo '<meta name="geo:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
-    echo '<meta name="geo:url" content="' . esc_url(get_permalink()) . '">' . "\n";
+    echo '<meta name="geo:url" content="' . esc_url(boxmoe_geo_current_url()) . '">' . "\n";
     echo '<meta name="geo:language" content="' . esc_attr(get_bloginfo('language')) . '">' . "\n";
 }
 
-// 🌍 Geo友好的结构化数据输出--------------------------gl.baimu.live--------------------------
+// 🌍 GEO 选项读取工具--------------------------gl.baimu.live--------------------------
+function boxmoe_geo_option_text($key){
+    $value = get_boxmoe($key);
+    return is_string($value) ? trim(wp_strip_all_tags($value)) : '';
+}
+
+function boxmoe_geo_option_lines($key){
+    $raw = get_boxmoe($key);
+    if(!is_string($raw) || trim($raw) === ''){
+        return array();
+    }
+    $out = array();
+    foreach(preg_split('/[\r\n]+/', $raw) as $line){
+        $line = trim($line);
+        if($line !== ''){
+            $out[] = $line;
+        }
+    }
+    return array_values(array_unique($out));
+}
+
+// Resolve URLs without fetching remote images during page rendering.
+function boxmoe_geo_image_url($url, $base_url = ''){
+    if(!is_string($url) || trim($url) === ''){
+        return '';
+    }
+    $url = html_entity_decode(trim($url), ENT_QUOTES, 'UTF-8');
+    if(preg_match('#^[a-z][a-z0-9+.-]*:#i', $url) && !preg_match('#^https?://#i', $url)){
+        return '';
+    }
+    $base_url = $base_url !== '' ? $base_url : home_url('/');
+    return esc_url_raw(WP_Http::make_absolute_url($url, $base_url), array('http', 'https'));
+}
+
+function boxmoe_geo_current_url(){
+    $url = function_exists('boxmoe_canonical_url') ? boxmoe_canonical_url() : '';
+    if(is_string($url) && $url !== ''){
+        return $url;
+    }
+    if(is_front_page() || is_home()){
+        return is_paged() ? get_pagenum_link(max(1, (int) get_query_var('paged'))) : home_url('/');
+    }
+    if(is_singular()){
+        return get_permalink(get_queried_object_id());
+    }
+    if(is_search()){
+        return get_search_link();
+    }
+    return home_url('/');
+}
+
+function boxmoe_geo_json_script($data){
+    $json = wp_json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    if($json !== false){
+        echo '<script type="application/ld+json">' . $json . '</script>' . "\n";
+    }
+}
+
+// 🩹 兜底实现：GEO 模块长期处于关闭状态，这两个函数在主题里从未定义过--------------------------gl.baimu.live--------------------------
+if(!function_exists('boxmoe_get_logo_url')){
+    function boxmoe_get_logo_url(){
+        $custom = trim((string) get_boxmoe('boxmoe_org_logo'));
+        if($custom !== ''){
+            return $custom;
+        }
+        if(function_exists('boxmoe_get_logo_src')){
+            $src = boxmoe_get_logo_src();
+            if($src){
+                return $src;
+            }
+        }
+        return get_template_directory_uri() . '/assets/images/logo.png';
+    }
+}
+
+if(!function_exists('boxmoe_get_first_image_from_content')){
+    function boxmoe_get_first_image_from_content($post_id){
+        $post = get_post($post_id);
+        if(!$post){
+            return '';
+        }
+        $public_data = boxmoe_geo_public_post_data($post);
+        if($public_data['restricted'] || $public_data['content'] === ''){
+            return '';
+        }
+        if(preg_match('/<img[^>]+src=[\'"]([^\'"]+)[\'"]/i', $public_data['content'], $match)){
+            return boxmoe_geo_image_url($match[1], get_permalink($post->ID));
+        }
+        return '';
+    }
+}
+
+// 🏛️ 站点身份（Organization）：后台可配置，未配置时回退站点信息--------------------------gl.baimu.live--------------------------
+function boxmoe_geo_organization_data(){
+    $name = boxmoe_geo_option_text('boxmoe_org_name');
+    if($name === ''){
+        $name = get_bloginfo('name');
+    }
+
+    $description = boxmoe_geo_option_text('boxmoe_org_description');
+    if($description === ''){
+        $description = get_bloginfo('description');
+    }
+
+    $type = boxmoe_geo_option_text('boxmoe_org_type');
+    $allowed_types = array('Organization', 'Corporation', 'NGO', 'EducationalOrganization', 'GovernmentOrganization', 'LocalBusiness', 'Person');
+    if(!in_array($type, $allowed_types, true)){
+        $type = 'Organization';
+    }
+
+    $logo = boxmoe_geo_image_url(boxmoe_get_logo_url());
+
+    $org = array(
+        '@type' => $type,
+        '@id'   => home_url('/#organization'),
+        'name'  => $name,
+        'url'   => home_url('/'),
+    );
+
+    if($description !== ''){
+        $org['description'] = $description;
+    }
+
+    $alt_names = preg_split('/[,，\r\n]+/u', boxmoe_geo_option_text('boxmoe_org_alt_names'));
+    $alt_names = array_values(array_unique(array_filter(array_map('trim', $alt_names), function($name){ return $name !== ''; })));
+    if(!empty($alt_names)){
+        $org['alternateName'] = (count($alt_names) === 1) ? $alt_names[0] : $alt_names;
+    }
+
+    if($logo !== ''){
+        $org['logo'] = array(
+            '@type'   => 'ImageObject',
+            '@id'     => home_url('/#logo'),
+            'url'     => $logo,
+            'caption' => $name,
+        );
+    }
+
+    $same_as = array();
+    foreach(boxmoe_geo_option_lines('boxmoe_org_sameas') as $url){
+        $url = esc_url_raw($url);
+        if($url === ''){
+            continue;
+        }
+        // 跳过明显不是网址的输入（没有域名点号），避免污染 sameAs
+        $host = wp_parse_url($url, PHP_URL_HOST);
+        if(empty($host) || strpos($host, '.') === false){
+            continue;
+        }
+        $same_as[] = $url;
+    }
+    if(!empty($same_as)){
+        $org['sameAs'] = array_values(array_unique($same_as));
+    }
+
+    $knows = boxmoe_geo_option_lines('boxmoe_org_knows_about');
+    if(!empty($knows)){
+        $org['knowsAbout'] = array_values($knows);
+    }
+
+    $email = sanitize_email(boxmoe_geo_option_text('boxmoe_org_email'));
+    if($email !== ''){
+        $org['email'] = $email;
+    }
+
+    return $org;
+}
+// 📄 文章 / 页面节点--------------------------gl.baimu.live--------------------------
+function boxmoe_geo_singular_data($post, $org){
+    $public_data = boxmoe_geo_public_post_data($post);
+    $node = array(
+        '@type'      => is_page() ? 'WebPage' : 'Article',
+        '@id'        => get_permalink($post->ID) . '#main',
+        'url'        => get_permalink($post->ID),
+        'name'       => get_the_title($post->ID),
+        'isPartOf'   => array('@id' => home_url('/#website')),
+        'inLanguage' => str_replace('_', '-', get_bloginfo('language')),
+    );
+
+    if(!is_page()){
+        $node['headline']      = get_the_title($post->ID);
+        $node['datePublished'] = get_the_date('c', $post->ID);
+        $node['dateModified']  = get_the_modified_date('c', $post->ID);
+        $node['author']        = array(
+            '@type' => 'Person',
+            'name'  => get_the_author_meta('display_name', $post->post_author),
+            'url'   => get_author_posts_url($post->post_author),
+        );
+        $node['publisher'] = array('@id' => $org['@id']);
+    }
+
+    if($public_data['excerpt'] !== ''){
+        $description = wp_strip_all_tags(strip_shortcodes($public_data['excerpt']));
+    } else {
+        $description = wp_trim_words(wp_strip_all_tags(strip_shortcodes($public_data['content'])), 60, '…');
+    }
+    if($description !== ''){
+        $node['description'] = wp_strip_all_tags($description);
+    }
+
+    $image = '';
+    if(!$public_data['restricted'] && has_post_thumbnail($post->ID)){
+        $image = boxmoe_geo_image_url(get_the_post_thumbnail_url($post->ID, 'full'));
+    }
+    if(empty($image) && !$public_data['restricted']){
+        $image = boxmoe_get_first_image_from_content($post->ID);
+    }
+    if(!empty($image)){
+        $node['image'] = $image;
+    }
+
+    $categories = array();
+    foreach((array) get_the_category($post->ID) as $category){
+        if(!is_object($category) || !isset($category->cat_name)){
+            continue;
+        }
+        $name = trim(wp_strip_all_tags($category->cat_name));
+        if($name !== ''){
+            $categories[] = $name;
+        }
+    }
+    if(!empty($categories)){
+        $node['articleSection'] = implode(', ', array_unique($categories));
+    }
+
+    $tags = array();
+    $post_tags = get_the_tags($post->ID);
+    if(is_array($post_tags)){
+        foreach($post_tags as $tag){
+            if(!is_object($tag) || !isset($tag->name)){
+                continue;
+            }
+            $name = trim(wp_strip_all_tags($tag->name));
+            if($name !== ''){
+                $tags[] = $name;
+            }
+        }
+    }
+    if(!empty($tags)){
+        $node['keywords'] = implode(', ', array_unique($tags));
+    }
+    $plain = wp_strip_all_tags(strip_shortcodes($public_data['content']));
+    if($plain !== ''){
+        $node['wordCount'] = (int) mb_strlen($plain, 'UTF-8');
+    }
+
+    return $node;
+}
+
+// 🌍 Geo友好的结构化数据输出：Organization + WebSite + Article/WebPage（单个 @graph）--------------------------gl.baimu.live--------------------------
 function boxmoe_geo_structured_data(){
-    global $post;
-    
-    if(!get_boxmoe('boxmoe_geo_structured_switch')){
+    if(!get_boxmoe('boxmoe_geo_structured_switch', true)){
         return;
     }
-    
-    $data = array(
-        '@context' => 'https://schema.org',
-        '@type' => 'WebSite',
-        'name' => get_bloginfo('name'),
-        'url' => get_option('home'),
-        'description' => get_bloginfo('description'),
-        'inLanguage' => get_bloginfo('language'),
+
+    $org   = boxmoe_geo_organization_data();
+    $graph = array($org);
+
+    // WebSite 节点每页都输出，保证文章页里的 isPartOf / publisher 引用不会悬空
+    $website = array(
+        '@type'       => 'WebSite',
+        '@id'         => home_url('/#website'),
+        'url'         => home_url('/'),
+        'name'        => get_bloginfo('name'),
+        'inLanguage'  => str_replace('_', '-', get_bloginfo('language')),
+        'publisher'   => array('@id' => $org['@id']),
         'potentialAction' => array(
-            '@type' => 'SearchAction',
-            'target' => get_option('home') . '?s={search_term_string}',
-            'query-input' => 'required name=search_term_string'
-        )
+            '@type'       => 'SearchAction',
+            'target'      => array(
+                '@type'       => 'EntryPoint',
+                'urlTemplate' => home_url('/?s={search_term_string}'),
+            ),
+            'query-input' => 'required name=search_term_string',
+        ),
     );
-    
-    if(is_singular() && !is_front_page()){
-        $data['@type'] = is_page() ? 'WebPage' : 'Article';
-        $data['headline'] = get_the_title();
-        $data['url'] = get_permalink();
-        
-        if(!empty($post->post_excerpt)){
-            $data['description'] = $post->post_excerpt;
-        } else {
-            $data['description'] = wp_trim_words(strip_tags($post->post_content), 50);
-        }
-        
-        $data['datePublished'] = get_the_date('c', $post->ID);
-        $data['dateModified'] = get_the_modified_date('c', $post->ID);
-        $data['author'] = array(
-            '@type' => 'Person',
-            'name' => get_the_author_meta('display_name', $post->post_author)
-        );
-        
-        $data['publisher'] = array(
-            '@type' => 'Organization',
-            'name' => get_bloginfo('name'),
-            'logo' => boxmoe_get_logo_url()
-        );
-        
-        if(has_post_thumbnail($post->ID)){
-            $image_url = get_the_post_thumbnail_url($post->ID, 'full');
-            if(!empty($image_url) && strpos($image_url, 'http') !== 0){
-                $image_url = site_url($image_url);
-            }
-            $data['image'] = $image_url;
-        }
-        
-        $data['mainEntityOfPage'] = array(
-            '@type' => 'WebPage',
-            '@id' => get_permalink()
-        );
-        
-        if(get_the_category($post->ID)){
-            $categories = array();
-            foreach(get_the_category($post->ID) as $category){
-                $categories[] = $category->cat_name;
-            }
-            $data['articleSection'] = implode(', ', $categories);
-        }
-        
-        if(get_the_tags($post->ID)){
-            $tags = array();
-            foreach(get_the_tags($post->ID) as $tag){
-                $tags[] = $tag->name;
-            }
-            $data['keywords'] = implode(', ', $tags);
-        }
-        
-        $content = strip_tags($post->post_content);
-        $data['wordCount'] = mb_strlen($content, 'UTF-8');
+    $site_description = trim((string) get_bloginfo('description'));
+    if($site_description !== ''){
+        $website['description'] = $site_description;
     }
-    
-    echo '<script type="application/ld+json">' . json_encode($data, JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+    $graph[] = $website;
+
+    if(is_singular()){
+        global $post;
+        if($post instanceof WP_Post){
+            $graph[] = boxmoe_geo_singular_data($post, $org);
+        }
+    }
+
+    boxmoe_geo_json_script(array('@context' => 'https://schema.org', '@graph' => $graph));
 }
 
 // 🌍 Geo友好的面包屑导航--------------------------gl.baimu.live--------------------------
 function boxmoe_geo_breadcrumb_schema(){
-    if(!get_boxmoe('boxmoe_geo_breadcrumb_switch')){
+    if(!get_boxmoe('boxmoe_geo_breadcrumb_switch', true)){
         return;
     }
     
@@ -209,6 +423,9 @@ function boxmoe_geo_breadcrumb_schema(){
     }
     
     global $post;
+    if(!($post instanceof WP_Post)){
+        return;
+    }
     
     $breadcrumb = array(
         '@context' => 'https://schema.org',
@@ -222,7 +439,7 @@ function boxmoe_geo_breadcrumb_schema(){
         '@type' => 'ListItem',
         'position' => $position,
         'name' => '首页',
-        'item' => get_option('home')
+        'item' => home_url('/')
     );
     $position++;
     
@@ -249,12 +466,12 @@ function boxmoe_geo_breadcrumb_schema(){
         );
     }
     
-    echo '<script type="application/ld+json">' . json_encode($breadcrumb, JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+    boxmoe_geo_json_script($breadcrumb);
 }
 
 // 🌍 Geo友好的FAQ结构化数据--------------------------gl.baimu.live--------------------------
 function boxmoe_geo_faq_schema(){
-    if(!get_boxmoe('boxmoe_geo_faq_switch')){
+    if(!get_boxmoe('boxmoe_geo_faq_switch', false)){
         return;
     }
     
@@ -263,277 +480,43 @@ function boxmoe_geo_faq_schema(){
     }
     
     global $post;
-    $content = $post->post_content;
+    if(!($post instanceof WP_Post)){
+        return;
+    }
+    $public_data = boxmoe_geo_public_post_data($post);
+    $content = $public_data['content'];
     
-    preg_match_all('/<h3[^>]*>(.*?)<\/h3>/i', $content, $headings);
-    if(empty($headings[1])){
+    // 以 h3 为界切段：三级标题 + 紧随的正文，才构成一组有效问答
+    preg_match_all('/<h3[^>]*>(.*?)<\/h3>(.*?)(?=<h[1-3][^>]*>|$)/is', $content, $matches, PREG_SET_ORDER);
+    if(empty($matches)){
         return;
     }
     
-    $faq_data = array(
-        '@context' => 'https://schema.org',
-        '@type' => 'FAQPage',
-        'mainEntity' => array()
-    );
-    
-    foreach($headings[1] as $heading){
-        $faq_data['mainEntity'][] = array(
+    $questions = array();
+    foreach($matches as $match){
+        $question = trim(wp_strip_all_tags($match[1]));
+        $answer = trim(wp_strip_all_tags(strip_shortcodes($match[2])));
+        if($question === '' || $answer === ''){
+            continue;
+        }
+        if(mb_strlen($answer, 'UTF-8') > 300){
+            $answer = mb_substr($answer, 0, 300, 'UTF-8') . '…';
+        }
+        $questions[] = array(
             '@type' => 'Question',
-            'name' => strip_tags($heading),
+            'name' => $question,
             'acceptedAnswer' => array(
                 '@type' => 'Answer',
-                'text' => ''
+                'text' => $answer
             )
         );
     }
     
-    if(!empty($faq_data['mainEntity'])){
-        echo '<script type="application/ld+json">' . json_encode($faq_data, JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
-    }
-}
-
-// 🌍 Geo友好的文章摘要优化--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_content_summary(){
-    if(!get_boxmoe('boxmoe_geo_summary_switch')){
+    if(empty($questions)){
         return;
     }
     
-    if(!is_singular()){
-        return;
-    }
-    
-    global $post;
-    
-    $summary = '';
-    
-    if(!empty($post->post_excerpt)){
-        $summary = $post->post_excerpt;
-    } else {
-        $content = strip_tags($post->post_content);
-        $sentences = preg_split('/[。！？.!?]/', $content);
-        $summary = '';
-        $count = 0;
-        foreach($sentences as $sentence){
-            if(trim($sentence) && $count < 3){
-                $summary .= trim($sentence) . '。';
-                $count++;
-            }
-        }
-    }
-    
-    if(!empty($summary)){
-        echo '<meta name="geo:summary" content="' . esc_attr($summary) . '">' . "\n";
-    }
-}
-
-// 🌍 Geo友好的内容质量评分--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_content_quality(){
-    if(!get_boxmoe('boxmoe_geo_quality_switch') || !is_singular()){
-        return;
-    }
-    
-    global $post;
-    $score = 0;
-    $content = strip_tags($post->post_content);
-    $content_length = mb_strlen($content, 'UTF-8');
-    
-    if($content_length > 500){
-        $score += 20;
-    }
-    if($content_length > 1000){
-        $score += 20;
-    }
-    if($content_length > 2000){
-        $score += 20;
-    }
-    
-    if(has_post_thumbnail($post->ID)){
-        $score += 10;
-    }
-    
-    if(!empty($post->post_excerpt)){
-        $score += 10;
-    }
-    
-    if(get_the_tags($post->ID)){
-        $score += 10;
-    }
-    
-    if(get_the_category($post->ID)){
-        $score += 10;
-    }
-    
-    $quality_score = min($score, 100);
-    
-    echo '<meta name="geo:quality_score" content="' . esc_attr($quality_score) . '">' . "\n";
-    echo '<meta name="geo:content_length" content="' . esc_attr($content_length) . '">' . "\n";
-}
-
-// 🌍 Geo友好的主题分类--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_topic_classification(){
-    if(!get_boxmoe('boxmoe_geo_topic_switch') || !is_singular()){
-        return;
-    }
-    
-    global $post;
-    
-    $topics = array();
-    
-    $categories = get_the_category($post->ID);
-    if($categories){
-        foreach($categories as $category){
-            $topics[] = $category->cat_name;
-        }
-    }
-    
-    $tags = get_the_tags($post->ID);
-    if($tags){
-        foreach($tags as $tag){
-            $topics[] = $tag->name;
-        }
-    }
-    
-    if(!empty($topics)){
-        echo '<meta name="geo:topics" content="' . esc_attr(implode(', ', $topics)) . '">' . "\n";
-    }
-}
-
-// 🌍 Geo友好的相关内容--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_related_content(){
-    if(!get_boxmoe('boxmoe_geo_related_switch') || !is_singular()){
-        return;
-    }
-    
-    global $post;
-    
-    $related_posts = get_posts(array(
-        'post__not_in' => array($post->ID),
-        'posts_per_page' => 5,
-        'category__in' => wp_get_post_categories($post->ID),
-        'orderby' => 'rand'
-    ));
-    
-    if(!empty($related_posts)){
-        $related_urls = array();
-        foreach($related_posts as $related_post){
-            $related_urls[] = get_permalink($related_post->ID);
-        }
-        echo '<meta name="geo:related_articles" content="' . esc_attr(implode(', ', $related_urls)) . '">' . "\n";
-    }
-}
-
-// 🌍 Geo友好的多语言支持--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_language_support(){
-    if(!get_boxmoe('boxmoe_geo_language_switch')){
-        return;
-    }
-    
-    $language = get_bloginfo('language');
-    echo '<meta name="geo:language" content="' . esc_attr($language) . '">' . "\n";
-    
-    if(function_exists('pll_current_language') && function_exists('pll_the_translations')){
-        $current_lang = pll_current_language();
-        echo '<meta name="geo:current_language" content="' . esc_attr($current_lang) . '">' . "\n";
-        
-        $translations = pll_the_translations();
-        if(!empty($translations)){
-            $alternate_urls = array();
-            foreach($translations as $lang => $translation){
-                if($lang !== $current_lang && isset($translation->ID)){
-                    $alternate_urls[] = $lang . ':' . get_permalink($translation->ID);
-                }
-            }
-            if(!empty($alternate_urls)){
-                echo '<meta name="geo:alternate_languages" content="' . esc_attr(implode('; ', $alternate_urls)) . '">' . "\n";
-            }
-        }
-    }
-}
-
-// 🌍 Geo友好的移动端优化--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_mobile_optimization(){
-    if(!get_boxmoe('boxmoe_geo_mobile_switch')){
-        return;
-    }
-    
-    echo '<meta name="geo:mobile_friendly" content="true">' . "\n";
-    echo '<meta name="geo:viewport" content="width=device-width, initial-scale=1.0">' . "\n";
-    echo '<meta name="geo:responsive" content="true">' . "\n";
-}
-
-// 🌍 Geo友好的性能优化--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_performance_optimization(){
-    if(!get_boxmoe('boxmoe_geo_performance_switch')){
-        return;
-    }
-    
-    echo '<meta name="geo:performance" content="optimized">' . "\n";
-    echo '<meta name="geo:loading" content="fast">' . "\n";
-    echo '<meta name="geo:cache" content="enabled">' . "\n";
-}
-
-// 🌍 Geo友好的本地化信息--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_localization(){
-    if(!get_boxmoe('boxmoe_geo_local_switch')){
-        return;
-    }
-    
-    $geo_region = get_boxmoe('boxmoe_geo_region');
-    if(!empty($geo_region)){
-        echo '<meta name="geo:region" content="' . esc_attr($geo_region) . '">' . "\n";
-    }
-    
-    $geo_city = get_boxmoe('boxmoe_geo_city');
-    if(!empty($geo_city)){
-        echo '<meta name="geo:city" content="' . esc_attr($geo_city) . '">' . "\n";
-    }
-    
-    $geo_country = get_boxmoe('boxmoe_geo_country');
-    if(!empty($geo_country)){
-        echo '<meta name="geo:country" content="' . esc_attr($geo_country) . '">' . "\n";
-    }
-}
-
-// 🌍 Geo友好的作者信息--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_author_info(){
-    if(!get_boxmoe('boxmoe_geo_author_switch') || !is_singular()){
-        return;
-    }
-    
-    global $post;
-    $author_id = $post->post_author;
-    
-    echo '<meta name="geo:author_name" content="' . esc_attr(get_the_author_meta('display_name', $author_id)) . '">' . "\n";
-    echo '<meta name="geo:author_url" content="' . esc_url(get_author_posts_url($author_id)) . '">' . "\n";
-    
-    $author_description = get_the_author_meta('description', $author_id);
-    if(!empty($author_description)){
-        echo '<meta name="geo:author_description" content="' . esc_attr($author_description) . '">' . "\n";
-    }
-}
-
-// 🌍 Geo友好的社交媒体信息--------------------------gl.baimu.live--------------------------
-function boxmoe_geo_social_info(){
-    if(!get_boxmoe('boxmoe_geo_social_switch') || !is_singular()){
-        return;
-    }
-    
-    global $post;
-    
-    $share_count = get_post_meta($post->ID, 'share_count', true);
-    if(!empty($share_count)){
-        echo '<meta name="geo:share_count" content="' . esc_attr($share_count) . '">' . "\n";
-    }
-    
-    $view_count = get_post_meta($post->ID, 'views', true);
-    if(!empty($view_count)){
-        echo '<meta name="geo:view_count" content="' . esc_attr($view_count) . '">' . "\n";
-    }
-    
-    $comment_count = get_comments_number($post->ID);
-    if($comment_count > 0){
-        echo '<meta name="geo:comment_count" content="' . esc_attr($comment_count) . '">' . "\n";
-    }
+    boxmoe_geo_json_script(array('@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => $questions));
 }
 
 // 🌍 Geo友好的所有Meta标签集成输出--------------------------gl.baimu.live--------------------------
@@ -542,15 +525,5 @@ function boxmoe_geo_all_meta_output(){
     boxmoe_geo_structured_data();
     boxmoe_geo_breadcrumb_schema();
     boxmoe_geo_faq_schema();
-    boxmoe_geo_content_summary();
-    boxmoe_geo_content_quality();
-    boxmoe_geo_topic_classification();
-    boxmoe_geo_related_content();
-    boxmoe_geo_language_support();
-    boxmoe_geo_mobile_optimization();
-    boxmoe_geo_performance_optimization();
-    boxmoe_geo_localization();
-    boxmoe_geo_author_info();
-    boxmoe_geo_social_info();
 }
 add_action('wp_head', 'boxmoe_geo_all_meta_output', 20);

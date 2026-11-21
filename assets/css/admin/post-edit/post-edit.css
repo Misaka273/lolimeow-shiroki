@@ -34,13 +34,13 @@
 /* 📝 主内容区域 */
 .post-new-php #wpcontent,
 .post-php #wpcontent {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 /* 📝 页面内容区域 */
 .post-new-php #wpbody-content,
 .post-php #wpbody-content {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   padding: var(--admin-space-lg);
   padding-bottom: var(--admin-space-sm); /* ◀️ 减小底部内边距，避免空白 */
   box-sizing: border-box; /* ◀️ 确保内边距不增加总宽度 */
@@ -62,7 +62,7 @@
 /* 📦 文章编辑表单容器 - PHP直接控制布局 */
 .post-new-php #post,
 .post-php #post {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   border: none;
   box-shadow: none;
   display: block;
@@ -163,7 +163,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 /* 📝 中间编辑区域 */
 .shiroki-editor-main {
   grid-area: main;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   border: none;
   box-shadow: none;
   min-width: 0; /* ◀️ grid 子项可正确收缩，避免撑破布局 */
@@ -235,7 +235,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 }
 
 .shiroki-editor-toolbar .toolbar-inner::-webkit-scrollbar-track {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 .shiroki-editor-toolbar .toolbar-inner::-webkit-scrollbar-thumb {
@@ -279,7 +279,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 /* 📎 媒体按钮区域 */
 #toolbar-media-content #wp-content-media-buttons {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   border: none;
   padding: 0;
   margin: 0;
@@ -318,7 +318,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 /* 📝 MD工具栏 - 透明背景 */
 #toolbar-md-content .boxmoe-md-toolbar {
-  background: transparent !important; /* ◀️ 强制透明背景 */
+  background: oklch(0 0 0 / 0) !important; /* ◀️ 强制透明背景 */
   border: none;
   padding: 0;
   margin: 0;
@@ -329,183 +329,183 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 /* 🎨 MD按钮 - 彩色明亮淡色风格 */
 #toolbar-md-content .md-btn {
-  background: rgba(99, 179, 237, 0.15); /* ◀️ 淡蓝色 */
-  border: 1px solid rgba(99, 179, 237, 0.3);
+  background: oklch(0.739179 0.115418 242.053 / 0.15); /* ◀️ 淡蓝色 */
+  border: 1px solid oklch(0.739179 0.115418 242.053 / 0.3);
   border-radius: var(--admin-radius-md);
   padding: var(--admin-space-xs) var(--admin-space-sm);
   font-size: var(--admin-font-size-xs);
-  color: #3182ce; /* ◀️ 蓝色文字 */
+  color: oklch(0.59461 0.139806 250.296); /* ◀️ 蓝色文字 */
   cursor: pointer;
   transition: all var(--admin-transition-fast);
   backdrop-filter: blur(4px);
 }
 
 #toolbar-md-content .md-btn:hover {
-  background: rgba(99, 179, 237, 0.3);
-  border-color: rgba(99, 179, 237, 0.5);
+  background: oklch(0.739179 0.115418 242.053 / 0.3);
+  border-color: oklch(0.739179 0.115418 242.053 / 0.5);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(99, 179, 237, 0.2);
+  box-shadow: 0 2px 4px oklch(0.739179 0.115418 242.053 / 0.2);
 }
 
 /* 🎨 MD按钮 - 不同颜色 */
 #toolbar-md-content .md-btn:nth-child(1) { /* 加粗 */
-  background: rgba(245, 101, 101, 0.15);
-  border-color: rgba(245, 101, 101, 0.3);
-  color: #c53030;
+  background: oklch(0.68817 0.177631 22.946 / 0.15);
+  border-color: oklch(0.68817 0.177631 22.946 / 0.3);
+  color: oklch(0.544071 0.185911 25.95);
 }
 #toolbar-md-content .md-btn:nth-child(1):hover {
-  background: rgba(245, 101, 101, 0.3);
-  border-color: rgba(245, 101, 101, 0.5);
-  box-shadow: 0 2px 4px rgba(245, 101, 101, 0.2);
+  background: oklch(0.68817 0.177631 22.946 / 0.3);
+  border-color: oklch(0.68817 0.177631 22.946 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.68817 0.177631 22.946 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(2) { /* 斜体 */
-  background: rgba(236, 201, 75, 0.15);
-  border-color: rgba(236, 201, 75, 0.3);
-  color: #b7791f;
+  background: oklch(0.843742 0.145812 93.307 / 0.15);
+  border-color: oklch(0.843742 0.145812 93.307 / 0.3);
+  color: oklch(0.62635 0.124794 70.45);
 }
 #toolbar-md-content .md-btn:nth-child(2):hover {
-  background: rgba(236, 201, 75, 0.3);
-  border-color: rgba(236, 201, 75, 0.5);
-  box-shadow: 0 2px 4px rgba(236, 201, 75, 0.2);
+  background: oklch(0.843742 0.145812 93.307 / 0.3);
+  border-color: oklch(0.843742 0.145812 93.307 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.843742 0.145812 93.307 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(3) { /* H1 */
-  background: rgba(159, 122, 234, 0.15);
-  border-color: rgba(159, 122, 234, 0.3);
-  color: #6b46c1;
+  background: oklch(0.663693 0.163442 296.963 / 0.15);
+  border-color: oklch(0.663693 0.163442 296.963 / 0.3);
+  color: oklch(0.5033 0.182915 292.42);
 }
 #toolbar-md-content .md-btn:nth-child(3):hover {
-  background: rgba(159, 122, 234, 0.3);
-  border-color: rgba(159, 122, 234, 0.5);
-  box-shadow: 0 2px 4px rgba(159, 122, 234, 0.2);
+  background: oklch(0.663693 0.163442 296.963 / 0.3);
+  border-color: oklch(0.663693 0.163442 296.963 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.663693 0.163442 296.963 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(4) { /* H2 */
-  background: rgba(236, 112, 99, 0.15);
-  border-color: rgba(236, 112, 99, 0.3);
-  color: #c05621;
+  background: oklch(0.689706 0.155924 27.895 / 0.15);
+  border-color: oklch(0.689706 0.155924 27.895 / 0.3);
+  color: oklch(0.57923 0.1504 43.809);
 }
 #toolbar-md-content .md-btn:nth-child(4):hover {
-  background: rgba(236, 112, 99, 0.3);
-  border-color: rgba(236, 112, 99, 0.5);
-  box-shadow: 0 2px 4px rgba(236, 112, 99, 0.2);
+  background: oklch(0.689706 0.155924 27.895 / 0.3);
+  border-color: oklch(0.689706 0.155924 27.895 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.689706 0.155924 27.895 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(5) { /* H3 */
-  background: rgba(72, 187, 120, 0.15);
-  border-color: rgba(72, 187, 120, 0.3);
-  color: #276749;
+  background: oklch(0.709577 0.143366 154.532 / 0.15);
+  border-color: oklch(0.709577 0.143366 154.532 / 0.3);
+  color: oklch(0.463544 0.082319 160.167);
 }
 #toolbar-md-content .md-btn:nth-child(5):hover {
-  background: rgba(72, 187, 120, 0.3);
-  border-color: rgba(72, 187, 120, 0.5);
-  box-shadow: 0 2px 4px rgba(72, 187, 120, 0.2);
+  background: oklch(0.709577 0.143366 154.532 / 0.3);
+  border-color: oklch(0.709577 0.143366 154.532 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.709577 0.143366 154.532 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(6) { /* 链接 */
-  background: rgba(66, 153, 225, 0.15);
-  border-color: rgba(66, 153, 225, 0.3);
-  color: #2b6cb0;
+  background: oklch(0.662625 0.135778 246.809 / 0.15);
+  border-color: oklch(0.662625 0.135778 246.809 / 0.3);
+  color: oklch(0.524108 0.125925 252.324);
 }
 #toolbar-md-content .md-btn:nth-child(6):hover {
-  background: rgba(66, 153, 225, 0.3);
-  border-color: rgba(66, 153, 225, 0.5);
-  box-shadow: 0 2px 4px rgba(66, 153, 225, 0.2);
+  background: oklch(0.662625 0.135778 246.809 / 0.3);
+  border-color: oklch(0.662625 0.135778 246.809 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.662625 0.135778 246.809 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(7) { /* 图片 */
-  background: rgba(246, 173, 85, 0.15);
-  border-color: rgba(246, 173, 85, 0.3);
-  color: #c05621;
+  background: oklch(0.801224 0.134256 68.787 / 0.15);
+  border-color: oklch(0.801224 0.134256 68.787 / 0.3);
+  color: oklch(0.57923 0.1504 43.809);
 }
 #toolbar-md-content .md-btn:nth-child(7):hover {
-  background: rgba(246, 173, 85, 0.3);
-  border-color: rgba(246, 173, 85, 0.5);
-  box-shadow: 0 2px 4px rgba(246, 173, 85, 0.2);
+  background: oklch(0.801224 0.134256 68.787 / 0.3);
+  border-color: oklch(0.801224 0.134256 68.787 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.801224 0.134256 68.787 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(8) { /* 代码 */
-  background: rgba(113, 128, 150, 0.15);
-  border-color: rgba(113, 128, 150, 0.3);
-  color: #4a5568;
+  background: oklch(0.595556 0.03808 257.866 / 0.15);
+  border-color: oklch(0.595556 0.03808 257.866 / 0.3);
+  color: oklch(0.447437 0.034275 261.324);
 }
 #toolbar-md-content .md-btn:nth-child(8):hover {
-  background: rgba(113, 128, 150, 0.3);
-  border-color: rgba(113, 128, 150, 0.5);
-  box-shadow: 0 2px 4px rgba(113, 128, 150, 0.2);
+  background: oklch(0.595556 0.03808 257.866 / 0.3);
+  border-color: oklch(0.595556 0.03808 257.866 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.595556 0.03808 257.866 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(9) { /* 引用 */
-  background: rgba(183, 148, 244, 0.15);
-  border-color: rgba(183, 148, 244, 0.3);
-  color: #6b46c1;
+  background: oklch(0.735825 0.139368 299.78 / 0.15);
+  border-color: oklch(0.735825 0.139368 299.78 / 0.3);
+  color: oklch(0.5033 0.182915 292.42);
 }
 #toolbar-md-content .md-btn:nth-child(9):hover {
-  background: rgba(183, 148, 244, 0.3);
-  border-color: rgba(183, 148, 244, 0.5);
-  box-shadow: 0 2px 4px rgba(183, 148, 244, 0.2);
+  background: oklch(0.735825 0.139368 299.78 / 0.3);
+  border-color: oklch(0.735825 0.139368 299.78 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.735825 0.139368 299.78 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(10) { /* 无序列表 */
-  background: rgba(56, 161, 105, 0.15);
-  border-color: rgba(56, 161, 105, 0.3);
-  color: #276749;
+  background: oklch(0.634161 0.1283 156.197 / 0.15);
+  border-color: oklch(0.634161 0.1283 156.197 / 0.3);
+  color: oklch(0.463544 0.082319 160.167);
 }
 #toolbar-md-content .md-btn:nth-child(10):hover {
-  background: rgba(56, 161, 105, 0.3);
-  border-color: rgba(56, 161, 105, 0.5);
-  box-shadow: 0 2px 4px rgba(56, 161, 105, 0.2);
+  background: oklch(0.634161 0.1283 156.197 / 0.3);
+  border-color: oklch(0.634161 0.1283 156.197 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.634161 0.1283 156.197 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(11) { /* 任务清单 */
-  background: rgba(49, 130, 206, 0.15);
-  border-color: rgba(49, 130, 206, 0.3);
-  color: #2c5282;
+  background: oklch(0.59461 0.139806 250.296 / 0.15);
+  border-color: oklch(0.59461 0.139806 250.296 / 0.3);
+  color: oklch(0.434601 0.090979 255.182);
 }
 #toolbar-md-content .md-btn:nth-child(11):hover {
-  background: rgba(49, 130, 206, 0.3);
-  border-color: rgba(49, 130, 206, 0.5);
-  box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
+  background: oklch(0.59461 0.139806 250.296 / 0.3);
+  border-color: oklch(0.59461 0.139806 250.296 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.59461 0.139806 250.296 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(12) { /* 有序列表 */
-  background: rgba(214, 158, 46, 0.15);
-  border-color: rgba(214, 158, 46, 0.3);
-  color: #975a16;
+  background: oklch(0.734328 0.137652 80.006 / 0.15);
+  border-color: oklch(0.734328 0.137652 80.006 / 0.3);
+  color: oklch(0.525997 0.1111 62.589);
 }
 #toolbar-md-content .md-btn:nth-child(12):hover {
-  background: rgba(214, 158, 46, 0.3);
-  border-color: rgba(214, 158, 46, 0.5);
-  box-shadow: 0 2px 4px rgba(214, 158, 46, 0.2);
+  background: oklch(0.734328 0.137652 80.006 / 0.3);
+  border-color: oklch(0.734328 0.137652 80.006 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.734328 0.137652 80.006 / 0.2);
 }
 
 #toolbar-md-content .md-btn:nth-child(13) { /* 卡片 */
-  background: rgba(237, 100, 166, 0.15);
-  border-color: rgba(237, 100, 166, 0.3);
-  color: #b83280;
+  background: oklch(0.692305 0.181722 352.86 / 0.15);
+  border-color: oklch(0.692305 0.181722 352.86 / 0.3);
+  color: oklch(0.544156 0.185327 349.336);
 }
 #toolbar-md-content .md-btn:nth-child(13):hover {
-  background: rgba(237, 100, 166, 0.3);
-  border-color: rgba(237, 100, 166, 0.5);
-  box-shadow: 0 2px 4px rgba(237, 100, 166, 0.2);
+  background: oklch(0.692305 0.181722 352.86 / 0.3);
+  border-color: oklch(0.692305 0.181722 352.86 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.692305 0.181722 352.86 / 0.2);
 }
 
 /* 🎨 视图切换按钮 - 灰色系 */
 #toolbar-md-content .md-view-btn {
-  background: rgba(160, 174, 192, 0.15);
-  border-color: rgba(160, 174, 192, 0.3);
-  color: #4a5568;
+  background: oklch(0.745708 0.030363 254.721 / 0.15);
+  border-color: oklch(0.745708 0.030363 254.721 / 0.3);
+  color: oklch(0.447437 0.034275 261.324);
 }
 #toolbar-md-content .md-view-btn:hover {
-  background: rgba(160, 174, 192, 0.3);
-  border-color: rgba(160, 174, 192, 0.5);
-  box-shadow: 0 2px 4px rgba(160, 174, 192, 0.2);
+  background: oklch(0.745708 0.030363 254.721 / 0.3);
+  border-color: oklch(0.745708 0.030363 254.721 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.745708 0.030363 254.721 / 0.2);
 }
 #toolbar-md-content .md-view-btn.active {
-  background: rgba(66, 153, 225, 0.25);
-  border-color: rgba(66, 153, 225, 0.5);
-  color: #2b6cb0;
+  background: oklch(0.662625 0.135778 246.809 / 0.25);
+  border-color: oklch(0.662625 0.135778 246.809 / 0.5);
+  color: oklch(0.524108 0.125925 252.324);
 }
 
 #toolbar-md-content .md-separator {
@@ -516,7 +516,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 /* 🔧 Quicktags工具栏 - 透明背景 */
 #toolbar-quicktags-content #ed_toolbar {
-  background: transparent !important; /* ◀️ 强制透明背景 */
+  background: oklch(0 0 0 / 0) !important; /* ◀️ 强制透明背景 */
   border: none;
   padding: 0;
   margin: 0;
@@ -530,12 +530,12 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 /* 🎨 Quicktags按钮 - 彩色明亮淡色风格 */
 #toolbar-quicktags-content .ed_button {
-  background: rgba(99, 179, 237, 0.15);
-  border: 1px solid rgba(99, 179, 237, 0.3);
+  background: oklch(0.739179 0.115418 242.053 / 0.15);
+  border: 1px solid oklch(0.739179 0.115418 242.053 / 0.3);
   border-radius: var(--admin-radius-md);
   padding: var(--admin-space-xs) var(--admin-space-sm);
   font-size: var(--admin-font-size-xs);
-  color: #3182ce;
+  color: oklch(0.59461 0.139806 250.296);
   cursor: pointer;
   transition: all var(--admin-transition-fast);
   margin: 0;
@@ -545,10 +545,10 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 }
 
 #toolbar-quicktags-content .ed_button:hover {
-  background: rgba(99, 179, 237, 0.3);
-  border-color: rgba(99, 179, 237, 0.5);
+  background: oklch(0.739179 0.115418 242.053 / 0.3);
+  border-color: oklch(0.739179 0.115418 242.053 / 0.5);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(99, 179, 237, 0.2);
+  box-shadow: 0 2px 4px oklch(0.739179 0.115418 242.053 / 0.2);
 }
 
 /* 🎨 Quicktags按钮 - 不同颜色（按类型分组） */
@@ -557,77 +557,77 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 #toolbar-quicktags-content .ed_button[value="i"],
 #toolbar-quicktags-content .ed_button[value="del"],
 #toolbar-quicktags-content .ed_button[value="ins"] {
-  background: rgba(245, 101, 101, 0.15);
-  border-color: rgba(245, 101, 101, 0.3);
-  color: #c53030;
+  background: oklch(0.68817 0.177631 22.946 / 0.15);
+  border-color: oklch(0.68817 0.177631 22.946 / 0.3);
+  color: oklch(0.544071 0.185911 25.95);
 }
 #toolbar-quicktags-content .ed_button[value="b"]:hover,
 #toolbar-quicktags-content .ed_button[value="i"]:hover,
 #toolbar-quicktags-content .ed_button[value="del"]:hover,
 #toolbar-quicktags-content .ed_button[value="ins"]:hover {
-  background: rgba(245, 101, 101, 0.3);
-  border-color: rgba(245, 101, 101, 0.5);
-  box-shadow: 0 2px 4px rgba(245, 101, 101, 0.2);
+  background: oklch(0.68817 0.177631 22.946 / 0.3);
+  border-color: oklch(0.68817 0.177631 22.946 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.68817 0.177631 22.946 / 0.2);
 }
 
 /* 链接和媒体 - 蓝色系 */
 #toolbar-quicktags-content .ed_button[value="link"],
 #toolbar-quicktags-content .ed_button[value="img"] {
-  background: rgba(66, 153, 225, 0.15);
-  border-color: rgba(66, 153, 225, 0.3);
-  color: #2b6cb0;
+  background: oklch(0.662625 0.135778 246.809 / 0.15);
+  border-color: oklch(0.662625 0.135778 246.809 / 0.3);
+  color: oklch(0.524108 0.125925 252.324);
 }
 #toolbar-quicktags-content .ed_button[value="link"]:hover,
 #toolbar-quicktags-content .ed_button[value="img"]:hover {
-  background: rgba(66, 153, 225, 0.3);
-  border-color: rgba(66, 153, 225, 0.5);
-  box-shadow: 0 2px 4px rgba(66, 153, 225, 0.2);
+  background: oklch(0.662625 0.135778 246.809 / 0.3);
+  border-color: oklch(0.662625 0.135778 246.809 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.662625 0.135778 246.809 / 0.2);
 }
 
 /* 引用 - 紫色系 */
 #toolbar-quicktags-content .ed_button[value="b-quote"],
 #toolbar-quicktags-content .ed_button[value="引用1"],
 #toolbar-quicktags-content .ed_button[value="引用2"] {
-  background: rgba(159, 122, 234, 0.15);
-  border-color: rgba(159, 122, 234, 0.3);
-  color: #6b46c1;
+  background: oklch(0.663693 0.163442 296.963 / 0.15);
+  border-color: oklch(0.663693 0.163442 296.963 / 0.3);
+  color: oklch(0.5033 0.182915 292.42);
 }
 #toolbar-quicktags-content .ed_button[value="b-quote"]:hover,
 #toolbar-quicktags-content .ed_button[value="引用1"]:hover,
 #toolbar-quicktags-content .ed_button[value="引用2"]:hover {
-  background: rgba(159, 122, 234, 0.3);
-  border-color: rgba(159, 122, 234, 0.5);
-  box-shadow: 0 2px 4px rgba(159, 122, 234, 0.2);
+  background: oklch(0.663693 0.163442 296.963 / 0.3);
+  border-color: oklch(0.663693 0.163442 296.963 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.663693 0.163442 296.963 / 0.2);
 }
 
 /* 列表 - 绿色系 */
 #toolbar-quicktags-content .ed_button[value="ul"],
 #toolbar-quicktags-content .ed_button[value="ol"],
 #toolbar-quicktags-content .ed_button[value="li"] {
-  background: rgba(72, 187, 120, 0.15);
-  border-color: rgba(72, 187, 120, 0.3);
-  color: #276749;
+  background: oklch(0.709577 0.143366 154.532 / 0.15);
+  border-color: oklch(0.709577 0.143366 154.532 / 0.3);
+  color: oklch(0.463544 0.082319 160.167);
 }
 #toolbar-quicktags-content .ed_button[value="ul"]:hover,
 #toolbar-quicktags-content .ed_button[value="ol"]:hover,
 #toolbar-quicktags-content .ed_button[value="li"]:hover {
-  background: rgba(72, 187, 120, 0.3);
-  border-color: rgba(72, 187, 120, 0.5);
-  box-shadow: 0 2px 4px rgba(72, 187, 120, 0.2);
+  background: oklch(0.709577 0.143366 154.532 / 0.3);
+  border-color: oklch(0.709577 0.143366 154.532 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.709577 0.143366 154.532 / 0.2);
 }
 
 /* 代码 - 灰色系 */
 #toolbar-quicktags-content .ed_button[value="code"],
 #toolbar-quicktags-content .ed_button[value="代码高亮"] {
-  background: rgba(113, 128, 150, 0.15);
-  border-color: rgba(113, 128, 150, 0.3);
-  color: #4a5568;
+  background: oklch(0.595556 0.03808 257.866 / 0.15);
+  border-color: oklch(0.595556 0.03808 257.866 / 0.3);
+  color: oklch(0.447437 0.034275 261.324);
 }
 #toolbar-quicktags-content .ed_button[value="code"]:hover,
 #toolbar-quicktags-content .ed_button[value="代码高亮"]:hover {
-  background: rgba(113, 128, 150, 0.3);
-  border-color: rgba(113, 128, 150, 0.5);
-  box-shadow: 0 2px 4px rgba(113, 128, 150, 0.2);
+  background: oklch(0.595556 0.03808 257.866 / 0.3);
+  border-color: oklch(0.595556 0.03808 257.866 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.595556 0.03808 257.866 / 0.2);
 }
 
 /* 标题 - 橙色系 */
@@ -635,63 +635,63 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 #toolbar-quicktags-content .ed_button[value="H2标题"],
 #toolbar-quicktags-content .ed_button[value="H3标题"],
 #toolbar-quicktags-content .ed_button[value="H4标题"] {
-  background: rgba(237, 137, 54, 0.15);
-  border-color: rgba(237, 137, 54, 0.3);
-  color: #c05621;
+  background: oklch(0.72437 0.153399 56.072 / 0.15);
+  border-color: oklch(0.72437 0.153399 56.072 / 0.3);
+  color: oklch(0.57923 0.1504 43.809);
 }
 #toolbar-quicktags-content .ed_button[value="H2"]:hover,
 #toolbar-quicktags-content .ed_button[value="H2标题"]:hover,
 #toolbar-quicktags-content .ed_button[value="H3标题"]:hover,
 #toolbar-quicktags-content .ed_button[value="H4标题"]:hover {
-  background: rgba(237, 137, 54, 0.3);
-  border-color: rgba(237, 137, 54, 0.5);
-  box-shadow: 0 2px 4px rgba(237, 137, 54, 0.2);
+  background: oklch(0.72437 0.153399 56.072 / 0.3);
+  border-color: oklch(0.72437 0.153399 56.072 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.72437 0.153399 56.072 / 0.2);
 }
 
 /* 特殊功能 - 粉色系 */
 #toolbar-quicktags-content .ed_button[value="more"],
 #toolbar-quicktags-content .ed_button[value="分页"],
 #toolbar-quicktags-content .ed_button[value="下载框"] {
-  background: rgba(237, 100, 166, 0.15);
-  border-color: rgba(237, 100, 166, 0.3);
-  color: #b83280;
+  background: oklch(0.692305 0.181722 352.86 / 0.15);
+  border-color: oklch(0.692305 0.181722 352.86 / 0.3);
+  color: oklch(0.544156 0.185327 349.336);
 }
 #toolbar-quicktags-content .ed_button[value="more"]:hover,
 #toolbar-quicktags-content .ed_button[value="分页"]:hover,
 #toolbar-quicktags-content .ed_button[value="下载框"]:hover {
-  background: rgba(237, 100, 166, 0.3);
-  border-color: rgba(237, 100, 166, 0.5);
-  box-shadow: 0 2px 4px rgba(237, 100, 166, 0.2);
+  background: oklch(0.692305 0.181722 352.86 / 0.3);
+  border-color: oklch(0.692305 0.181722 352.86 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.692305 0.181722 352.86 / 0.2);
 }
 
 /* 会员功能 - 青色系 */
 #toolbar-quicktags-content .ed_button[value="会员查看模式一"],
 #toolbar-quicktags-content .ed_button[value="会员查看模式二"],
 #toolbar-quicktags-content .ed_button[value="文章密码保护"] {
-  background: rgba(56, 178, 172, 0.15);
-  border-color: rgba(56, 178, 172, 0.3);
-  color: #285e61;
+  background: oklch(0.696425 0.10529 190.239 / 0.15);
+  border-color: oklch(0.696425 0.10529 190.239 / 0.3);
+  color: oklch(0.447019 0.05696 200.254);
 }
 #toolbar-quicktags-content .ed_button[value="会员查看模式一"]:hover,
 #toolbar-quicktags-content .ed_button[value="会员查看模式二"]:hover,
 #toolbar-quicktags-content .ed_button[value="文章密码保护"]:hover {
-  background: rgba(56, 178, 172, 0.3);
-  border-color: rgba(56, 178, 172, 0.5);
-  box-shadow: 0 2px 4px rgba(56, 178, 172, 0.2);
+  background: oklch(0.696425 0.10529 190.239 / 0.3);
+  border-color: oklch(0.696425 0.10529 190.239 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.696425 0.10529 190.239 / 0.2);
 }
 
 /* 下载按钮 - 绿色系 */
 #toolbar-quicktags-content .ed_button[value="下载按钮"],
 #toolbar-quicktags-content .ed_button[value="链接按钮"] {
-  background: rgba(104, 211, 145, 0.15);
-  border-color: rgba(104, 211, 145, 0.3);
-  color: #276749;
+  background: oklch(0.786014 0.137876 154.523 / 0.15);
+  border-color: oklch(0.786014 0.137876 154.523 / 0.3);
+  color: oklch(0.463544 0.082319 160.167);
 }
 #toolbar-quicktags-content .ed_button[value="下载按钮"]:hover,
 #toolbar-quicktags-content .ed_button[value="链接按钮"]:hover {
-  background: rgba(104, 211, 145, 0.3);
-  border-color: rgba(104, 211, 145, 0.5);
-  box-shadow: 0 2px 4px rgba(104, 211, 145, 0.2);
+  background: oklch(0.786014 0.137876 154.523 / 0.3);
+  border-color: oklch(0.786014 0.137876 154.523 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.786014 0.137876 154.523 / 0.2);
 }
 
 /* H2特殊标签 - 黄橙色系 */
@@ -700,18 +700,18 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 #toolbar-quicktags-content .ed_button[value="H2下载标"],
 #toolbar-quicktags-content .ed_button[value="H2微信标"],
 #toolbar-quicktags-content .ed_button[value="H2QQ企鹅标"] {
-  background: rgba(246, 173, 85, 0.15);
-  border-color: rgba(246, 173, 85, 0.3);
-  color: #975a16;
+  background: oklch(0.801224 0.134256 68.787 / 0.15);
+  border-color: oklch(0.801224 0.134256 68.787 / 0.3);
+  color: oklch(0.525997 0.1111 62.589);
 }
 #toolbar-quicktags-content .ed_button[value="H2毛笔标"]:hover,
 #toolbar-quicktags-content .ed_button[value="H2设置标"]:hover,
 #toolbar-quicktags-content .ed_button[value="H2下载标"]:hover,
 #toolbar-quicktags-content .ed_button[value="H2微信标"]:hover,
 #toolbar-quicktags-content .ed_button[value="H2QQ企鹅标"]:hover {
-  background: rgba(246, 173, 85, 0.3);
-  border-color: rgba(246, 173, 85, 0.5);
-  box-shadow: 0 2px 4px rgba(246, 173, 85, 0.2);
+  background: oklch(0.801224 0.134256 68.787 / 0.3);
+  border-color: oklch(0.801224 0.134256 68.787 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.801224 0.134256 68.787 / 0.2);
 }
 
 /* 其他功能 - 靛蓝色系 */
@@ -719,65 +719,65 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 #toolbar-quicktags-content .ed_button[value="OL列表"],
 #toolbar-quicktags-content .ed_button[value="音频"],
 #toolbar-quicktags-content .ed_button[value="视频"] {
-  background: rgba(102, 126, 234, 0.15);
-  border-color: rgba(102, 126, 234, 0.3);
-  color: #4c51bf;
+  background: oklch(0.627057 0.16383 271.529 / 0.15);
+  border-color: oklch(0.627057 0.16383 271.529 / 0.3);
+  color: oklch(0.494234 0.16931 276.299);
 }
 #toolbar-quicktags-content .ed_button[value="飞来模块"]:hover,
 #toolbar-quicktags-content .ed_button[value="OL列表"]:hover,
 #toolbar-quicktags-content .ed_button[value="音频"]:hover,
 #toolbar-quicktags-content .ed_button[value="视频"]:hover {
-  background: rgba(102, 126, 234, 0.3);
-  border-color: rgba(102, 126, 234, 0.5);
-  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+  background: oklch(0.627057 0.16383 271.529 / 0.3);
+  border-color: oklch(0.627057 0.16383 271.529 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.627057 0.16383 271.529 / 0.2);
 }
 
 /* 关闭标签 - 红色系 */
 #toolbar-quicktags-content .ed_button[value="关闭标签"] {
-  background: rgba(229, 62, 62, 0.15);
-  border-color: rgba(229, 62, 62, 0.3);
-  color: #c53030;
+  background: oklch(0.613711 0.203909 25.565 / 0.15);
+  border-color: oklch(0.613711 0.203909 25.565 / 0.3);
+  color: oklch(0.544071 0.185911 25.95);
 }
 #toolbar-quicktags-content .ed_button[value="关闭标签"]:hover {
-  background: rgba(229, 62, 62, 0.3);
-  border-color: rgba(229, 62, 62, 0.5);
-  box-shadow: 0 2px 4px rgba(229, 62, 62, 0.2);
+  background: oklch(0.613711 0.203909 25.565 / 0.3);
+  border-color: oklch(0.613711 0.203909 25.565 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.613711 0.203909 25.565 / 0.2);
 }
 
 /* 清除格式 - 灰色系 */
 #toolbar-quicktags-content .ed_button[value="清除格式"] {
-  background: rgba(160, 174, 192, 0.15);
-  border-color: rgba(160, 174, 192, 0.3);
-  color: #4a5568;
+  background: oklch(0.745708 0.030363 254.721 / 0.15);
+  border-color: oklch(0.745708 0.030363 254.721 / 0.3);
+  color: oklch(0.447437 0.034275 261.324);
 }
 #toolbar-quicktags-content .ed_button[value="清除格式"]:hover {
-  background: rgba(160, 174, 192, 0.3);
-  border-color: rgba(160, 174, 192, 0.5);
-  box-shadow: 0 2px 4px rgba(160, 174, 192, 0.2);
+  background: oklch(0.745708 0.030363 254.721 / 0.3);
+  border-color: oklch(0.745708 0.030363 254.721 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.745708 0.030363 254.721 / 0.2);
 }
 
 /* 🌊 分割线按钮 - 粉紫蓝渐变风格 */
 #toolbar-quicktags-content .ed_button[value="分割线"] {
-  background: linear-gradient(135deg, rgba(236, 112, 99, 0.2), rgba(159, 122, 234, 0.2), rgba(66, 153, 225, 0.2));
-  border-color: rgba(159, 122, 234, 0.4);
-  color: #6b46c1;
+  background: linear-gradient(135deg in srgb, oklch(0.689706 0.155924 27.895 / 0.2), oklch(0.663693 0.163442 296.963 / 0.2), oklch(0.662625 0.135778 246.809 / 0.2));
+  border-color: oklch(0.663693 0.163442 296.963 / 0.4);
+  color: oklch(0.5033 0.182915 292.42);
 }
 #toolbar-quicktags-content .ed_button[value="分割线"]:hover {
-  background: linear-gradient(135deg, rgba(236, 112, 99, 0.35), rgba(159, 122, 234, 0.35), rgba(66, 153, 225, 0.35));
-  border-color: rgba(159, 122, 234, 0.6);
-  box-shadow: 0 2px 8px rgba(159, 122, 234, 0.3);
+  background: linear-gradient(135deg in srgb, oklch(0.689706 0.155924 27.895 / 0.35), oklch(0.663693 0.163442 296.963 / 0.35), oklch(0.662625 0.135778 246.809 / 0.35));
+  border-color: oklch(0.663693 0.163442 296.963 / 0.6);
+  box-shadow: 0 2px 8px oklch(0.663693 0.163442 296.963 / 0.3);
 }
 
 /* 💨 换行按钮 - 青绿色系 */
 #toolbar-quicktags-content .ed_button[value="换行"] {
-  background: rgba(56, 178, 172, 0.15);
-  border-color: rgba(56, 178, 172, 0.3);
-  color: #285e61;
+  background: oklch(0.696425 0.10529 190.239 / 0.15);
+  border-color: oklch(0.696425 0.10529 190.239 / 0.3);
+  color: oklch(0.447019 0.05696 200.254);
 }
 #toolbar-quicktags-content .ed_button[value="换行"]:hover {
-  background: rgba(56, 178, 172, 0.3);
-  border-color: rgba(56, 178, 172, 0.5);
-  box-shadow: 0 2px 4px rgba(56, 178, 172, 0.2);
+  background: oklch(0.696425 0.10529 190.239 / 0.3);
+  border-color: oklch(0.696425 0.10529 190.239 / 0.5);
+  box-shadow: 0 2px 4px oklch(0.696425 0.10529 190.239 / 0.2);
 }
 
 #toolbar-quicktags-content .qt-dfw {
@@ -824,7 +824,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   font-weight: var(--admin-font-weight-semibold);
   color: var(--admin-current-text-primary);
   transition: all var(--admin-transition-fast);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233182ce' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='4' y1='9' x2='20' y2='9'%3E%3C/line%3E%3Cline x1='4' y1='15' x2='20' y2='15'%3E%3C/line%3E%3Cline x1='10' y1='3' x2='8' y2='21'%3E%3C/line%3E%3Cline x1='16' y1='3' x2='14' y2='21'%3E%3C/line%3E%3C/svg%3E"); /* ◀️ 蓝色 # SVG 图标 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='oklch(0.59461%200.139806%20250.296)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='4' y1='9' x2='20' y2='9'%3E%3C/line%3E%3Cline x1='4' y1='15' x2='20' y2='15'%3E%3C/line%3E%3Cline x1='10' y1='3' x2='8' y2='21'%3E%3C/line%3E%3Cline x1='16' y1='3' x2='14' y2='21'%3E%3C/line%3E%3C/svg%3E"); /* ◀️ 蓝色 # SVG 图标 */
   background-repeat: no-repeat;
   background-position: 16px center;
   background-size: 20px;
@@ -932,7 +932,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .wp-admin.wp-dark-mode .post-new-php .wp-editor-area,
 .wp-admin.wp-dark-mode .post-php .wp-editor-area {
   background: var(--admin-bg-dark-primary) !important;
-  color: #f7fafc !important;
+  color: oklch(0.9834 0.004165 236.496) !important;
 }
 
 /* 📝 编辑器工具栏 */
@@ -1026,7 +1026,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   align-items: center;
   justify-content: space-between;
   gap: var(--admin-space-sm);
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   background-image: none !important;
   border-top: 1px solid var(--admin-current-border);
   box-sizing: border-box;
@@ -1075,8 +1075,8 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   width: 100%;
   margin: var(--admin-space-xs) 0 0;
   padding: var(--admin-space-sm);
-  background: rgba(245, 101, 101, 0.1); /* ◀️ 淡红色背景 */
-  border: 1px solid rgba(245, 101, 101, 0.2);
+  background: oklch(0.68817 0.177631 22.946 / 0.1); /* ◀️ 淡红色背景 */
+  border: 1px solid oklch(0.68817 0.177631 22.946 / 0.2);
   border-radius: var(--admin-radius-md);
   text-align: center;
   box-sizing: border-box;
@@ -1090,7 +1090,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 /* 🗑️ 删除链接样式 */
 .post-new-php #delete-action .submitdelete,
 .post-php #delete-action .submitdelete {
-  color: #c53030; /* ◀️ 红色文字 */
+  color: oklch(0.544071 0.185911 25.95); /* ◀️ 红色文字 */
   text-decoration: none;
   font-size: var(--admin-font-size-sm);
   font-weight: var(--admin-font-weight-medium);
@@ -1099,7 +1099,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 .post-new-php #delete-action .submitdelete:hover,
 .post-php #delete-action .submitdelete:hover {
-  color: #9b2c2c; /* ◀️ 深红色悬停 */
+  color: oklch(0.465019 0.147027 24.938); /* ◀️ 深红色悬停 */
   text-decoration: underline;
 }
 
@@ -1108,7 +1108,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #boxmoe-duplicate-action {
   margin: 0 !important;
   padding: 0;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 .post-new-php #boxmoe-duplicate-action a,
@@ -1522,7 +1522,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #categorychecklist,
 .post-new-php #categorychecklist-pop,
 .post-php #categorychecklist-pop {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   border: none;
   border-radius: 0;
   padding: 0;
@@ -1550,12 +1550,12 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   display: inline-flex;
   align-items: center;
   gap: var(--admin-space-xs);
-  background: rgba(160, 174, 192, 0.15);
-  border: 1px solid rgba(160, 174, 192, 0.3);
+  background: oklch(0.745708 0.030363 254.721 / 0.15);
+  border: 1px solid oklch(0.745708 0.030363 254.721 / 0.3);
   border-radius: var(--admin-radius-md);
   padding: var(--admin-space-xs) var(--admin-space-sm);
   font-size: var(--admin-font-size-xs);
-  color: #4a5568;
+  color: oklch(0.447437 0.034275 261.324);
   cursor: pointer;
   transition: all var(--admin-transition-fast);
   backdrop-filter: blur(4px);
@@ -1567,8 +1567,8 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #categorychecklist .selectit:hover,
 .post-new-php #categorychecklist-pop .selectit:hover,
 .post-php #categorychecklist-pop .selectit:hover {
-  background: rgba(160, 174, 192, 0.25);
-  border-color: rgba(160, 174, 192, 0.5);
+  background: oklch(0.745708 0.030363 254.721 / 0.25);
+  border-color: oklch(0.745708 0.030363 254.721 / 0.5);
   transform: translateY(-1px);
 }
 
@@ -1601,16 +1601,16 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #categorychecklist .popular-category .selectit,
 .post-new-php #categorychecklist-pop .popular-category .selectit,
 .post-php #categorychecklist-pop .popular-category .selectit {
-  background: rgba(236, 201, 75, 0.1);
-  border-color: rgba(236, 201, 75, 0.3);
+  background: oklch(0.843742 0.145812 93.307 / 0.1);
+  border-color: oklch(0.843742 0.145812 93.307 / 0.3);
 }
 
 .post-new-php #categorychecklist .popular-category .selectit:hover,
 .post-php #categorychecklist .popular-category .selectit:hover,
 .post-new-php #categorychecklist-pop .popular-category .selectit:hover,
 .post-php #categorychecklist-pop .popular-category .selectit:hover {
-  background: rgba(236, 201, 75, 0.2);
-  border-color: rgba(236, 201, 75, 0.5);
+  background: oklch(0.843742 0.145812 93.307 / 0.2);
+  border-color: oklch(0.843742 0.145812 93.307 / 0.5);
 }
 
 /* 🏷️ 标签云容器 - 去掉边框 */
@@ -1618,7 +1618,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #tagcloud-post_tag {
   border: none !important;
   box-shadow: none !important;
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
 }
 
 /* 📂 分类容器 - 去掉边框 */
@@ -1628,7 +1628,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #category-pop {
   border: none !important;
   box-shadow: none !important;
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
 }
 
 /* 📂 分类标签页 - 改为圆角按钮风格 */
@@ -1647,7 +1647,7 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   margin: 0;
   padding: 0;
   border: none;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 .post-new-php #category-tabs li a,
@@ -1655,12 +1655,12 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   display: inline-flex;
   align-items: center;
   gap: var(--admin-space-xs);
-  background: rgba(160, 174, 192, 0.15);
-  border: 1px solid rgba(160, 174, 192, 0.3);
+  background: oklch(0.745708 0.030363 254.721 / 0.15);
+  border: 1px solid oklch(0.745708 0.030363 254.721 / 0.3);
   border-radius: var(--admin-radius-md);
   padding: var(--admin-space-xs) var(--admin-space-sm);
   font-size: var(--admin-font-size-xs);
-  color: #4a5568;
+  color: oklch(0.447437 0.034275 261.324);
   text-decoration: none;
   cursor: pointer;
   transition: all var(--admin-transition-fast);
@@ -1670,23 +1670,23 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 .post-new-php #category-tabs li a:hover,
 .post-php #category-tabs li a:hover {
-  background: rgba(160, 174, 192, 0.25);
-  border-color: rgba(160, 174, 192, 0.5);
+  background: oklch(0.745708 0.030363 254.721 / 0.25);
+  border-color: oklch(0.745708 0.030363 254.721 / 0.5);
   transform: translateY(-1px);
 }
 
 .post-new-php #category-tabs li.tabs a,
 .post-php #category-tabs li.tabs a {
-  background: rgba(237, 137, 54, 0.2);
-  border-color: rgba(237, 137, 54, 0.5);
-  color: #c05621;
-  box-shadow: 0 2px 4px rgba(237, 137, 54, 0.15);
+  background: oklch(0.72437 0.153399 56.072 / 0.2);
+  border-color: oklch(0.72437 0.153399 56.072 / 0.5);
+  color: oklch(0.57923 0.1504 43.809);
+  box-shadow: 0 2px 4px oklch(0.72437 0.153399 56.072 / 0.15);
 }
 
 /* 🏷️ 标签云 - 同步分类列表UI风格 */
 .post-new-php .wp-tag-cloud,
 .post-php .wp-tag-cloud {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   border: none;
   border-radius: 0;
   padding: 0;
@@ -1710,12 +1710,12 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
   display: inline-flex;
   align-items: center;
   gap: var(--admin-space-xs);
-  background: rgba(160, 174, 192, 0.15);
-  border: 1px solid rgba(160, 174, 192, 0.3);
+  background: oklch(0.745708 0.030363 254.721 / 0.15);
+  border: 1px solid oklch(0.745708 0.030363 254.721 / 0.3);
   border-radius: var(--admin-radius-md);
   padding: var(--admin-space-xs) var(--admin-space-sm);
   font-size: var(--admin-font-size-xs);
-  color: #4a5568;
+  color: oklch(0.447437 0.034275 261.324);
   text-decoration: none;
   cursor: pointer;
   transition: all var(--admin-transition-fast);
@@ -1725,10 +1725,10 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 
 .post-new-php .wp-tag-cloud .tag-cloud-link:hover,
 .post-php .wp-tag-cloud .tag-cloud-link:hover {
-  background: rgba(237, 137, 54, 0.2);
-  border-color: rgba(237, 137, 54, 0.5);
-  color: #c05621;
-  box-shadow: 0 2px 4px rgba(237, 137, 54, 0.15);
+  background: oklch(0.72437 0.153399 56.072 / 0.2);
+  border-color: oklch(0.72437 0.153399 56.072 / 0.5);
+  color: oklch(0.57923 0.1504 43.809);
+  box-shadow: 0 2px 4px oklch(0.72437 0.153399 56.072 / 0.15);
 }
 
 /* 🏷️ 标签输入框和按钮容器 */
@@ -1745,9 +1745,9 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-new-php .inside .newtag,
 .post-php .inside .newtag {
   flex: 1;
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: oklch(1 0 0 / 0.5) !important;
   backdrop-filter: var(--admin-glass-blur);
-  border: 2px solid rgba(160, 174, 192, 0.5) !important; /* ◀️ 默认显示浅色半透明边框 */
+  border: 2px solid oklch(0.745708 0.030363 254.721 / 0.5) !important; /* ◀️ 默认显示浅色半透明边框 */
   border-radius: var(--admin-radius-md) !important;
   padding: var(--admin-space-sm) var(--admin-space-md) !important;
   color: var(--admin-current-text-primary) !important;
@@ -1761,9 +1761,9 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-new-php .inside .newtag:focus,
 .post-php .inside .newtag:focus {
   outline: none !important;
-  border-color: rgba(66, 153, 225, 0.9) !important; /* ◀️ 点击后边框加深 */
-  box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.3) !important; /* ◀️ 强提示阴影 */
-  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: oklch(0.662625 0.135778 246.809 / 0.9) !important; /* ◀️ 点击后边框加深 */
+  box-shadow: 0 0 0 4px oklch(0.662625 0.135778 246.809 / 0.3) !important; /* ◀️ 强提示阴影 */
+  background: oklch(1 0 0 / 0.95) !important;
 }
 
 /* 🏷️ 标签添加按钮 - 玻璃拟态风格 */
@@ -1771,25 +1771,25 @@ body.shiroki-post-edit-layout-ready #postbox-container-1 {
 .post-php #tagsdiv-post_tag .tagadd,
 .post-new-php .inside .tagadd,
 .post-php .inside .tagadd {
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.85) 0%, rgba(66, 153, 225, 0.85) 100%) !important; /* ◀️ 未悬停前明亮浅色 */
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.85) 0%, oklch(0.662625 0.135778 246.809 / 0.85) 100%) !important; /* ◀️ 未悬停前明亮浅色 */
   border: none !important;
   border-radius: var(--admin-radius-md) !important;
-  color: #ffffff !important;
+  color: oklch(1 0 0) !important;
   font-weight: var(--admin-font-weight-semibold) !important;
   padding: var(--admin-space-sm) var(--admin-space-lg) !important;
   transition: all var(--admin-transition-fast);
   cursor: pointer;
   white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(66, 153, 225, 0.3);
+  box-shadow: 0 2px 4px oklch(0.662625 0.135778 246.809 / 0.3);
 }
 
 .post-new-php #tagsdiv-post_tag .tagadd:hover,
 .post-php #tagsdiv-post_tag .tagadd:hover,
 .post-new-php .inside .tagadd:hover,
 .post-php .inside .tagadd:hover {
-  background: linear-gradient(135deg, rgba(66, 153, 225, 1) 0%, rgba(49, 130, 206, 1) 100%) !important; /* ◀️ 悬停后颜色加深 */
+  background: linear-gradient(135deg in srgb, oklch(0.662625 0.135778 246.809 / 1) 0%, oklch(0.59461 0.139806 250.296 / 1) 100%) !important; /* ◀️ 悬停后颜色加深 */
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(66, 153, 225, 0.4);
+  box-shadow: 0 4px 8px oklch(0.662625 0.135778 246.809 / 0.4);
 }
 
 /* ============================================
@@ -2488,7 +2488,7 @@ body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-sidebar 
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: oklch(0 0 0 / 0.5);
   backdrop-filter: blur(8px);
 }
 
@@ -2598,7 +2598,7 @@ body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-sidebar 
 
 .post-new-php .shiroki-editor-sidebar #side-sortables > .postbox,
 .post-php .shiroki-editor-sidebar #side-sortables > .postbox {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   backdrop-filter: none !important;
   border: none !important;
   border-radius: 0 !important;
@@ -2618,7 +2618,7 @@ body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-sidebar 
 .post-php .shiroki-editor-sidebar #side-sortables .postbox .postbox-header,
 .post-new-php .shiroki-editor-sidebar #side-sortables .postbox > .hndle,
 .post-php .shiroki-editor-sidebar #side-sortables .postbox > .hndle {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   border-radius: 0 !important;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
@@ -2627,7 +2627,7 @@ body.mobile.shiroki-post-edit-layout-ready.post-new-php .shiroki-editor-sidebar 
 
 .post-new-php .shiroki-editor-sidebar #side-sortables .postbox .inside,
 .post-php .shiroki-editor-sidebar #side-sortables .postbox .inside {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   border-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;

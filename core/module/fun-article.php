@@ -368,12 +368,12 @@ function boxmoe_fancybox_replace ($content) {
 }
 add_filter('the_content', 'boxmoe_fancybox_replace', 99);
 
-// fancybox-erphpdown
-//add_filter('the_content', 'erphpdownbuy_replace', 99);
-function erphpdownbuy_replace ($content) {
+// fancybox-zuslolimeow
+//add_filter('the_content', 'zuslolimeowbuy_replace', 99);
+function zuslolimeowbuy_replace ($content) {
 	global $post;
-	$pattern = "/<a(.*?)class=\"erphpdown-iframe erphpdown-buy\"(.*?)>/i";
-	$replacement = '<a$1$2$3$4$5$6 class="fancybox" data-fancybox data-type="iframe" class="erphpdown-buy">';
+	$pattern = "/<a(.*?)class=\"zuslolimeow-iframe zuslolimeow-buy\"(.*?)>/i";
+	$replacement = '<a$1$2$3$4$5$6 class="fancybox" data-fancybox data-type="iframe" class="zuslolimeow-buy">';
 	$content = preg_replace($pattern, $replacement, $content);
 	return $content;
 }
@@ -854,14 +854,14 @@ function boxmoe_post_editors_meta_box_callback($post) {
     
     ?>
     <div class="boxmoe-post-editors-container">
-        <div class="boxmoe-post-creator" style="margin-bottom: 15px; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+        <div class="boxmoe-post-creator" style="margin-bottom: 15px; padding: 10px; background: oklch(0.9551 0 0); border-radius: 4px;">
             <strong>创建者:</strong> <?php echo esc_html($post_author->display_name); ?> (<?php echo esc_html($post_author->user_login); ?>)
         </div>
         
         <div class="boxmoe-search-user-section" style="margin-bottom: 15px;">
             <label for="boxmoe-search-user" style="display: block; margin-bottom: 5px;">搜索用户:</label>
             <input type="text" id="boxmoe-search-user" class="regular-text" placeholder="输入用户ID、用户名或邮箱" style="width: 100%; margin-bottom: 10px;">
-            <div id="boxmoe-search-results" style="max-height: 150px; overflow-y: auto; border: 1px solid #ddd; background: white; display: none;"></div>
+            <div id="boxmoe-search-results" style="max-height: 150px; overflow-y: auto; border: 1px solid oklch(0.8975 0 0); background: oklch(1 0 0); display: none;"></div>
         </div>
         
         <div class="boxmoe-selected-editors">
@@ -871,15 +871,15 @@ function boxmoe_post_editors_meta_box_callback($post) {
                     <?php foreach ($editors as $editor_id): ?>
                         <?php $editor = get_user_by('ID', $editor_id); ?>
                         <?php if ($editor): ?>
-                            <div class="boxmoe-editor-item" data-user-id="<?php echo esc_attr($editor_id); ?>" style="display: inline-block; margin: 5px; padding: 5px 10px; background: #e8f4f8; border: 1px solid #21759b; border-radius: 15px;">
+                            <div class="boxmoe-editor-item" data-user-id="<?php echo esc_attr($editor_id); ?>" style="display: inline-block; margin: 5px; padding: 5px 10px; background: oklch(0.9594 0.0138 219.62); border: 1px solid oklch(0.5312 0.0972 232.91); border-radius: 15px;">
                                 <?php echo esc_html($editor->display_name); ?> (<?php echo esc_html($editor->user_login); ?>)
-                                <button type="button" class="boxmoe-remove-editor" style="background: none; border: none; color: #d9534f; cursor: pointer; margin-left: 5px;">×</button>
+                                <button type="button" class="boxmoe-remove-editor" style="background: none; border: none; color: oklch(0.6192 0.1694 25.05); cursor: pointer; margin-left: 5px;">×</button>
                                 <input type="hidden" name="boxmoe_post_editors[]" value="<?php echo esc_attr($editor_id); ?>">
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p style="color: #999;">暂无添加的编辑者</p>
+                    <p style="color: oklch(0.683 0 0);">暂无添加的编辑者</p>
                 <?php endif; ?>
             </div>
         </div>
@@ -913,14 +913,14 @@ function boxmoe_post_editors_meta_box_callback($post) {
                     if (response.success && response.data.length > 0) {
                         var results = '<ul style="margin: 0; padding: 0; list-style: none;">';
                         $.each(response.data, function(index, user) {
-                            results += '<li data-user-id="' + user.id + '" style="padding: 8px; cursor: pointer; border-bottom: 1px solid #eee;">' +
+                            results += '<li data-user-id="' + user.id + '" style="padding: 8px; cursor: pointer; border-bottom: 1px solid oklch(0.9491 0 0);">' +
                                 '<strong>' + user.display_name + '</strong> (' + user.user_login + ') - ' + user.user_email +
                                 '</li>';
                         });
                         results += '</ul>';
                         results_container.html(results).show();
                     } else {
-                        results_container.html('<p style="padding: 8px; color: #999;">未找到匹配用户</p>').show();
+                        results_container.html('<p style="padding: 8px; color: oklch(0.683 0 0);">未找到匹配用户</p>').show();
                     }
                 }
             });
@@ -934,9 +934,9 @@ function boxmoe_post_editors_meta_box_callback($post) {
             
             // 检查用户是否已添加
             if ($('#boxmoe-editors-list input[value="' + user_id + '"]').length === 0) {
-                var editor_item = '<div class="boxmoe-editor-item" data-user-id="' + user_id + '" style="display: inline-block; margin: 5px; padding: 5px 10px; background: #e8f4f8; border: 1px solid #21759b; border-radius: 15px;">' +
+                var editor_item = '<div class="boxmoe-editor-item" data-user-id="' + user_id + '" style="display: inline-block; margin: 5px; padding: 5px 10px; background: oklch(0.9594 0.0138 219.62); border: 1px solid oklch(0.5312 0.0972 232.91); border-radius: 15px;">' +
                     user_name + ' (' + user_login + ') ' +
-                    '<button type="button" class="boxmoe-remove-editor" style="background: none; border: none; color: #d9534f; cursor: pointer; margin-left: 5px;">×</button>' +
+                    '<button type="button" class="boxmoe-remove-editor" style="background: none; border: none; color: oklch(0.6192 0.1694 25.05); cursor: pointer; margin-left: 5px;">×</button>' +
                     '<input type="hidden" name="boxmoe_post_editors[]" value="' + user_id + '">' +
                     '</div>';
                 
@@ -955,7 +955,7 @@ function boxmoe_post_editors_meta_box_callback($post) {
             
             // 如果没有编辑者，显示提示信息
             if ($('#boxmoe-editors-list .boxmoe-editor-item').length === 0) {
-                $('#boxmoe-editors-list').html('<p style="color: #999;">暂无添加的编辑者</p>');
+                $('#boxmoe-editors-list').html('<p style="color: oklch(0.683 0 0);">暂无添加的编辑者</p>');
             }
         });
         

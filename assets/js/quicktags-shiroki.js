@@ -39,7 +39,7 @@
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    background: rgba(0, 0, 0, 0.5);
+                    background: oklch(0 0 0 / 0.5);
                     backdrop-filter: blur(5px);
                     display: none;
                     justify-content: center;
@@ -50,11 +50,11 @@
                 
                 /* 🎨 弹窗主体 - 拟态玻璃效果 */
                 .shiroki-dialog {
-                    background: rgba(255, 255, 255, 0.85);
+                    background: oklch(1 0 0 / 0.85);
                     backdrop-filter: blur(10px);
                     border-radius: 16px;
-                    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-                    border: 1px solid rgba(255, 255, 255, 0.18);
+                    box-shadow: 0 8px 32px oklch(0.3382 0.1582 271.28 / 0.37);
+                    border: 1px solid oklch(1 0 0 / 0.18);
                     width: 90%;
                     max-width: 400px;
                     overflow: hidden;
@@ -66,14 +66,14 @@
                 /* 🎨 弹窗头部 */
                 .shiroki-dialog-header {
                     padding: 16px 20px;
-                    background: rgba(255, 255, 255, 0.6);
-                    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                    background: oklch(1 0 0 / 0.6);
+                    border-bottom: 1px solid oklch(1 0 0 / 0.2);
                 }
                 
                 .shiroki-dialog-header h3 {
                     margin: 0;
                     font-size: 18px;
-                    color: #333;
+                    color: oklch(0.3211 0 0);
                     font-weight: 600;
                 }
                 
@@ -95,32 +95,32 @@
                     display: block;
                     margin-bottom: 8px;
                     font-size: 14px;
-                    color: #555;
+                    color: oklch(0.4495 0 0);
                     font-weight: 500;
                 }
                 
                 .shiroki-dialog-field input {
                     width: 100%;
                     padding: 10px 12px;
-                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    border: 1px solid oklch(1 0 0 / 0.3);
                     border-radius: 8px;
-                    background: rgba(255, 255, 255, 0.9);
+                    background: oklch(1 0 0 / 0.9);
                     font-size: 14px;
-                    color: #333;
-                    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+                    color: oklch(0.3211 0 0);
+                    box-shadow: inset 0 2px 4px oklch(0 0 0 / 0.05);
                     transition: all 0.3s ease;
                 }
                 
                 .shiroki-dialog-field input:focus {
                     outline: none;
-                    border-color: rgba(100, 100, 255, 0.5);
-                    box-shadow: 0 0 0 3px rgba(100, 100, 255, 0.1);
+                    border-color: oklch(0.5935 0.2241 277.12 / 0.5);
+                    box-shadow: 0 0 0 3px oklch(0.5935 0.2241 277.12 / 0.1);
                 }
                 /* 🎨 弹窗底部 */
                 .shiroki-dialog-footer {
                     padding: 16px 20px;
-                    background: rgba(255, 255, 255, 0.6);
-                    border-top: 1px solid rgba(255, 255, 255, 0.2);
+                    background: oklch(1 0 0 / 0.6);
+                    border-top: 1px solid oklch(1 0 0 / 0.2);
                     display: flex;
                     justify-content: flex-end;
                     gap: 12px;
@@ -141,26 +141,26 @@
                 
                 /* 🎨 取消按钮 */
                 .shiroki-dialog-btn-cancel {
-                    background: rgba(255, 255, 255, 0.8);
-                    color: #666;
-                    border: 1px solid rgba(0, 0, 0, 0.1);
+                    background: oklch(1 0 0 / 0.8);
+                    color: oklch(0.5103 0 0);
+                    border: 1px solid oklch(0 0 0 / 0.1);
                 }
                 
                 .shiroki-dialog-btn-cancel:hover {
-                    background: rgba(255, 255, 255, 1);
-                    color: #333;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    background: oklch(1 0 0);
+                    color: oklch(0.3211 0 0);
+                    box-shadow: 0 2px 8px oklch(0 0 0 / 0.1);
                 }
                 
                 /* 🎨 确定按钮 */
                 .shiroki-dialog-btn-insert {
-                    background: linear-gradient(135deg, rgba(100, 100, 255, 0.8), rgba(150, 100, 255, 0.8));
-                    color: white;
+                    background: linear-gradient(135deg in srgb, oklch(0.5935 0.2241 277.12 / 0.8), oklch(0.6339 0.2197 294.09 / 0.8));
+                    color: oklch(1 0 0);
                 }
                 
                 .shiroki-dialog-btn-insert:hover {
-                    background: linear-gradient(135deg, rgba(100, 100, 255, 1), rgba(150, 100, 255, 1));
-                    box-shadow: 0 4px 12px rgba(100, 100, 255, 0.4);
+                    background: linear-gradient(135deg in srgb, oklch(0.5935 0.2241 277.12), oklch(0.6339 0.2197 294.09));
+                    box-shadow: 0 4px 12px oklch(0.5935 0.2241 277.12 / 0.4);
                 }
             `;
             

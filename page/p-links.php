@@ -45,7 +45,7 @@ get_header();
                       if (!empty($friendlink_url)) {
                       ?>
                       <div style="text-align: center; margin: 20px 0;">
-                          <a href="<?php echo esc_url($friendlink_url); ?>" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 30px; background: linear-gradient(45deg, #ff6b9d, #fecfef); color: #fff; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);">
+                          <a href="<?php echo esc_url($friendlink_url); ?>" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 30px; background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05)); color: oklch(1 0 0); border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; border: none; cursor: pointer; box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.3);">
                               <span>📝</span>
                               <span>提交友链</span>
                               <span>→</span>
@@ -112,7 +112,7 @@ get_header();
                         
                         // 🚨 临时调试功能 - 如果URL中包含debug=1参数，显示调试信息
                         // if (isset($_GET['debug']) && $_GET['debug'] == '1') {
-                        //     echo '<div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border: 1px solid #ccc;">';
+                        //     echo '<div style="background: oklch(0.9551 0 0); padding: 10px; margin: 10px 0; border: 1px solid oklch(0.8452 0 0);">';
                         //     echo '<h4>调试信息</h4>';
                         //     echo '<p><strong>原始内容:</strong> ' . esc_html($post_content) . '</p>';
                         //     echo '<p><strong>提取的分类名称:</strong> ' . esc_html($category_name) . '</p>';
@@ -166,7 +166,7 @@ get_header();
                                                         <img src="<?php echo esc_url($link->link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                                                     <?php else : ?>
                                                         <!-- 默认图标，使用站点图标或文字首字母 -->
-                                                        <div class="default-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                                                        <div class="default-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg in srgb, oklch(0.6271 0.1638 271.53) 0%, oklch(0.5012 0.1384 304.73) 100%); display: flex; align-items: center; justify-content: center; color: oklch(1 0 0); font-size: 24px; font-weight: bold;">
                                                             <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
                                                         </div>
                                                     <?php endif; ?>
@@ -232,7 +232,7 @@ get_header();
                                                             <img src="<?php echo esc_url($link->link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                                                         <?php else : ?>
                                                             <!-- 默认图标，使用站点图标或文字首字母 -->
-                                                            <div class="default-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                                                            <div class="default-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg in srgb, oklch(0.6271 0.1638 271.53) 0%, oklch(0.5012 0.1384 304.73) 100%); display: flex; align-items: center; justify-content: center; color: oklch(1 0 0); font-size: 24px; font-weight: bold;">
                                                                 <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
                                                             </div>
                                                         <?php endif; ?>
@@ -293,7 +293,7 @@ get_header();
                                                     <img src="<?php echo esc_url($link->link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                                                 <?php else : ?>
                                                     <!-- 默认图标，使用站点图标或文字首字母 -->
-                                                    <div class="default-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                                                    <div class="default-icon" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg in srgb, oklch(0.6271 0.1638 271.53) 0%, oklch(0.5012 0.1384 304.73) 100%); display: flex; align-items: center; justify-content: center; color: oklch(1 0 0); font-size: 24px; font-weight: bold;">
                                                         <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
                                                     </div>
                                                 <?php endif; ?>

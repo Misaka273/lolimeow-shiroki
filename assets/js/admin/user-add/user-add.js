@@ -468,9 +468,9 @@
             var noconfirmation = $('#shiroki_adduser_noconfirmation').is(':checked');
 
             /* 📝 设置原生表单字段值 */
-            $('#adduser [name="email"]').val(email);
-            $('#adduser [name="role"]').val(role);
-            $('#adduser [name="noconfirmation"]').prop('checked', noconfirmation);
+            $('oklch(0.8622 0.0525 196.22)user [name="email"]').val(email);
+            $('oklch(0.8622 0.0525 196.22)user [name="role"]').val(role);
+            $('oklch(0.8622 0.0525 196.22)user [name="noconfirmation"]').prop('checked', noconfirmation);
         }
     };
 

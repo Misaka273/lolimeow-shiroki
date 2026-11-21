@@ -138,16 +138,16 @@ function boxmoe_music_player_popup_html() {
             transition: all 0.3s ease; 
         }
         .aplayer-lrc-current { 
-            color: #8b3dff !important; 
+            color: oklch(0.5752 0.2629 294.9) !important; 
             font-weight: 600; 
             transform: scale(1.05); 
         }
         .aplayer-lrc-current-prev, .aplayer-lrc-current-next { 
-            color: rgba(255, 255, 255, 0.6); 
+            color: oklch(1 0 0 / 0.6); 
         }
         /* 暗色模式适配 */
         .dark-theme .aplayer-lrc-current { 
-            color: #a78bfa !important; 
+            color: oklch(0.709 0.1592 293.54) !important; 
         }
         
         /* 音乐弹窗菜单样式 */
@@ -157,7 +157,7 @@ function boxmoe_music_player_popup_html() {
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: oklch(0 0 0 / 0.8);
             z-index: 9999;
             display: none;
             justify-content: center;
@@ -170,15 +170,15 @@ function boxmoe_music_player_popup_html() {
         }
         
         .music-popup-content {
-            background-color: #2c2f36;
+            background-color: oklch(0.3051 0.0133 267.11);
             border-radius: 16px;
             padding: 24px;
             width: 90%;
             max-width: 1200px; /* 增加宽度以容纳三列布局 */
             max-height: 80%;
             overflow: hidden; /* 移除主容器的滚动条 */
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            border: 2px solid #4a4d55;
+            box-shadow: 0 20px 60px oklch(0 0 0 / 0.3);
+            border: 2px solid oklch(0.4204 0.0138 269.36);
         }
         
         /* 🎵 三列布局样式 */
@@ -194,7 +194,7 @@ function boxmoe_music_player_popup_html() {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: oklch(1 0 0 / 0.05);
             border-radius: 12px;
             padding: 16px;
             overflow: hidden;
@@ -206,7 +206,7 @@ function boxmoe_music_player_popup_html() {
             flex: 1.2;
             display: flex;
             flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: oklch(1 0 0 / 0.03);
             border-radius: 12px;
             padding: 16px;
             overflow-y: auto; /* 允许控制区域在内容过多时滚动 */
@@ -218,7 +218,7 @@ function boxmoe_music_player_popup_html() {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: oklch(1 0 0 / 0.05);
             border-radius: 12px;
             padding: 16px;
             overflow: hidden;
@@ -232,11 +232,11 @@ function boxmoe_music_player_popup_html() {
             align-items: center;
             margin-bottom: 16px;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid oklch(1 0 0 / 0.1);
         }
         
         .section-header h4 {
-            color: #a78bfa;
+            color: oklch(0.709 0.1592 293.54);
             margin: 0;
             font-size: 16px;
         }
@@ -249,7 +249,7 @@ function boxmoe_music_player_popup_html() {
         .toggle-btn {
             background: none;
             border: none;
-            color: #a78bfa;
+            color: oklch(0.709 0.1592 293.54);
             font-size: 16px;
             cursor: pointer;
             padding: 4px;
@@ -258,7 +258,7 @@ function boxmoe_music_player_popup_html() {
         }
         
         .toggle-btn:hover {
-            background-color: rgba(167, 139, 250, 0.2);
+            background-color: oklch(0.709 0.1592 293.54 / 0.2);
         }
         
         /* 歌词容器样式 */
@@ -268,7 +268,7 @@ function boxmoe_music_player_popup_html() {
             padding-right: 8px;
             /* 自定义滚动条样式 */
             scrollbar-width: thin;
-            scrollbar-color: rgba(167, 139, 250, 0.5) rgba(255, 255, 255, 0.1);
+            scrollbar-color: oklch(0.709 0.1592 293.54 / 0.5) oklch(1 0 0 / 0.1);
         }
         
         /* Webkit浏览器滚动条样式 */
@@ -277,18 +277,18 @@ function boxmoe_music_player_popup_html() {
         }
         
         .lyrics-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: oklch(1 0 0 / 0.05);
             border-radius: 3px;
         }
         
         .lyrics-container::-webkit-scrollbar-thumb {
-            background: rgba(167, 139, 250, 0.5);
+            background: oklch(0.709 0.1592 293.54 / 0.5);
             border-radius: 3px;
             transition: background 0.2s ease;
         }
         
         .lyrics-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(167, 139, 250, 0.8);
+            background: oklch(0.709 0.1592 293.54 / 0.8);
         }
         
         .lyrics-content {
@@ -297,7 +297,7 @@ function boxmoe_music_player_popup_html() {
         }
         
         .lyrics-line {
-            color: rgba(255, 255, 255, 0.7);
+            color: oklch(1 0 0 / 0.7);
             font-size: 14px;
             line-height: 1.8;
             margin: 8px 0;
@@ -305,13 +305,13 @@ function boxmoe_music_player_popup_html() {
         }
         
         .lyrics-line.active {
-            color: #a78bfa;
+            color: oklch(0.709 0.1592 293.54);
             font-size: 16px;
             font-weight: 600;
         }
         
         .lyrics-loading {
-            color: rgba(255, 255, 255, 0.6);
+            color: oklch(1 0 0 / 0.6);
             text-align: center;
             padding: 20px;
             font-style: italic;
@@ -324,7 +324,7 @@ function boxmoe_music_player_popup_html() {
             padding-right: 8px;
             /* 自定义滚动条样式 */
             scrollbar-width: thin;
-            scrollbar-color: rgba(167, 139, 250, 0.5) rgba(255, 255, 255, 0.1);
+            scrollbar-color: oklch(0.709 0.1592 293.54 / 0.5) oklch(1 0 0 / 0.1);
         }
         
         /* Webkit浏览器滚动条样式 */
@@ -333,18 +333,18 @@ function boxmoe_music_player_popup_html() {
         }
         
         .playlist-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: oklch(1 0 0 / 0.05);
             border-radius: 3px;
         }
         
         .playlist-container::-webkit-scrollbar-thumb {
-            background: rgba(167, 139, 250, 0.5);
+            background: oklch(0.709 0.1592 293.54 / 0.5);
             border-radius: 3px;
             transition: background 0.2s ease;
         }
         
         .playlist-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(167, 139, 250, 0.8);
+            background: oklch(0.709 0.1592 293.54 / 0.8);
         }
         
         .playlist-content {
@@ -362,16 +362,16 @@ function boxmoe_music_player_popup_html() {
         }
         
         .playlist-item:hover {
-            background-color: rgba(167, 139, 250, 0.1);
+            background-color: oklch(0.709 0.1592 293.54 / 0.1);
         }
         
         .playlist-item.active {
-            background-color: rgba(167, 139, 250, 0.2);
-            border-left: 3px solid #a78bfa;
+            background-color: oklch(0.709 0.1592 293.54 / 0.2);
+            border-left: 3px solid oklch(0.709 0.1592 293.54);
         }
         
         .playlist-item-number {
-            color: rgba(255, 255, 255, 0.5);
+            color: oklch(1 0 0 / 0.5);
             font-size: 12px;
             margin-right: 12px;
             min-width: 20px;
@@ -382,24 +382,24 @@ function boxmoe_music_player_popup_html() {
         }
         
         .playlist-item-title {
-            color: #fff;
+            color: oklch(1 0 0);
             font-size: 14px;
             margin-bottom: 2px;
         }
         
         .playlist-item-artist {
-            color: rgba(255, 255, 255, 0.6);
+            color: oklch(1 0 0 / 0.6);
             font-size: 12px;
         }
         
         .playlist-item-duration {
-            color: rgba(255, 255, 255, 0.5);
+            color: oklch(1 0 0 / 0.5);
             font-size: 12px;
             margin-left: 12px;
         }
         
         .playlist-loading {
-            color: rgba(255, 255, 255, 0.6);
+            color: oklch(1 0 0 / 0.6);
             text-align: center;
             padding: 20px;
         }
@@ -410,11 +410,11 @@ function boxmoe_music_player_popup_html() {
             align-items: center;
             margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 1px solid #4a4d55;
+            border-bottom: 1px solid oklch(0.4204 0.0138 269.36);
         }
         
         .music-popup-header h3 {
-            color: #8b3dff;
+            color: oklch(0.5752 0.2629 294.9);
             margin: 0;
             font-size: 20px;
         }
@@ -422,7 +422,7 @@ function boxmoe_music_player_popup_html() {
         .music-popup-close {
             background: none;
             border: none;
-            color: #fff;
+            color: oklch(1 0 0);
             font-size: 24px;
             cursor: pointer;
             padding: 0;
@@ -436,7 +436,7 @@ function boxmoe_music_player_popup_html() {
         }
         
         .music-popup-close:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: oklch(1 0 0 / 0.1);
             transform: rotate(90deg);
         }
         
@@ -445,7 +445,7 @@ function boxmoe_music_player_popup_html() {
         }
         
         .music-section h4 {
-            color: #a78bfa;
+            color: oklch(0.709 0.1592 293.54);
             margin: 0 0 12px 0;
             font-size: 16px;
             display: flex;
@@ -465,7 +465,7 @@ function boxmoe_music_player_popup_html() {
             height: 80px;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px oklch(0 0 0 / 0.2);
         }
         
         .music-cover img {
@@ -479,14 +479,14 @@ function boxmoe_music_player_popup_html() {
         }
         
         .music-title {
-            color: #fff;
+            color: oklch(1 0 0);
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 4px;
         }
         
         .music-artist {
-            color: rgba(255, 255, 255, 0.7);
+            color: oklch(1 0 0 / 0.7);
             font-size: 14px;
         }
         
@@ -498,8 +498,8 @@ function boxmoe_music_player_popup_html() {
         }
         
         .control-btn {
-            background: linear-gradient(135deg, #8b3dff, #a78bfa);
-            color: #fff;
+            background: linear-gradient(135deg in srgb, oklch(0.5752 0.2629 294.9), oklch(0.709 0.1592 293.54));
+            color: oklch(1 0 0);
             border: none;
             padding: 10px 16px;
             border-radius: 8px;
@@ -514,7 +514,7 @@ function boxmoe_music_player_popup_html() {
         
         .control-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 61, 255, 0.4);
+            box-shadow: 0 6px 20px oklch(0.5752 0.2629 294.9 / 0.4);
         }
         
         .control-btn:active {
@@ -529,29 +529,29 @@ function boxmoe_music_player_popup_html() {
         .progress-info {
             display: flex;
             justify-content: space-between;
-            color: rgba(255, 255, 255, 0.7);
+            color: oklch(1 0 0 / 0.7);
             font-size: 12px;
             margin-bottom: 8px;
         }
         
         .progress-bar {
             height: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: oklch(1 0 0 / 0.1);
             border-radius: 4px;
             cursor: pointer;
             overflow: hidden;
             position: relative;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 1px 3px oklch(0 0 0 / 0.2);
         }
         
         .progress-inner {
             height: 100%;
-            background: linear-gradient(90deg, #8b3dff, #a78bfa);
+            background: linear-gradient(90deg in srgb, oklch(0.5752 0.2629 294.9), oklch(0.709 0.1592 293.54));
             border-radius: 4px;
             width: 0%;
             transition: width 0.1s ease;
             position: relative;
-            box-shadow: 0 0 10px rgba(139, 61, 255, 0.5);
+            box-shadow: 0 0 10px oklch(0.5752 0.2629 294.9 / 0.5);
         }
         
         /* 🎵 添加进度条动态效果 */
@@ -562,10 +562,10 @@ function boxmoe_music_player_popup_html() {
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, 
-                rgba(255, 255, 255, 0) 0%, 
-                rgba(255, 255, 255, 0.3) 50%, 
-                rgba(255, 255, 255, 0) 100%);
+            background: linear-gradient(90deg in srgb, 
+                oklch(1 0 0 / 0) 0%, 
+                oklch(1 0 0 / 0.3) 50%, 
+                oklch(1 0 0 / 0) 100%);
             animation: progressShine 2s infinite;
         }
         
@@ -586,7 +586,7 @@ function boxmoe_music_player_popup_html() {
         }
         
         .progress-bar:hover .progress-inner {
-            box-shadow: 0 0 15px rgba(139, 61, 255, 0.8);
+            box-shadow: 0 0 15px oklch(0.5752 0.2629 294.9 / 0.8);
         }
         
         /* 音量控制样式 */
@@ -599,7 +599,7 @@ function boxmoe_music_player_popup_html() {
         .volume-btn {
             background: none;
             border: none;
-            color: #fff;
+            color: oklch(1 0 0);
             font-size: 18px;
             cursor: pointer;
             padding: 8px;
@@ -613,13 +613,13 @@ function boxmoe_music_player_popup_html() {
         }
         
         .volume-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: oklch(1 0 0 / 0.1);
         }
         
         .volume-bar {
             flex: 1;
             height: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: oklch(1 0 0 / 0.1);
             border-radius: 2px;
             cursor: pointer;
             overflow: hidden;
@@ -627,63 +627,63 @@ function boxmoe_music_player_popup_html() {
         
         .volume-inner {
             height: 100%;
-            background: linear-gradient(90deg, #8b3dff, #a78bfa);
+            background: linear-gradient(90deg in srgb, oklch(0.5752 0.2629 294.9), oklch(0.709 0.1592 293.54));
             border-radius: 2px;
             width: 100%;
             transition: width 0.1s ease;
         }
         
         #popup-volume-percent {
-            color: rgba(255, 255, 255, 0.7);
+            color: oklch(1 0 0 / 0.7);
             font-size: 12px;
             min-width: 40px;
         }
         
         /* 🌆 暗色模式适配 */
         .dark-theme .music-popup-content {
-            background-color: #1a1d23;
-            border-color: #33363d;
+            background-color: oklch(0.2303 0.0125 264.29);
+            border-color: oklch(0.3327 0.013 267.15);
         }
         
         .dark-theme .music-popup-header {
-            border-bottom-color: #33363d;
+            border-bottom-color: oklch(0.3327 0.013 267.15);
         }
         
         /* 🌆 暗色模式下进度条样式优化 */
         .dark-theme .progress-bar {
-            background-color: rgba(255, 255, 255, 0.05);
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+            background-color: oklch(1 0 0 / 0.05);
+            box-shadow: inset 0 1px 3px oklch(0 0 0 / 0.4);
         }
         
         .dark-theme .progress-inner {
-            background: linear-gradient(90deg, #a78bfa, #c4b5fd);
-            box-shadow: 0 0 15px rgba(167, 139, 250, 0.6);
+            background: linear-gradient(90deg in srgb, oklch(0.709 0.1592 293.54), oklch(0.8112 0.1013 293.57));
+            box-shadow: 0 0 15px oklch(0.709 0.1592 293.54 / 0.6);
         }
         
         .dark-theme .progress-bar:hover .progress-inner {
-            box-shadow: 0 0 20px rgba(167, 139, 250, 0.9);
+            box-shadow: 0 0 20px oklch(0.709 0.1592 293.54 / 0.9);
         }
         
         /* 🌆 暗色模式下三列布局样式 */
         .dark-theme .music-lyrics-section,
         .dark-theme .music-playlist-section {
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: oklch(1 0 0 / 0.03);
         }
         
         .dark-theme .music-control-section {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: oklch(1 0 0 / 0.02);
         }
         
         .dark-theme .section-header {
-            border-bottom-color: rgba(255, 255, 255, 0.05);
+            border-bottom-color: oklch(1 0 0 / 0.05);
         }
         
         .dark-theme .playlist-item:hover {
-            background-color: rgba(167, 139, 250, 0.08);
+            background-color: oklch(0.709 0.1592 293.54 / 0.08);
         }
         
         .dark-theme .playlist-item.active {
-            background-color: rgba(167, 139, 250, 0.15);
+            background-color: oklch(0.709 0.1592 293.54 / 0.15);
         }
         
         /* 📱 移动端适配样式 */
@@ -721,8 +721,8 @@ function boxmoe_music_player_popup_html() {
             /* 🎵 音乐控制区域在移动端置顶 */
             .music-control-section {
                 order: -1; /* ◀️ 将控制区域移到最前面 */
-                background-color: rgba(139, 61, 255, 0.1); /* ◀️ 突出显示控制区域 */
-                border: 1px solid rgba(139, 61, 255, 0.2);
+                background-color: oklch(0.5752 0.2629 294.9 / 0.1); /* ◀️ 突出显示控制区域 */
+                border: 1px solid oklch(0.5752 0.2629 294.9 / 0.2);
             }
             
             /* 🎵 歌词区域在移动端排第二 */
@@ -1263,9 +1263,9 @@ function boxmoe_music_player_popup_html() {
                             aplayer.setOption("order", aplayer.options.order === "random" ? "list" : "random");
                             // 🎵 更新按钮样式
                             if (aplayer.options.order === "random") {
-                                randomBtn.style.background = "linear-gradient(135deg, #ff6b6b, #ee5a52)";
+                                randomBtn.style.background = "linear-gradient(135deg in srgb, oklch(0.7116 0.1812 22.84), oklch(0.6608 0.1843 26.45))";
                             } else {
-                                randomBtn.style.background = "linear-gradient(135deg, #8b3dff, #a78bfa)";
+                                randomBtn.style.background = "linear-gradient(135deg in srgb, oklch(0.5752 0.2629 294.9), oklch(0.709 0.1592 293.54))";
                             }
                             // console.log("🎵 随机播放切换，当前模式:", aplayer.options.order);
                         } else {
@@ -1293,11 +1293,11 @@ function boxmoe_music_player_popup_html() {
                             aplayer.setOption("loop", newLoop);
                             // 🎵 更新按钮样式
                             if (newLoop === "one") {
-                                loopBtn.style.background = "linear-gradient(135deg, #4ecdc4, #45b7aa)";
+                                loopBtn.style.background = "linear-gradient(135deg in srgb, oklch(0.7762 0.1116 188.54), oklch(0.7117 0.1038 184.66))";
                             } else if (newLoop === "none") {
-                                loopBtn.style.background = "linear-gradient(135deg, #95a5a6, #7f8c8d)";
+                                loopBtn.style.background = "linear-gradient(135deg in srgb, oklch(0.7097 0.0181 201.31), oklch(0.6299 0.0152 202.37))";
                             } else {
-                                loopBtn.style.background = "linear-gradient(135deg, #8b3dff, #a78bfa)";
+                                loopBtn.style.background = "linear-gradient(135deg in srgb, oklch(0.5752 0.2629 294.9), oklch(0.709 0.1592 293.54))";
                             }
                             // console.log("🎵 循环模式切换，当前模式:", newLoop);
                         } else {

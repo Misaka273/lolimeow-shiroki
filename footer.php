@@ -86,12 +86,12 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}?>
                 <defs>
                     <!-- 🌈 渐变定义 -->
                     <linearGradient id="toc-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                        <stop offset="0%" style="stop-color:oklch(0.6271 0.1638 271.53);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:oklch(0.5012 0.1384 304.73);stop-opacity:1" />
                     </linearGradient>
                     <linearGradient id="toc-gradient-dark" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+                        <stop offset="0%" style="stop-color:oklch(0.6056 0.2189 292.72);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:oklch(0.709 0.1592 293.54);stop-opacity:1" />
                     </linearGradient>
                     <filter id="toc-shadow" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur in="SourceAlpha" stdDeviation="2"></feGaussianBlur>

@@ -63,7 +63,7 @@
   font-size: 24px;
   font-weight: var(--admin-font-weight-bold);
   color: var(--admin-current-text-primary);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-shadow: 0 2px 4px oklch(0 0 0 / 0.05);
 }
 
 /* 🎨 标题图标 */
@@ -466,7 +466,7 @@
   align-items: center;
   gap: var(--admin-space-md);
   padding: var(--admin-space-md) var(--admin-space-lg);
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
   border-bottom: 1px solid var(--admin-current-border);
 }
 
@@ -523,7 +523,7 @@
   width: 24px;
   height: 24px;
   border-radius: var(--admin-radius-full);
-  background: rgba(255, 255, 255, 0.9);
+  background: oklch(1 0 0 / 0.9);
   border: 2px solid var(--admin-primary-border);
   cursor: pointer;
   opacity: 0;
@@ -611,7 +611,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--admin-space-sm) var(--admin-space-lg);
-  background: rgba(255, 255, 255, 0.05);
+  background: oklch(1 0 0 / 0.05);
   border-top: 1px solid var(--admin-current-border);
 }
 
@@ -667,7 +667,7 @@
   gap: var(--admin-space-sm);
   padding: var(--admin-space-md) var(--admin-space-lg);
   border-top: 1px solid var(--admin-current-border);
-  background: rgba(255, 255, 255, 0.05);
+  background: oklch(1 0 0 / 0.05);
 }
 
 /* 🔘 操作按钮 */

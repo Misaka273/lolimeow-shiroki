@@ -45,6 +45,8 @@ require_once get_template_directory() . '/core/panel/settings/set-basis.php';
 require_once get_template_directory() . '/core/panel/settings/set-banner.php';
 //SEO优化-----------------------------------------------------------
 require_once get_template_directory() . '/core/panel/settings/set-seo.php';
+//GEO / AI 搜索优化-----------------------------------------------------------
+require_once get_template_directory() . '/core/panel/settings/set-geo.php';
 //文章设置-----------------------------------------------------------
 require_once get_template_directory() . '/core/panel/settings/set-artice.php';
 //页面标语设置-----------------------------------------------------------

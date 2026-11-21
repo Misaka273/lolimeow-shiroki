@@ -55,12 +55,22 @@ class Shiroki_Media_Library_UI {
         
         // 修改媒体库每页显示数量
         add_filter('upload_per_page', array($this, 'set_media_per_page'));
-        
-        // 强制使用网格视图
+
         add_action('load-upload.php', array($this, 'force_grid_view'));
-        
-        // 在管理页脚添加自定义HTML
-        add_action('admin_footer', array($this, 'add_custom_media_ui'));
+        add_action('all_admin_notices', array($this, 'render_custom_media_ui'));
+    }
+
+    /**
+     * WordPress 的列表模式不会加载媒体脚本，统一使用网格模式作为自定义页面的底座。
+     */
+    public function force_grid_view() {
+        if (isset($_GET['mode']) && $_GET['mode'] === 'list') {
+            $_GET['mode'] = 'grid';
+        }
+
+        if (get_user_option('media_library_mode', get_current_user_id()) !== 'grid') {
+            update_user_option(get_current_user_id(), 'media_library_mode', 'grid');
+        }
     }
     
     /**
@@ -68,6 +78,7 @@ class Shiroki_Media_Library_UI {
      */
     public function enqueue_assets($hook) {
         $theme_uri = get_template_directory_uri();
+        $theme_dir = get_template_directory();
         $version = wp_get_theme()->get('Version');
 
         /* 🎨 先加载统一变量文件 */
@@ -80,20 +91,26 @@ class Shiroki_Media_Library_UI {
 
         /* ☀️ 媒体库页面（upload.php）样式 */
         if ($hook === 'upload.php') {
+            $media_css = $theme_dir . '/assets/css/admin/media-library/media-library.css';
+            $media_js = $theme_dir . '/assets/js/admin/media-library/media-library.js';
+
+            // 页面只使用自定义网格，避免隐藏的原生网格再次发起附件查询。
+            wp_dequeue_script('media-grid');
+
             // ☀️ 加载CSS
             wp_enqueue_style(
                 'shiroki-media-library',
                 $theme_uri . '/assets/css/admin/media-library/media-library.css',
                 array('admin-variables'), // ◀️ 依赖变量文件
-                $version
+                is_file($media_css) ? filemtime($media_css) : $version
             );
 
             // 📦 加载JavaScript
             wp_enqueue_script(
                 'shiroki-media-library',
                 $theme_uri . '/assets/js/admin/media-library/media-library.js',
-                array('jquery'),
-                $version,
+                array('jquery', 'wp-plupload'),
+                is_file($media_js) ? filemtime($media_js) : $version,
                 true
             );
 
@@ -102,12 +119,15 @@ class Shiroki_Media_Library_UI {
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'adminUrl' => admin_url(),
                 'nonce' => wp_create_nonce('shiroki_media_nonce'),
+                'mediaFormNonce' => wp_create_nonce('media-form'),
                 'strings' => array(
                     'copySuccess' => '✅ 已复制到剪贴板',
                     'copyError' => '❌ 复制失败',
                     'loading' => '⏳ 加载中...',
                     'noItems' => '📭 暂无媒体文件',
-                    'loadMore' => '加载更多'
+                    'loadMore' => '加载更多',
+                    'retry' => '重试',
+                    'requestFailed' => '媒体文件加载失败，请重试。'
                 )
             ));
         }
@@ -146,49 +166,18 @@ class Shiroki_Media_Library_UI {
     }
     
     /**
-     * 📐 强制使用网格视图
+     * 直接输出自定义媒体库页面，附件由 AJAX 分页填充。
      */
-    public function force_grid_view() {
-        // 如果用户访问的是列表视图，重定向到网格视图
-        if (!isset($_GET['mode']) || $_GET['mode'] !== 'grid') {
-            wp_redirect(admin_url('upload.php?mode=grid'));
-            exit;
-        }
-    }
-    
-    /**
-     * 🎨 添加自定义媒体UI
-     */
-    public function add_custom_media_ui() {
+    public function render_custom_media_ui() {
         $screen = get_current_screen();
-        
-        ?>
-        <?php
-        /* ◀️ 如果不是媒体库页面，不输出自定义UI代码 */
         if (!$screen || $screen->id !== 'upload') {
             return;
         }
         ?>
-        <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            // 完全隐藏原版UI元素
-            $('.view-switch, .wp-list-table, .tablenav, .media-toolbar, .attachments-wrapper, .attachments-browser').hide();
+        <div class="wrap shiroki-media-page">
+            <h1 class="wp-heading-inline">媒体库</h1>
 
-            // 移除主页面多余的空 media-frame-toolbar
-            $('.wrap .media-frame-toolbar').remove();
-
-            // 隐藏WordPress原生的媒体网格（只在主页面操作）
-            $('.wp-media-grid').hide();
-            // 注意：不要隐藏 .media-frame-content .attachments，因为这会影响上传弹窗中的媒体库显示
-            // 改为只隐藏主页面上的特定元素
-            $('.wrap > .media-frame-content .attachments').hide();
-            
-            // 获取原生的【添加新媒体文件】按钮并移动到顶部
-            var $uploadButton = $('.page-title-action');
-            
-            // 在媒体库标题后插入自定义UI
-            var customUI = `
-                <div class="shiroki-media-wrapper">
+            <div class="shiroki-media-wrapper">
                     <!-- 🎯 顶部工具栏：排序方式 + 批量操作 + 添加媒体按钮 -->
                     <div class="shiroki-media-top-bar">
                         <!-- 📊 排序方式 -->
@@ -201,8 +190,8 @@ class Shiroki_Media_Library_UI {
                                 <button class="shiroki-media-sort-btn" data-sort="name" data-order="asc">
                                     📝 名称
                                 </button>
-                                <button class="shiroki-media-sort-btn" data-sort="size" data-order="desc">
-                                    📦 大小
+                                <button class="shiroki-media-sort-btn" data-sort="size" data-order="desc" title="按当前页文件大小排序">
+                                    📦 本页大小
                                 </button>
                                 <button class="shiroki-media-sort-btn" data-sort="type" data-order="asc">
                                     🏷️ 类型
@@ -223,10 +212,27 @@ class Shiroki_Media_Library_UI {
 
                         <!-- 📤 添加媒体按钮容器 -->
                         <div class="shiroki-media-upload-wrapper">
-                            <div class="shiroki-media-upload-container"></div>
+                            <div class="shiroki-media-upload-container"><button type="button" class="shiroki-upload-btn">添加媒体文件</button></div>
                         </div>
                     </div>
                     
+                    <div class="shiroki-upload-area" style="display: none;">
+                        <div class="shiroki-upload-dropzone">
+                            <button type="button" class="shiroki-upload-close" aria-label="关闭上传区域">×</button>
+                            <div class="shiroki-upload-content">
+                                <div class="shiroki-upload-icon">📤</div>
+                                <h3 class="shiroki-upload-title">拖文件至此可上传</h3>
+                                <p class="shiroki-upload-or">或</p>
+                                <button type="button" class="shiroki-upload-select-btn">选择文件</button>
+                                <p class="shiroki-upload-max-size">最大上传文件大小：<?php echo esc_html(size_format(wp_max_upload_size())); ?></p>
+                            </div>
+                            <div class="shiroki-upload-progress" style="display: none;">
+                                <div class="shiroki-upload-progress-bar"><div class="shiroki-upload-progress-fill"></div></div>
+                                <p class="shiroki-upload-progress-text">正在上传...</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- 🧰 自定义媒体库工具栏 -->
                     <div class="shiroki-media-toolbar">
                         <!-- 🔍 搜索框 -->
@@ -260,6 +266,12 @@ class Shiroki_Media_Library_UI {
                         </div>
                     </div>
                     
+                    <div id="shiroki-media-error" class="shiroki-media-error" role="alert" style="display: none;">
+                        <span class="shiroki-media-error-message"></span>
+                        <button type="button" id="shiroki-media-retry">重试</button>
+                    </div>
+                    <div id="shiroki-media-loading" class="shiroki-media-loading" role="status">⏳ 正在加载媒体文件…若长时间无响应，请刷新页面。</div>
+
                     <!-- 📦 自定义网格容器 -->
                     <div class="shiroki-media-grid" id="shiroki-media-grid">
                         <!-- 媒体卡片将通过JavaScript动态插入 -->
@@ -273,193 +285,15 @@ class Shiroki_Media_Library_UI {
                             <polyline points="21 15 16 10 5 21"></polyline>
                         </svg>
                         <div class="shiroki-media-empty-text">📭 暂无媒体文件</div>
-                        <div class="shiroki-media-empty-subtext">点击上方【添加新媒体文件】按钮上传</div>
+                        <div class="shiroki-media-empty-subtext">点击上方【添加媒体文件】按钮上传</div>
                     </div>
-                </div>
-            `;
-            
-            // 插入到 .wrap 容器内
-            $('.wrap > h1').after(customUI);
-            
-            // 创建新的上传按钮（使用按钮而不是链接，以便通过JS触发上传区域展开）
-            var $newUploadBtn = $('<button>', {
-                type: 'button',
-                class: 'page-title-action shiroki-upload-btn',
-                text: '添加媒体文件'
-            });
+                <button type="button" id="shiroki-media-load-more" class="shiroki-media-load-more" style="display: none;">加载更多</button>
+            </div>
 
-            // 创建内联上传区域（初始隐藏）
-            var $uploadArea = $(`
-                <div class="shiroki-upload-area" style="display: none;">
-                    <div class="shiroki-upload-dropzone">
-                        <div class="shiroki-upload-close">×</div>
-                        <div class="shiroki-upload-content">
-                            <div class="shiroki-upload-icon">📤</div>
-                            <h3 class="shiroki-upload-title">拖文件至此可上传</h3>
-                            <p class="shiroki-upload-or">或</p>
-                            <button type="button" class="shiroki-upload-select-btn">选择文件</button>
-                            <p class="shiroki-upload-max-size">最大上传文件大小：<?php echo size_format(wp_max_upload_size()); ?></p>
-                        </div>
-                        <div class="shiroki-upload-progress" style="display: none;">
-                            <div class="shiroki-upload-progress-bar">
-                                <div class="shiroki-upload-progress-fill"></div>
-                            </div>
-                            <p class="shiroki-upload-progress-text">正在上传...</p>
-                        </div>
-                    </div>
-                </div>
-            `);
-
-            // 将按钮和上传区域添加到容器
-            $('.shiroki-media-upload-container').append($newUploadBtn);
-            $('.shiroki-media-toolbar').before($uploadArea);
-
-            // 绑定点击事件，展开/收起上传区域
-            $newUploadBtn.on('click', function(e) {
-                e.preventDefault();
-                $uploadArea.slideToggle(300);
-                $(this).toggleClass('active');
-            });
-
-            // 关闭按钮
-            $uploadArea.find('.shiroki-upload-close').on('click', function() {
-                $uploadArea.slideUp(300);
-                $newUploadBtn.removeClass('active');
-            });
-
-            // 使用WordPress原生上传功能
-            if (typeof wp !== 'undefined' && wp.Uploader) {
-                // 创建上传器配置
-                // 注意：不传递 post_id，让附件成为未关联的媒体文件
-                var uploaderConfig = {
-                    browser: $uploadArea.find('.shiroki-upload-select-btn')[0],
-                    dropzone: $uploadArea.find('.shiroki-upload-dropzone')[0],
-                    params: {
-                        action: 'upload-attachment',
-                        _wpnonce: '<?php echo wp_create_nonce('media-form'); ?>'
-                    },
-                    multipart_params: {
-                        action: 'upload-attachment',
-                        _wpnonce: '<?php echo wp_create_nonce('media-form'); ?>'
-                    },
-                    url: '<?php echo admin_url('admin-ajax.php'); ?>'
-                };
-
-                var uploader = new wp.Uploader(uploaderConfig);
-
-                // 文件添加到队列
-                uploader.uploader.bind('FilesAdded', function(up, files) {
-                    console.log('📤 已选择 ' + files.length + ' 个文件');
-                    // 自动开始上传
-                    up.start();
-                });
-
-                // 上传开始
-                uploader.uploader.bind('BeforeUpload', function(up, file) {
-                    $uploadArea.find('.shiroki-upload-content').hide();
-                    $uploadArea.find('.shiroki-upload-progress').show();
-                    console.log('📤 开始上传:', file.name);
-                });
-
-                // 上传进度
-                uploader.uploader.bind('UploadProgress', function(up, file) {
-                    var percent = file.percent;
-                    $uploadArea.find('.shiroki-upload-progress-fill').css('width', percent + '%');
-                    $uploadArea.find('.shiroki-upload-progress-text').text('正在上传: ' + file.name + ' (' + percent + '%)');
-                });
-
-                // 上传完成
-                uploader.uploader.bind('FileUploaded', function(up, file, response) {
-                    console.log('📤 服务器响应:', response.response);
-                    if (response.response) {
-                        try {
-                            // WordPress 返回的响应格式可能是 JSON 字符串
-                            var responseData = response.response;
-                            // 如果响应包含 < 字符，可能是 HTML 错误页面
-                            if (responseData.indexOf('<') === 0) {
-                                console.error('❌ 服务器返回 HTML 而非 JSON:', responseData.substring(0, 200));
-                                return;
-                            }
-                            var data = JSON.parse(responseData);
-                            // WordPress upload-attachment 返回格式: { success: true, data: {...} }
-                            // 或者直接在 data 中包含附件信息
-                            if (data.success || (data.data && data.data.id)) {
-                                console.log('✅ 上传成功:', data.data.title || data.data.file);
-                            } else if (data.data && data.data.message) {
-                                console.error('❌ 上传失败:', data.data.message);
-                            } else {
-                                console.error('❌ 上传失败:', data);
-                            }
-                        } catch (e) {
-                            console.error('❌ 解析响应失败:', e, '响应内容:', response.response.substring(0, 500));
-                        }
-                    }
-                });
-
-                // 所有上传完成
-                uploader.uploader.bind('UploadComplete', function() {
-                    console.log('✅ 所有文件上传完成');
-                    setTimeout(function() {
-                        $uploadArea.find('.shiroki-upload-progress').hide();
-                        $uploadArea.find('.shiroki-upload-content').show();
-                        $uploadArea.slideUp(300);
-                        $newUploadBtn.removeClass('active');
-
-                        // 刷新媒体库
-                        if (typeof ShirokiMediaLibrary !== 'undefined') {
-                            ShirokiMediaLibrary.state.page = 1;
-                            ShirokiMediaLibrary.state.hasMore = true;
-                            ShirokiMediaLibrary.$grid.empty();
-                            ShirokiMediaLibrary.loadMediaItems();
-                        }
-                    }, 1000);
-                });
-
-                // 上传错误
-                uploader.uploader.bind('Error', function(up, error) {
-                    console.error('❌ 上传错误:', error);
-                    alert('上传失败: ' + (error.message || '未知错误'));
-                    $uploadArea.find('.shiroki-upload-progress').hide();
-                    $uploadArea.find('.shiroki-upload-content').show();
-                });
-
-                // 拖拽事件
-                var $dropzone = $uploadArea.find('.shiroki-upload-dropzone');
-
-                $dropzone.on('dragover', function(e) {
-                    e.preventDefault();
-                    $(this).addClass('drag-over');
-                });
-
-                $dropzone.on('dragleave', function(e) {
-                    e.preventDefault();
-                    $(this).removeClass('drag-over');
-                });
-
-                $dropzone.on('drop', function(e) {
-                    e.preventDefault();
-                    $(this).removeClass('drag-over');
-                });
-            }
-            
-            // 隐藏原生的按钮
-            if ($uploadButton.length) {
-                $uploadButton.hide();
-            }
-            
-            // 触发加载媒体 - 使用延迟确保JS已加载
-            setTimeout(function() {
-                if (typeof ShirokiMediaLibrary !== 'undefined' && ShirokiMediaLibrary.loadMediaItems) {
-                    ShirokiMediaLibrary.loadMediaItems();
-                } else {
-                    console.error('❌ ShirokiMediaLibrary 未加载');
-                }
-            }, 200);
-        });
-        </script>
+        </div>
         <?php
     }
-    
+
     /**
      * 📡 AJAX获取媒体项目
      */
@@ -474,17 +308,26 @@ class Shiroki_Media_Library_UI {
             wp_send_json_error('权限不足');
         }
         
-        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-        $per_page = isset($_POST['per_page']) ? intval($_POST['per_page']) : 8; /* ◀️ 默认每页8条 */
-        $search = isset($_POST['search']) ? sanitize_text_field($_POST['search']) : '';
-        $filter = isset($_POST['filter']) ? sanitize_text_field($_POST['filter']) : 'all';
-        $sort = isset($_POST['sort']) ? sanitize_text_field($_POST['sort']) : 'date';
-        $order = isset($_POST['order']) ? sanitize_text_field($_POST['order']) : 'desc';
-        
-        /* 🔍 是否为搜索模式 */
-        $is_search_mode = !empty($search);
-        
-        // 🔀 设置排序参数
+        $page = isset($_POST['page']) ? min(10000, max(1, absint($_POST['page']))) : 1;
+        $per_page = isset($_POST['per_page']) ? min(24, max(1, absint($_POST['per_page']))) : 10;
+        $search = isset($_POST['search']) && is_string($_POST['search'])
+            ? sanitize_text_field(wp_unslash($_POST['search'])) : '';
+        $filter = isset($_POST['filter']) && is_string($_POST['filter'])
+            ? sanitize_key(wp_unslash($_POST['filter'])) : 'all';
+        $sort = isset($_POST['sort']) && is_string($_POST['sort'])
+            ? sanitize_key(wp_unslash($_POST['sort'])) : 'date';
+        $order = isset($_POST['order']) && is_string($_POST['order'])
+            ? strtolower(sanitize_key(wp_unslash($_POST['order']))) : 'desc';
+
+        if (!in_array($filter, array('all', 'image', 'video', 'audio', 'document', 'file'), true)) {
+            $filter = 'all';
+        }
+        if (!in_array($sort, array('date', 'name', 'size', 'type'), true)) {
+            $sort = 'date';
+        }
+        $order = $order === 'asc' ? 'ASC' : 'DESC';
+
+        // 文件大小默认不具备可用于全局 SQL 排序的独立元数据；先按日期安全分页。
         $orderby = 'date';
         switch ($sort) {
             case 'name':
@@ -494,34 +337,33 @@ class Shiroki_Media_Library_UI {
                 $orderby = 'date';
                 break;
             case 'size':
-                // 文件大小排序需要自定义
-                $orderby = 'meta_value_num';
-                $args['meta_key'] = '_wp_attachment_filesize';
+                $orderby = 'date';
                 break;
             case 'type':
-                $orderby = 'post_mime_type';
+                $orderby = 'date';
                 break;
         }
-        
+
+        $post_status = array('inherit');
+        $attachment_type = get_post_type_object('attachment');
+        if ($attachment_type && current_user_can($attachment_type->cap->read_private_posts)) {
+            $post_status[] = 'private';
+        }
+
         $args = array(
             'post_type' => 'attachment',
-            'post_status' => 'inherit',
-            'orderby' => $orderby,
-            'order' => strtoupper($order)
+            'post_status' => $post_status,
+            'orderby' => array($orderby => $order, 'ID' => $order),
+            'order' => $order,
+            'posts_per_page' => $per_page,
+            'paged' => $page,
+            'ignore_sticky_posts' => true
         );
-        
-        /* 📄 非搜索模式下使用分页，搜索模式加载所有结果 */
-        if (!$is_search_mode) {
-            $args['posts_per_page'] = $per_page; /* ◀️ 懒加载每页8条 */
-            $args['paged'] = $page;
-        } else {
-            /* 🔍 搜索模式加载所有匹配结果 */
-            $args['posts_per_page'] = -1;
-        }
         
         // 🔍 搜索条件
         if (!empty($search)) {
             $args['s'] = $search;
+            add_filter('wp_allow_query_attachment_by_filename', '__return_true');
         }
         
         // 🏷️ 筛选条件
@@ -547,41 +389,72 @@ class Shiroki_Media_Library_UI {
             }
         }
         
-        $query = new WP_Query($args);
-        $items = array();
-        
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
-                $post_id = get_the_ID();
-                $items[] = $this->format_media_item($post_id);
-            }
+        global $wpdb;
+        $type_order_filter = null;
+        if ($sort === 'type') {
+            $type_order_filter = function($orderby) use ($wpdb, $order) {
+                return "{$wpdb->posts}.post_mime_type {$order}, {$wpdb->posts}.post_date DESC, {$wpdb->posts}.ID DESC";
+            };
+            add_filter('posts_orderby', $type_order_filter);
         }
-        
-        wp_reset_postdata();
-        
-        // 移除文档筛选的过滤器
+
+        $wpdb->last_error = '';
+        $query = new WP_Query($args);
+
+        if ($type_order_filter) {
+            remove_filter('posts_orderby', $type_order_filter);
+        }
+        if ($search !== '') {
+            remove_filter('wp_allow_query_attachment_by_filename', '__return_true');
+        }
         if ($filter === 'document') {
             remove_filter('posts_where', array($this, 'filter_document_mime_type'));
         }
-        
-        // 移除文件筛选的过滤器
         if ($filter === 'file') {
             remove_filter('posts_where', array($this, 'filter_file_mime_type'));
         }
-        
-        /* 📊 判断是否还有更多数据 */
-        if ($is_search_mode) {
-            /* 🔍 搜索模式下一次性返回所有结果，没有更多 */
-            $has_more = false;
-        } else {
-            /* 📄 非搜索模式下判断是否还有更多页 */
-            $has_more = $query->max_num_pages > $page;
+
+        if (!empty($wpdb->last_error)) {
+            wp_send_json_error('媒体文件查询失败，请稍后重试。', 500);
         }
-        
+
+        $items = array();
+        foreach ($query->posts as $post) {
+            try {
+                $items[] = $this->format_media_item($post->ID);
+            } catch (Throwable $error) {
+                error_log('Shiroki media item ' . (int) $post->ID . ': ' . $error->getMessage());
+                $items[] = array(
+                    'id' => (int) $post->ID,
+                    'title' => (string) $post->post_title,
+                    'caption' => '',
+                    'description' => '',
+                    'url' => '',
+                    'thumbnail' => '',
+                    'mime_type' => (string) $post->post_mime_type,
+                    'file_type' => 'file',
+                    'file_size' => '',
+                    'file_size_bytes' => 0,
+                    'dimensions' => '',
+                    'date' => (string) $post->post_date,
+                    'icon_svg' => $this->get_file_icon_svg(''),
+                    'file_extension' => '',
+                    'edit_link' => admin_url('post.php?post=' . (int) $post->ID . '&action=edit'),
+                    'delete_link' => ''
+                );
+            }
+        }
+
+        if ($sort === 'size') {
+            usort($items, function($first, $second) use ($order) {
+                $difference = $first['file_size_bytes'] <=> $second['file_size_bytes'];
+                return $order === 'ASC' ? $difference : -$difference;
+            });
+        }
+
         wp_send_json_success(array(
             'items' => $items,
-            'has_more' => $has_more,
+            'has_more' => $query->max_num_pages > $page,
             'total' => $query->found_posts
         ));
     }
@@ -684,10 +557,18 @@ class Shiroki_Media_Library_UI {
      */
     private function format_media_item($post_id) {
         $post = get_post($post_id);
+        if (!$post || $post->post_type !== 'attachment') {
+            throw new RuntimeException('Attachment record is unavailable');
+        }
         $metadata = wp_get_attachment_metadata($post_id);
         $file_url = wp_get_attachment_url($post_id);
         $file_path = get_attached_file($post_id);
         $mime_type = get_post_mime_type($post_id);
+
+        $metadata = is_array($metadata) ? $metadata : array();
+        $file_url = is_string($file_url) ? $file_url : '';
+        $file_path = is_string($file_path) ? $file_path : '';
+        $mime_type = is_string($mime_type) ? $mime_type : '';
         
         // 📐 获取文件尺寸
         $dimensions = '';
@@ -696,37 +577,48 @@ class Shiroki_Media_Library_UI {
         }
         
         // 📦 获取文件大小
-        $file_size = '';
-        if (file_exists($file_path)) {
-            $file_size = size_format(filesize($file_path));
+        $file_size_bytes = 0;
+        if (isset($metadata['filesize']) && is_numeric($metadata['filesize'])) {
+            $file_size_bytes = max(0, (int) $metadata['filesize']);
+        } elseif ($file_path !== '' && is_readable($file_path)) {
+            $file_size_bytes = max(0, (int) wp_filesize($file_path));
         }
+        $file_size = $file_size_bytes > 0 ? size_format($file_size_bytes) : '';
         
         // 🖼️ 获取缩略图
         $thumbnail = wp_get_attachment_image_src($post_id, 'medium');
-        $thumbnail_url = $thumbnail ? $thumbnail[0] : '';
+        $thumbnail_url = is_array($thumbnail) && isset($thumbnail[0]) && is_string($thumbnail[0])
+            ? $thumbnail[0] : '';
         
         // 🔣 获取文件类型图标
         $file_icon = $this->get_file_icon_svg($mime_type);
         
         // 🏷️ 获取文件扩展名（用于类型判断和格式勋章）
-        $file_extension = $this->get_file_extension($file_url);
+        $file_extension = $this->get_file_extension($file_url !== '' ? $file_url : $file_path);
+
+        $edit_link = get_edit_post_link($post_id, 'raw');
+        if (!is_string($edit_link) || $edit_link === '') {
+            $edit_link = admin_url('post.php?post=' . (int) $post_id . '&action=edit');
+        }
+        $delete_link = get_delete_post_link($post_id, '', true);
 
         return array(
             'id' => $post_id,
-            'title' => $post->post_title,
-            'caption' => $post->post_excerpt,
-            'description' => $post->post_content,
+            'title' => (string) $post->post_title,
+            'caption' => (string) $post->post_excerpt,
+            'description' => (string) $post->post_content,
             'url' => $file_url,
             'thumbnail' => $thumbnail_url,
             'mime_type' => $mime_type,
             'file_type' => $this->get_file_type($mime_type, $file_extension),
             'file_size' => $file_size,
+            'file_size_bytes' => $file_size_bytes,
             'dimensions' => $dimensions,
-            'date' => get_the_date('Y-m-d H:i', $post_id),
+            'date' => (string) get_the_date('Y-m-d H:i', $post_id),
             'icon_svg' => $file_icon,
             'file_extension' => $file_extension,
-            'edit_link' => get_edit_post_link($post_id, 'raw'),
-            'delete_link' => get_delete_post_link($post_id, '', true)
+            'edit_link' => $edit_link,
+            'delete_link' => is_string($delete_link) ? $delete_link : ''
         );
     }
     
@@ -734,7 +626,9 @@ class Shiroki_Media_Library_UI {
      * 🏷️ 获取文件扩展名
      */
     private function get_file_extension($file_url) {
-        $extension = pathinfo($file_url, PATHINFO_EXTENSION);
+        $file_url = is_string($file_url) ? $file_url : '';
+        $path = parse_url($file_url, PHP_URL_PATH);
+        $extension = pathinfo(is_string($path) ? $path : $file_url, PATHINFO_EXTENSION);
         return strtolower($extension);
     }
     
@@ -744,31 +638,31 @@ class Shiroki_Media_Library_UI {
     private function get_file_icon_svg($mime_type) {
         // 🖼️ 图片
         if (strpos($mime_type, 'image/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#63b3ed" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7392 0.1154 242.05)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
         }
         
         // 🎬 视频
         if (strpos($mime_type, 'video/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#f687b3" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7565 0.143 355.9)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
         }
         
         // 🎵 音频
         if (strpos($mime_type, 'audio/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.6637 0.1634 296.96)" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
         }
         
         // 📄 PDF
         if ($mime_type === 'application/pdf') {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#fc8181" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7421 0.1503 21.35)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
         }
         
         // 📊 文档
         if (strpos($mime_type, 'application/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#68d391" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.786 0.1379 154.52)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
         }
         
         // 📦 默认
-        return '<svg viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>';
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7457 0.0304 254.72)" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>';
     }
     
     /**

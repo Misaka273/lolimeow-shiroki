@@ -40,7 +40,7 @@
         overflow: hidden !important;
         margin: 0 !important;
         padding: 0 !important;
-        background: rgba(202, 214, 255, 0.6) !important;
+        background: oklch(0.88031344 0.05820952 272.34029 / 0.6) !important;
         backdrop-filter: blur(20px) !important;
     }
     
@@ -53,16 +53,16 @@
         top: -12% !important;
         left: 50% !important;
         transform: translateX(-50%) scale(var(--ball-scale, 1)) !important;
-        background-image: linear-gradient(-45deg, #1c5fd1 0%, #1ec3fa 100%) !important;
+        background-image: linear-gradient(-45deg in srgb, oklch(0.51483623 0.18841147 260.62091) 0%, oklch(0.76424728 0.14427611 228.03676) 100%) !important;
         border-radius: 0 0 50% 50% / 0 0 100% 100% !important;
         z-index: 10 !important;
         transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: 
-            0 8px 32px rgba(28, 95, 209, 0.3) !important,
-            0 16px 64px rgba(28, 95, 209, 0.2) !important,
-            inset 0 2px 4px rgba(255, 255, 255, 0.2) !important;
+            0 8px 32px oklch(0.51483623 0.18841147 260.62091 / 0.3) !important,
+            0 16px 64px oklch(0.51483623 0.18841147 260.62091 / 0.2) !important,
+            inset 0 2px 4px oklch(1 0 0 / 0.2) !important;
         backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border: 1px solid oklch(1 0 0 / 0.2) !important;
     }
     
     /* 🌟 球体光晕效果 - 同步拉宽 */
@@ -74,7 +74,7 @@
         top: -14% !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        background: radial-gradient(circle, rgba(89, 149, 253, 0.1) 0%, transparent 70%) !important;
+        background: radial-gradient(circle in srgb, oklch(0.67856207 0.16643462 260.63623 / 0.1) 0%, oklch(0 0 0 / 0) 70%) !important;
         border-radius: 0 0 50% 50% / 0 0 100% 100% !important;
         z-index: 9 !important;
         pointer-events: none !important;
@@ -152,21 +152,21 @@
     .panel h3 {
         font-size: clamp(14px, 2.1svh, 18px) !important;
         font-weight: 600 !important;
-        color: #fff !important;
+        color: oklch(1 0 0) !important;
         margin: 0 0 clamp(2px, 0.4svh, 4px) 0 !important;
         line-height: 1.2 !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+        text-shadow: 0 2px 4px oklch(0 0 0 / 0.3) !important;
         z-index: 13 !important;
     }
     
     /* 🌟 面板段落样式 - 紧凑布局 */
     .panel p {
         font-size: clamp(11px, 1.5svh, 13px) !important;
-        color: rgba(255, 255, 255, 0.95) !important;
+        color: oklch(1 0 0 / 0.95) !important;
         margin: clamp(2px, 0.4svh, 4px) 0 clamp(4px, 0.7svh, 8px) 0 !important;
         line-height: 1.35 !important;
         max-width: 320px !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        text-shadow: 0 1px 2px oklch(0 0 0 / 0.3) !important;
         z-index: 13 !important;
     }
     
@@ -176,10 +176,10 @@
         padding: clamp(5px, 0.9svh, 8px) clamp(16px, 3svh, 22px) !important;
         font-size: clamp(12px, 1.5svh, 13px) !important;
         font-weight: 600 !important;
-        border: 1px solid #fff !important;
+        border: 1px solid oklch(1 0 0) !important;
         border-radius: 20px !important;
-        background: rgba(255, 255, 255, 0.15) !important;
-        color: #fff !important;
+        background: oklch(1 0 0 / 0.15) !important;
+        color: oklch(1 0 0) !important;
         cursor: pointer !important;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         width: auto !important;
@@ -199,14 +199,14 @@
         left: -100% !important;
         width: 100% !important;
         height: 100% !important;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+        background: linear-gradient(90deg in srgb, oklch(0 0 0 / 0), oklch(1 0 0 / 0.2), oklch(0 0 0 / 0)) !important;
         transition: all 0.3s ease !important;
     }
     
     .panel .btn.transparent:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
+        background: oklch(1 0 0 / 0.2) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+        box-shadow: 0 4px 12px oklch(0 0 0 / 0.2) !important;
     }
     
     .panel .btn.transparent:hover::before {
@@ -276,20 +276,20 @@
     .right-panel h3 {
         font-size: clamp(14px, 2.1svh, 18px) !important;
         font-weight: 600 !important;
-        color: #fff !important;
+        color: oklch(1 0 0) !important;
         margin: 0 0 clamp(2px, 0.4svh, 4px) 0 !important;
         line-height: 1.2 !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+        text-shadow: 0 2px 4px oklch(0 0 0 / 0.3) !important;
     }
     
     .left-panel p,
     .right-panel p {
         font-size: clamp(11px, 1.5svh, 13px) !important;
-        color: rgba(255, 255, 255, 0.95) !important;
+        color: oklch(1 0 0 / 0.95) !important;
         margin: clamp(2px, 0.4svh, 4px) 0 clamp(4px, 0.7svh, 8px) 0 !important;
         line-height: 1.35 !important;
         max-width: 320px !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+        text-shadow: 0 1px 2px oklch(0 0 0 / 0.3) !important;
     }
     
     .left-panel .btn.transparent,
@@ -346,7 +346,7 @@
         overflow: hidden !important;
         position: relative !important;
         box-sizing: border-box !important;
-        background: rgba(255, 255, 255, 0.8) !important;
+        background: oklch(1 0 0 / 0.8) !important;
         backdrop-filter: blur(10px) !important;
         scrollbar-width: none !important;
         zoom: min(1, calc(100cqh / 420px)) !important;
@@ -356,9 +356,9 @@
     form .title {
         font-size: var(--title-size) !important;
         margin: 0 !important;
-        color: #2c3e50 !important;
+        color: oklch(0.35641277 0.03909746 248.97451) !important;
         font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+        text-shadow: 0 1px 2px oklch(1 0 0 / 0.8) !important;
         flex-shrink: 0 !important;
         line-height: 1.2 !important;
     }
@@ -381,9 +381,9 @@
         font-size: clamp(13px, 1.8svh, 15px) !important;
         line-height: 1.2 !important;
         border-radius: 8px !important;
-        background: rgba(255, 255, 255, 0.95) !important;
-        border: 1px solid rgba(89, 149, 253, 0.2) !important;
-        color: #2c3e50 !important;
+        background: oklch(1 0 0 / 0.95) !important;
+        border: 1px solid oklch(0.67856207 0.16643462 260.63623 / 0.2) !important;
+        color: oklch(0.35641277 0.03909746 248.97451) !important;
         display: block !important;
         position: relative !important;
         z-index: 1 !important;
@@ -392,8 +392,8 @@
 
     .floating-label-group label {
         font-size: clamp(12px, 1.7svh, 15px) !important;
-        color: #666 !important;
-        background: transparent !important;
+        color: oklch(0.51027836 0 0) !important;
+        background: oklch(0 0 0 / 0) !important;
         padding: 0 8px !important;
         position: absolute !important;
         left: 14px !important;
@@ -413,8 +413,8 @@
     /* 🌟 激活状态样式 - 增强对比度 */
     .floating-label-group .form-control:focus ~ label,
     .floating-label-group .form-control:not(:placeholder-shown) ~ label {
-        color: #1c5fd1 !important;
-        background: rgba(255, 255, 255, 0.95) !important;
+        color: oklch(0.51483623 0.18841147 260.62091) !important;
+        background: oklch(1 0 0 / 0.95) !important;
         font-size: 12px !important;
         top: 0 !important;
         transform: translateY(-50%) !important;
@@ -425,15 +425,15 @@
 
     /* 🌟 激活状态样式 - 增强对比度 */
     .floating-label-group .form-control:focus {
-        background: rgba(255, 255, 255, 0.98) !important;
-        box-shadow: 0 0 0 3px rgba(89, 149, 253, 0.2) !important;
-        border-color: #1c5fd1 !important;
+        background: oklch(1 0 0 / 0.98) !important;
+        box-shadow: 0 0 0 3px oklch(0.67856207 0.16643462 260.63623 / 0.2) !important;
+        border-color: oklch(0.51483623 0.18841147 260.62091) !important;
     }
 
     .floating-label-group .form-control:focus ~ label,
     .floating-label-group .form-control:not(:placeholder-shown) ~ label {
-        color: #1c5fd1 !important;
-        background: rgba(255, 255, 255, 0.95) !important;
+        color: oklch(0.51483623 0.18841147 260.62091) !important;
+        background: oklch(1 0 0 / 0.95) !important;
         font-size: 12px !important;
         top: 0 !important;
         transform: translateY(-50%) !important;
@@ -456,7 +456,7 @@
     .floating-label-group .Acquire {
         display: inline-block !important;
         background: var(--primary) !important;
-        color: white !important;
+        color: oklch(1 0 0) !important;
         padding: clamp(4px, 0.7svh, 8px) clamp(10px, 2svh, 16px) !important;
         border-radius: 20px !important;
         cursor: pointer !important;
@@ -486,7 +486,7 @@
         right: 10px !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
-        background: transparent !important;
+        background: oklch(0 0 0 / 0) !important;
         border: none !important;
         cursor: pointer !important;
         color: var(--text) !important;
@@ -508,11 +508,11 @@
         left: 0 !important;
         width: 100% !important;
         font-size: 12px !important;
-        color: #dc3545 !important;
+        color: oklch(0.59154958 0.20202597 21.238757) !important;
         margin: 0 !important;
         padding: 0 !important;
         z-index: 3 !important;
-        background: transparent !important;
+        background: oklch(0 0 0 / 0) !important;
         box-sizing: border-box !important;
         text-align: left !important;
     }
@@ -582,8 +582,8 @@
         font-size: clamp(14px, 1.9svh, 16px) !important;
         margin: 0 !important;
         border-radius: 22px !important;
-        background-color: #5995fd !important;
-        color: #fff !important;
+        background-color: oklch(0.67856207 0.16643462 260.63623) !important;
+        color: oklch(1 0 0) !important;
         border: none !important;
         outline: none !important;
         text-transform: uppercase !important;
@@ -599,7 +599,7 @@
         padding: 0 20px !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
-        box-shadow: 0 4px 12px rgba(89, 149, 253, 0.3) !important;
+        box-shadow: 0 4px 12px oklch(0.67856207 0.16643462 260.63623 / 0.3) !important;
     }
     
     /* 🌟 按钮扫光效果 */
@@ -610,10 +610,10 @@
         left: -100% !important;
         width: 100% !important;
         height: 100% !important;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba(255, 255, 255, 0.4) 50%, 
-            transparent 100%) !important;
+        background: linear-gradient(90deg in srgb, 
+            oklch(0 0 0 / 0) 0%, 
+            oklch(1 0 0 / 0.4) 50%, 
+            oklch(0 0 0 / 0) 100%) !important;
         transition: all 0.6s ease !important;
         z-index: 0 !important;
         transform: skewX(-20deg) !important;
@@ -621,9 +621,9 @@
     
     /* 🌟 按钮悬停效果 - 显示扫光 */
     .btn:hover {
-        background-color: #4d84e2 !important;
+        background-color: oklch(0.62129196 0.1539652 260.41651) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 6px 16px rgba(89, 149, 253, 0.4) !important;
+        box-shadow: 0 6px 16px oklch(0.67856207 0.16643462 260.63623 / 0.4) !important;
     }
     
     /* 🌟 按钮悬停 - 扫光动画 */
@@ -634,7 +634,7 @@
     /* 🌟 按钮激活效果 */
     .btn:active {
         transform: translateY(0) scale(0.98) !important;
-        box-shadow: 0 2px 8px rgba(89, 149, 253, 0.3) !important;
+        box-shadow: 0 2px 8px oklch(0.67856207 0.16643462 260.63623 / 0.3) !important;
     }
     
     /* 🌟 确保按钮文本在扫光上方 */
@@ -677,16 +677,16 @@
         max-width: 460px !important;
         text-align: center !important;
         font-size: clamp(8px, 1.2svh, 10px) !important;
-        color: rgba(0, 0, 0, 0.6) !important;
+        color: oklch(0 0 0 / 0.6) !important;
         z-index: 9999 !important;
         line-height: 1.25 !important;
         padding: 3px 8px !important;
         box-sizing: border-box !important;
-        background: rgba(255, 255, 255, 0.6) !important;
+        background: oklch(1 0 0 / 0.6) !important;
         border-radius: 12px !important;
         backdrop-filter: blur(15px) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        box-shadow: 0 2px 8px oklch(0 0 0 / 0.1) !important;
+        border: 1px solid oklch(1 0 0 / 0.5) !important;
     }
     
     .theme-copyright p {
@@ -694,18 +694,18 @@
     }
     
     .theme-copyright a {
-        color: #1a5fb4 !important;
+        color: oklch(0.4923184 0.15057418 256.35796) !important;
         text-decoration: none !important;
     }
     
     /* 🌙 暗色模式适配 */
     [data-bs-theme="dark"] .theme-copyright {
-        color: rgba(255, 255, 255, 0.6) !important;
-        background: rgba(0, 0, 0, 0.3) !important;
+        color: oklch(1 0 0 / 0.6) !important;
+        background: oklch(0 0 0 / 0.3) !important;
     }
     
     [data-bs-theme="dark"] .theme-copyright a {
-        color: #6e9eff !important;
+        color: oklch(0.70843076 0.1516716 263.15103) !important;
     }
     
     /* 🌟 粒子效果隐藏 */
@@ -715,7 +715,7 @@
     
     /* 🌟 背景优化 - 适配半圆顶部 */
     body {
-        background: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 100%) !important;
+        background: linear-gradient(135deg in srgb, oklch(0.96730789 0.01532098 269.98558) 0%, oklch(0.93190737 0.0323725 270.45371) 100%) !important;
         background-image: none !important;
         background-size: 100% 100% !important;
         background-attachment: fixed !important;
@@ -723,7 +723,7 @@
     
     /* 🌟 整体容器优化 */
     .container {
-        background: rgba(255, 255, 255, 0.4) !important;
+        background: oklch(1 0 0 / 0.4) !important;
         backdrop-filter: blur(25px) !important;
     }
     
@@ -736,7 +736,7 @@
     /* 🌟 表单元素焦点优化 */
     input:focus,
     button:focus {
-        outline: 2px solid rgba(89, 149, 253, 0.3) !important;
+        outline: 2px solid oklch(0.67856207 0.16643462 260.63623 / 0.3) !important;
         outline-offset: 2px !important;
     }
     

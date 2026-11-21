@@ -11,6 +11,8 @@ if(!defined('ABSPATH')){
     exit;
 }
 
+require_once __DIR__ . '/fun-theme-install.php';
+
 // 💾 GitHub 仓库配置
 define('SHIROKI_GITHUB_REPO', 'Misaka273/lolimeow-shiroki');
 define('SHIROKI_GITHUB_API', 'https://api.github.com/repos/' . SHIROKI_GITHUB_REPO . '/releases/latest');
@@ -30,7 +32,7 @@ function shiroki_clear_all_cache() {
  * 🎉 获取当前主题版本号
  */
 function shiroki_get_current_version() {
-    $theme = wp_get_theme();
+    $theme = wp_get_theme(shiroki_theme_directory_slug());
     return $theme->get('Version');
 }
 
@@ -104,11 +106,12 @@ function shiroki_inject_theme_update($transient) {
         return $transient;
     }
     
+    $theme_slug = shiroki_theme_directory_slug();
     $github_version = shiroki_get_github_latest_version();
     
     if (!$github_version) {
-        if (isset($transient->response['lolimeow-shiroki'])) {
-            unset($transient->response['lolimeow-shiroki']);
+        if (isset($transient->response[$theme_slug])) {
+            unset($transient->response[$theme_slug]);
         }
         return $transient;
     }
@@ -116,13 +119,11 @@ function shiroki_inject_theme_update($transient) {
     $current_version = shiroki_get_current_version();
     
     if (!version_compare($github_version['version'], $current_version, '>')) {
-        if (isset($transient->response['lolimeow-shiroki'])) {
-            unset($transient->response['lolimeow-shiroki']);
+        if (isset($transient->response[$theme_slug])) {
+            unset($transient->response[$theme_slug]);
         }
         return $transient;
     }
-    
-    $theme_slug = 'lolimeow-shiroki';
     
     $update = array(
         'theme' => $theme_slug,
@@ -136,29 +137,6 @@ function shiroki_inject_theme_update($transient) {
     $transient->response[$theme_slug] = $update;
     
     return $transient;
-}
-
-/**
- * GitHub 下载的 zip 包可能包含版本号前缀的目录，需要重命名
- */
-add_filter('upgrader_source_selection', 'shiroki_fix_upgrader_source_selection', 10, 4);
-function shiroki_fix_upgrader_source_selection($source, $remote_source, $upgrader, $hook_extra) {
-    if (!isset($hook_extra['theme']) || $hook_extra['theme'] !== 'lolimeow-shiroki') {
-        return $source;
-    }
-    
-    $correct_name = 'lolimeow-shiroki';
-    $current_name = basename($source);
-    
-    if ($current_name !== $correct_name) {
-        $new_source = trailingslashit(dirname($source)) . $correct_name;
-        
-        if (@rename($source, $new_source)) {
-            return $new_source;
-        }
-    }
-    
-    return $source;
 }
 
 /**
@@ -185,12 +163,12 @@ function shiroki_update_notice() {
     $update_url = admin_url('update-core.php');
     
     ?>
-    <div class="notice notice-info is-dismissible shiroki-update-notice" style="border-left-color: #2271b1;">
+    <div class="notice notice-info is-dismissible shiroki-update-notice" style="border-left-color: oklch(0.5339 0.1249 247.74);">
         <h3 style="margin-top: 0;">🎉 主题更新提示</h3>
         <p>
             <strong>lolimeow-纸鸢版</strong> 有新版本可用！<br>
             当前版本：<code><?php echo esc_html($current_version); ?></code> | 
-            最新版本：<code style="color: #2271b1;"><?php echo esc_html($github_version['version']); ?></code>
+            最新版本：<code style="color: oklch(0.5339 0.1249 247.74);"><?php echo esc_html($github_version['version']); ?></code>
         </p>
         <p>
             <a href="<?php echo esc_url($update_url); ?>" class="button button-primary">
@@ -200,7 +178,7 @@ function shiroki_update_notice() {
                 📄 查看更新日志
             </a>
         </p>
-        <p style="font-size: 12px; color: #666; margin-top: 10px;">
+        <p style="font-size: 12px; color: oklch(0.5103 0 0); margin-top: 10px;">
             发布时间：<?php echo date('Y-m-d H:i:s', strtotime($github_version['published_at'])); ?>
         </p>
     </div>
@@ -257,7 +235,7 @@ function shiroki_theme_update_badge($prepared_themes) {
     }
     
     foreach ($prepared_themes as $slug => $theme) {
-        if ($theme['id'] === 'lolimeow-shiroki') {
+        if ($theme['id'] === shiroki_theme_directory_slug()) {
             $prepared_themes[$slug]['hasUpdate'] = true;
             $update = array(
                 'new_version' => $github_version['version'],
@@ -319,7 +297,8 @@ function shiroki_add_update_button_script() {
     ?>
     <script>
     jQuery(document).ready(function($) {
-        var themeRow = $('.theme[data-slug="lolimeow-shiroki"]');
+        var themeSlug = <?php echo wp_json_encode(shiroki_theme_directory_slug()); ?>;
+        var themeRow = $('.theme').filter(function() { return $(this).attr('data-slug') === themeSlug; });
         if (themeRow.length) {
             var checkButton = $('<a href="<?php echo admin_url('admin-post.php?action=shiroki_force_check_update'); ?>" class="button" style="margin-left: 10px;">🔄 检查更新</a>');
             var clearButton = $('<a href="<?php echo wp_nonce_url(admin_url('admin-post.php?action=shiroki_clear_cache'), 'shiroki_clear_cache'); ?>" class="button" style="margin-left: 5px;">🗑️ 清理缓存</a>');
@@ -335,7 +314,9 @@ function shiroki_add_update_button_script() {
  */
 add_action('upgrader_process_complete', 'shiroki_after_theme_update', 10, 2);
 function shiroki_after_theme_update($upgrader_object, $hook_extra) {
-    if (isset($hook_extra['themes']) && in_array('lolimeow-shiroki', $hook_extra['themes'])) {
+    if ((isset($hook_extra['themes']) && in_array(shiroki_theme_directory_slug(), $hook_extra['themes'], true))
+        || (($hook_extra['theme'] ?? '') === shiroki_theme_directory_slug())
+        || (($hook_extra['shiroki_install_target'] ?? '') === shiroki_theme_directory_slug())) {
         shiroki_clear_all_cache();
     }
 }

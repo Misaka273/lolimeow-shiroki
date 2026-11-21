@@ -13,13 +13,13 @@
         starCount: 20,           // 🌟 闪烁波点数量 (减少回20)
         risingStarCount: 30,     // 🚀 升空粒子数量 (减少回30)
         colorPalette: [          // 🎨 多彩配色方案
-            '255, 182, 193',     // LightPink
-            '173, 216, 230',     // LightBlue
-            '221, 160, 221',     // Plum
-            '144, 238, 144',     // LightGreen
-            '255, 218, 185',     // PeachPuff
-            '238, 130, 238',     // Violet
-            '64, 224, 208'       // Turquoise
+            '0.8474 0.0858 9.09',    // LightPink
+            '0.8562 0.0489 219.65',  // LightBlue
+            '0.7833 0.1078 326.54', // Plum
+            '0.868 0.1558 144.09',  // LightGreen
+            '0.9113 0.06 63.7',     // PeachPuff
+            '0.7619 0.1861 327.21', // Violet
+            '0.8223 0.1307 185.09'  // Turquoise
         ],
         particleAlpha: 0.5,      // 粒子透明度 ⬅️ 降低透明度
         lineAlpha: 0.4,          // 连线透明度 ⬅️ 降低透明度
@@ -126,7 +126,7 @@
         }
 
         draw() {
-            ctx.fillStyle = `rgba(${this.color}, ${CONFIG.particleAlpha})`;
+            ctx.fillStyle = `oklch(${this.color} / ${CONFIG.particleAlpha})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
@@ -172,14 +172,14 @@
         }
 
         draw() {
-            ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+            ctx.fillStyle = `oklch(${this.color} / ${this.alpha})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
             
             // 🌟 可选：添加一点发光效果
             ctx.shadowBlur = 5;
-            ctx.shadowColor = `rgba(${this.color}, ${this.alpha})`;
+            ctx.shadowColor = `oklch(${this.color} / ${this.alpha})`;
             ctx.fill();
             ctx.shadowBlur = 0; // 重置
         }
@@ -224,7 +224,7 @@
 
         draw() {
             if (this.alpha <= 0) return;
-            ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+            ctx.fillStyle = `oklch(${this.color} / ${this.alpha})`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
@@ -277,8 +277,8 @@
                     
                     // 🌈 创建渐变连线
                     const gradient = ctx.createLinearGradient(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-                    gradient.addColorStop(0, `rgba(${particles[i].color}, ${opacity * CONFIG.lineAlpha})`);
-                    gradient.addColorStop(1, `rgba(${particles[j].color}, ${opacity * CONFIG.lineAlpha})`);
+                    gradient.addColorStop(0, `oklch(${particles[i].color} / ${opacity * CONFIG.lineAlpha})`);
+                    gradient.addColorStop(1, `oklch(${particles[j].color} / ${opacity * CONFIG.lineAlpha})`);
                     
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = 1;

@@ -110,11 +110,11 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
          <animateTransform attributeName="transform" type="translate" additive="sum" from="-40,-40" to="-40,-40"></animateTransform>
       </svg>
 
-      <p style="color: #ffffffff; font-size: 14px; margin-top: 120px; font-family: 'Microsoft YaHei', sans-serif; z-index: 10; position: relative; white-space: normal; text-align: center; width: 100%; line-height: 1.5;">
+      <p style="color: oklch(1 0 0); font-size: 14px; margin-top: 120px; font-family: 'Microsoft YaHei', sans-serif; z-index: 10; position: relative; white-space: normal; text-align: center; width: 100%; line-height: 1.5;">
         🛰️请耐心等待，正在努力加载站点资源🚀
       </p>
    </div>
-   <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity 0.5s ease;}.preloader svg{max-width:80%;max-height:80%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}.preloader-sakura{background:#f8c3cd;text-align:center;height:100%;position:fixed;width:100%;top:0;z-index:1031}.preloader-sakura .st0{fill:#FCFCFC}.preloader-sakura .st1{fill:none;stroke:#FCFCFC;stroke-miterlimit:10;stroke-width:1.1}</style>
+   <style>.preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:oklch(1 0 0);display:flex;justify-content:center;align-items:center;z-index:9999;opacity:1;transition:opacity 0.5s ease;}.preloader svg{max-width:80%;max-height:80%;position:absolute;top:0;left:0;right:0;bottom:0;margin:auto}.preloader-sakura{background:oklch(0.8668 0.0618 5.81);text-align:center;height:100%;position:fixed;width:100%;top:0;z-index:1031}.preloader-sakura .st0{fill:oklch(0.9911 0 0)}.preloader-sakura .st1{fill:none;stroke:oklch(0.9911 0 0);stroke-miterlimit:10;stroke-width:1.1}</style>
   <?php elseif($page_loading_type == 'ripple'): ?>
     <!-- 💧 涟漪式过渡动画容器 -->
     <div id="page-ripple-transition" class="page-ripple-transition">
@@ -189,12 +189,12 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
                   <div class="mobile-logged-menu">
                   <div class="user-wrapper d-lg-flex">
                 <div class="user-login-wrap">
-                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login" data-no-swup>
+                <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_in_link_page())); ?>" class="user-login" data-auth-return-current data-no-swup>
                 <span class="login-text">登录</span></a>
                 </div>
                 <span class="divider">or</span>
                 <div class="user-reg-wrap">
-                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg" data-no-swup>
+                <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_up_link_page())); ?>" class="user-reg" data-auth-return-current data-no-swup>
                 <span class="reg-text">注册</span></a></div>
                 </div>
                   </div>
@@ -270,7 +270,7 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
                     </li>
                     <li>
                         <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" data-swindex="0"><g stroke-dasharray="2"><path d="M12 21v1M21 12h1M12 3v-1M3 12h-1"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.2s" values="4;2"/></path><path d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.2s" dur="0.2s" values="4;2"/></path></g><path fill="currentColor" d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z" opacity="0"><set attributeName="opacity" begin="0.5s" to="1"/></path></g><g fill="currentColor" fill-opacity="0"><path d="m15.22 6.03l2.53-1.94L14.56 4L13.5 1l-1.06 3l-3.19.09l2.53 1.94l-.91 3.06l2.63-1.81l2.63 1.81z"><animate id="lineMdSunnyFilledLoopToMoonFilledLoopTransition0" fill="freeze" attributeName="fill-opacity" begin="0.6s;lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+6s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.2s" dur="0.4s" values="1;0"/></path><path d="M13.61 5.25L15.25 4l-2.06-.05L12.5 2l-.69 1.95L9.75 4l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.2s" dur="0.4s" values="1;0"/></path><path d="M19.61 12.25L21.25 11l-2.06-.05L18.5 9l-.69 1.95l-2.06.05l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+0.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.8s" dur="0.4s" values="1;0"/></path><path d="m20.828 9.731l1.876-1.439l-2.366-.067L19.552 6l-.786 2.225l-2.366.067l1.876 1.439L17.601 12l1.951-1.342L21.503 12z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.6s" dur="0.4s" values="1;0"/></path></g><mask id="lineMdSunnyFilledLoopToMoonFilledLoopTransition1"><circle cx="12" cy="12" r="12" fill="#fff"/><circle cx="22" cy="2" r="3" fill="#fff"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="3;12"/></circle><circle cx="22" cy="2" r="1"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="1;10"/></circle></mask><circle cx="12" cy="12" r="6" fill="currentColor" mask="url(#lineMdSunnyFilledLoopToMoonFilledLoopTransition1)"><set attributeName="opacity" begin="0.5s" to="0"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="6;10"/></circle></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" data-swindex="0"><g stroke-dasharray="2"><path d="M12 21v1M21 12h1M12 3v-1M3 12h-1"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.2s" values="4;2"/></path><path d="M18.5 18.5l0.5 0.5M18.5 5.5l0.5 -0.5M5.5 5.5l-0.5 -0.5M5.5 18.5l-0.5 0.5"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.2s" dur="0.2s" values="4;2"/></path></g><path fill="currentColor" d="M7 6 C7 12.08 11.92 17 18 17 C18.53 17 19.05 16.96 19.56 16.89 C17.95 19.36 15.17 21 12 21 C7.03 21 3 16.97 3 12 C3 8.83 4.64 6.05 7.11 4.44 C7.04 4.95 7 5.47 7 6 Z" opacity="0"><set attributeName="opacity" begin="0.5s" to="1"/></path></g><g fill="currentColor" fill-opacity="0"><path d="m15.22 6.03l2.53-1.94L14.56 4L13.5 1l-1.06 3l-3.19.09l2.53 1.94l-.91 3.06l2.63-1.81l2.63 1.81z"><animate id="lineMdSunnyFilledLoopToMoonFilledLoopTransition0" fill="freeze" attributeName="fill-opacity" begin="0.6s;lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+6s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.2s" dur="0.4s" values="1;0"/></path><path d="M13.61 5.25L15.25 4l-2.06-.05L12.5 2l-.69 1.95L9.75 4l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.2s" dur="0.4s" values="1;0"/></path><path d="M19.61 12.25L21.25 11l-2.06-.05L18.5 9l-.69 1.95l-2.06.05l1.64 1.25l-.59 1.98l1.7-1.17l1.7 1.17z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+0.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+2.8s" dur="0.4s" values="1;0"/></path><path d="m20.828 9.731l1.876-1.439l-2.366-.067L19.552 6l-.786 2.225l-2.366.067l1.876 1.439L17.601 12l1.951-1.342L21.503 12z"><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+3.4s" dur="0.4s" values="0;1"/><animate fill="freeze" attributeName="fill-opacity" begin="lineMdSunnyFilledLoopToMoonFilledLoopTransition0.begin+5.6s" dur="0.4s" values="1;0"/></path></g><mask id="lineMdSunnyFilledLoopToMoonFilledLoopTransition1"><circle cx="12" cy="12" r="12" fill="oklch(1 0 0)"/><circle cx="22" cy="2" r="3" fill="oklch(1 0 0)"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="3;12"/></circle><circle cx="22" cy="2" r="1"><animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18"/><animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="1;10"/></circle></mask><circle cx="12" cy="12" r="6" fill="currentColor" mask="url(#lineMdSunnyFilledLoopToMoonFilledLoopTransition1)"><set attributeName="opacity" begin="0.5s" to="0"/><animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="6;10"/></circle></svg>
                             <span class="ms-2">暗色</span>
                         </button>
                     </li>
@@ -285,12 +285,12 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
                 <?php if(!is_user_logged_in() && get_boxmoe('boxmoe_sign_in_link_switch')): ?>
                 <div class="user-wrapper d-none d-lg-flex">
                 <div class="user-login-wrap">
-                <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="user-login" data-no-swup>
+                <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_in_link_page())); ?>" class="user-login" data-auth-return-current data-no-swup>
                 <span class="login-text">登录</span></a>
                 </div>
                 <span class="divider">or</span>
                 <div class="user-reg-wrap">
-                <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="user-reg" data-no-swup>
+                <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_up_link_page())); ?>" class="user-reg" data-auth-return-current data-no-swup>
                 <span class="reg-text">注册</span></a></div>
                 <img src="<?php echo boxmoe_theme_url(); ?>/assets/images/up-new-iocn.png" class="new-tag" alt="up-new-iocn">
                 </div>
@@ -367,7 +367,7 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
       </div>
     </div>
     <?php
-    $dock_logo_src = get_boxmoe('boxmoe_logo_src');
+    $dock_logo_src = boxmoe_get_mobile_logo_src();
     if (empty($dock_logo_src)) {
       $dock_logo_src = get_boxmoe('boxmoe_favicon_src');
     }
@@ -505,12 +505,12 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
               <i class="fa fa-chevron-right"></i>
             </a>
           <?php else: ?>
-            <a href="<?php echo boxmoe_sign_in_link_page(); ?>" class="mobile-more-item" data-no-swup>
+            <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_in_link_page())); ?>" class="mobile-more-item" data-auth-return-current data-no-swup>
               <i class="fa fa-sign-in"></i>
               <span>登录</span>
               <i class="fa fa-chevron-right"></i>
             </a>
-            <a href="<?php echo boxmoe_sign_up_link_page(); ?>" class="mobile-more-item" data-no-swup>
+            <a href="<?php echo esc_url(boxmoe_auth_entry_url(boxmoe_sign_up_link_page())); ?>" class="mobile-more-item" data-auth-return-current data-no-swup>
               <i class="fa fa-user-plus"></i>
               <span>注册</span>
               <i class="fa fa-chevron-right"></i>
@@ -523,7 +523,7 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
     <?php endif; ?>
     <section class="boxmoe_header_banner">
       <div class="boxmoe_header_banner_img">
-        <img src="<?php  boxmoe_banner_image(); ?>" alt="boxmoe_header_banner_img">
+        <img src="<?php boxmoe_banner_image(); ?>" alt="<?php echo esc_attr(trim(get_bloginfo('name') . ' — ' . get_bloginfo('description'), ' —')); ?>" width="1600" height="500" fetchpriority="high">
         <div class="site-main">
           <?php $welcome_text = boxmoe_banner_welcome(true); 
           if($welcome_text): 
@@ -535,8 +535,8 @@ $search_style_file = $search_style === 'glass' ? 'search-glass.css' :
           <!-- 直接显示欢迎语，不使用打字动画 -->
           <h2 class="<?php echo esc_attr($rainbow_class); ?>"><?php echo esc_html($welcome_text); ?></h2>
           <?php else: ?>
-          <!-- 使用打字动画显示欢迎语 -->
-          <h2 class="boxmoe-typing-animation <?php echo esc_attr($rainbow_class); ?>" data-text="<?php echo esc_attr($welcome_text); ?>"></h2>
+          <!-- 打字动画：标签内先输出完整文案，JS 再清空重播（不跑 JS 的读者也能读到） -->
+          <h2 class="boxmoe-typing-animation <?php echo esc_attr($rainbow_class); ?>" data-text="<?php echo esc_attr($welcome_text); ?>"><?php echo esc_html($welcome_text); ?></h2>
           <?php endif; ?>
           <?php endif; ?>
           <?php echo boxmoe_banner_hitokoto(); ?>

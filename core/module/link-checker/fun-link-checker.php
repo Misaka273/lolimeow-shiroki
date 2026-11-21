@@ -51,7 +51,7 @@ class Shiroki_Friend_Link_Checker {
      * 🔗 初始化钩子
      */
     private function init_hooks() {
-        /* 📋 注册子菜单（优先级 20，确保位于会员管理菜单 erphpdown 99 之上） */
+        /* 📋 注册子菜单（优先级 20，确保位于会员管理菜单 zuslolimeow 99 之上） */
         add_action('admin_menu', array($this, 'register_submenu'), 20);
 
         /* 🎨 加载资源 */

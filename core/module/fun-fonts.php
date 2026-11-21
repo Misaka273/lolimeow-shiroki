@@ -98,7 +98,9 @@ function boxmoe_fonts_build_apply_css($important = false){
 }
 
 function boxmoe_fonts_html_class($output){
-    // ⏳ 首屏即隐藏，避免系统字体先闪再替换
+    // ⏳ 首屏用透明度遮住，等字体就绪再显示。
+    // 不用 visibility:hidden：那样元素不参与布局，不跑 JS 的抓取器/检测器会读到「0 个可见字符」，
+    // 页面就会被判成 JavaScript 空壳。opacity 仍然保留防字体闪烁的效果，但文本始终可读。
     if(!boxmoe_fonts_should_gate()){
         return $output;
     }
@@ -108,7 +110,7 @@ function boxmoe_fonts_html_class($output){
         $output .= ' class="fonts-loading"';
     }
     if(strpos($output, 'style=') === false){
-        $output .= ' style="visibility:hidden"';
+        $output .= ' style="opacity:0"';
     }
     return $output;
 }
@@ -141,20 +143,20 @@ function boxmoe_fonts_early_output(){
 
     $css = boxmoe_fonts_build_face_css($faces, 'block');
     $css .= boxmoe_fonts_build_apply_css();
-    $css .= 'html.fonts-loading{visibility:hidden;}html.fonts-ready{visibility:visible;}';
+    $css .= 'html.fonts-loading{opacity:0;}html.fonts-ready{opacity:1;transition:opacity .16s ease;}';
 
     echo '<style id="shiroki-fonts-critical">' . $css . '</style>' . "\n";
-    echo '<noscript><style>html.fonts-loading{visibility:visible}html[style*="visibility:hidden"]{visibility:visible}</style></noscript>' . "\n";
+    echo '<noscript><style>html.fonts-loading{opacity:1!important}html[style*="opacity:0"]{opacity:1!important}</style></noscript>' . "\n";
 
     $families_json = wp_json_encode(array_values($gate_names));
     echo '<script id="shiroki-fonts-gate">';
     echo '(function(){';
     echo 'var html=document.documentElement;';
-    echo 'if(html.classList.contains("fonts-ready")){html.style.visibility="";return;}';
+    echo 'if(html.classList.contains("fonts-ready")){html.style.opacity="";return;}';
     echo 'html.classList.add("fonts-loading");';
     echo 'var families=' . $families_json . ';';
     echo 'var done=false;';
-    echo 'function reveal(){if(done)return;done=true;html.classList.remove("fonts-loading");html.classList.add("fonts-ready");html.style.visibility="";}';
+    echo 'function reveal(){if(done)return;done=true;html.classList.remove("fonts-loading");html.classList.add("fonts-ready");html.style.opacity="";}';
     echo 'setTimeout(reveal,3000);';
     echo 'if(!families||!families.length||!document.fonts||!document.fonts.load){reveal();return;}';
     echo 'var ready=true;';

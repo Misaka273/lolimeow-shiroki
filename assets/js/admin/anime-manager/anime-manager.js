@@ -298,7 +298,7 @@
                     (rating > 0 ? '<div class="shiroki-anime-rating"><span>⭐</span><span>' + rating.toFixed(1) + '</span></div>' : '') +
                     '</div>';
             } else {
-                coverHtml = '<div class="shiroki-anime-cover" style="background: linear-gradient(135deg, var(--admin-primary-bg) 0%, var(--admin-purple-bg) 100%); display: flex; align-items: center; justify-content: center;">' +
+                coverHtml = '<div class="shiroki-anime-cover" style="background: linear-gradient(135deg in srgb, var(--admin-primary-bg) 0%, var(--admin-purple-bg) 100%); display: flex; align-items: center; justify-content: center;">' +
                     '<span class="shiroki-anime-status-badge ' + statusClass + '" style="position: relative; top: auto; left: auto;">' + this.escapeHtml(statusConfig.label) + '</span>' +
                     '</div>';
             }

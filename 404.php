@@ -8,6 +8,7 @@ if(!defined('ABSPATH')){echo'Look your sister';exit;}
 
 // 🎨 获取站点 LOGO「主题 LOGO设置接管站点图标」
 $shiroki_site_logo = function_exists('boxmoe_get_logo_src') ? boxmoe_get_logo_src() : get_site_icon_url();
+$shiroki_mobile_logo = get_boxmoe('boxmoe_mobile_logo_src');
 
 // 🎨 获取站点名称
 $shiroki_site_name = get_bloginfo('name');
@@ -96,7 +97,13 @@ $shiroki_favicon_path = $shiroki_template_uri . '/assets/images/favicon.ico';
                     <span class="header__button-text"><?php echo esc_html($shiroki_404_button_text); ?></span>
                     <?php 
                     if ($shiroki_site_logo) {
+                        if ($shiroki_mobile_logo && $shiroki_mobile_logo !== $shiroki_site_logo) {
+                            echo '<picture><source media="(max-width: 991px)" srcset="' . esc_url($shiroki_mobile_logo) . '">';
+                        }
                         echo '<img src="' . esc_url($shiroki_site_logo) . '" alt="' . esc_attr($shiroki_site_name) . '" class="header__button-logo" >';
+                        if ($shiroki_mobile_logo && $shiroki_mobile_logo !== $shiroki_site_logo) {
+                            echo '</picture>';
+                        }
                     }
                     ?>
                     <span class="header__button-site-name"><?php echo esc_html($shiroki_site_name); ?></span>

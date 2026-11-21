@@ -570,20 +570,20 @@ function showToast(message, isSuccess = true) {
     
     // 漫画风背景样式
     const comicBackground = `
-        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        background: linear-gradient(135deg in srgb, oklch(0.7912 0.1211 17.63) 0%, oklch(0.8904 0.0504 36.5) 99%, oklch(0.8904 0.0504 36.5) 100%);
         border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 15px oklch(0 0 0 / 0.2);
         font-family: 'Comic Sans MS', cursive, sans-serif;
     `;
     
     const toastHtml = `
         <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="${comicBackground}">
-            <div class="toast-header" style="background: rgba(255, 255, 255, 0.8); border-bottom: none;">
+            <div class="toast-header" style="background: oklch(1 0 0 / 0.8); border-bottom: none;">
                 <img src="${siteLogo}" class="rounded me-2 avatar-xs" alt="网站logo">
-                <strong class="me-auto" style="color: #ff6b6b;">温馨提示</strong>
+                <strong class="me-auto" style="color: oklch(0.7116 0.1812 22.84);">温馨提示</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body" style="color: #2d3436;">
+            <div class="toast-body" style="color: oklch(0.3192 0.0102 216.79);">
                 ${copyContent}
             </div>
         </div>
@@ -712,16 +712,16 @@ function initMobileUserPanel() {
                 top: auto;
                 bottom: calc(var(--mobile-dock-height, 64px) + var(--mobile-dock-bump, 32px) + 12px + var(--mobile-dock-safe-bottom, 0px) + var(--mobile-dock-vv-bottom, 0px));
                 right: 12px;
-                background: white;
+                background: oklch(1 0 0);
                 border-radius: 12px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+                box-shadow: 0 8px 32px oklch(0 0 0 / 0.15);
                 z-index: 99999;
                 min-width: 220px;
                 opacity: 0;
                 visibility: hidden;
                 transform: translateY(10px);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                border: 1px solid rgba(0,0,0,0.1);
+                border: 1px solid oklch(0 0 0 / 0.1);
                 overflow: hidden;
             `;
             document.body.appendChild(dropdownMenu);
@@ -781,18 +781,18 @@ function initMobileUserPanel() {
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
-                        color: #333;
+                        color: oklch(0.3211 0 0);
                         text-decoration: none;
                         font-size: 15px;
                         font-weight: 500;
                         transition: all 0.2s ease;
-                        background: transparent;
+                        background: oklch(0 0 0 / 0);
                         border: none;
                         width: 100%;
                         text-align: left;
                         box-sizing: border-box;
                     ">
-                        <i class="fa fa-user-circle" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
+                        <i class="fa fa-user-circle" style="margin-right: 14px; width: 20px; text-align: center; color: oklch(0.551 0.0234 264.36);"></i>
                         <span>会员中心</span>
                     </a>` : ''}
                     ${admin ? `
@@ -800,18 +800,18 @@ function initMobileUserPanel() {
                             display: flex;
                             align-items: center;
                             padding: 14px 20px;
-                            color: #333;
+                            color: oklch(0.3211 0 0);
                             text-decoration: none;
                             font-size: 15px;
                             font-weight: 500;
                             transition: all 0.2s ease;
-                            background: transparent;
+                            background: oklch(0 0 0 / 0);
                             border: none;
                             width: 100%;
                             text-align: left;
                             box-sizing: border-box;
                         ">
-                            <i class="fa fa-cog" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
+                            <i class="fa fa-cog" style="margin-right: 14px; width: 20px; text-align: center; color: oklch(0.551 0.0234 264.36);"></i>
                             <span>后台管理</span>
                         </a>
                     ` : ''}
@@ -819,18 +819,18 @@ function initMobileUserPanel() {
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
-                        color: #333;
+                        color: oklch(0.3211 0 0);
                         text-decoration: none;
                         font-size: 15px;
                         font-weight: 500;
                         transition: all 0.2s ease;
-                        background: transparent;
+                        background: oklch(0 0 0 / 0);
                         border: none;
                         width: 100%;
                         text-align: left;
                         box-sizing: border-box;
                     ">
-                        <i class="fa fa-sign-out" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
+                        <i class="fa fa-sign-out" style="margin-right: 14px; width: 20px; text-align: center; color: oklch(0.551 0.0234 264.36);"></i>
                         <span>注销登录</span>
                     </a>
                 </div>
@@ -840,10 +840,10 @@ function initMobileUserPanel() {
             const items = dropdownMenu.querySelectorAll('.mobile-dropdown-item');
             items.forEach(item => {
                 item.addEventListener('mouseenter', () => {
-                    item.style.backgroundColor = '#f3f4f6';
+                    item.style.backgroundColor = 'oklch(0.967 0.0029 264.54)';
                 });
                 item.addEventListener('mouseleave', () => {
-                    item.style.backgroundColor = 'transparent';
+                    item.style.backgroundColor = 'oklch(0 0 0 / 0)';
                 });
             });
         };
@@ -901,31 +901,31 @@ function initMobileUserPanel() {
                           document.body.classList.contains('dark-theme');
             
             if (isDark) {
-                dropdownMenu.style.backgroundColor = '#1f2937';
-                dropdownMenu.style.borderColor = 'rgba(255,255,255,0.1)';
+                dropdownMenu.style.backgroundColor = 'oklch(0.2781 0.0296 256.85)';
+                dropdownMenu.style.borderColor = 'oklch(1 0 0 / 0.1)';
                 
                 const items = dropdownMenu.querySelectorAll('.mobile-dropdown-item');
                 items.forEach(item => {
-                    item.style.color = '#f9fafb';
+                    item.style.color = 'oklch(0.9846 0.0017 247.84)';
                     item.addEventListener('mouseenter', () => {
-                        item.style.backgroundColor = '#374151';
+                        item.style.backgroundColor = 'oklch(0.3729 0.0306 259.73)';
                     });
                     item.addEventListener('mouseleave', () => {
-                        item.style.backgroundColor = 'transparent';
+                        item.style.backgroundColor = 'oklch(0 0 0 / 0)';
                     });
                 });
             } else {
-                dropdownMenu.style.backgroundColor = 'white';
-                dropdownMenu.style.borderColor = 'rgba(0,0,0,0.1)';
+                dropdownMenu.style.backgroundColor = 'oklch(1 0 0)';
+                dropdownMenu.style.borderColor = 'oklch(0 0 0 / 0.1)';
                 
                 const items = dropdownMenu.querySelectorAll('.mobile-dropdown-item');
                 items.forEach(item => {
-                    item.style.color = '#374151';
+                    item.style.color = 'oklch(0.3729 0.0306 259.73)';
                     item.addEventListener('mouseenter', () => {
-                        item.style.backgroundColor = '#f3f4f6';
+                        item.style.backgroundColor = 'oklch(0.967 0.0029 264.54)';
                     });
                     item.addEventListener('mouseleave', () => {
-                        item.style.backgroundColor = 'transparent';
+                        item.style.backgroundColor = 'oklch(0 0 0 / 0)';
                     });
                 });
             }
@@ -953,16 +953,16 @@ function initMobileUserPanel() {
                 top: auto;
                 bottom: calc(var(--mobile-dock-height, 64px) + var(--mobile-dock-bump, 32px) + 12px + var(--mobile-dock-safe-bottom, 0px) + var(--mobile-dock-vv-bottom, 0px));
                 right: 12px;
-                background: white;
+                background: oklch(1 0 0);
                 border-radius: 12px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+                box-shadow: 0 8px 32px oklch(0 0 0 / 0.15);
                 z-index: 99999;
                 min-width: 220px;
                 opacity: 0;
                 visibility: hidden;
                 transform: translateY(10px);
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                border: 1px solid rgba(0,0,0,0.1);
+                border: 1px solid oklch(0 0 0 / 0.1);
                 overflow: hidden;
             `;
             document.body.appendChild(dropdownMenu);
@@ -1002,36 +1002,36 @@ function initMobileUserPanel() {
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
-                        color: #333;
+                        color: oklch(0.3211 0 0);
                         text-decoration: none;
                         font-size: 15px;
                         font-weight: 500;
                         transition: all 0.2s ease;
-                        background: transparent;
+                        background: oklch(0 0 0 / 0);
                         border: none;
                         width: 100%;
                         text-align: left;
                         box-sizing: border-box;
                     ">
-                        <i class="fa fa-sign-in" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
+                        <i class="fa fa-sign-in" style="margin-right: 14px; width: 20px; text-align: center; color: oklch(0.551 0.0234 264.36);"></i>
                         <span>登录</span>
                     </a>
                     <a href="${registerLink}" class="mobile-dropdown-item" data-no-swup style="
                         display: flex;
                         align-items: center;
                         padding: 14px 20px;
-                        color: #333;
+                        color: oklch(0.3211 0 0);
                         text-decoration: none;
                         font-size: 15px;
                         font-weight: 500;
                         transition: all 0.2s ease;
-                        background: transparent;
+                        background: oklch(0 0 0 / 0);
                         border: none;
                         width: 100%;
                         text-align: left;
                         box-sizing: border-box;
                     ">
-                        <i class="fa fa-user-plus" style="margin-right: 14px; width: 20px; text-align: center; color: #6b7280;"></i>
+                        <i class="fa fa-user-plus" style="margin-right: 14px; width: 20px; text-align: center; color: oklch(0.551 0.0234 264.36);"></i>
                         <span>注册</span>
                     </a>
                 </div>
@@ -1041,10 +1041,10 @@ function initMobileUserPanel() {
             const items = dropdownMenu.querySelectorAll('.mobile-dropdown-item');
             items.forEach(item => {
                 item.addEventListener('mouseenter', () => {
-                    item.style.backgroundColor = '#f3f4f6';
+                    item.style.backgroundColor = 'oklch(0.967 0.0029 264.54)';
                 });
                 item.addEventListener('mouseleave', () => {
-                    item.style.backgroundColor = 'transparent';
+                    item.style.backgroundColor = 'oklch(0 0 0 / 0)';
                 });
             });
         };
@@ -1102,31 +1102,31 @@ function initMobileUserPanel() {
                           document.body.classList.contains('dark-theme');
             
             if (isDark) {
-                dropdownMenu.style.backgroundColor = '#1f2937';
-                dropdownMenu.style.borderColor = 'rgba(255,255,255,0.1)';
+                dropdownMenu.style.backgroundColor = 'oklch(0.2781 0.0296 256.85)';
+                dropdownMenu.style.borderColor = 'oklch(1 0 0 / 0.1)';
                 
                 const items = dropdownMenu.querySelectorAll('.mobile-dropdown-item');
                 items.forEach(item => {
-                    item.style.color = '#f9fafb';
+                    item.style.color = 'oklch(0.9846 0.0017 247.84)';
                     item.addEventListener('mouseenter', () => {
-                        item.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                        item.style.backgroundColor = 'oklch(1 0 0 / 0.1)';
                     });
                     item.addEventListener('mouseleave', () => {
-                        item.style.backgroundColor = 'transparent';
+                        item.style.backgroundColor = 'oklch(0 0 0 / 0)';
                     });
                 });
             } else {
-                dropdownMenu.style.backgroundColor = 'white';
-                dropdownMenu.style.borderColor = 'rgba(0,0,0,0.1)';
+                dropdownMenu.style.backgroundColor = 'oklch(1 0 0)';
+                dropdownMenu.style.borderColor = 'oklch(0 0 0 / 0.1)';
                 
                 const items = dropdownMenu.querySelectorAll('.mobile-dropdown-item');
                 items.forEach(item => {
-                    item.style.color = '#374151';
+                    item.style.color = 'oklch(0.3729 0.0306 259.73)';
                     item.addEventListener('mouseenter', () => {
-                        item.style.backgroundColor = '#f3f4f6';
+                        item.style.backgroundColor = 'oklch(0.967 0.0029 264.54)';
                     });
                     item.addEventListener('mouseleave', () => {
-                        item.style.backgroundColor = 'transparent';
+                        item.style.backgroundColor = 'oklch(0 0 0 / 0)';
                     });
                 });
             }
@@ -1860,34 +1860,44 @@ function initTableOfContents() {
         return;
     }
 
-    const headers = content.querySelectorAll('h1, h2, h3, h4');
+    const headers = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
     if (headers.length === 0) {
         tocContainer.style.display = 'none';
         return;
     }
 
-    // 🔢 生成目录编号
     let isScrolling;
-    const counters = [0, 0, 0, 0];
     headers.forEach((header, index) => {
         const level = parseInt(header.tagName[1]) - 1;
-        counters[level]++;
-        for(let i = level + 1; i < 4; i++) counters[i] = 0;
-
-        const numberParts = [];
-        for(let i = 0; i <= level; i++) {
-            if(counters[i] > 0) numberParts.push(counters[i]);
-        }
-        const numberStr = numberParts.join('.');
 
         const link = document.createElement('a');
         const id = `header-${index}`;
         header.id = id;
         link.href = `#${id}`;
-        link.textContent = `${numberStr} ${header.textContent}`;
-        link.style.paddingLeft = `${level * 10}px`;
+        link.dataset.headingLevel = header.tagName.toLowerCase();
+        link.textContent = header.textContent.trim();
+        link.title = link.textContent;
+        link.style.paddingLeft = `${10 + level * 10}px`;
         tocList.appendChild(link);
     });
+
+    const syncTocTitles = () => {
+        tocList.querySelectorAll('a').forEach(link => {
+            if (link.scrollWidth > link.clientWidth + 1) {
+                link.title = link.textContent;
+            } else {
+                link.removeAttribute('title');
+            }
+        });
+    };
+
+    window.addEventListener('resize', () => {
+        if (toc.classList.contains('show')) requestAnimationFrame(syncTocTitles);
+    }, { signal });
+
+    tocList.addEventListener('focusout', () => {
+        if (toc.classList.contains('show')) requestAnimationFrame(syncTocTitles);
+    }, { signal });
 
     // 📈 计算阅读进度「基于 SVG 圆周长 276.46」
     const circumference = 276.46;
@@ -2019,6 +2029,7 @@ function initTableOfContents() {
                 case 'toc':
                     // 📋 打开目录面板
                     toc.classList.add('show');
+                    requestAnimationFrame(syncTocTitles);
                     tocWheelMenu.classList.remove('show');
                     wheelMenuOpen = false;
                     tocBtn.classList.remove('active');
@@ -2060,13 +2071,13 @@ window.initTableOfContents = initTableOfContents;
 // 标签颜色初始化
 function initTagColors() {
     const colors = [
-        "#83ea6c", "#1dd7c2", "#85b2f4", "#ffcf00", "#f4c8c6", "#e6f2e4", 
-        "#83ea6c", "#1dd7c2", "#85b2f4", "#0dcaf0", "#e8d8ff", "#ffd700", 
-        "#ff7f50", "#6495ed", "#b0e0e6", "#ff6347", "#98fb98", "#dda0dd", 
-        "#add8e6", "#ff4500", "#d3d3d3", "#00bfff", "#ff1493", "#ff6347", 
-        "#8a2be2", "#7fff00", "#d2691e", "#a52a2a", "#9acd32", "#ff8c00", 
-        "#dcdcdc", "#dc143c", "#f0e68c", "#ff00ff", "#4b0082", "#8b0000", 
-        "#e9967a", "#ff00ff", "#2e8b57", "#3cb371", "#f5deb3", "#ff69b4"
+        "oklch(0.8471 0.1903 140.04)", "oklch(0.7909 0.1377 182.36)", "oklch(0.7572 0.1073 257.84)", "oklch(0.871 0.1781 91.77)", "oklch(0.8703 0.0503 21.22)", "oklch(0.9483 0.0225 141.23)", 
+        "oklch(0.8471 0.1903 140.04)", "oklch(0.7909 0.1377 182.36)", "oklch(0.7572 0.1073 257.84)", "oklch(0.7749 0.138 218.05)", "oklch(0.9072 0.0552 303.92)", "oklch(0.8868 0.1822 95.33)", 
+        "oklch(0.7351 0.168 40.25)", "oklch(0.6746 0.1414 261.34)", "oklch(0.8751 0.0502 205.73)", "oklch(0.6962 0.1955 32.32)", "oklch(0.9035 0.1624 144.09)", "oklch(0.7833 0.1078 326.54)", 
+        "oklch(0.8562 0.0489 219.65)", "oklch(0.6602 0.2294 35.4)", "oklch(0.8669 0 0)", "oklch(0.7554 0.1534 231.64)", "oklch(0.6549 0.2613 356.94)", "oklch(0.6962 0.1955 32.32)", 
+        "oklch(0.5338 0.2503 301.37)", "oklch(0.8903 0.2648 136.01)", "oklch(0.6344 0.155 50.27)", "oklch(0.4806 0.1597 25.56)", "oklch(0.7849 0.1837 126.64)", "oklch(0.7505 0.1791 58.28)", 
+        "oklch(0.8945 0 0)", "oklch(0.5712 0.2219 20.09)", "oklch(0.9135 0.1119 102.83)", "oklch(0.7017 0.3225 328.36)", "oklch(0.339 0.1793 301.68)", "oklch(0.3999 0.1641 29.23)", 
+        "oklch(0.7507 0.1082 39.39)", "oklch(0.7017 0.3225 328.36)", "oklch(0.5685 0.1187 154.95)", "oklch(0.684 0.144 155)", "oklch(0.9088 0.0615 83.03)", "oklch(0.7283 0.1971 351.99)"
     ];  
     document.querySelectorAll('.blog-post .tagfa').forEach((element, index) => {
         if (index < colors.length) {
@@ -3123,7 +3134,7 @@ function initCodeCopy() {
     clipboard.on('success', function(e) {
         e.clearSelection();
         const trigger = e.trigger;
-        trigger.innerHTML = '<span style="color:#32cd32"><i class="fa fa-check-square-o" aria-hidden="true"></i> 复制成功</span>';     
+        trigger.innerHTML = '<span style="color:oklch(0.7419 0.2286 142.83)"><i class="fa fa-check-square-o" aria-hidden="true"></i> 复制成功</span>';     
         setTimeout(() => {
             trigger.innerHTML = '🧑🏻‍💻</i> 复制代码';
         }, 3000);
@@ -3377,8 +3388,8 @@ function initTaskList() {
                 display: inline-block;
                 width: 12px;
                 height: 12px;
-                border: 2px solid rgba(0, 0, 0, 0.3);
-                border-top-color: #000;
+                border: 2px solid oklch(0 0 0 / 0.3);
+                border-top-color: oklch(0 0 0);
                 border-radius: 50%;
                 margin-left: 5px;
                 animation: spin 1s linear infinite;
@@ -3427,29 +3438,29 @@ function initTaskList() {
         notification.className = `md-task-notification md-task-notification-${type}`;
         
         // 设置浅蓝渐变背景，不同类型使用不同深浅的浅蓝色
-        const lightBlueStart = type === 'error' ? 'rgba(173, 216, 230, 0.6)' : 
-                               type === 'success' ? 'rgba(135, 206, 250, 0.6)' : 
-                               'rgba(176, 224, 230, 0.6)';
-        const lightBlueEnd = type === 'error' ? 'rgba(135, 206, 250, 0.4)' : 
-                             type === 'success' ? 'rgba(173, 216, 230, 0.4)' : 
-                             'rgba(135, 206, 250, 0.4)'; // 默认浅蓝色
+        const lightBlueStart = type === 'error' ? 'oklch(0.8562 0.0489 219.65 / 0.6)' : 
+                               type === 'success' ? 'oklch(0.8206 0.0945 236.75 / 0.6)' : 
+                               'oklch(0.8751 0.0502 205.73 / 0.6)';
+        const lightBlueEnd = type === 'error' ? 'oklch(0.8206 0.0945 236.75 / 0.4)' : 
+                             type === 'success' ? 'oklch(0.8562 0.0489 219.65 / 0.4)' : 
+                             'oklch(0.8206 0.0945 236.75 / 0.4)'; // 默认浅蓝色
         
         notification.style.cssText = `
             padding: 16px 24px;
             margin-bottom: 10px;
             border-radius: 16px;
-            color: rgba(0, 0, 139, 0.95); // 深蓝色字体
+            color: oklch(0.2878 0.1994 264.05 / 0.95); // 深蓝色字体
             font-size: 15px;
             font-weight: 500;
             box-shadow: 
-                0 8px 32px rgba(135, 206, 250, 0.15),
-                0 1px 2px rgba(135, 206, 250, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+                0 8px 32px oklch(0.8206 0.0945 236.75 / 0.15),
+                0 1px 2px oklch(0.8206 0.0945 236.75 / 0.1),
+                inset 0 1px 0 oklch(1 0 0 / 0.3);
             animation: slideUpFadeIn 0.3s ease-out;
-            background: linear-gradient(135deg, ${lightBlueStart}, ${lightBlueEnd}); // 浅蓝渐变
+            background: linear-gradient(135deg in srgb, ${lightBlueStart}, ${lightBlueEnd}); // 浅蓝渐变
             backdrop-filter: blur(20px); // 高斯模糊效果
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4); // 白色半透明边框
+            border: 1px solid oklch(1 0 0 / 0.4); // 白色半透明边框
             transition: all 0.3s ease;
         `;
         notification.textContent = message;
@@ -3512,7 +3523,7 @@ function initTaskList() {
                     left: -100%;
                     width: 100%;
                     height: 100%;
-                    background: linear-gradient(90deg, transparent, rgba(255, 182, 193, 0.8), transparent);
+                    background: linear-gradient(90deg in srgb, oklch(0 0 0 / 0), oklch(0.8474 0.0858 9.09 / 0.8), oklch(0 0 0 / 0));
                     pointer-events: none;
                     z-index: 1;
                     animation: pinkShine 1s ease-in-out forwards;
@@ -3636,8 +3647,8 @@ function initTaskList() {
             retryBtn.style.cssText = `
                 margin-top: 10px;
                 padding: 5px 10px;
-                background: #007bff;
-                color: white;
+                background: oklch(0.6048 0.2166 257.21);
+                color: oklch(1 0 0);
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
@@ -4957,8 +4968,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 🎨 彩虹打字banner欢迎语的配色方案
         const colors = [
-            '#FF0000', '#FF7F00', '#7ef0ffff', '#67b5ffff', '#0000FF', '#4B0082', '#9400D3',
-            '#FF1493', '#00CED1', '#ff8a8aff', '#003375ff', '#FF69B4'
+            'oklch(0.628 0.2577 29.23)', 'oklch(0.7304 0.1864 52.57)', 'oklch(0.8934 0.1058 206.7)', 'oklch(0.7538 0.1323 248.83)', 'oklch(0.452 0.3132 264.05)', 'oklch(0.339 0.1793 301.68)', 'oklch(0.5149 0.2607 309.81)',
+            'oklch(0.6549 0.2613 356.94)', 'oklch(0.7719 0.1314 196.64)', 'oklch(0.7615 0.1421 20.94)', 'oklch(0.3361 0.1241 257.93)', 'oklch(0.7283 0.1971 351.99)'
         ];
 
         // 将字符串转换为字符数组，正确处理emoji表情

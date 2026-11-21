@@ -176,7 +176,7 @@
   padding: var(--admin-space-md) var(--admin-space-lg);
   border: none;
   border-radius: var(--admin-radius-md);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-secondary);
   font-size: var(--admin-font-size-md);
   font-weight: var(--admin-font-weight-medium);
@@ -229,7 +229,7 @@
 
 /* 📦 配置卡片特殊样式 */
 .shiroki-51la-config-card {
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
 }
 
 /* 🏷️ 配置状态标签 */
@@ -459,11 +459,11 @@
 }
 
 .shiroki-51la-chart-legend .legend-item.pv .legend-dot {
-  background: #63b3ed;
+  background: oklch(0.739179 0.115418 242.053);
 }
 
 .shiroki-51la-chart-legend .legend-item.uv .legend-dot {
-  background: #48bb78;
+  background: oklch(0.709577 0.143366 154.532);
 }
 
 /* 📊 图表主体 */
@@ -515,7 +515,7 @@
 
 /* 🎴 提示卡片 */
 .shiroki-51la-hint-card {
-  background: linear-gradient(135deg, rgba(246, 173, 85, 0.1) 0%, rgba(237, 137, 54, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.801224 0.134256 68.787 / 0.1) 0%, oklch(0.72437 0.153399 56.072 / 0.1) 100%);
 }
 
 .hint-content {
@@ -625,18 +625,18 @@
 }
 
 .rank-badge.rank-1 {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
-  color: #8b6914;
+  background: linear-gradient(135deg in srgb, oklch(0.886771 0.182186 95.33) 0%, oklch(0.933395 0.1739 102.875) 100%);
+  color: oklch(0.540916 0.104134 84.446);
 }
 
 .rank-badge.rank-2 {
-  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
-  color: #666;
+  background: linear-gradient(135deg in srgb, oklch(0.807796 0 0) 0%, oklch(0.930999 0 0) 100%);
+  color: oklch(0.510278 0 0);
 }
 
 .rank-badge.rank-3 {
-  background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.666106 0.131533 61.294) 0%, oklch(0.751572 0.146934 83.988) 100%);
+  color: oklch(1 0 0);
 }
 
 /* 📝 来源名列 */
@@ -682,7 +682,7 @@
 
 .ratio-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--admin-primary-border) 0%, #63b3ed 100%);
+  background: linear-gradient(90deg in srgb, var(--admin-primary-border) 0%, oklch(0.739179 0.115418 242.053) 100%);
   border-radius: var(--admin-radius-full);
   transition: width 0.6s ease;
 }
@@ -745,7 +745,7 @@
 
 /* 📦 使用说明卡片 */
 .shiroki-51la-guide-card {
-  background: linear-gradient(135deg, rgba(246, 173, 85, 0.05) 0%, rgba(237, 137, 54, 0.05) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.801224 0.134256 68.787 / 0.05) 0%, oklch(0.72437 0.153399 56.072 / 0.05) 100%);
 }
 
 /* 📋 指南区块 */
@@ -894,7 +894,7 @@ ul.guide-tips li strong {
   line-height: 1;
   text-align: center;
   padding-bottom: 6px;
-  border-bottom: 3px solid var(--admin-accent-color, #3b82f6);
+  border-bottom: 3px solid var(--admin-accent-color, oklch(0.623083 0.188015 259.815));
   border-radius: 2px;
   display: inline-block;
 }
@@ -916,7 +916,7 @@ ul.guide-tips li strong {
 .spark-bar {
   display: inline-block;
   width: 8px;
-  background: var(--admin-accent-color, #3b82f6);
+  background: var(--admin-accent-color, oklch(0.623083 0.188015 259.815));
   border-radius: 2px 2px 0 0;
   opacity: 0.7;
   transition: opacity 0.2s;
@@ -977,14 +977,14 @@ ul.guide-tips li strong {
 
 .bar-track {
   height: 6px;
-  background: var(--admin-current-border, rgba(0,0,0,0.08));
+  background: var(--admin-current-border, oklch(0 0 0 / 0.08));
   border-radius: 3px;
   overflow: hidden;
 }
 
 .bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  background: linear-gradient(90deg in srgb, oklch(0.623083 0.188015 259.815), oklch(0.71374 0.143381 254.624));
   border-radius: 3px;
   min-width: 2px;
   transition: width 0.6s ease;
@@ -1002,7 +1002,7 @@ ul.guide-tips li strong {
   align-items: center;
   gap: var(--admin-space-sm);
   padding: var(--admin-space-xs) 0;
-  border-bottom: 1px solid var(--admin-current-border, rgba(0,0,0,0.05));
+  border-bottom: 1px solid var(--admin-current-border, oklch(0 0 0 / 0.05));
 }
 
 .analysis-rank-item:last-child {
@@ -1018,14 +1018,14 @@ ul.guide-tips li strong {
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
-  background: var(--admin-current-border, rgba(0,0,0,0.06));
+  background: var(--admin-current-border, oklch(0 0 0 / 0.06));
   color: var(--admin-current-text-secondary);
   flex-shrink: 0;
 }
 
 .rank-num.top {
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.623083 0.188015 259.815), oklch(0.71374 0.143381 254.624));
+  color: oklch(1 0 0);
 }
 
 .rank-info {
@@ -1141,7 +1141,7 @@ ul.guide-tips li strong {
   padding: var(--admin-space-sm) var(--admin-space-md);
   border: none;
   border-radius: var(--admin-radius-xl);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-secondary);
   font-size: var(--admin-font-size-sm);
   cursor: pointer;
@@ -1157,7 +1157,7 @@ ul.guide-tips li strong {
 .filter-btn.active {
   background: var(--admin-primary-bg);
   color: var(--admin-primary-text);
-  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+  box-shadow: 0 2px 8px oklch(0.723446 0.185388 1.785 / 0.3);
 }
 
 /* 📅 自定义日期范围 - 并排样式 */
@@ -1335,7 +1335,7 @@ ul.guide-tips li strong {
 
 .shiroki-51la-external-links-preview .view-more-link:hover {
   background: var(--admin-primary-hover);
-  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+  box-shadow: 0 2px 8px oklch(0.723446 0.185388 1.785 / 0.3);
 }
 
 /* 📋 外部链接列表 */
@@ -1382,18 +1382,18 @@ ul.guide-tips li strong {
 }
 
 .external-link-item .rank-badge.rank-1 {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.886771 0.182186 95.33) 0%, oklch(0.792688 0.171026 70.67) 100%);
+  color: oklch(1 0 0);
 }
 
 .external-link-item .rank-badge.rank-2 {
-  background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.807796 0 0) 0%, oklch(0.705757 0 0) 100%);
+  color: oklch(1 0 0);
 }
 
 .external-link-item .rank-badge.rank-3 {
-  background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.666106 0.131533 61.294) 0%, oklch(0.617953 0.117102 60.399) 100%);
+  color: oklch(1 0 0);
 }
 
 /* 📄 链接信息 */
@@ -1468,7 +1468,7 @@ ul.guide-tips li strong {
 
 .external-link-item .trend-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--admin-primary) 0%, var(--admin-primary-light) 100%);
+  background: linear-gradient(90deg in srgb, var(--admin-primary) 0%, var(--admin-primary-light) 100%);
   border-radius: var(--admin-radius-xl);
   transition: width 0.6s ease;
 }
@@ -1535,18 +1535,18 @@ ul.guide-tips li strong {
 }
 
 .page-item .rank-badge.rank-1 {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.886771 0.182186 95.33) 0%, oklch(0.792688 0.171026 70.67) 100%);
+  color: oklch(1 0 0);
 }
 
 .page-item .rank-badge.rank-2 {
-  background: linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.807796 0 0) 0%, oklch(0.705757 0 0) 100%);
+  color: oklch(1 0 0);
 }
 
 .page-item .rank-badge.rank-3 {
-  background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
-  color: #fff;
+  background: linear-gradient(135deg in srgb, oklch(0.666106 0.131533 61.294) 0%, oklch(0.617953 0.117102 60.399) 100%);
+  color: oklch(1 0 0);
 }
 
 /* 📄 页面信息 */
@@ -1604,11 +1604,11 @@ ul.guide-tips li strong {
 
 /* 📈 跳出率颜色 */
 .page-item .stat-item .stat-value.high-bounce {
-  color: var(--admin-danger-text, #ff6b6b);
+  color: var(--admin-danger-text, oklch(0.711607 0.181221 22.839));
 }
 
 .page-item .stat-item .stat-value.low-bounce {
-  color: var(--admin-success-text, #51cf66);
+  color: var(--admin-success-text, oklch(0.760239 0.183165 146.607));
 }
 
 /* 📈 趋势条 */
@@ -1626,7 +1626,7 @@ ul.guide-tips li strong {
 
 .page-item .trend-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--admin-primary) 0%, var(--admin-primary-light) 100%);
+  background: linear-gradient(90deg in srgb, var(--admin-primary) 0%, var(--admin-primary-light) 100%);
   border-radius: var(--admin-radius-xl);
   transition: width 0.6s ease;
 }
@@ -1936,7 +1936,7 @@ ul.guide-tips li strong {
   height: 120px;
   border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px oklch(0 0 0 / 0.08);
 }
 
 .pie-legend {
@@ -2079,7 +2079,7 @@ ul.guide-tips li strong {
 
 .shiroki-51la-visitor-table td {
   padding: var(--admin-space-sm) var(--admin-space-md);
-  border-bottom: 1px solid var(--admin-current-border, rgba(0,0,0,0.05));
+  border-bottom: 1px solid var(--admin-current-border, oklch(0 0 0 / 0.05));
   color: var(--admin-current-text-primary);
   vertical-align: middle;
 }
@@ -2089,7 +2089,7 @@ ul.guide-tips li strong {
 }
 
 .shiroki-51la-visitor-table tbody tr:hover {
-  background: var(--admin-current-glass, rgba(0,0,0,0.02));
+  background: var(--admin-current-glass, oklch(0 0 0 / 0.02));
 }
 
 .shiroki-51la-visitor-table code {
@@ -2110,17 +2110,17 @@ ul.guide-tips li strong {
 }
 
 .visitor-badge.new {
-  background: rgba(16, 185, 129, 0.12);
-  color: #10b981;
+  background: oklch(0.695873 0.149074 162.48 / 0.12);
+  color: oklch(0.695873 0.149074 162.48);
 }
 
 .visitor-badge.returning {
-  background: rgba(99, 102, 241, 0.12);
-  color: #6366f1;
+  background: oklch(0.585404 0.204055 277.117 / 0.12);
+  color: oklch(0.585404 0.204055 277.117);
 }
 
 .shiroki-51la-visitor-table .src-link {
-  color: var(--admin-primary-color, #3b82f6);
+  color: var(--admin-primary-color, oklch(0.623083 0.188015 259.815));
   text-decoration: none;
   word-break: break-all;
 }
@@ -2170,8 +2170,8 @@ ul.guide-tips li strong {
 }
 
 .shiroki-51la-site-card {
-  background: var(--admin-current-glass, rgba(255,255,255,0.6));
-  border: 1px solid var(--admin-current-border, rgba(0,0,0,0.08));
+  background: var(--admin-current-glass, oklch(1 0 0 / 0.6));
+  border: 1px solid var(--admin-current-border, oklch(0 0 0 / 0.08));
   border-radius: 16px;
   padding: var(--admin-space-lg);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -2179,12 +2179,12 @@ ul.guide-tips li strong {
 
 .shiroki-51la-site-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px oklch(0 0 0 / 0.08);
 }
 
 .shiroki-51la-site-card.is-active {
-  border-color: var(--admin-primary-color, #3b82f6);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  border-color: var(--admin-primary-color, oklch(0.623083 0.188015 259.815));
+  box-shadow: 0 0 0 2px oklch(0.623083 0.188015 259.815 / 0.15);
 }
 
 .site-card-header {
@@ -2209,15 +2209,15 @@ ul.guide-tips li strong {
   border-radius: 10px;
   font-size: 11px;
   font-weight: 600;
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--admin-primary-color, #3b82f6);
+  background: oklch(0.623083 0.188015 259.815 / 0.12);
+  color: var(--admin-primary-color, oklch(0.623083 0.188015 259.815));
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .site-domain {
   font-size: var(--admin-font-size-sm);
-  color: var(--admin-primary-color, #3b82f6);
+  color: var(--admin-primary-color, oklch(0.623083 0.188015 259.815));
   margin-bottom: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2231,7 +2231,7 @@ ul.guide-tips li strong {
   color: var(--admin-current-text-secondary);
   margin-bottom: var(--admin-space-md);
   padding-bottom: var(--admin-space-md);
-  border-bottom: 1px solid var(--admin-current-border, rgba(0,0,0,0.06));
+  border-bottom: 1px solid var(--admin-current-border, oklch(0 0 0 / 0.06));
   flex-wrap: wrap;
 }
 

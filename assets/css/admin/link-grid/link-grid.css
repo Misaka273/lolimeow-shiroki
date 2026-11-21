@@ -42,7 +42,7 @@
 .link-php #wpbody,
 .edit-tags-php #wpbody {
   min-height: 100vh;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 .shiroki-link-grid-active .wp-list-table,
@@ -665,9 +665,9 @@ body.shiroki-link-grid-ready .wrap .wp-header-end {
   z-index: 1;
   min-width: 0;
   padding: var(--admin-space-xs) 2px;
-  border: 1px solid transparent;
+  border: 1px solid oklch(0 0 0 / 0);
   border-radius: var(--admin-radius-full);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-muted);
   cursor: pointer;
   font-size: var(--admin-font-size-xs);
@@ -726,9 +726,9 @@ body.shiroki-link-grid-ready .wrap .wp-header-end {
   flex: 1;
   min-height: 34px;
   padding: var(--admin-space-xs) var(--admin-space-sm);
-  border: 1px solid transparent;
+  border: 1px solid oklch(0 0 0 / 0);
   border-radius: var(--admin-radius-full);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-muted);
   cursor: pointer;
   font-size: var(--admin-font-size-xs);
@@ -1190,7 +1190,7 @@ body.shiroki-link-grid-ready .wrap .wp-header-end {
   margin: 0 0 var(--admin-space-md);
   padding: 0;
   border: 0;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-secondary);
 }
 

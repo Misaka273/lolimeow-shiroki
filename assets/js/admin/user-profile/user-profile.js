@@ -140,6 +140,13 @@
         },
 
         /**
+         * 💪 初始化密码强度
+         */
+        initPasswordStrength: function() {
+            // 密码强度由 bindEvents 中的 #shiroki_profile_pass1 input 监听实时计算
+        },
+
+        /**
          * 🖼️ 初始化头像上传
          */
         initAvatarUpload: function() {

@@ -140,6 +140,11 @@ function boxmoe_get_logo_src(){
     return boxmoe_theme_url().'/assets/images/logo.png';
 }
 
+function boxmoe_get_mobile_logo_src(){
+    $src = get_boxmoe('boxmoe_mobile_logo_src');
+    return $src ? $src : get_boxmoe('boxmoe_logo_src');
+}
+
 function boxmoe_filter_site_icon_url($url, $size, $blog_id){
     return boxmoe_get_logo_src();
 }
@@ -178,12 +183,23 @@ add_action('customize_register', 'boxmoe_remove_customizer_site_icon', 20);
 
 // LOGO--------------------------boxmoe.com--------------------------
 function boxmoe_logo(){
-    $src= get_boxmoe('boxmoe_logo_src');    
+    $src = get_boxmoe('boxmoe_logo_src');
+    $mobile_src = get_boxmoe('boxmoe_mobile_logo_src');
+    $site_name = esc_attr(get_bloginfo('name'));
 
-    if($src){
-        echo '<img class="logo" src="'.$src.'" alt="'.get_bloginfo('name').'">';
-    }else{
-        echo '<span class="text-inverse">'.get_bloginfo('name').'</span>';
+    if ($src) {
+        if ($mobile_src && $mobile_src !== $src) {
+            echo '<picture><source media="(max-width: 991px)" srcset="'.esc_url($mobile_src).'">';
+        }
+        echo '<img class="logo" src="'.esc_url($src).'" alt="'.$site_name.'">';
+        if ($mobile_src && $mobile_src !== $src) {
+            echo '</picture>';
+        }
+    } else {
+        echo '<span class="text-inverse'.($mobile_src ? ' boxmoe-desktop-logo-text' : '').'">'.esc_html(get_bloginfo('name')).'</span>';
+        if ($mobile_src) {
+            echo '<picture class="boxmoe-mobile-only-logo"><img class="logo" src="'.esc_url($mobile_src).'" alt="'.$site_name.'"></picture>';
+        }
     }
 }
 
@@ -288,7 +304,7 @@ function shiroki_menu_item_icon_field_html() {
             var preview = $('.shiroki-menu-icon-preview');
             
             if (icon_url) {
-                preview.html('<img src="' + icon_url + '" style="max-width: 50px; max-height: 50px; border: 1px solid #ddd; padding: 2px;">');
+                preview.html('<img src="' + icon_url + '" style="max-width: 50px; max-height: 50px; border: 1px solid oklch(0.8975 0 0); padding: 2px;">');
             } else {
                 preview.html('');
             }
@@ -377,7 +393,11 @@ function boxmoe_banner_image(){
     }else{
         $src= boxmoe_theme_url().'/assets/images/banner.jpg';
     }
-    echo $src;
+    // 后台把地址填成空、或填成图片 API 的首页（返回 HTML 而不是图片）时，回退到主题自带 banner
+    if(trim((string) $src) === '' || trim((string) $src) === '#'){
+        $src = boxmoe_theme_url().'/assets/images/banner.jpg';
+    }
+    echo esc_url($src);
 }
 
 // 🖼️ 输出Banner随机图片列表到JavaScript--------------------------gl.baimu.live--------------------------
@@ -507,11 +527,67 @@ function boxmoe_banner_welcome($return = false){
 
 
 // 欢迎语一言 --------------------------boxmoe.com--------------------------
+// SEO/GEO：服务端必须先输出真实可读文本，JS 之后只做「换成随机一言」的增强。
+// 同时让 H1 语义归位：首页/栏目页用 h1，文章页降级为 p（正文 .single-title 才是唯一 H1）。
 function boxmoe_banner_hitokoto(){
-    if(get_boxmoe('boxmoe_banner_hitokoto_switch')){
-        echo '<h1 class="main-title"><span id="hitokoto" class="hitokoto-stage"><span class="hitokoto-row"><i class="fa fa-star spinner" aria-hidden="true"></i><span class="hitokoto-text text-gradient">加载中</span></span></span></h1>';
+    if(!get_boxmoe('boxmoe_banner_hitokoto_switch')){
+        return;
     }
+
+    $tag  = 'h1';
+    $text = '';
+    $truncate = true;
+
+    if(is_singular()){
+        $tag  = 'p';
+        $text = get_the_title();
+        $truncate = false;
+    } elseif(is_category() || is_tag() || is_tax()){
+        $text = single_term_title('', false);
+        $truncate = false;
+    } elseif(is_search()){
+        // search.php 自带 <h1 class="search-title">，这里降级为 p，避免一页两个 H1
+        $tag  = 'p';
+        $text = sprintf(__('搜索：%s', 'boxmoe'), get_search_query());
+        $truncate = false;
+    } elseif(is_author()){
+        $text = get_the_author_meta('display_name', get_queried_object_id());
+        $truncate = false;
+    } elseif(is_archive()){
+        $text = wp_strip_all_tags(wp_get_document_title());
+    } else {
+        $text = trim((string) get_boxmoe('boxmoe_banner_h1_text'));
+        if($text === ''){
+            $text = get_bloginfo('name');
+            $description = get_bloginfo('description');
+            if($description){
+                $text .= ' · ' . $description;
+            }
+        }
+    }
+
+    if($text === ''){
+        $text = get_bloginfo('name');
+    }
+    // 站点的定位句可能很长，控制在 48 字以内；文章/栏目标题本身是精确文案，不截断
+    if($truncate && mb_strlen($text, 'UTF-8') > 48){
+        $text = mb_substr($text, 0, 48, 'UTF-8') . '…';
+    }
+
+    printf(
+        '<%1$s class="main-title"><span id="hitokoto" class="hitokoto-stage"><span class="hitokoto-row"><i class="fa fa-star spinner" aria-hidden="true"></i><span class="hitokoto-text text-gradient">%2$s</span></span></span></%1$s>',
+        $tag,
+        esc_html($text)
+    );
 }
+
+
+// 无脚本兜底：banner 容器默认被 .boxmoe_header_banner_img{opacity:0;visibility:hidden} 藏住，
+// 由 JS 加载后加 .loaded 才显示。不执行 JS 的抓取器/检测器会因此看不到首屏标题，这里直接放出来。
+function boxmoe_banner_nojs_reveal(){
+    echo '<noscript><style>.boxmoe_header_banner_img{opacity:1!important;visibility:visible!important;transform:none!important}</style></noscript>' . "\n";
+}
+add_action('wp_head', 'boxmoe_banner_nojs_reveal', 21);
 
 
 // 前端资源载入--------------------------boxmoe.com--------------------------
@@ -543,6 +619,29 @@ function boxmoe_load_assets_header(){
     wp_enqueue_script('theme-lib-script', boxmoe_theme_url() . '/assets/js/lib.min.js', array(), THEME_VERSION, true);
     wp_enqueue_script('comments-script', boxmoe_theme_url() . '/assets/js/comments.js', array(), THEME_VERSION, true);
     wp_enqueue_script('boxmoe-script', boxmoe_theme_url() . '/assets/js/boxmoe.js', array(), THEME_VERSION, true);
+
+    wp_enqueue_script(
+        'shiroki-auth-redirect',
+        boxmoe_theme_url() . '/assets/js/auth-redirect.js',
+        array(),
+        filemtime(get_template_directory() . '/assets/js/auth-redirect.js'),
+        false
+    );
+    $legacy_signup_page = get_boxmoe('boxmoe_sign_up_link_page');
+    wp_localize_script('shiroki-auth-redirect', 'shirokiAuthRedirectConfig', array(
+        'loginUrl' => boxmoe_sign_in_link_page(),
+        'signupUrl' => boxmoe_sign_up_link_page(),
+        'defaultLoginUrl' => site_url('wp-login.php', 'login'),
+        'authUrls' => array_values(array_filter(array(
+            boxmoe_sign_in_link_page(),
+            boxmoe_sign_up_link_page(),
+            boxmoe_reset_password_link_page(),
+            is_numeric($legacy_signup_page) && $legacy_signup_page > 0 ? get_permalink($legacy_signup_page) : '',
+            site_url('wp-login.php', 'login'),
+            admin_url('admin-ajax.php'),
+        ))),
+        'homeUrl' => home_url('/'),
+    ));
 
     /* 🚀 无刷新过渡动画 */
     $page_loading_type = get_boxmoe('boxmoe_page_loading_type', 'none');
@@ -791,7 +890,7 @@ function boxmoe_load_assets_footer(){?>
           </span>
           <?php endif; ?>
           <?php if(get_boxmoe('boxmoe_footer_dataquery_switch')): ?>
-          <span class="query-time"><span style="color: orange;"><?php echo get_num_queries(); ?></span><span style="color: purple;"> 次查询耗时</span> <span style="color: lightcoral;"><?php echo timer_stop(0,3); ?></span> <span style="color: blue;">秒</span></span>
+          <span class="query-time"><span style="color: oklch(0.7927 0.171 70.67);"><?php echo get_num_queries(); ?></span><span style="color: oklch(0.4209 0.1935 328.36);"> 次查询耗时</span> <span style="color: oklch(0.7246 0.1377 21.03);"><?php echo timer_stop(0,3); ?></span> <span style="color: oklch(0.452 0.3132 264.05);">秒</span></span>
           <?php endif; ?>
           <span style="display:none;"><?php echo get_boxmoe('boxmoe_trackcode'); ?></span>
            </div>
@@ -1055,7 +1154,7 @@ function boxmoe_login_status_test_shortcode() {
     </div>
     <style>
         .login-status-test {
-            background: #f8f9fa;
+            background: oklch(0.9816 0.0017 247.84);
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
@@ -1063,12 +1162,12 @@ function boxmoe_login_status_test_shortcode() {
         .test-section {
             margin: 15px 0;
             padding: 10px;
-            background: white;
+            background: oklch(1 0 0);
             border-radius: 4px;
         }
         .test-log {
-            background: #2d3748;
-            color: #e2e8f0;
+            background: oklch(0.3351 0.0331 260.91);
+            color: oklch(0.9288 0.0126 255.51);
             padding: 10px;
             border-radius: 4px;
             height: 200px;
@@ -1079,7 +1178,7 @@ function boxmoe_login_status_test_shortcode() {
         .test-log-entry {
             margin: 5px 0;
             padding: 5px;
-            border-bottom: 1px solid #4a5568;
+            border-bottom: 1px solid oklch(0.4474 0.0343 261.32);
         }
     </style>
     <script>
@@ -1089,7 +1188,7 @@ function boxmoe_login_status_test_shortcode() {
                 const logDiv = document.getElementById('test-log');
                 const entry = document.createElement('div');
                 entry.className = 'test-log-entry';
-                entry.innerHTML = `<span style="color: #4299e1;">${new Date().toLocaleTimeString()}</span>: ${message}`;
+                entry.innerHTML = `<span style="color: oklch(0.6626 0.1358 246.81);">${new Date().toLocaleTimeString()}</span>: ${message}`;
                 logDiv.appendChild(entry);
                 logDiv.scrollTop = logDiv.scrollHeight;
             }
@@ -1204,38 +1303,73 @@ function boxmoe_page_focus_js() {
     if (get_boxmoe('boxmoe_page_focus_switch')) {
         $leave_text = get_boxmoe('boxmoe_page_focus_leave_text', '🚨你快回来~');
         $return_text = get_boxmoe('boxmoe_page_focus_return_text', '🥱你可算回来了！');
+        $json_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+        $leave_text_js = wp_json_encode((string) $leave_text, $json_flags);
+        $return_text_js = wp_json_encode((string) $return_text, $json_flags);
         
         $js = <<<EOT
         <script>
         // 🎯 页面焦点状态文字显示控制
-        document.addEventListener('DOMContentLoaded', function() {
-            const originalTitle = document.title;
-            let isFocused = true;
-            let originalContent = '';
-            
-            // 监听页面焦点变化事件
-            window.addEventListener('focus', function() {
-                if (!isFocused) {
-                    isFocused = true;
-                    // 恢复原始标题
-                    document.title = originalTitle;
-                    // 显示返回时欢迎语
-                    setTimeout(() => {
-                        document.title = '{$return_text}';
-                        // 3秒后恢复原始标题
-                        setTimeout(() => {
-                            document.title = originalTitle;
-                        }, 3000);
-                    }, 100);
+        (function() {
+            // Swup 会重新执行 head 中的脚本，事件监听只需注册一次。
+            if (window.boxmoePageFocusInitialized) return;
+            window.boxmoePageFocusInitialized = true;
+
+            const leaveText = {$leave_text_js};
+            const returnText = {$return_text_js};
+
+            function initPageFocus() {
+                let originalTitle = document.title;
+                let wasHidden = document.hidden;
+                let returnTimer = null;
+
+                function clearReturnTimer() {
+                    if (returnTimer !== null) {
+                        clearTimeout(returnTimer);
+                        returnTimer = null;
+                    }
                 }
-            });
-            
-            window.addEventListener('blur', function() {
-                isFocused = false;
-                // 离开时显示自定义文字
-                document.title = '{$leave_text}';
-            });
-        });
+
+                // 点击链接、打开分享面板等操作可能触发 window.blur，
+                // 只有标签页真正隐藏时才切换标题。
+                document.addEventListener('visibilitychange', function() {
+                    clearReturnTimer();
+                    if (document.hidden) {
+                        wasHidden = true;
+                        document.title = leaveText;
+                        return;
+                    }
+                    if (!wasHidden) return;
+                    wasHidden = false;
+                    document.title = returnText;
+                    returnTimer = setTimeout(function() {
+                        returnTimer = null;
+                        if (!document.hidden) document.title = originalTitle;
+                    }, 3000);
+                });
+
+                document.addEventListener('swup:visit:start', function() {
+                    clearReturnTimer();
+                    if (!document.hidden) document.title = originalTitle;
+                });
+
+                // Swup 换页后保存新页面标题，避免恢复到进入站点时的标题。
+                document.addEventListener('swup:page:view', function(event) {
+                    clearReturnTimer();
+                    const incomingDocument = event.detail && event.detail.visit && event.detail.visit.to && event.detail.visit.to.document;
+                    const incomingTitle = incomingDocument && incomingDocument.querySelector('title');
+                    originalTitle = incomingTitle ? incomingTitle.textContent : document.title;
+                    wasHidden = document.hidden;
+                    document.title = originalTitle;
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initPageFocus, { once: true });
+            } else {
+                initPageFocus();
+            }
+        })();
         </script>
         EOT;
         

@@ -134,7 +134,7 @@ $add_role_form = '
         <div class="boxmoe-cap-item" style="width: 25%; float: left; margin-bottom: 15px; box-sizing: border-box; padding-right: 10px;">
             <label style="display: flex; align-items: center; cursor: pointer; user-select: none;">
                 <input type="checkbox" class="boxmoe_custom_cap_single" value="' . $cap_key . '" style="margin-right: 8px;">
-                <span style="font-size: 13px; color: #555;">' . $cap_label . '</span>
+                <span style="font-size: 13px; color: oklch(0.4495 0 0);">' . $cap_label . '</span>
             </label>
         </div>';
     }
@@ -149,7 +149,7 @@ $add_role_form = '
                 <button type="button" id="boxmoe_open_caps_modal" class="button" style="padding: 5px 15px; height: auto; display: inline-flex; align-items: center; gap: 5px;">
                     <span class="dashicons dashicons-edit"></span> 选择权限功能
                 </button>
-                <span id="boxmoe_selected_caps_count" style="margin-left: 10px; color: #666; font-size: 12px; line-height: 30px; display: inline-block; vertical-align: middle;">已选择 0 项权限</span>
+                <span id="boxmoe_selected_caps_count" style="margin-left: 10px; color: oklch(0.5103 0 0); font-size: 12px; line-height: 30px; display: inline-block; vertical-align: middle;">已选择 0 项权限</span>
             </div>
             <div class="explain">点击按钮打开权限选择窗口，勾选该角色需要具备的具体功能。</div>
         </div>
@@ -157,18 +157,18 @@ $add_role_form = '
 
     <!-- 权限选择模态框 (扁平圆角风) -->
     <div id="boxmoe_caps_modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100000;">
-        <div class="boxmoe-modal-backdrop" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);"></div>
-        <div class="boxmoe-modal-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; width: 700px; max-width: 90%; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); overflow: hidden; display: flex; flex-direction: column; max-height: 85vh; animation: boxmoeModalFadeIn 0.3s ease;">
-            <div class="boxmoe-modal-header" style="padding: 20px 25px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; background: #fff;">
-                <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #333;">选择权限功能</h3>
-                <button type="button" class="boxmoe-modal-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #ccc; line-height: 1; padding: 0;">&times;</button>
+        <div class="boxmoe-modal-backdrop" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: oklch(0 0 0 / 0.5); backdrop-filter: blur(2px);"></div>
+        <div class="boxmoe-modal-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: oklch(1 0 0); width: 700px; max-width: 90%; border-radius: 16px; box-shadow: 0 15px 40px oklch(0 0 0 / 0.2); overflow: hidden; display: flex; flex-direction: column; max-height: 85vh; animation: boxmoeModalFadeIn 0.3s ease;">
+            <div class="boxmoe-modal-header" style="padding: 20px 25px; border-bottom: 1px solid oklch(0.9551 0 0); display: flex; justify-content: space-between; align-items: center; background: oklch(1 0 0);">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: oklch(0.3211 0 0);">选择权限功能</h3>
+                <button type="button" class="boxmoe-modal-close" style="background: none; border: none; font-size: 24px; cursor: pointer; color: oklch(0.8452 0 0); line-height: 1; padding: 0;">&times;</button>
             </div>
-            <div class="boxmoe-modal-body" style="padding: 25px; overflow-y: auto; flex-grow: 1; background: #fafafa;">
-                <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee;">
+            <div class="boxmoe-modal-body" style="padding: 25px; overflow-y: auto; flex-grow: 1; background: oklch(0.9851 0 0);">
+                <div style="background: oklch(1 0 0); padding: 20px; border-radius: 8px; border: 1px solid oklch(0.9491 0 0);">
                 ' . $caps_grid_html . '
                 </div>
             </div>
-            <div class="boxmoe-modal-footer" style="padding: 15px 25px; border-top: 1px solid #f0f0f0; text-align: right; background: #fff;">
+            <div class="boxmoe-modal-footer" style="padding: 15px 25px; border-top: 1px solid oklch(0.9551 0 0); text-align: right; background: oklch(1 0 0);">
                 <button type="button" class="button boxmoe-modal-close-btn" style="margin-right: 10px;">取消</button>
                 <button type="button" class="button button-primary boxmoe-modal-confirm">确定选择</button>
             </div>
@@ -179,7 +179,7 @@ $add_role_form = '
         from { opacity: 0; transform: translate(-50%, -45%); }
         to { opacity: 1; transform: translate(-50%, -50%); }
     }
-    .boxmoe-cap-item:hover label span { color: #2271b1; }
+    .boxmoe-cap-item:hover label span { color: oklch(0.5339 0.1249 247.74); }
     </style>
 
     <div class="boxmoe-form-group-btn" style="text-align: right; margin-top: 20px;">
@@ -231,7 +231,7 @@ foreach ($roles as $role_key => $role_name) {
     <div class="section-role-item" style="margin-bottom: 20px;">
         <h4 class="heading">
             <span class="dashicons dashicons-admin-users"></span> ' . esc_html($role_key) . '
-            ' . ($is_system ? '<span style="float:right;display:inline-block;padding:3px 8px;background:#2271b1;color:#fff;border-radius:4px;font-size:11px;font-weight:normal;letter-spacing:1px;margin-left: 10px;">系统内置</span>' : '') . '
+            ' . ($is_system ? '<span style="float:right;display:inline-block;padding:3px 8px;background:oklch(0.5339 0.1249 247.74);color:oklch(1 0 0);border-radius:4px;font-size:11px;font-weight:normal;letter-spacing:1px;margin-left: 10px;">系统内置</span>' : '') . '
         </h4>
         <div class="option">
             <div class="controls" style="display:flex;gap:10px;align-items:center;">
@@ -243,7 +243,7 @@ foreach ($roles as $role_key => $role_name) {
                        data-role-slug="' . esc_attr($role_key) . '">
                 ' . ($is_system ? '' : '<button type="button" class="button boxmoe-delete-role-btn" data-slug="' . esc_attr($role_key) . '">删除</button>') . '
             </div>
-            <div class="explain" style="margin-top:8px;clear:both;display:block;">角色标识ID: <code style="margin:0 4px;background:rgba(0,0,0,0.05);padding:2px 5px;border-radius:3px;">' . esc_html($role_key) . '</code> <span style="color:#888;">您可以修改上面的显示名称。</span></div>
+            <div class="explain" style="margin-top:8px;clear:both;display:block;">角色标识ID: <code style="margin:0 4px;background:oklch(0 0 0 / 0.05);padding:2px 5px;border-radius:3px;">' . esc_html($role_key) . '</code> <span style="color:oklch(0.6268 0 0);">您可以修改上面的显示名称。</span></div>
         </div>
     </div>';
     
@@ -259,7 +259,7 @@ $roles_table_html .= $custom_roles_html;
 
 if (!empty($system_roles_html)) {
     $roles_table_html .= '
-    <div class="boxmoe-system-roles-toggle" style="margin-bottom: 20px; text-align: center; border-top: 1px dashed #ddd; padding-top: 20px;">
+    <div class="boxmoe-system-roles-toggle" style="margin-bottom: 20px; text-align: center; border-top: 1px dashed oklch(0.8975 0 0); padding-top: 20px;">
         <button type="button" id="boxmoe_toggle_system_roles_btn" class="button" style="width: 100%; display: block;">
             <span class="dashicons dashicons-arrow-down-alt2"></span> 展开系统内置角色管理
         </button>

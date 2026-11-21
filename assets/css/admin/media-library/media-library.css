@@ -17,24 +17,13 @@
   background: var(--shiroki-bg-gradient-dark);
 }
 
-/* 📝 隐藏原版列表视图切换（只在主页面隐藏，不影响弹窗） */
-.upload-php .view-switch,
-.upload-php .wp-list-table,
-.upload-php .tablenav,
-.upload-php .media-toolbar,
-.upload-php .attachments-wrapper,
-.upload-php .attachments-browser,
-.upload-php .wp-media-grid,
-.upload-php > .wrap .media-frame-content .attachments,
-/* ◀️ 只隐藏主页面.wrap内的媒体框架元素，不隐藏.media-modal弹窗内的元素 */
-.upload-php > .wrap > .media-frame,
-.upload-php > .wrap > .media-frame-content,
-.upload-php .wrap .media-frame-toolbar,
-.upload-php > .wrap > .media-frame-toolbar,
-.upload-php > .wrap > .media-frame-menu,
-.upload-php > .wrap > .media-frame-router,
-.upload-php > .wrap > .media-sidebar {
+/* 自定义页面始终可见；仅隐藏 WordPress 主页面网格，不影响弹窗。 */
+body.upload-php #wp-media-grid {
   display: none !important;
+}
+
+body.upload-php .shiroki-media-page {
+  margin-top: 12px;
 }
 
 /* ============================================
@@ -150,7 +139,7 @@
 }
 
 /* 🔘 上传按钮样式 */
-.shiroki-media-upload-container .page-title-action {
+.shiroki-media-upload-container .shiroki-upload-btn {
   display: inline-flex !important;
   align-items: center;
   gap: var(--ml-space-sm);
@@ -170,11 +159,11 @@
   pointer-events: auto;
 }
 
-.shiroki-media-upload-container .page-title-action:hover {
+.shiroki-media-upload-container .shiroki-upload-btn:hover {
   background: var(--ml-label-name-bg-hover);
 }
 
-.shiroki-media-upload-container .page-title-action::before {
+.shiroki-media-upload-container .shiroki-upload-btn::before {
   content: '📤';
   font-size: var(--ml-font-size-lg);
 }
@@ -304,7 +293,7 @@
 
 .shiroki-upload-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--ml-label-name-text), var(--ml-label-desc-text));
+  background: linear-gradient(90deg in srgb, var(--ml-label-name-text), var(--ml-label-desc-text));
   border-radius: var(--ml-radius-full);
   transition: width 0.3s ease;
 }
@@ -405,7 +394,7 @@
   height: var(--ml-card-thumbnail-height);
   overflow: hidden;
   border-radius: var(--ml-radius-lg) var(--ml-radius-lg) 0 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: linear-gradient(135deg in srgb, oklch(1 0 0 / 0.1) 0%, oklch(1 0 0 / 0.05) 100%);
 }
 
 /* 🖼️ 图片样式 */
@@ -427,14 +416,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%);
 }
 
 /* 🔣 SVG图标样式 */
 .shiroki-media-file-icon svg {
   width: 64px;
   height: 64px;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 4px 8px oklch(0 0 0 / 0.1));
 }
 
 /* 🔘 选择圆圈（右上角） */
@@ -446,8 +435,8 @@
   width: 24px;
   height: 24px;
   border-radius: var(--ml-radius-full);
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid #f97316;
+  background: oklch(1 0 0 / 0.9);
+  border: 2px solid oklch(0.704871 0.186721 47.604);
   cursor: pointer;
   opacity: 0;
   transition: all var(--ml-transition-fast);
@@ -464,25 +453,25 @@
   width: 12px;
   height: 12px;
   border-radius: var(--ml-radius-full);
-  background: #f97316;
+  background: oklch(0.704871 0.186721 47.604);
   opacity: 0;
   transition: opacity var(--ml-transition-fast);
 }
 
 /* ✅ 选中状态 - 浅红色描边 */
 .shiroki-media-card.selected {
-  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.6), var(--ml-card-shadow);
+  box-shadow: 0 0 0 3px oklch(0.710627 0.166148 22.216 / 0.6), var(--ml-card-shadow);
 }
 
 .shiroki-media-card.selected .shiroki-media-select-circle {
   opacity: 1;
-  background: #f97316;
-  border-color: #f97316;
+  background: oklch(0.704871 0.186721 47.604);
+  border-color: oklch(0.704871 0.186721 47.604);
 }
 
 .shiroki-media-card.selected .shiroki-media-select-inner {
   opacity: 1;
-  background: white;
+  background: oklch(1 0 0);
 }
 
 
@@ -641,7 +630,7 @@
   gap: var(--ml-space-sm);
   padding: var(--ml-space-md);
   border-top: 1px solid var(--ml-current-border);
-  background: rgba(255, 255, 255, 0.05);
+  background: oklch(1 0 0 / 0.05);
 }
 
 /* 🔘 操作按钮 */
@@ -708,27 +697,27 @@
 /* 🏷️ 单个元标签 */
 .shiroki-media-meta-tag {
   padding: var(--ml-space-xs) var(--ml-space-sm);
-  background: rgba(0, 0, 0, 0.5);
+  background: oklch(0 0 0 / 0.5);
   backdrop-filter: blur(8px);
   border-radius: var(--ml-radius-full);
   font-size: var(--ml-font-size-xs);
-  color: white;
+  color: oklch(1 0 0);
   font-weight: var(--ml-font-weight-medium);
 }
 
 /* 📐 尺寸标签 */
 .shiroki-media-meta-dimensions {
-  background: rgba(99, 179, 237, 0.7);
+  background: oklch(0.739179 0.115418 242.053 / 0.7);
 }
 
 /* 📦 大小标签 */
 .shiroki-media-meta-size {
-  background: rgba(104, 211, 145, 0.7);
+  background: oklch(0.786014 0.137876 154.523 / 0.7);
 }
 
 /* 📁 类型标签 */
 .shiroki-media-meta-type {
-  background: rgba(183, 148, 244, 0.7);
+  background: oklch(0.735825 0.139368 299.78 / 0.7);
 }
 
 /* 🏷️ 格式勋章（文件扩展名） */
@@ -1014,7 +1003,7 @@
 
 /* ⏳ 骨架屏 */
 .shiroki-media-skeleton {
-  background: linear-gradient(90deg, var(--ml-current-glass) 25%, var(--ml-glass-backdrop) 50%, var(--ml-current-glass) 75%);
+  background: linear-gradient(90deg in srgb, var(--ml-current-glass) 25%, var(--ml-glass-backdrop) 50%, var(--ml-current-glass) 75%);
   background-size: 200% 100%;
   animation: shiroki-skeleton-loading 1.5s infinite;
   border-radius: var(--ml-radius-lg);
@@ -1103,10 +1092,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--ml-space-md);
+  flex-wrap: wrap;
   padding: var(--ml-space-3xl);
   color: var(--ml-error-text);
   font-size: var(--ml-font-size-lg);
   text-align: center;
+}
+
+#shiroki-media-retry,
+.shiroki-media-load-more {
+  padding: var(--ml-space-md) var(--ml-space-xl);
+  border: 1px solid var(--ml-label-name-border);
+  border-radius: var(--ml-radius-full);
+  background: var(--ml-label-name-bg);
+  color: var(--ml-label-name-text);
+  cursor: pointer;
+  font-weight: var(--ml-font-weight-semibold);
+}
+
+.shiroki-media-load-more {
+  display: block;
+  margin: var(--ml-space-lg) auto var(--ml-space-2xl);
 }
 
 /* ============================================
@@ -1128,7 +1135,7 @@
 
 /* 🪟 弹窗遮罩层 */
 .media-modal-backdrop {
-  background: rgba(0, 0, 0, 0.6) !important;
+  background: oklch(0 0 0 / 0.6) !important;
   backdrop-filter: blur(8px);
 }
 
@@ -1136,43 +1143,43 @@
 .media-modal {
   border-radius: var(--ml-radius-xl) !important;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 25px 50px -12px oklch(0 0 0 / 0.25) !important;
 }
 
 /* 🪟 弹窗内容区域 */
 .media-modal-content {
-  background: #ffffff !important;
+  background: oklch(1 0 0) !important;
 }
 
 /* 🌆 暗色模式下的弹窗内容 */
 @media (prefers-color-scheme: dark) {
   .media-modal-content {
-    background: #2d3748 !important;
+    background: oklch(0.335105 0.033077 260.912) !important;
   }
 }
 
 .wp-admin.wp-dark-mode .media-modal-content {
-  background: #2d3748 !important;
+  background: oklch(0.335105 0.033077 260.912) !important;
 }
 
 /* 🪟 弹窗头部 */
 .media-frame-title {
-  background: #ffffff !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  background: oklch(1 0 0) !important;
+  border-bottom: 1px solid oklch(0.928761 0.012619 255.508) !important;
   padding: var(--ml-space-lg) var(--ml-space-xl) !important;
 }
 
 /* 🌆 暗色模式下的弹窗头部 */
 @media (prefers-color-scheme: dark) {
   .media-frame-title {
-    background: #2d3748 !important;
-    border-bottom-color: #4a5568 !important;
+    background: oklch(0.335105 0.033077 260.912) !important;
+    border-bottom-color: oklch(0.447437 0.034275 261.324) !important;
   }
 }
 
 .wp-admin.wp-dark-mode .media-frame-title {
-  background: #2d3748 !important;
-  border-bottom-color: #4a5568 !important;
+  background: oklch(0.335105 0.033077 260.912) !important;
+  border-bottom-color: oklch(0.447437 0.034275 261.324) !important;
 }
 
 .media-frame-title h1 {
@@ -1194,21 +1201,21 @@
 
 /* 🪟 菜单栏 */
 .media-frame-menu {
-  background: #f7fafc !important;
-  border-right: 1px solid #e2e8f0 !important;
+  background: oklch(0.9834 0.004165 236.496) !important;
+  border-right: 1px solid oklch(0.928761 0.012619 255.508) !important;
 }
 
 /* 🌆 暗色模式下的菜单栏 */
 @media (prefers-color-scheme: dark) {
   .media-frame-menu {
-    background: #1a202c !important;
-    border-right-color: #4a5568 !important;
+    background: oklch(0.243266 0.024705 263.951) !important;
+    border-right-color: oklch(0.447437 0.034275 261.324) !important;
   }
 }
 
 .wp-admin.wp-dark-mode .media-frame-menu {
-  background: #1a202c !important;
-  border-right-color: #4a5568 !important;
+  background: oklch(0.243266 0.024705 263.951) !important;
+  border-right-color: oklch(0.447437 0.034275 261.324) !important;
 }
 
 .media-menu-item {
@@ -1230,38 +1237,38 @@
 
 /* 🪟 工具栏（仅媒体弹窗，主页面 toolbar 已隐藏） */
 .media-modal .media-frame-toolbar {
-  background: #ffffff !important;
-  border-top: 1px solid #e2e8f0 !important;
+  background: oklch(1 0 0) !important;
+  border-top: 1px solid oklch(0.928761 0.012619 255.508) !important;
   padding: var(--ml-space-md) var(--ml-space-xl) !important;
 }
 
 /* 🌆 暗色模式下的工具栏 */
 @media (prefers-color-scheme: dark) {
   .media-modal .media-frame-toolbar {
-    background: #2d3748 !important;
-    border-top-color: #4a5568 !important;
+    background: oklch(0.335105 0.033077 260.912) !important;
+    border-top-color: oklch(0.447437 0.034275 261.324) !important;
   }
 }
 
 .wp-admin.wp-dark-mode .media-modal .media-frame-toolbar {
-  background: #2d3748 !important;
-  border-top-color: #4a5568 !important;
+  background: oklch(0.335105 0.033077 260.912) !important;
+  border-top-color: oklch(0.447437 0.034275 261.324) !important;
 }
 
 /* 🪟 上传区域 */
 .media-frame-content {
-  background: #f5f7fa !important;
+  background: oklch(0.975469 0.004534 258.325) !important;
 }
 
 /* 🌆 暗色模式下的上传区域 */
 @media (prefers-color-scheme: dark) {
   .media-frame-content {
-    background: #1e232d !important;
+    background: oklch(0.25567 0.020308 264.12) !important;
   }
 }
 
 .wp-admin.wp-dark-mode .media-frame-content {
-  background: #1e232d !important;
+  background: oklch(0.25567 0.020308 264.12) !important;
 }
 
 /* 🪟 拖放上传区域 */
@@ -1304,7 +1311,7 @@
 
 .attachment:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 8px 16px oklch(0 0 0 / 0.1) !important;
 }
 
 .attachment.selected {

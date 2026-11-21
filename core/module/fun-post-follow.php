@@ -189,15 +189,15 @@ function shiroki_notify_post_followers($post_id, $post, $update) {
     $subject = "【{$site_name}】已更新《{$post_title}》";
     
     $message = "<html><head><meta charset='UTF-8'><style>";
-    $message .= "body{font-family:'Microsoft YaHei',Arial,sans-serif;line-height:1.6;color:#333;}";
-    $message .= ".container{max-width:600px;margin:0 auto;padding:20px;border:1px solid #ddd;border-radius:8px;}";
-    $message .= ".header{background:#667eea;color:#fff;padding:20px;border-radius:8px 8px 0 0;text-align:center;}";
+    $message .= "body{font-family:'Microsoft YaHei',Arial,sans-serif;line-height:1.6;color:oklch(0.3211 0 0);}";
+    $message .= ".container{max-width:600px;margin:0 auto;padding:20px;border:1px solid oklch(0.8975 0 0);border-radius:8px;}";
+    $message .= ".header{background:oklch(0.6271 0.1638 271.53);color:oklch(1 0 0);padding:20px;border-radius:8px 8px 0 0;text-align:center;}";
     $message .= ".content{padding:30px 20px;}";
-    $message .= ".post-title{font-size:20px;font-weight:bold;margin-bottom:15px;color:#667eea;}";
-    $message .= ".post-meta{color:#666;font-size:14px;margin-bottom:20px;}";
-    $message .= ".btn{display:inline-block;padding:12px 30px;background:#667eea;color:#fff;text-decoration:none;border-radius:5px;margin:20px 0;}";
-    $message .= ".btn:hover{background:#5568d3;}";
-    $message .= ".footer{text-align:center;color:#999;font-size:12px;padding:20px;border-top:1px solid #eee;}";
+    $message .= ".post-title{font-size:20px;font-weight:bold;margin-bottom:15px;color:oklch(0.6271 0.1638 271.53);}";
+    $message .= ".post-meta{color:oklch(0.5103 0 0);font-size:14px;margin-bottom:20px;}";
+    $message .= ".btn{display:inline-block;padding:12px 30px;background:oklch(0.6271 0.1638 271.53);color:oklch(1 0 0);text-decoration:none;border-radius:5px;margin:20px 0;}";
+    $message .= ".btn:hover{background:oklch(0.5584 0.1648 272.4);}";
+    $message .= ".footer{text-align:center;color:oklch(0.683 0 0);font-size:12px;padding:20px;border-top:1px solid oklch(0.9491 0 0);}";
     $message .= "</style></head><body>";
     $message .= "<div class='container'>";
     $message .= "<div class='header'><h2>🥰您订阅的文章已更新</h2></div>";

@@ -74,8 +74,8 @@ class ShirokiMusicAPIManager {
             position: absolute;
             top: 5px;
             right: 5px;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
+            background: oklch(0 0 0 / 0.5);
+            color: oklch(1 0 0);
             padding: 3px 6px;
             border-radius: 3px;
             font-size: 12px;
@@ -197,8 +197,8 @@ class ShirokiMusicAPIManager {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
+            background: oklch(0 0 0 / 0.8);
+            color: oklch(1 0 0);
             padding: 10px 15px;
             border-radius: 5px;
             font-size: 14px;

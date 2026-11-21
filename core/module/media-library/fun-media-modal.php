@@ -569,31 +569,31 @@ class Shiroki_Media_Modal {
     private function get_file_icon_svg($mime_type) {
         /* 🖼️ 图片 */
         if (strpos($mime_type, 'image/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#63b3ed" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7392 0.1154 242.05)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
         }
         
         /* 🎬 视频 */
         if (strpos($mime_type, 'video/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#f687b3" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7565 0.143 355.9)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><polygon points="10 8 16 12 10 16 10 8"/></svg>';
         }
         
         /* 🎵 音频 */
         if (strpos($mime_type, 'audio/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#9f7aea" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.6637 0.1634 296.96)" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
         }
         
         /* 📄 PDF */
         if ($mime_type === 'application/pdf') {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#fc8181" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7421 0.1503 21.35)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
         }
         
         /* 📊 文档 */
         if (strpos($mime_type, 'application/') === 0) {
-            return '<svg viewBox="0 0 24 24" fill="none" stroke="#68d391" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.786 0.1379 154.52)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
         }
         
         /* 📦 默认 */
-        return '<svg viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>';
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.7457 0.0304 254.72)" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>';
     }
     
     /**

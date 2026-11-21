@@ -26,7 +26,7 @@
     const dist_to_draw = 50;
     const delay = 1000;
     const fsize = ["1.1rem", "1.4rem", ".8rem", "1.7rem"];
-    const colors = ["#E23636", "#001affff", "#00ffeaff", "#ff009dff", "#ff9595ff", "#004370ff"];
+    const colors = ["oklch(0.6007 0.2083 26.16)", "oklch(0.4628 0.3059 264.18)", "oklch(0.8987 0.1589 184.32)", "oklch(0.6548 0.27 353.54)", "oklch(0.7811 0.1278 20.38)", "oklch(0.3719 0.097 246.62)"];
 
     const rand = function(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;

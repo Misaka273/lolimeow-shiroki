@@ -1009,8 +1009,8 @@ const ShirokiPageGrid = {
             top: 50px;
             right: 20px;
             padding: 12px 24px;
-            background: ${type === 'success' ? 'rgba(104, 211, 145, 0.9)' : 'rgba(245, 101, 101, 0.9)'};
-            color: white;
+            background: ${type === 'success' ? 'oklch(0.786 0.1379 154.52 / 0.9)' : 'oklch(0.6882 0.1776 22.95 / 0.9)'};
+            color: oklch(1 0 0);
             border-radius: 8px;
             font-weight: 500;
             z-index: 99999;

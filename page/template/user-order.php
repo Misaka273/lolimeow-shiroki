@@ -37,7 +37,7 @@ $list = $wpdb->get_results("SELECT * FROM $wpdb->icealipay where ice_success=1 a
                               </div>
                               <div class="d-flex align-items-center">
                                  <?php if($start_down || $start_down2): ?>
-                                    <a class="btn btn-outline-primary btn-sm" href="<?php echo constant("erphpdown").'download.php?postid='.$value->ice_post.'&index='.$value->ice_index.'&timestamp='.time(); ?>" target="_blank">点击下载</a>
+                                    <a class="btn btn-outline-primary btn-sm" href="<?php echo constant("zuslolimeow").'download.php?postid='.$value->ice_post.'&index='.$value->ice_index.'&timestamp='.time(); ?>" target="_blank">点击下载</a>
                                  <?php else: ?>
                                     <a class="btn btn-outline-primary btn-sm" href="<?php echo get_permalink($value->ice_post); ?>" target="_blank">查看</a>                                    
                                  <?php endif; ?>
@@ -54,6 +54,6 @@ $list = $wpdb->get_results("SELECT * FROM $wpdb->icealipay where ice_success=1 a
                         </div>
                         <?php } ?>
                         <div class="mt-4">
-                           <?php mobantu_paging('order',$page,$pages);?>	
+                           <?php zuslolimeow_user_center_paging('order',$page,$pages);?>	
                            </div>
                         

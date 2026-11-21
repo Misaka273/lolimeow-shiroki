@@ -64,7 +64,7 @@
 }
 
 .shiroki-media-modal-close {
-  background: rgba(255, 255, 255, 0.6);
+  background: oklch(1 0 0 / 0.6);
   border: none;
   color: var(--admin-light-blue-text);
   width: 36px;
@@ -78,7 +78,7 @@
 }
 
 .shiroki-media-modal-close:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: oklch(1 0 0 / 0.9);
   transform: rotate(90deg);
 }
 
@@ -319,8 +319,8 @@
   position: absolute;
   top: -6px;
   left: 20px;
-  border: 6px solid transparent;
-  border-bottom-color: rgba(255, 255, 255, 0.5);
+  border: 6px solid oklch(0 0 0 / 0);
+  border-bottom-color: oklch(1 0 0 / 0.5);
   border-top: none;
 }
 
@@ -431,7 +431,7 @@
 }
 
 .shiroki-media-btn-cancel {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-muted);
 }
 
@@ -474,7 +474,7 @@
   backdrop-filter: var(--admin-glass-blur);
   -webkit-backdrop-filter: var(--admin-glass-blur);
   border-left: var(--admin-border-glass);
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.15);
+  box-shadow: -8px 0 32px oklch(0 0 0 / 0.15);
   z-index: 200001;
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -493,7 +493,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: oklch(0 0 0 / 0.3);
   backdrop-filter: blur(2px);
   z-index: 200000;
   opacity: 0;
@@ -524,7 +524,7 @@
 }
 
 .shiroki-media-detail-close {
-  background: rgba(255, 255, 255, 0.6);
+  background: oklch(1 0 0 / 0.6);
   border: none;
   color: var(--admin-light-blue-text);
   width: 32px;
@@ -538,7 +538,7 @@
 }
 
 .shiroki-media-detail-close:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: oklch(1 0 0 / 0.9);
 }
 
 /* ◀️ 抽屉内容 */
@@ -610,7 +610,7 @@
 .shiroki-media-detail-textarea:focus {
   background: var(--admin-bg-primary);
   border-color: var(--admin-light-blue-border);
-  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.2);
+  box-shadow: 0 0 0 3px oklch(0.809069 0.095598 251.813 / 0.2);
 }
 
 .shiroki-media-detail-textarea {

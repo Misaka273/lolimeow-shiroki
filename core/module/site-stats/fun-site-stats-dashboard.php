@@ -1231,7 +1231,7 @@ function boxmoe_render_51la_stats_dashboard() {
                     <?php if (!empty($browser_stats)) :
                         $browser_total = array_sum($browser_stats);
                         $browser_top = array_slice($browser_stats, 0, 5, true);
-                        $pie_colors = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#6366f1'];
+                        $pie_colors = ['oklch(0.6231 0.188 259.81)','oklch(0.6959 0.1491 162.48)','oklch(0.7686 0.1647 70.08)','oklch(0.6368 0.2078 25.33)','oklch(0.6056 0.2189 292.72)','oklch(0.6559 0.2118 354.31)','oklch(0.5854 0.2041 277.12)'];
                         $grad_parts = array();
                         $cum = 0;
                         $ci = 0;
@@ -1243,11 +1243,11 @@ function boxmoe_render_51la_stats_dashboard() {
                             $ci++;
                         }
                         if ($cum < 100) {
-                            $grad_parts[] = '#e5e7eb ' . round($cum, 2) . '% 100%';
+                            $grad_parts[] = 'oklch(0.9276 0.0058 264.53) ' . round($cum, 2) . '% 100%';
                         }
                     ?>
                     <div class="pie-chart-wrapper">
-                        <div class="pie-chart" style="background: conic-gradient(<?php echo implode(', ', $grad_parts); ?>)"></div>
+                        <div class="pie-chart" style="background: conic-gradient(in srgb, <?php echo implode(', ', $grad_parts); ?>)"></div>
                         <div class="pie-legend">
                             <?php $ci = 0; foreach ($browser_top as $name => $count) :
                                 $pct = $browser_total > 0 ? round($count / $browser_total * 100, 1) : 0;
@@ -1265,13 +1265,13 @@ function boxmoe_render_51la_stats_dashboard() {
                     <div class="shiroki-51la-empty"><p>暂无数据</p></div>
                     <?php else : ?>
                     <div class="pie-chart-wrapper">
-                        <div class="pie-chart" style="background: conic-gradient(#3b82f6 0% 45.2%, #10b981 45.2% 73.8%, #f59e0b 73.8% 86.1%, #ef4444 86.1% 94.8%, #8b5cf6 94.8% 100%)"></div>
+                        <div class="pie-chart" style="background: conic-gradient(in srgb, oklch(0.6231 0.188 259.81) 0% 45.2%, oklch(0.6959 0.1491 162.48) 45.2% 73.8%, oklch(0.7686 0.1647 70.08) 73.8% 86.1%, oklch(0.6368 0.2078 25.33) 86.1% 94.8%, oklch(0.6056 0.2189 292.72) 94.8% 100%)"></div>
                         <div class="pie-legend">
-                            <div class="legend-row"><span class="legend-dot" style="background:#3b82f6"></span><span class="legend-label">Chrome</span><span class="legend-pct">45.2%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#10b981"></span><span class="legend-label">Safari</span><span class="legend-pct">28.6%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#f59e0b"></span><span class="legend-label">Firefox</span><span class="legend-pct">12.3%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#ef4444"></span><span class="legend-label">Edge</span><span class="legend-pct">8.7%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#8b5cf6"></span><span class="legend-label">其他</span><span class="legend-pct">5.2%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.6231 0.188 259.81)"></span><span class="legend-label">Chrome</span><span class="legend-pct">45.2%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.6959 0.1491 162.48)"></span><span class="legend-label">Safari</span><span class="legend-pct">28.6%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.7686 0.1647 70.08)"></span><span class="legend-label">Firefox</span><span class="legend-pct">12.3%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.6368 0.2078 25.33)"></span><span class="legend-label">Edge</span><span class="legend-pct">8.7%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.6056 0.2189 292.72)"></span><span class="legend-label">其他</span><span class="legend-pct">5.2%</span></div>
                         </div>
                     </div>
                     <?php endif; ?>
@@ -1289,7 +1289,7 @@ function boxmoe_render_51la_stats_dashboard() {
                     <?php if (!empty($region_stats)) :
                         $region_total = array_sum($region_stats);
                         $region_top = array_slice($region_stats, 0, 5, true);
-                        $pie_colors_r = ['#6366f1','#ec4899','#14b8a6','#f97316','#64748b','#84cc16','#e11d48'];
+                        $pie_colors_r = ['oklch(0.5854 0.2041 277.12)','oklch(0.6559 0.2118 354.31)','oklch(0.7038 0.123 182.5)','oklch(0.7049 0.1867 47.6)','oklch(0.5544 0.0407 257.42)','oklch(0.7681 0.2044 130.85)','oklch(0.5858 0.222 17.58)'];
                         $grad_parts_r = array();
                         $cum_r = 0;
                         $ci_r = 0;
@@ -1301,11 +1301,11 @@ function boxmoe_render_51la_stats_dashboard() {
                             $ci_r++;
                         }
                         if ($cum_r < 100) {
-                            $grad_parts_r[] = '#e5e7eb ' . round($cum_r, 2) . '% 100%';
+                            $grad_parts_r[] = 'oklch(0.9276 0.0058 264.53) ' . round($cum_r, 2) . '% 100%';
                         }
                     ?>
                     <div class="pie-chart-wrapper">
-                        <div class="pie-chart" style="background: conic-gradient(<?php echo implode(', ', $grad_parts_r); ?>)"></div>
+                        <div class="pie-chart" style="background: conic-gradient(in srgb, <?php echo implode(', ', $grad_parts_r); ?>)"></div>
                         <div class="pie-legend">
                             <?php $ci_r = 0; foreach ($region_top as $name => $count) :
                                 $pct = $region_total > 0 ? round($count / $region_total * 100, 1) : 0;
@@ -1323,13 +1323,13 @@ function boxmoe_render_51la_stats_dashboard() {
                     <div class="shiroki-51la-empty"><p>暂无数据</p></div>
                     <?php else : ?>
                     <div class="pie-chart-wrapper">
-                        <div class="pie-chart" style="background: conic-gradient(#6366f1 0% 68.5%, #ec4899 68.5% 80.8%, #14b8a6 80.8% 88.9%, #f97316 88.9% 94.5%, #64748b 94.5% 100%)"></div>
+                        <div class="pie-chart" style="background: conic-gradient(in srgb, oklch(0.5854 0.2041 277.12) 0% 68.5%, oklch(0.6559 0.2118 354.31) 68.5% 80.8%, oklch(0.7038 0.123 182.5) 80.8% 88.9%, oklch(0.7049 0.1867 47.6) 88.9% 94.5%, oklch(0.5544 0.0407 257.42) 94.5% 100%)"></div>
                         <div class="pie-legend">
-                            <div class="legend-row"><span class="legend-dot" style="background:#6366f1"></span><span class="legend-label">中国</span><span class="legend-pct">68.5%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#ec4899"></span><span class="legend-label">美国</span><span class="legend-pct">12.3%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#14b8a6"></span><span class="legend-label">日本</span><span class="legend-pct">8.1%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#f97316"></span><span class="legend-label">韩国</span><span class="legend-pct">5.6%</span></div>
-                            <div class="legend-row"><span class="legend-dot" style="background:#64748b"></span><span class="legend-label">其他</span><span class="legend-pct">5.5%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.5854 0.2041 277.12)"></span><span class="legend-label">中国</span><span class="legend-pct">68.5%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.6559 0.2118 354.31)"></span><span class="legend-label">美国</span><span class="legend-pct">12.3%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.7038 0.123 182.5)"></span><span class="legend-label">日本</span><span class="legend-pct">8.1%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.7049 0.1867 47.6)"></span><span class="legend-label">韩国</span><span class="legend-pct">5.6%</span></div>
+                            <div class="legend-row"><span class="legend-dot" style="background:oklch(0.5544 0.0407 257.42)"></span><span class="legend-label">其他</span><span class="legend-pct">5.5%</span></div>
                         </div>
                     </div>
                     <?php endif; ?>
@@ -1385,7 +1385,7 @@ function boxmoe_render_51la_stats_dashboard() {
                         $kw_top = array_slice($keyword_stats, 0, 20, true);
                         $kw_max = max($kw_top);
                         $kw_min = min($kw_top);
-                        $cloud_colors = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316'];
+                        $cloud_colors = ['oklch(0.6231 0.188 259.81)','oklch(0.6959 0.1491 162.48)','oklch(0.7686 0.1647 70.08)','oklch(0.6368 0.2078 25.33)','oklch(0.6056 0.2189 292.72)','oklch(0.6559 0.2118 354.31)','oklch(0.7038 0.123 182.5)','oklch(0.7049 0.1867 47.6)'];
                     ?>
                     <div class="keyword-cloud">
                         <?php $ci = 0; foreach ($kw_top as $kw => $count) :
@@ -1401,13 +1401,13 @@ function boxmoe_render_51la_stats_dashboard() {
                     <div class="shiroki-51la-empty"><p>暂无数据</p></div>
                     <?php else : ?>
                     <div class="keyword-cloud">
-                        <span class="cloud-word" style="font-size:26px;color:#3b82f6;opacity:1">wordpress主题</span>
-                        <span class="cloud-word" style="font-size:22px;color:#10b981;opacity:0.9">51la统计</span>
-                        <span class="cloud-word" style="font-size:19px;color:#f59e0b;opacity:0.85">盒子萌纸鸢版</span>
-                        <span class="cloud-word" style="font-size:16px;color:#ef4444;opacity:0.8">纸鸢社</span>
-                        <span class="cloud-word" style="font-size:14px;color:#8b5cf6;opacity:0.7">二创开发</span>
-                        <span class="cloud-word" style="font-size:13px;color:#ec4899;opacity:0.65">Lolimeow主题</span>
-                        <span class="cloud-word" style="font-size:12px;color:#14b8a6;opacity:0.6">数据仪表盘开发</span>
+                        <span class="cloud-word" style="font-size:26px;color:oklch(0.6231 0.188 259.81);opacity:1">wordpress主题</span>
+                        <span class="cloud-word" style="font-size:22px;color:oklch(0.6959 0.1491 162.48);opacity:0.9">51la统计</span>
+                        <span class="cloud-word" style="font-size:19px;color:oklch(0.7686 0.1647 70.08);opacity:0.85">盒子萌纸鸢版</span>
+                        <span class="cloud-word" style="font-size:16px;color:oklch(0.6368 0.2078 25.33);opacity:0.8">纸鸢社</span>
+                        <span class="cloud-word" style="font-size:14px;color:oklch(0.6056 0.2189 292.72);opacity:0.7">二创开发</span>
+                        <span class="cloud-word" style="font-size:13px;color:oklch(0.6559 0.2118 354.31);opacity:0.65">Lolimeow主题</span>
+                        <span class="cloud-word" style="font-size:12px;color:oklch(0.7038 0.123 182.5);opacity:0.6">数据仪表盘开发</span>
                     </div>
                     <?php endif; ?>
                 </div>

@@ -58,29 +58,29 @@
                         {
                             label: '浏览量(PV)',
                             data: data.pv,
-                            borderColor: '#63b3ed',
-                            backgroundColor: 'rgba(99, 179, 237, 0.1)',
+                            borderColor: 'oklch(0.7392 0.1154 242.05)',
+                            backgroundColor: 'oklch(0.7392 0.1154 242.05 / 0.1)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.4,
                             pointRadius: 4,
                             pointHoverRadius: 6,
-                            pointBackgroundColor: '#63b3ed',
-                            pointBorderColor: '#fff',
+                            pointBackgroundColor: 'oklch(0.7392 0.1154 242.05)',
+                            pointBorderColor: 'oklch(1 0 0)',
                             pointBorderWidth: 2
                         },
                         {
                             label: '访客数(UV)',
                             data: data.uv,
-                            borderColor: '#48bb78',
-                            backgroundColor: 'rgba(72, 187, 120, 0.1)',
+                            borderColor: 'oklch(0.7096 0.1434 154.53)',
+                            backgroundColor: 'oklch(0.7096 0.1434 154.53 / 0.1)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.4,
                             pointRadius: 4,
                             pointHoverRadius: 6,
-                            pointBackgroundColor: '#48bb78',
-                            pointBorderColor: '#fff',
+                            pointBackgroundColor: 'oklch(0.7096 0.1434 154.53)',
+                            pointBorderColor: 'oklch(1 0 0)',
                             pointBorderWidth: 2
                         }
                     ]
@@ -97,10 +97,10 @@
                             display: false
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            backgroundColor: 'oklch(0 0 0 / 0.8)',
+                            titleColor: 'oklch(1 0 0)',
+                            bodyColor: 'oklch(1 0 0)',
+                            borderColor: 'oklch(1 0 0 / 0.1)',
                             borderWidth: 1,
                             cornerRadius: 8,
                             padding: 12,
@@ -119,7 +119,7 @@
                                 drawBorder: false
                             },
                             ticks: {
-                                color: 'rgba(0, 0, 0, 0.5)',
+                                color: 'oklch(0 0 0 / 0.5)',
                                 font: {
                                     size: 11
                                 }
@@ -128,11 +128,11 @@
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)',
+                                color: 'oklch(0 0 0 / 0.05)',
                                 drawBorder: false
                             },
                             ticks: {
-                                color: 'rgba(0, 0, 0, 0.5)',
+                                color: 'oklch(0 0 0 / 0.5)',
                                 font: {
                                     size: 11
                                 },
@@ -165,8 +165,8 @@
             }
 
             var isDark = $('body').hasClass('wp-dark-mode') || $('.wp-dark-mode').length > 0;
-            var textColor = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.5)';
-            var gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)';
+            var textColor = isDark ? 'oklch(1 0 0 / 0.7)' : 'oklch(0 0 0 / 0.5)';
+            var gridColor = isDark ? 'oklch(1 0 0 / 0.1)' : 'oklch(0 0 0 / 0.05)';
 
             this.chart.options.scales.x.ticks.color = textColor;
             this.chart.options.scales.y.ticks.color = textColor;

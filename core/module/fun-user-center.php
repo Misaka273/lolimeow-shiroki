@@ -268,80 +268,80 @@ function boxmoe_form_money_online() {
  
 	   if(isset($_POST['paytype']) && $paytype==1)
 	   {
-		  $url=constant("erphpdown")."payment/alipay.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=constant("zuslolimeow")."payment/alipay.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==5)
 	   {
-		  $url=constant("erphpdown")."payment/f2fpay.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=constant("zuslolimeow")."payment/f2fpay.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==2)
 	   {
-		  $url=constant("erphpdown")."payment/paypal.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=constant("zuslolimeow")."payment/paypal.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==4)
 	   {
-		  if(erphpdown_is_weixin() && get_option('ice_weixin_app')){
-			 $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.get_option('ice_weixin_appid').'&redirect_uri='.urlencode(constant("erphpdown")).'payment%2Fweixin.php%3Fice_money%3D'.esc_sql($_POST['ice_money']).'&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect';
+		  if(zuslolimeow_is_weixin() && get_option('ice_weixin_app')){
+			 $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.get_option('ice_weixin_appid').'&redirect_uri='.urlencode(constant("zuslolimeow")).'payment%2Fweixin.php%3Fice_money%3D'.esc_sql($_POST['ice_money']).'&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect';
 		  }else{
-			 $url=constant("erphpdown")."payment/weixin.php?ice_money=".esc_sql($_POST['ice_money']);
+			 $url=constant("zuslolimeow")."payment/weixin.php?ice_money=".esc_sql($_POST['ice_money']);
 		  }
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==7)
 	   {
-		  $url=constant("erphpdown")."payment/paypy.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=constant("zuslolimeow")."payment/paypy.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==8)
 	   {
-		  $url=constant("erphpdown")."payment/paypy.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
+		  $url=constant("zuslolimeow")."payment/paypy.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==18)
 	   {
-		  $url=constant("erphpdown")."payment/xhpay3.php?ice_money=".esc_sql($_POST['ice_money'])."&type=2";
+		  $url=constant("zuslolimeow")."payment/xhpay3.php?ice_money=".esc_sql($_POST['ice_money'])."&type=2";
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==17)
 	   {
-		  $url=constant("erphpdown")."payment/xhpay3.php?ice_money=".esc_sql($_POST['ice_money'])."&type=1";
+		  $url=constant("zuslolimeow")."payment/xhpay3.php?ice_money=".esc_sql($_POST['ice_money'])."&type=1";
 	   }elseif(isset($_POST['paytype']) && $paytype==19)
 	   {
-		  $url=constant("erphpdown")."payment/payjs.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=constant("zuslolimeow")."payment/payjs.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }elseif(isset($_POST['paytype']) && $paytype==20)
 	   {
-		  $url=constant("erphpdown")."payment/payjs.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
+		  $url=constant("zuslolimeow")."payment/payjs.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==13)
 	   {
-		  $url=constant("erphpdown")."payment/codepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=1";
+		  $url=constant("zuslolimeow")."payment/codepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=1";
 	   }elseif(isset($_POST['paytype']) && $paytype==14)
 	   {
-		  $url=constant("erphpdown")."payment/codepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=3";
+		  $url=constant("zuslolimeow")."payment/codepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=3";
 	   }elseif(isset($_POST['paytype']) && $paytype==15)
 	   {
-		  $url=constant("erphpdown")."payment/codepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=2";
+		  $url=constant("zuslolimeow")."payment/codepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=2";
 	   }
 	   elseif(isset($_POST['paytype']) && $paytype==21)
 	   {
-		  $url=constant("erphpdown")."payment/epay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
+		  $url=constant("zuslolimeow")."payment/epay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
 	   }elseif(isset($_POST['paytype']) && $paytype==22)
 	   {
-		  $url=constant("erphpdown")."payment/epay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=wxpay";
+		  $url=constant("zuslolimeow")."payment/epay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=wxpay";
 	   }elseif(isset($_POST['paytype']) && $paytype==23)
 	   {
-		  $url=constant("erphpdown")."payment/epay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=qqpay";
+		  $url=constant("zuslolimeow")."payment/epay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=qqpay";
 	   }elseif(isset($_POST['paytype']) && $paytype==31)
 	   {
-		  $url=constant("erphpdown")."payment/vpay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=2";
+		  $url=constant("zuslolimeow")."payment/vpay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=2";
 	   }elseif(isset($_POST['paytype']) && $paytype==32)
 	   {
-		  $url=constant("erphpdown")."payment/vpay.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=constant("zuslolimeow")."payment/vpay.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }elseif(isset($_POST['paytype']) && $paytype==41)
 	   {
-		  $url=constant("erphpdown")."payment/easepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
+		  $url=constant("zuslolimeow")."payment/easepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=alipay";
 	   }elseif(isset($_POST['paytype']) && $paytype==42)
 	   {
-		  $url=constant("erphpdown")."payment/easepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=wxpay";
+		  $url=constant("zuslolimeow")."payment/easepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=wxpay";
 	   }elseif(isset($_POST['paytype']) && $paytype==43)
 	   {
-		  $url=constant("erphpdown")."payment/easepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=usdt";
+		  $url=constant("zuslolimeow")."payment/easepay.php?ice_money=".esc_sql($_POST['ice_money'])."&type=usdt";
 	   }elseif(isset($_POST['paytype']) && $paytype==50)
 	   {
 		  $url=home_url('?epd_r64='.base64_encode('usdt-'.esc_sql($_POST['ice_money']).'-'.time()));
@@ -350,10 +350,10 @@ function boxmoe_form_money_online() {
 		  $url=home_url('?epd_r64='.base64_encode('stripe-'.esc_sql($_POST['ice_money']).'-'.time()));
 	   }elseif(plugin_check_ecpay() && isset($_POST['paytype']) && $paytype==70)
 	   {
-		  $url=ERPHPDOWN_ECPAY_URL."/ecpay.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=ZUSLOLIMEOW_ECPAY_URL."/ecpay.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }elseif(plugin_check_newebpay() && isset($_POST['paytype']) && $paytype==80)
 	   {
-		  $url=ERPHPDOWN_NEWEBPAY_URL."/newebpay.php?ice_money=".esc_sql($_POST['ice_money']);
+		  $url=ZUSLOLIMEOW_NEWEBPAY_URL."/newebpay.php?ice_money=".esc_sql($_POST['ice_money']);
 	   }
 	   wp_send_json_success(array('url' => $url));	
 	}   	

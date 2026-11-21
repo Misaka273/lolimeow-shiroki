@@ -37,42 +37,42 @@
   --shiroki-pink-deep: oklch(0.592 0.257 348.1);
   --shiroki-pink-pale: oklch(0.939 0.028 29);
   --shiroki-pink-text: oklch(0.42 0.186 328);
-  --shiroki-pink-ring: color-mix(in oklch, var(--shiroki-pink-dark) 15%, transparent);
-  --shiroki-pink-glow: color-mix(in oklch, var(--shiroki-pink-dark) 10%, transparent);
+  --shiroki-pink-ring: color-mix(in oklch, var(--shiroki-pink-dark) 15%, oklch(0 0 0 / 0));
+  --shiroki-pink-glow: color-mix(in oklch, var(--shiroki-pink-dark) 10%, oklch(0 0 0 / 0));
 
   /* 🌑 灰色系 */
-  --shiroki-gray-light: #f5f5f5;
-  --shiroki-gray-medium: #e0e0e0;
-  --shiroki-gray-dark: #d0d0d0;
+  --shiroki-gray-light: oklch(0.970151 0 0);
+  --shiroki-gray-medium: oklch(0.906701 0 0);
+  --shiroki-gray-dark: oklch(0.857605 0 0);
 
   /* ⚫ 黑色系 */
-  --shiroki-black-light: #666666;
-  --shiroki-black-medium: #333333;
-  --shiroki-black-dark: #1a1a1a;
+  --shiroki-black-light: oklch(0.510278 0 0);
+  --shiroki-black-medium: oklch(0.321093 0 0);
+  --shiroki-black-dark: oklch(0.217787 0 0);
 
   /* 🤍 白色系 */
-  --shiroki-white: #ffffff;
+  --shiroki-white: oklch(1 0 0);
 
   /* 📝 渐变定义 */
   --shiroki-gradient-pink: linear-gradient(135deg, var(--shiroki-pink-light), var(--shiroki-pink-medium));
   --shiroki-gradient-pink-deep: linear-gradient(135deg, var(--shiroki-pink-dark), var(--shiroki-pink-deep));
-  --shiroki-gradient-gray: linear-gradient(135deg, var(--shiroki-gray-light), var(--shiroki-gray-medium));
-  --shiroki-gradient-black: linear-gradient(135deg, var(--shiroki-black-light), var(--shiroki-black-medium));
-  --shiroki-gradient-black-deep: linear-gradient(135deg, var(--shiroki-black-medium), var(--shiroki-black-dark));
+  --shiroki-gradient-gray: linear-gradient(135deg in srgb, var(--shiroki-gray-light), var(--shiroki-gray-medium));
+  --shiroki-gradient-black: linear-gradient(135deg in srgb, var(--shiroki-black-light), var(--shiroki-black-medium));
+  --shiroki-gradient-black-deep: linear-gradient(135deg in srgb, var(--shiroki-black-medium), var(--shiroki-black-dark));
 
   /* 🌈 半透明渐变 */
-  --shiroki-gradient-black-transparent: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(19, 18, 18, 0.8));
-  --shiroki-gradient-gray-transparent: linear-gradient(180deg, rgba(54, 53, 53, 0.95), rgba(105, 105, 105, 0.85));
+  --shiroki-gradient-black-transparent: linear-gradient(135deg in srgb, oklch(0 0 0 / 0.7), oklch(0.183379 0.001631 17.305 / 0.8));
+  --shiroki-gradient-gray-transparent: linear-gradient(180deg in srgb, oklch(0.329976 0.001403 17.229 / 0.95), oklch(0.520807 0 0 / 0.85));
 
   /* 📦 阴影 */
-  --shiroki-shadow-pink: 0 2px 10px color-mix(in oklch, var(--shiroki-pink-light) 30%, transparent);
-  --shiroki-shadow-black: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --shiroki-shadow-pink: 0 2px 10px color-mix(in oklch, var(--shiroki-pink-light) 30%, oklch(0 0 0 / 0));
+  --shiroki-shadow-black: 0 2px 10px oklch(0 0 0 / 0.3);
 
   /* 🌊 页面背景渐变 - 亮色模式 */
-  --shiroki-bg-gradient-light: linear-gradient(135deg, #e0e5ec 0%, #c9d6e8 100%);
+  --shiroki-bg-gradient-light: linear-gradient(135deg in srgb, oklch(0.920119 0.010927 256.697) 0%, oklch(0.87175 0.028636 256.493) 100%);
 
   /* 🌆 页面背景渐变 - 暗色模式 */
-  --shiroki-bg-gradient-dark: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+  --shiroki-bg-gradient-dark: linear-gradient(135deg in srgb, oklch(0.241662 0.029786 269.883) 0%, oklch(0.188361 0.012843 248.51) 100%);
 }
 
 /* ============================================
@@ -80,231 +80,231 @@
    ============================================ */
 :root {
   /* ☀️ 亮色模式基础背景 */
-  --admin-bg-primary: rgba(255, 255, 255, 0.85);
-  --admin-bg-secondary: rgba(245, 247, 250, 0.9);
-  --admin-bg-tertiary: rgba(240, 242, 245, 0.8);
+  --admin-bg-primary: oklch(1 0 0 / 0.85);
+  --admin-bg-secondary: oklch(0.975469 0.004534 258.325 / 0.9);
+  --admin-bg-tertiary: oklch(0.960479 0.004552 258.325 / 0.8);
 
   /* 🌆 暗色模式基础背景 */
-  --admin-bg-dark-primary: rgba(30, 35, 45, 0.9);
-  --admin-bg-dark-secondary: rgba(40, 45, 55, 0.85);
-  --admin-bg-dark-tertiary: rgba(50, 55, 65, 0.8);
+  --admin-bg-dark-primary: oklch(0.25567 0.020308 264.12 / 0.9);
+  --admin-bg-dark-secondary: oklch(0.296544 0.019544 264.215 / 0.85);
+  --admin-bg-dark-tertiary: oklch(0.336094 0.018921 264.279 / 0.8);
 
   /* 🔵 主色调 - 蓝色系 */
-  --admin-primary-bg: rgba(99, 179, 237, 0.35);
-  --admin-primary-bg-hover: rgba(99, 179, 237, 0.5);
-  --admin-primary-bg-strong: rgba(99, 179, 237, 0.7);
-  --admin-primary-border: rgba(99, 179, 237, 0.6);
-  --admin-primary-shadow: rgba(99, 179, 237, 0.25);
-  --admin-primary-text: #2b6cb0;
-  --admin-primary-text-dark: #90cdf4;
+  --admin-primary-bg: oklch(0.739179 0.115418 242.053 / 0.35);
+  --admin-primary-bg-hover: oklch(0.739179 0.115418 242.053 / 0.5);
+  --admin-primary-bg-strong: oklch(0.739179 0.115418 242.053 / 0.7);
+  --admin-primary-border: oklch(0.739179 0.115418 242.053 / 0.6);
+  --admin-primary-shadow: oklch(0.739179 0.115418 242.053 / 0.25);
+  --admin-primary-text: oklch(0.524108 0.125925 252.324);
+  --admin-primary-text-dark: oklch(0.820785 0.083257 237.183);
 
   /* 🗓️ 定时发布状态色 */
   --admin-scheduled-bg: oklch(0.72 0.14 250 / 0.75);
 
   /* 🔵 浅蓝色系 - 媒体弹窗专用 */
-  --admin-light-blue-1: #e0f2fe;
-  --admin-light-blue-2: #dbeafe;
-  --admin-light-blue-3: #e0e7ff;
-  --admin-light-blue-border: #93c5fd;
-  --admin-light-blue-text: #1e40af;
-  --admin-light-blue-shadow: rgba(147, 197, 253, 0.4);
-  --admin-gradient-light-blue: linear-gradient(135deg, var(--admin-light-blue-1) 0%, var(--admin-light-blue-2) 50%, var(--admin-light-blue-3) 100%);
+  --admin-light-blue-1: oklch(0.951419 0.025032 236.824);
+  --admin-light-blue-2: oklch(0.931918 0.031591 255.585);
+  --admin-light-blue-3: oklch(0.929941 0.033426 272.788);
+  --admin-light-blue-border: oklch(0.809069 0.095598 251.813);
+  --admin-light-blue-text: oklch(0.424445 0.180869 265.638);
+  --admin-light-blue-shadow: oklch(0.809069 0.095598 251.813 / 0.4);
+  --admin-gradient-light-blue: linear-gradient(135deg in srgb, var(--admin-light-blue-1) 0%, var(--admin-light-blue-2) 50%, var(--admin-light-blue-3) 100%);
 
   /* 🎨 短代码按钮明亮淡色系 */
   /* 🔴 红色系 - H2设置标 */
-  --sc-btn-red-bg: rgba(254, 226, 226, 0.8);
-  --sc-btn-red-bg-hover: rgba(254, 202, 202, 0.9);
-  --sc-btn-red-border: rgba(252, 165, 165, 0.6);
-  --sc-btn-red-border-hover: rgba(248, 113, 113, 0.8);
-  --sc-btn-red-text: #991b1b;
-  --sc-btn-red-shadow: rgba(252, 165, 165, 0.4);
+  --sc-btn-red-bg: oklch(0.935641 0.030896 17.717 / 0.8);
+  --sc-btn-red-bg-hover: oklch(0.884542 0.059258 18.334 / 0.9);
+  --sc-btn-red-border: oklch(0.80769 0.103486 19.571 / 0.6);
+  --sc-btn-red-border-hover: oklch(0.710627 0.166148 22.216 / 0.8);
+  --sc-btn-red-text: oklch(0.443687 0.161321 26.899);
+  --sc-btn-red-shadow: oklch(0.80769 0.103486 19.571 / 0.4);
 
   /* 🟠 橙色系 - H2下载标 */
-  --sc-btn-orange-bg: rgba(255, 237, 213, 0.8);
-  --sc-btn-orange-bg-hover: rgba(254, 215, 170, 0.9);
-  --sc-btn-orange-border: rgba(253, 186, 116, 0.6);
-  --sc-btn-orange-border-hover: rgba(251, 146, 60, 0.8);
-  --sc-btn-orange-text: #9a3412;
-  --sc-btn-orange-shadow: rgba(253, 186, 116, 0.4);
+  --sc-btn-orange-bg: oklch(0.954204 0.037154 75.164 / 0.8);
+  --sc-btn-orange-bg-hover: oklch(0.901457 0.072949 70.697 / 0.9);
+  --sc-btn-orange-border: oklch(0.836575 0.11654 66.29 / 0.6);
+  --sc-btn-orange-border-hover: oklch(0.75764 0.159037 55.934 / 0.8);
+  --sc-btn-orange-text: oklch(0.469799 0.143047 37.304);
+  --sc-btn-orange-shadow: oklch(0.836575 0.11654 66.29 / 0.4);
 
   /* 🟡 黄色系 - 下载按钮 */
-  --sc-btn-yellow-bg: rgba(254, 249, 195, 0.8);
-  --sc-btn-yellow-bg-hover: rgba(254, 240, 138, 0.9);
-  --sc-btn-yellow-border: rgba(253, 224, 71, 0.6);
-  --sc-btn-yellow-border-hover: rgba(250, 204, 21, 0.8);
-  --sc-btn-yellow-text: #854d0e;
-  --sc-btn-yellow-shadow: rgba(253, 224, 71, 0.4);
+  --sc-btn-yellow-bg: oklch(0.972919 0.069349 103.193 / 0.8);
+  --sc-btn-yellow-bg-hover: oklch(0.945102 0.124303 101.54 / 0.9);
+  --sc-btn-yellow-border: oklch(0.905243 0.165683 98.111 / 0.6);
+  --sc-btn-yellow-border-hover: oklch(0.860559 0.173115 91.936 / 0.8);
+  --sc-btn-yellow-text: oklch(0.476186 0.103366 61.907);
+  --sc-btn-yellow-shadow: oklch(0.905243 0.165683 98.111 / 0.4);
 
   /* 🟢 绿色系 - 链接按钮 */
-  --sc-btn-green-bg: rgba(220, 252, 231, 0.8);
-  --sc-btn-green-bg-hover: rgba(187, 247, 208, 0.9);
-  --sc-btn-green-border: rgba(134, 239, 172, 0.6);
-  --sc-btn-green-border-hover: rgba(74, 222, 128, 0.8);
-  --sc-btn-green-text: #166534;
-  --sc-btn-green-shadow: rgba(134, 239, 172, 0.4);
+  --sc-btn-green-bg: oklch(0.962413 0.043378 156.743 / 0.8);
+  --sc-btn-green-bg-hover: oklch(0.925023 0.08055 155.995 / 0.9);
+  --sc-btn-green-border: oklch(0.871163 0.136267 154.449 / 0.6);
+  --sc-btn-green-border-hover: oklch(0.800349 0.18206 151.711 / 0.8);
+  --sc-btn-green-text: oklch(0.447925 0.108321 151.328);
+  --sc-btn-green-shadow: oklch(0.871163 0.136267 154.449 / 0.4);
 
   /* 🔵 青色系 - 引用模块1 */
-  --sc-btn-cyan-bg: rgba(207, 250, 254, 0.8);
-  --sc-btn-cyan-bg-hover: rgba(165, 243, 252, 0.9);
-  --sc-btn-cyan-border: rgba(103, 232, 249, 0.6);
-  --sc-btn-cyan-border-hover: rgba(34, 211, 238, 0.8);
-  --sc-btn-cyan-text: #155e75;
-  --sc-btn-cyan-shadow: rgba(103, 232, 249, 0.4);
+  --sc-btn-cyan-bg: oklch(0.956262 0.044329 203.388 / 0.8);
+  --sc-btn-cyan-bg-hover: oklch(0.916664 0.077194 205.041 / 0.9);
+  --sc-btn-cyan-border: oklch(0.865073 0.115347 207.078 / 0.6);
+  --sc-btn-cyan-border-hover: oklch(0.797116 0.133888 211.53 / 0.8);
+  --sc-btn-cyan-text: oklch(0.450029 0.077074 224.283);
+  --sc-btn-cyan-shadow: oklch(0.865073 0.115347 207.078 / 0.4);
 
   /* 💙 蓝色系 - 引用模块2 */
-  --sc-btn-blue-bg: rgba(219, 234, 254, 0.8);
-  --sc-btn-blue-bg-hover: rgba(191, 219, 254, 0.9);
-  --sc-btn-blue-border: rgba(147, 197, 253, 0.6);
-  --sc-btn-blue-border-hover: rgba(96, 165, 250, 0.8);
-  --sc-btn-blue-text: #1e40af;
-  --sc-btn-blue-shadow: rgba(147, 197, 253, 0.4);
+  --sc-btn-blue-bg: oklch(0.931918 0.031591 255.585 / 0.8);
+  --sc-btn-blue-bg-hover: oklch(0.882343 0.057057 254.128 / 0.9);
+  --sc-btn-blue-border: oklch(0.809069 0.095598 251.813 / 0.6);
+  --sc-btn-blue-border-hover: oklch(0.71374 0.143381 254.624 / 0.8);
+  --sc-btn-blue-text: oklch(0.424445 0.180869 265.638);
+  --sc-btn-blue-shadow: oklch(0.809069 0.095598 251.813 / 0.4);
 
   /* 💜 紫色系 - OL列表 */
-  --sc-btn-purple-bg: rgba(243, 232, 255, 0.8);
-  --sc-btn-purple-bg-hover: rgba(233, 213, 255, 0.9);
-  --sc-btn-purple-border: rgba(216, 180, 254, 0.6);
-  --sc-btn-purple-border-hover: rgba(192, 132, 252, 0.8);
-  --sc-btn-purple-text: #6b21a8;
-  --sc-btn-purple-shadow: rgba(216, 180, 254, 0.4);
+  --sc-btn-purple-bg: oklch(0.94643 0.032742 307.174 / 0.8);
+  --sc-btn-purple-bg-hover: oklch(0.902359 0.060408 306.703 / 0.9);
+  --sc-btn-purple-border: oklch(0.826759 0.108229 306.383 / 0.6);
+  --sc-btn-purple-border-hover: oklch(0.721685 0.176688 305.504 / 0.8);
+  --sc-btn-purple-text: oklch(0.438279 0.198333 303.724);
+  --sc-btn-purple-shadow: oklch(0.826759 0.108229 306.383 / 0.4);
 
   /* 💗 粉色系 - 药丸模块 */
-  --sc-btn-pink-bg: rgba(252, 231, 243, 0.8);
-  --sc-btn-pink-bg-hover: rgba(251, 207, 232, 0.9);
-  --sc-btn-pink-border: rgba(249, 168, 212, 0.6);
-  --sc-btn-pink-border-hover: rgba(244, 114, 182, 0.8);
-  --sc-btn-pink-text: #9d174d;
-  --sc-btn-pink-shadow: rgba(249, 168, 212, 0.4);
+  --sc-btn-pink-bg: oklch(0.948201 0.027645 342.258 / 0.8);
+  --sc-btn-pink-bg-hover: oklch(0.899407 0.058873 343.231 / 0.9);
+  --sc-btn-pink-border: oklch(0.82284 0.109505 346.018 / 0.6);
+  --sc-btn-pink-border-hover: oklch(0.725266 0.175227 349.761 / 0.8);
+  --sc-btn-pink-text: oklch(0.458704 0.169677 3.815);
+  --sc-btn-pink-shadow: oklch(0.82284 0.109505 346.018 / 0.4);
 
   /* ⚪ 灰色系 - 警告框模块 */
-  --sc-btn-gray-bg: rgba(243, 244, 246, 0.8);
-  --sc-btn-gray-bg-hover: rgba(229, 231, 235, 0.9);
-  --sc-btn-gray-border: rgba(209, 213, 219, 0.6);
-  --sc-btn-gray-border-hover: rgba(156, 163, 175, 0.8);
-  --sc-btn-gray-text: #374151;
-  --sc-btn-gray-shadow: rgba(209, 213, 219, 0.4);
+  --sc-btn-gray-bg: oklch(0.966956 0.002874 264.542 / 0.8);
+  --sc-btn-gray-bg-hover: oklch(0.927582 0.005814 264.531 / 0.9);
+  --sc-btn-gray-border: oklch(0.871681 0.009339 258.338 / 0.6);
+  --sc-btn-gray-border-hover: oklch(0.71366 0.019176 261.325 / 0.8);
+  --sc-btn-gray-text: oklch(0.372927 0.03062 259.733);
+  --sc-btn-gray-shadow: oklch(0.871681 0.009339 258.338 / 0.4);
 
   /* 🟤 棕色系 - 代码高亮 */
-  --sc-btn-brown-bg: rgba(245, 235, 224, 0.8);
-  --sc-btn-brown-bg-hover: rgba(231, 215, 196, 0.9);
-  --sc-btn-brown-border: rgba(214, 180, 148, 0.6);
-  --sc-btn-brown-border-hover: rgba(180, 140, 100, 0.8);
-  --sc-btn-brown-text: #78350f;
-  --sc-btn-brown-shadow: rgba(214, 180, 148, 0.4);
+  --sc-btn-brown-bg: oklch(0.944931 0.018256 70.237 / 0.8);
+  --sc-btn-brown-bg-hover: oklch(0.887056 0.031093 72.147 / 0.9);
+  --sc-btn-brown-border: oklch(0.79167 0.058605 65.087 / 0.6);
+  --sc-btn-brown-border-hover: oklch(0.668504 0.073286 66.022 / 0.8);
+  --sc-btn-brown-text: oklch(0.413707 0.105365 45.904);
+  --sc-btn-brown-shadow: oklch(0.79167 0.058605 65.087 / 0.4);
 
   /* 🌹 玫红色系 - Iframe */
-  --sc-btn-rose-bg: rgba(255, 228, 230, 0.8);
-  --sc-btn-rose-bg-hover: rgba(254, 205, 211, 0.9);
-  --sc-btn-rose-border: rgba(253, 164, 175, 0.6);
-  --sc-btn-rose-border-hover: rgba(251, 113, 133, 0.8);
-  --sc-btn-rose-text: #9f1239;
-  --sc-btn-rose-shadow: rgba(253, 164, 175, 0.4);
+  --sc-btn-rose-bg: oklch(0.941366 0.029778 12.58 / 0.8);
+  --sc-btn-rose-bg-hover: oklch(0.892447 0.05591 10.001 / 0.9);
+  --sc-btn-rose-border: oklch(0.809664 0.106109 11.638 / 0.6);
+  --sc-btn-rose-border-hover: oklch(0.719186 0.168984 13.428 / 0.8);
+  --sc-btn-rose-text: oklch(0.454568 0.171284 13.697);
+  --sc-btn-rose-shadow: oklch(0.809664 0.106109 11.638 / 0.4);
 
   /* 🍊 琥珀色系 - 登录查看一 */
-  --sc-btn-amber-bg: rgba(254, 243, 199, 0.8);
-  --sc-btn-amber-bg-hover: rgba(253, 230, 138, 0.9);
-  --sc-btn-amber-border: rgba(252, 211, 77, 0.6);
-  --sc-btn-amber-border-hover: rgba(250, 204, 21, 0.8);
-  --sc-btn-amber-text: #92400e;
-  --sc-btn-amber-shadow: rgba(252, 211, 77, 0.4);
+  --sc-btn-amber-bg: oklch(0.961896 0.058027 95.617 / 0.8);
+  --sc-btn-amber-bg-hover: oklch(0.924277 0.115127 95.746 / 0.9);
+  --sc-btn-amber-border: oklch(0.878967 0.15342 91.605 / 0.6);
+  --sc-btn-amber-border-hover: oklch(0.860559 0.173115 91.936 / 0.8);
+  --sc-btn-amber-text: oklch(0.473189 0.124699 46.201);
+  --sc-btn-amber-shadow: oklch(0.878967 0.15342 91.605 / 0.4);
 
   /* 🌿 翠绿色系 - 登录查看二 */
-  --sc-btn-emerald-bg: rgba(209, 250, 229, 0.8);
-  --sc-btn-emerald-bg-hover: rgba(167, 243, 208, 0.9);
-  --sc-btn-emerald-border: rgba(110, 231, 183, 0.6);
-  --sc-btn-emerald-border-hover: rgba(52, 211, 153, 0.8);
-  --sc-btn-emerald-text: #065f46;
-  --sc-btn-emerald-shadow: rgba(110, 231, 183, 0.4);
+  --sc-btn-emerald-bg: oklch(0.950457 0.050741 163.051 / 0.8);
+  --sc-btn-emerald-bg-hover: oklch(0.904941 0.089488 164.15 / 0.9);
+  --sc-btn-emerald-border: oklch(0.845186 0.129948 164.978 / 0.6);
+  --sc-btn-emerald-border-hover: oklch(0.772944 0.15349 163.223 / 0.8);
+  --sc-btn-emerald-text: oklch(0.4318 0.086474 166.913);
+  --sc-btn-emerald-shadow: oklch(0.845186 0.129948 164.978 / 0.4);
 
   /* 🔷 靛蓝色系 - 文章密码保护 */
-  --sc-btn-indigo-bg: rgba(224, 231, 255, 0.8);
-  --sc-btn-indigo-bg-hover: rgba(199, 210, 254, 0.9);
-  --sc-btn-indigo-border: rgba(165, 180, 252, 0.6);
-  --sc-btn-indigo-border-hover: rgba(129, 140, 248, 0.8);
-  --sc-btn-indigo-text: #3730a3;
-  --sc-btn-indigo-shadow: rgba(165, 180, 252, 0.4);
+  --sc-btn-indigo-bg: oklch(0.929941 0.033426 272.788 / 0.8);
+  --sc-btn-indigo-bg-hover: oklch(0.869859 0.062223 274.039 / 0.9);
+  --sc-btn-indigo-border: oklch(0.785298 0.104135 274.713 / 0.6);
+  --sc-btn-indigo-border-hover: oklch(0.680113 0.158303 276.935 / 0.8);
+  --sc-btn-indigo-text: oklch(0.398432 0.177339 277.366);
+  --sc-btn-indigo-shadow: oklch(0.785298 0.104135 274.713 / 0.4);
 
   /* 🎵 音乐色系 - 插入音频 */
-  --sc-btn-music-bg: rgba(232, 237, 255, 0.8);
-  --sc-btn-music-bg-hover: rgba(209, 219, 255, 0.9);
-  --sc-btn-music-border: rgba(167, 182, 224, 0.6);
-  --sc-btn-music-border-hover: rgba(129, 149, 207, 0.8);
-  --sc-btn-music-text: #4338ca;
-  --sc-btn-music-shadow: rgba(167, 182, 224, 0.4);
+  --sc-btn-music-bg: oklch(0.947647 0.024832 273.503 / 0.8);
+  --sc-btn-music-bg-hover: oklch(0.895283 0.050684 273.095 / 0.9);
+  --sc-btn-music-border: oklch(0.779133 0.062387 269.545 / 0.6);
+  --sc-btn-music-border-hover: oklch(0.67683 0.08925 269.315 / 0.8);
+  --sc-btn-music-text: oklch(0.456775 0.214578 277.023);
+  --sc-btn-music-shadow: oklch(0.779133 0.062387 269.545 / 0.4);
 
   /* 🎬 视频色系 - 插入视频 */
-  --sc-btn-video-bg: rgba(255, 230, 245, 0.8);
-  --sc-btn-video-bg-hover: rgba(255, 204, 235, 0.9);
-  --sc-btn-video-border: rgba(255, 160, 215, 0.6);
-  --sc-btn-video-border-hover: rgba(255, 112, 195, 0.8);
-  --sc-btn-video-text: #9d1b6b;
-  --sc-btn-video-shadow: rgba(255, 160, 215, 0.4);
+  --sc-btn-video-bg: oklch(0.949395 0.033465 341.016 / 0.8);
+  --sc-btn-video-bg-hover: oklch(0.898587 0.069783 341.53 / 0.9);
+  --sc-btn-video-border: oklch(0.817381 0.130532 344.698 / 0.6);
+  --sc-btn-video-border-hover: oklch(0.742066 0.194848 346.986 / 0.8);
+  --sc-btn-video-text: oklch(0.472117 0.178545 348.947);
+  --sc-btn-video-shadow: oklch(0.817381 0.130532 344.698 / 0.4);
 
   /* 📦 折叠色系 - 折叠内容 */
-  --sc-btn-collapse-bg: rgba(230, 245, 255, 0.8);
-  --sc-btn-collapse-bg-hover: rgba(204, 235, 255, 0.9);
-  --sc-btn-collapse-border: rgba(147, 197, 253, 0.6);
-  --sc-btn-collapse-border-hover: rgba(96, 165, 250, 0.8);
-  --sc-btn-collapse-text: #1e40af;
-  --sc-btn-collapse-shadow: rgba(147, 197, 253, 0.4);
+  --sc-btn-collapse-bg: oklch(0.961961 0.020835 236.753 / 0.8);
+  --sc-btn-collapse-bg-hover: oklch(0.923899 0.042504 236.244 / 0.9);
+  --sc-btn-collapse-border: oklch(0.809069 0.095598 251.813 / 0.6);
+  --sc-btn-collapse-border-hover: oklch(0.71374 0.143381 254.624 / 0.8);
+  --sc-btn-collapse-text: oklch(0.424445 0.180869 265.638);
+  --sc-btn-collapse-shadow: oklch(0.809069 0.095598 251.813 / 0.4);
 
   /* 📄 分页色系 - 折叠内容（默认展开） */
-  --sc-btn-page-bg: rgba(255, 245, 230, 0.8);
-  --sc-btn-page-bg-hover: rgba(255, 230, 204, 0.9);
-  --sc-btn-page-border: rgba(255, 200, 130, 0.6);
-  --sc-btn-page-border-hover: rgba(255, 170, 80, 0.8);
-  --sc-btn-page-text: #9a4a00;
-  --sc-btn-page-shadow: rgba(255, 200, 130, 0.4);
+  --sc-btn-page-bg: oklch(0.973929 0.022517 78.222 / 0.8);
+  --sc-btn-page-bg-hover: oklch(0.938552 0.043947 68.351 / 0.9);
+  --sc-btn-page-border: oklch(0.866808 0.107473 72.323 / 0.6);
+  --sc-btn-page-border-hover: oklch(0.805454 0.144251 64.534 / 0.8);
+  --sc-btn-page-text: oklch(0.501122 0.127968 52.531);
+  --sc-btn-page-shadow: oklch(0.866808 0.107473 72.323 / 0.4);
 
   /* 🔲 深灰色系 - 文章分页 */
-  --sc-btn-dark-bg: rgba(55, 65, 81, 0.85);
-  --sc-btn-dark-bg-hover: rgba(75, 85, 99, 0.95);
-  --sc-btn-dark-border: rgba(107, 114, 128, 0.6);
-  --sc-btn-dark-border-hover: rgba(156, 163, 175, 0.8);
-  --sc-btn-dark-text: #f3f4f6;
-  --sc-btn-dark-shadow: rgba(55, 65, 81, 0.4);
+  --sc-btn-dark-bg: oklch(0.372927 0.03062 259.733 / 0.85);
+  --sc-btn-dark-bg-hover: oklch(0.446112 0.026312 256.802 / 0.95);
+  --sc-btn-dark-border: oklch(0.551019 0.023361 264.364 / 0.6);
+  --sc-btn-dark-border-hover: oklch(0.71366 0.019176 261.325 / 0.8);
+  --sc-btn-dark-text: oklch(0.966956 0.002874 264.542);
+  --sc-btn-dark-shadow: oklch(0.372927 0.03062 259.733 / 0.4);
 
   /* 🟢 成功色 - 绿色系 */
-  --admin-success-bg: rgba(104, 211, 145, 0.35);
-  --admin-success-bg-hover: rgba(104, 211, 145, 0.5);
-  --admin-success-border: rgba(104, 211, 145, 0.6);
-  --admin-success-shadow: rgba(104, 211, 145, 0.25);
-  --admin-success-text: #276749;
-  --admin-success-text-dark: #9ae6b4;
+  --admin-success-bg: oklch(0.786014 0.137876 154.523 / 0.35);
+  --admin-success-bg-hover: oklch(0.786014 0.137876 154.523 / 0.5);
+  --admin-success-border: oklch(0.786014 0.137876 154.523 / 0.6);
+  --admin-success-shadow: oklch(0.786014 0.137876 154.523 / 0.25);
+  --admin-success-text: oklch(0.463544 0.082319 160.167);
+  --admin-success-text-dark: oklch(0.861922 0.102791 154.844);
 
   /* 🟣 辅助色 - 紫色系 */
-  --admin-purple-bg: rgba(183, 148, 244, 0.35);
-  --admin-purple-bg-hover: rgba(183, 148, 244, 0.5);
-  --admin-purple-border: rgba(183, 148, 244, 0.6);
-  --admin-purple-shadow: rgba(183, 148, 244, 0.25);
-  --admin-purple-text: #6b46c1;
-  --admin-purple-text-dark: #d6bcfa;
+  --admin-purple-bg: oklch(0.735825 0.139368 299.78 / 0.35);
+  --admin-purple-bg-hover: oklch(0.735825 0.139368 299.78 / 0.5);
+  --admin-purple-border: oklch(0.735825 0.139368 299.78 / 0.6);
+  --admin-purple-shadow: oklch(0.735825 0.139368 299.78 / 0.25);
+  --admin-purple-text: oklch(0.5033 0.182915 292.42);
+  --admin-purple-text-dark: oklch(0.838006 0.089342 303.679);
 
   /* 🟡 警告色 - 琥珀色系 */
-  --admin-warning-bg: rgba(251, 191, 36, 0.35);
-  --admin-warning-bg-solid: rgba(251, 191, 36, 0.85);
-  --admin-warning-border: rgba(251, 191, 36, 0.6);
-  --admin-warning-text: #92400e;
+  --admin-warning-bg: oklch(0.836861 0.164422 84.429 / 0.35);
+  --admin-warning-bg-solid: oklch(0.836861 0.164422 84.429 / 0.85);
+  --admin-warning-border: oklch(0.836861 0.164422 84.429 / 0.6);
+  --admin-warning-text: oklch(0.473189 0.124699 46.201);
 
   /* 🦈 删除/危险色 - 浅红色系 */
-  --admin-danger-bg: rgba(254, 226, 226, 0.92);
-  --admin-danger-bg-hover: rgba(252, 165, 165, 0.88);
-  --admin-danger-border: rgba(248, 113, 113, 0.55);
-  --admin-danger-text: #b91c1c;
+  --admin-danger-bg: oklch(0.935641 0.030896 17.717 / 0.92);
+  --admin-danger-bg-hover: oklch(0.80769 0.103486 19.571 / 0.88);
+  --admin-danger-border: oklch(0.710627 0.166148 22.216 / 0.55);
+  --admin-danger-text: oklch(0.50542 0.190493 27.518);
 
   /* 🌸 替换按钮 - 浅粉红色系 */
-  --admin-replace-bg: rgba(252, 231, 243, 0.92);
-  --admin-replace-bg-hover: rgba(251, 207, 232, 0.88);
-  --admin-replace-border: rgba(249, 168, 212, 0.55);
-  --admin-replace-text: #9d174d;
+  --admin-replace-bg: oklch(0.948201 0.027645 342.258 / 0.92);
+  --admin-replace-bg-hover: oklch(0.899407 0.058873 343.231 / 0.88);
+  --admin-replace-border: oklch(0.82284 0.109505 346.018 / 0.55);
+  --admin-replace-text: oklch(0.458704 0.169677 3.815);
 
   /* ❌ 错误状态 */
-  --admin-error-text: #c53030;
+  --admin-error-text: oklch(0.544071 0.185911 25.95);
 
   /* 🔮 毛玻璃效果 */
   --admin-glass-blur: blur(20px) saturate(180%);
   --admin-glass-blur-strong: blur(30px) saturate(200%);
-  --admin-glass-backdrop: rgba(255, 255, 255, 0.25);
-  --admin-glass-backdrop-dark: rgba(0, 0, 0, 0.35);
+  --admin-glass-backdrop: oklch(1 0 0 / 0.25);
+  --admin-glass-backdrop-dark: oklch(0 0 0 / 0.35);
 
   /* 💫 拟态效果 */
   --admin-neumorph-light: none;
@@ -336,13 +336,13 @@
   --admin-card-padding: 16px;
 
   /* ✨ 阴影系统 */
-  --admin-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --admin-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --admin-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --admin-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.15);
-  --admin-shadow-glow: 0 0 20px rgba(99, 179, 237, 0.3);
-  --admin-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
-  --admin-shadow-hover-dark: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --admin-shadow-sm: 0 2px 4px oklch(0 0 0 / 0.05);
+  --admin-shadow-md: 0 4px 12px oklch(0 0 0 / 0.08);
+  --admin-shadow-lg: 0 8px 24px oklch(0 0 0 / 0.12);
+  --admin-shadow-xl: 0 16px 48px oklch(0 0 0 / 0.15);
+  --admin-shadow-glow: 0 0 20px oklch(0.739179 0.115418 242.053 / 0.3);
+  --admin-shadow-hover: 0 12px 32px oklch(0 0 0 / 0.15);
+  --admin-shadow-hover-dark: 0 12px 32px oklch(0 0 0 / 0.35);
 
   /* 🎭 悬停动画 */
   --admin-hover-translate: -4px;
@@ -362,9 +362,9 @@
 
   /* 🎭 边框系统 */
   --admin-border-width: 1px;
-  --admin-border-color: rgba(255, 255, 255, 0.5);
-  --admin-border-color-dark: rgba(255, 255, 255, 0.1);
-  --admin-border-glass: 1px solid rgba(255, 255, 255, 0.3);
+  --admin-border-color: oklch(1 0 0 / 0.5);
+  --admin-border-color-dark: oklch(1 0 0 / 0.1);
+  --admin-border-glass: 1px solid oklch(1 0 0 / 0.3);
 
   /* 🔄 过渡动画 */
   --admin-transition-fast: 0.15s ease;
@@ -378,9 +378,9 @@
   --admin-current-neumorph: var(--admin-neumorph-light);
   --admin-current-neumorph-inset: var(--admin-neumorph-light-inset);
   --admin-current-border: var(--admin-border-color);
-  --admin-current-text-primary: #1a202c;
-  --admin-current-text-secondary: #4a5568;
-  --admin-current-text-muted: #718096;
+  --admin-current-text-primary: oklch(0.243266 0.024705 263.951);
+  --admin-current-text-secondary: oklch(0.447437 0.034275 261.324);
+  --admin-current-text-muted: oklch(0.595556 0.03808 257.866);
 }
 
 /* ============================================
@@ -393,9 +393,9 @@
     --admin-current-neumorph: var(--admin-neumorph-dark);
     --admin-current-neumorph-inset: var(--admin-neumorph-dark-inset);
     --admin-current-border: var(--admin-border-color-dark);
-    --admin-current-text-primary: #f7fafc;
-    --admin-current-text-secondary: #e2e8f0;
-    --admin-current-text-muted: #a0aec0;
+    --admin-current-text-primary: oklch(0.9834 0.004165 236.496);
+    --admin-current-text-secondary: oklch(0.928761 0.012619 255.508);
+    --admin-current-text-muted: oklch(0.745708 0.030363 254.721);
     --admin-primary-text: var(--admin-primary-text-dark);
     --admin-success-text: var(--admin-success-text-dark);
     --admin-purple-text: var(--admin-purple-text-dark);
@@ -409,9 +409,9 @@
   --admin-current-neumorph: var(--admin-neumorph-dark);
   --admin-current-neumorph-inset: var(--admin-neumorph-dark-inset);
   --admin-current-border: var(--admin-border-color-dark);
-  --admin-current-text-primary: #f7fafc;
-  --admin-current-text-secondary: #e2e8f0;
-  --admin-current-text-muted: #a0aec0;
+  --admin-current-text-primary: oklch(0.9834 0.004165 236.496);
+  --admin-current-text-secondary: oklch(0.928761 0.012619 255.508);
+  --admin-current-text-muted: oklch(0.745708 0.030363 254.721);
   --admin-primary-text: var(--admin-primary-text-dark);
   --admin-success-text: var(--admin-success-text-dark);
   --admin-purple-text: var(--admin-purple-text-dark);

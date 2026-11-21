@@ -4,7 +4,7 @@
  * https://gl.baimu.live/
  */
 document.addEventListener('DOMContentLoaded', function() {
-    const svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="shiroki-link-icon"><path d="M52.64 4H11.36A7.36 7.36 0 0 0 4 11.36v36.36A12.28 12.28 0 0 0 16.27 60h36.37A7.36 7.36 0 0 0 60 52.64V11.36A7.36 7.36 0 0 0 52.64 4zM30 49.1a6.9 6.9 0 0 1-6.9 6.9h-6.47A8.63 8.63 0 0 1 8 47.37V40.9a6.9 6.9 0 0 1 6.9-6.9h8.2a6.9 6.9 0 0 1 6.9 6.9zm5.41-17.68a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 2.83zm16.84-18.54-1.56 6.73a.42.42 0 0 1-.71.2l-1-1a.73.73 0 0 0-1 0l-6.56 6.56a2 2 0 0 1-2.83-2.83L45.15 16a.73.73 0 0 0 0-1l-1-1a.42.42 0 0 1 .2-.71l6.73-1.56a1 1 0 0 1 1.17 1.15z" style="fill:rgba(128, 128, 128, 0.5)" data-name="Layer 2"/></svg>';
+    const svgIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="shiroki-link-icon"><path d="M52.64 4H11.36A7.36 7.36 0 0 0 4 11.36v36.36A12.28 12.28 0 0 0 16.27 60h36.37A7.36 7.36 0 0 0 60 52.64V11.36A7.36 7.36 0 0 0 52.64 4zM30 49.1a6.9 6.9 0 0 1-6.9 6.9h-6.47A8.63 8.63 0 0 1 8 47.37V40.9a6.9 6.9 0 0 1 6.9-6.9h8.2a6.9 6.9 0 0 1 6.9 6.9zm5.41-17.68a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 2.83zm16.84-18.54-1.56 6.73a.42.42 0 0 1-.71.2l-1-1a.73.73 0 0 0-1 0l-6.56 6.56a2 2 0 0 1-2.83-2.83L45.15 16a.73.73 0 0 0 0-1l-1-1a.42.42 0 0 1 .2-.71l6.73-1.56a1 1 0 0 1 1.17 1.15z" style="fill:oklch(0.5999 0 0 / 0.5)" data-name="Layer 2"/></svg>';
 
     function addSvgIconToLinks() {
         // 只在文章内容区域查找链接
@@ -118,12 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     link.addEventListener('mouseenter', function() {
                         svgElement.style.transform = 'rotate(0deg) translateY(0)';
-                        svgElement.querySelector('path').style.fill = '#0072ff';
+                        svgElement.querySelector('path').style.fill = 'oklch(0.5866 0.227 258.96)';
                     });
                     
                     link.addEventListener('mouseleave', function() {
                         svgElement.style.transform = 'rotate(90deg) translateY(0)';
-                        svgElement.querySelector('path').style.fill = 'rgba(128, 128, 128, 0.5)';
+                        svgElement.querySelector('path').style.fill = 'oklch(0.5999 0 0 / 0.5)';
                     });
                     
                     link.insertBefore(svgElement, link.firstChild);

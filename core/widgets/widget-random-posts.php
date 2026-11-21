@@ -103,7 +103,7 @@ class widget_random_posts extends WP_Widget {
 		<p>
 			<label>
 				<?php echo __('分类限制：', 'boxmoe-com') ?>
-				<a style="font-weight:bold;color:#f60;text-decoration:none;" href="javascript:;" title="<?php echo __('格式：1,2 &nbsp;表限制ID为1,2分类的文章&#13;格式：-1,-2 &nbsp;表排除分类ID为1,2的文章&#13;也可直接写1或者-1；注意逗号须是英文的', 'boxmoe-com') ?>">？</a>
+				<a style="font-weight:bold;color:oklch(0.6958 0.2043 43.49);text-decoration:none;" href="javascript:;" title="<?php echo __('格式：1,2 &nbsp;表限制ID为1,2分类的文章&#13;格式：-1,-2 &nbsp;表排除分类ID为1,2的文章&#13;也可直接写1或者-1；注意逗号须是英文的', 'boxmoe-com') ?>">？</a>
 				<input style="width:100%;" id="<?php echo $this->get_field_id('cat'); ?>" name="<?php echo $this->get_field_name('cat'); ?>" type="text" value="<?php echo $instance['cat']; ?>" size="24" />
 			</label>
 		</p>

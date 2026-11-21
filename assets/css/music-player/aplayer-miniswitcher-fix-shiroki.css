@@ -7,7 +7,7 @@
     right: 0;
     width: 18px;
     height: 66px;
-    background: #e7e7e7;
+    background: oklch(0.92797058 0 0);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,16 +38,16 @@
 }
 
 .aplayer .aplayer-miniswitcher .aplayer-icon path {
-    fill: #666;
+    fill: oklch(0.51027836 0 0);
 }
 
 /* 🌙 暗色模式适配 */
 @media (prefers-color-scheme: dark) {
     .aplayer .aplayer-miniswitcher {
-        background: #333;
+        background: oklch(0.32109251 0 0);
     }
     
     .aplayer .aplayer-miniswitcher .aplayer-icon path {
-        fill: #ccc;
+        fill: oklch(0.84522226 0 0);
     }
 }

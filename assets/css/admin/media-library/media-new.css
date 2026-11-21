@@ -76,7 +76,7 @@
 }
 
 .wp-admin #screen-meta #contextual-help-back {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
 }
 
 .wp-admin #screen-meta .contextual-help-tabs a {
@@ -112,7 +112,7 @@
 
 /* 📤 拖放上传区域 */
 .wp-admin .drag-drop {
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.1) 0%, rgba(183, 148, 244, 0.1) 100%) !important;
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.1) 0%, oklch(0.735825 0.139368 299.78 / 0.1) 100%) !important;
   border: 2px dashed var(--mn-primary-border) !important;
   border-radius: var(--mn-radius-xl) !important;
   padding: var(--mn-space-3xl) !important;
@@ -130,7 +130,7 @@
 
 /* 📤 拖放区域内部 */
 .wp-admin #drag-drop-area {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   border: none !important;
 }
 
@@ -240,7 +240,7 @@
 /* 📊 进度条填充 */
 .wp-admin .media-progress-bar .bar {
   height: 100% !important;
-  background: linear-gradient(90deg, var(--mn-primary-text), var(--mn-success-text)) !important;
+  background: linear-gradient(90deg in srgb, var(--mn-primary-text), var(--mn-success-text)) !important;
   border-radius: var(--mn-radius-full) !important;
   transition: width 0.3s ease !important;
 }

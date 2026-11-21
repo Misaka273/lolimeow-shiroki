@@ -57,7 +57,7 @@ if(!defined('ABSPATH')){
         'id' => 'boxmoe_home_article_categories',
         'type' => "text",
         'std' => '',
-        'desc' => __('设置后，首页只显示指定的分类内的所有文章，请输入分类ID，多个分类用<span style="display:inline-block;background-color:#ff4d4f;color:#fff;font-size:12px;padding:2px 6px;border-radius:10px;margin:0 2px;text-align:center;vertical-align:middle;line-height:1;">，</span><span style="display:inline-block;background-color:#ff4d4f;color:#fff;font-size:12px;padding:2px 6px;border-radius:10px;margin:0 2px;text-align:center;vertical-align:middle;line-height:1;">、</span><span style="display:inline-block;background-color:#ff4d4f;color:#fff;font-size:12px;padding:2px 6px;border-radius:10px;margin:0 2px;text-align:center;vertical-align:middle;line-height:1;">,</span>三个标点符号做区分，不输入则显示所有分类', 'ui_boxmoe_com'),
+        'desc' => __('设置后，首页只显示指定的分类内的所有文章，请输入分类ID，多个分类用<span style="display:inline-block;background-color:oklch(0.6732 0.2143 24.47);color:oklch(1 0 0);font-size:12px;padding:2px 6px;border-radius:10px;margin:0 2px;text-align:center;vertical-align:middle;line-height:1;">，</span><span style="display:inline-block;background-color:oklch(0.6732 0.2143 24.47);color:oklch(1 0 0);font-size:12px;padding:2px 6px;border-radius:10px;margin:0 2px;text-align:center;vertical-align:middle;line-height:1;">、</span><span style="display:inline-block;background-color:oklch(0.6732 0.2143 24.47);color:oklch(1 0 0);font-size:12px;padding:2px 6px;border-radius:10px;margin:0 2px;text-align:center;vertical-align:middle;line-height:1;">,</span>三个标点符号做区分，不输入则显示所有分类', 'ui_boxmoe_com'),
         );
     $options[] = array(
         'group' => 'start',
@@ -141,7 +141,7 @@ if(!defined('ABSPATH')){
             'id' => 'boxmoe_article_card_kanban_image',
             'type' => 'text',
             'std' => get_template_directory_uri() . '/assets/images/post-list.png',
-            'desc' => __('输入文章页左下角看板娘图片链接，支持JPG、PNG、GIF格式，留空则不显示', 'ui_boxmoe_com') . '<br><span style="color: #17a2b8;">【固定尺寸162x75px，会被挤压变形】</span>',
+            'desc' => __('输入文章页左下角看板娘图片链接，支持JPG、PNG、GIF格式，留空则不显示', 'ui_boxmoe_com') . '<br><span style="color: oklch(0.6552 0.1105 212.17);">【固定尺寸162x75px，会被挤压变形】</span>',
         );
         $options[] = array(
             'name' => __('文章卡片看板娘显示范围', 'ui_boxmoe_com'),

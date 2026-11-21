@@ -53,27 +53,27 @@ function boxmoe_new_user_register($user_id){
             body {
                 font-family: Arial, "Microsoft YaHei", sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
+                background-color: oklch(0.7234 0.1854 1.78);
                 padding: 40px 30px;
                 text-align: center;
             }
             .email-title {
-                color: #ffffff;
+                color: oklch(1 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -84,14 +84,14 @@ function boxmoe_new_user_register($user_id){
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .info-section {
                 margin: 30px 0;
             }
             .info-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
@@ -103,27 +103,27 @@ function boxmoe_new_user_register($user_id){
             }
             .info-table td {
                 padding: 15px;
-                border-bottom: 1px solid #f0f0f0;
+                border-bottom: 1px solid oklch(0.9551 0 0);
             }
             .info-table .label {
                 font-weight: 600;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 width: 35%;
             }
             .info-table .value {
-                color: #333;
+                color: oklch(0.3211 0 0);
                 font-size: 15px;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -222,27 +222,27 @@ function boxmoe_comment_notification($comment_id){
             body {
                 font-family: Arial, "Microsoft YaHei", sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
+                background-color: oklch(0.7234 0.1854 1.78);
                 padding: 40px 30px;
                 text-align: center;
             }
             .email-title {
-                color: #ffffff;
+                color: oklch(1 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -253,70 +253,70 @@ function boxmoe_comment_notification($comment_id){
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .comment-section {
                 margin: 30px 0;
             }
             .comment-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
             }
             .post-info {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 15px;
                 border-radius: 10px;
                 margin: 20px 0;
-                border-left: 4px solid #ff6b9d;
+                border-left: 4px solid oklch(0.7234 0.1854 1.78);
             }
             .post-title {
                 font-weight: 600;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 font-size: 16px;
                 margin-bottom: 8px;
             }
             .comment-content {
-                background-color: #fef0f6;
+                background-color: oklch(0.9678 0.017 349.48);
                 padding: 20px;
                 border-radius: 15px;
                 margin: 20px 0;
-                border: 2px solid #ffd6e7;
+                border: 2px solid oklch(0.9155 0.0506 351.28);
                 font-size: 15px;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 line-height: 1.8;
             }
             .comment-meta {
                 font-size: 13px;
-                color: #999;
+                color: oklch(0.683 0 0);
                 margin: 15px 0;
             }
             .action-button {
                 display: inline-block;
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
-                color: #ffffff;
+                background-color: oklch(0.7234 0.1854 1.78);
+                color: oklch(1 0 0);
                 padding: 15px 35px;
                 text-decoration: none;
                 border-radius: 50px;
                 font-size: 15px;
                 font-weight: 700;
-                box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+                box-shadow: 0 4px 12px oklch(0.7234 0.1854 1.78 / 0.3);
                 text-align: center;
                 margin: 20px 0;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -442,27 +442,27 @@ function boxmoe_comment_reply_notification($comment_id) {
             body {
                 font-family: Arial, "Microsoft YaHei", sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
+                background-color: oklch(0.7234 0.1854 1.78);
                 padding: 40px 30px;
                 text-align: center;
             }
             .email-title {
-                color: #ffffff;
+                color: oklch(1 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -473,19 +473,19 @@ function boxmoe_comment_reply_notification($comment_id) {
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .post-info {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 15px;
                 border-radius: 10px;
                 margin: 20px 0;
-                border-left: 4px solid #ff6b9d;
+                border-left: 4px solid oklch(0.7234 0.1854 1.78);
             }
             .post-title {
                 font-weight: 600;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 font-size: 16px;
                 margin-bottom: 8px;
             }
@@ -493,60 +493,60 @@ function boxmoe_comment_reply_notification($comment_id) {
                 margin: 30px 0;
             }
             .comment-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
             }
             .comment-content {
-                background-color: #fef0f6;
+                background-color: oklch(0.9678 0.017 349.48);
                 padding: 20px;
                 border-radius: 15px;
                 margin: 20px 0;
-                border: 2px solid #ffd6e7;
+                border: 2px solid oklch(0.9155 0.0506 351.28);
                 font-size: 15px;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 line-height: 1.8;
             }
             .parent-comment {
-                background-color: #f0f8fb;
+                background-color: oklch(0.974 0.0094 222.06);
                 padding: 20px;
                 border-radius: 15px;
                 margin: 20px 0;
-                border: 2px solid #b3e5fc;
+                border: 2px solid oklch(0.8947 0.0604 227.77);
                 font-size: 15px;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 line-height: 1.8;
             }
             .comment-meta {
                 font-size: 13px;
-                color: #999;
+                color: oklch(0.683 0 0);
                 margin: 15px 0;
             }
             .action-button {
                 display: inline-block;
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
-                color: #ffffff;
+                background-color: oklch(0.7234 0.1854 1.78);
+                color: oklch(1 0 0);
                 padding: 15px 35px;
                 text-decoration: none;
                 border-radius: 50px;
                 font-size: 15px;
                 font-weight: 700;
-                box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+                box-shadow: 0 4px 12px oklch(0.7234 0.1854 1.78 / 0.3);
                 text-align: center;
                 margin: 20px 0;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -658,27 +658,27 @@ function boxmoe_reset_password_email($user_login) {
             body {
                 font-family: Arial, "Microsoft YaHei", sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
+                background-color: oklch(0.7234 0.1854 1.78);
                 padding: 40px 30px;
                 text-align: center;
             }
             .email-title {
-                color: #ffffff;
+                color: oklch(1 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -689,14 +689,14 @@ function boxmoe_reset_password_email($user_login) {
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .reset-section {
                 margin: 30px 0;
             }
             .reset-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
@@ -708,56 +708,56 @@ function boxmoe_reset_password_email($user_login) {
             .reset-button {
                 display: inline-block;
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
-                color: #ffffff;
+                background-color: oklch(0.7234 0.1854 1.78);
+                color: oklch(1 0 0);
                 padding: 18px 40px;
                 text-decoration: none;
                 border-radius: 50px;
                 font-size: 16px;
                 font-weight: 700;
-                box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+                box-shadow: 0 4px 12px oklch(0.7234 0.1854 1.78 / 0.3);
                 text-align: center;
             }
             .link-section {
                 margin: 30px 0;
             }
             .link-section p {
-                color: #666;
+                color: oklch(0.5103 0 0);
                 font-size: 14px;
                 margin-bottom: 15px;
             }
             .reset-link {
                 display: block;
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 15px;
                 border-radius: 10px;
                 font-size: 13px;
                 word-break: break-all;
-                color: #666;
-                border: 1px solid #eee;
+                color: oklch(0.5103 0 0);
+                border: 1px solid oklch(0.9491 0 0);
             }
             .note-box {
-                background-color: #fff8f0;
-                border-left: 4px solid #ff6b9d;
+                background-color: oklch(0.9824 0.013 71.33);
+                border-left: 4px solid oklch(0.7234 0.1854 1.78);
                 padding: 15px;
                 margin: 25px 0;
                 border-radius: 8px;
             }
             .note-text {
-                color: #666;
+                color: oklch(0.5103 0 0);
                 font-size: 14px;
                 margin: 0;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -849,31 +849,31 @@ function boxmoe_new_user_register_email($user_id){
             body {
                 font-family: Arial, "Microsoft YaHei", sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
                 -webkit-text-size-adjust: 100%;
                 -ms-text-size-adjust: 100%;
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
                 /* Outlook兼容性设置 */
-                border: 1px solid #ffffff;
+                border: 1px solid oklch(1 0 0);
             }
             .email-header {
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
+                background-color: oklch(0.7234 0.1854 1.78);
                 padding: 40px 30px;
                 text-align: center;
             }
             .email-title {
-                color: #ffffff;
+                color: oklch(1 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -884,14 +884,14 @@ function boxmoe_new_user_register_email($user_id){
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .info-section {
                 margin: 30px 0;
             }
             .info-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
@@ -903,33 +903,33 @@ function boxmoe_new_user_register_email($user_id){
             }
             .info-table td {
                 padding: 15px;
-                border-bottom: 1px solid #f0f0f0;
+                border-bottom: 1px solid oklch(0.9551 0 0);
             }
             .info-table .label {
                 font-weight: 600;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 width: 35%;
             }
             .info-table .value {
-                color: #333;
+                color: oklch(0.3211 0 0);
                 font-size: 15px;
             }
             .info-text {
                 font-size: 14px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin: 20px 0;
                 line-height: 1.8;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -965,7 +965,7 @@ function boxmoe_new_user_register_email($user_id){
                 }
                 .email-header {
                     /* Outlook中使用纯色背景 */
-                    background-color: #ff6b9d !important;
+                    background-color: oklch(0.7234 0.1854 1.78) !important;
                 }
             }
         </style>
@@ -1029,27 +1029,27 @@ function boxmoe_verification_code_register_email($email, $verification_code = ''
             body {
                 font-family: Arial, "Microsoft YaHei", sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
                 /* 替换渐变背景为纯色，Outlook不支持渐变 */
-                background-color: #ff6b9d;
+                background-color: oklch(0.7234 0.1854 1.78);
                 padding: 40px 30px;
                 text-align: center;
             }
             .email-title {
-                color: #ffffff;
+                color: oklch(1 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
@@ -1060,7 +1060,7 @@ function boxmoe_verification_code_register_email($email, $verification_code = ''
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .code-section {
@@ -1071,40 +1071,40 @@ function boxmoe_verification_code_register_email($email, $verification_code = ''
                 display: inline-block;
                 font-size: 36px;
                 font-weight: 700;
-                color: #ff6b9d;
-                background-color: #fef0f6;
+                color: oklch(0.7234 0.1854 1.78);
+                background-color: oklch(0.9678 0.017 349.48);
                 padding: 20px 40px;
                 border-radius: 15px;
                 letter-spacing: 10px;
-                border: 2px solid #ffd6e7;
+                border: 2px solid oklch(0.9155 0.0506 351.28);
             }
             .warning-box {
-                background-color: #fff8f0;
-                border-left: 4px solid #ff6b9d;
+                background-color: oklch(0.9824 0.013 71.33);
+                border-left: 4px solid oklch(0.7234 0.1854 1.78);
                 padding: 15px;
                 margin: 25px 0;
                 border-radius: 8px;
             }
             .warning-text {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-weight: 600;
                 margin: 0;
             }
             .info-text {
                 font-size: 14px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin: 20px 0;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }

@@ -8,12 +8,12 @@ body .single-content .md-card {
     flex-direction: row;
     align-items: center;
     gap: 12px;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid #f3e8ff;
+    background: oklch(1 0 0 / 0.95);
+    border: 2px solid oklch(0.94643041 0.03274181 307.17444);
     border-radius: 16px;
     padding: 15px;
     margin: 12px auto;
-    box-shadow: 0 3px 10px rgba(139, 61, 255, 0.15);
+    box-shadow: 0 3px 10px oklch(0.57522728 0.2628706 294.90116 / 0.15);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -28,13 +28,13 @@ body .single-content .md-card::before {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #8b3dff, #a855f7, #c084fc);
+    background: linear-gradient(90deg in srgb, oklch(0.57522728 0.2628706 294.90116), oklch(0.62684592 0.23254185 303.90043), oklch(0.72168539 0.17668842 305.50376));
     border-radius: 16px 16px 0 0;
 }
 
 body .single-content .md-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(139, 61, 255, 0.25);
+    box-shadow: 0 8px 20px oklch(0.57522728 0.2628706 294.90116 / 0.25);
 }
 
 body .single-content .md-card-avatar {
@@ -50,12 +50,12 @@ body .single-content .md-card-avatar img {
     height: 60px;
     max-width: none;
     border-radius: 50% !important;
-    border: 2px solid #fdf4ff;
-    box-shadow: 0 2px 6px rgba(139, 61, 255, 0.4);
+    border: 2px solid oklch(0.97726091 0.01731982 320.05783);
+    box-shadow: 0 2px 6px oklch(0.57522728 0.2628706 294.90116 / 0.4);
     object-fit: cover;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-style: solid;
-    border-color: #fdf4ff;
+    border-color: oklch(0.97726091 0.01731982 320.05783);
     border-width: 2px;
     border-radius: 50% !important;
     margin: 0 !important;
@@ -67,24 +67,24 @@ body .single-content .md-card-badge {
     position: absolute;
     top: -2px;
     left: -2px;
-    background: linear-gradient(135deg, #ffd700, #ffed4e) !important;
-    color: #333 !important;
+    background: linear-gradient(135deg in srgb, oklch(0.88677108 0.18218601 95.330495), oklch(0.93366812 0.17148083 102.74636)) !important;
+    color: oklch(0.32109251 0 0) !important;
     font-size: 8px;
     font-weight: 700;
     padding: 2px 5px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.25);
     z-index: 10;
     transform: rotate(-10deg);
-    border: 1px solid white;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    border: 1px solid oklch(1 0 0);
+    text-shadow: 1px 1px 2px oklch(1 0 0 / 0.5);
     transition: all 0.3s ease;
 }
 
 body .single-content .md-card:hover .md-card-avatar img {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(139, 61, 255, 0.5);
-    border-color: #fdf4ff;
+    box-shadow: 0 4px 12px oklch(0.57522728 0.2628706 294.90116 / 0.5);
+    border-color: oklch(0.97726091 0.01731982 320.05783);
     border-width: 2px;
     border-style: solid;
     border-radius: 50% !important;
@@ -103,7 +103,7 @@ body .single-content .md-card-title {
     margin: 0 0 6px 0;
     font-size: 16px;
     font-weight: 700;
-    color: #7a20ff;
+    color: oklch(0.53506058 0.28294574 291.12932);
     line-height: 1.3;
     font-family: 'Public Sans', sans-serif;
 }
@@ -119,7 +119,7 @@ body .single-content .md-card-title:hover {
 body .single-content .md-card-desc {
     margin: 0;
     font-size: 13px;
-    color: #4b5563;
+    color: oklch(0.446112 0.0263125 256.80176);
     line-height: 1.5;
 }
 
@@ -138,7 +138,7 @@ body .single-content .md-card-link-wrap {
 
 body .single-content .md-card-link-wrap:hover .md-card {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(139, 61, 255, 0.25);
+    box-shadow: 0 8px 20px oklch(0.57522728 0.2628706 294.90116 / 0.25);
 }
 
 /* 移除卡片上下的虚线 */
@@ -154,18 +154,18 @@ body .single-content .md-card {
 
 /* 确保卡片不受.blog-lines虚线影响 */
 body .blog-lines .single-content .md-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: oklch(1 0 0 / 0.95);
 }
 
 /* 暗色模式下的卡片样式 */
 body [data-bs-theme="dark"] .single-content .md-card {
     background: var(--bs-body-bg);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: oklch(1 0 0 / 0.2);
 }
 
 /* 暗色模式下头像样式 */
 body [data-bs-theme="dark"] .single-content .md-card-avatar img {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: oklch(1 0 0 / 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 50% !important;
     margin: 0 !important;
@@ -176,14 +176,14 @@ body [data-bs-theme="dark"] .single-content .md-card-avatar img {
 body [data-bs-theme="dark"] .single-content .md-card:hover,
 body [data-bs-theme="dark"] .single-content .md-card-link-wrap:hover .md-card {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(139, 61, 255, 0.35);
+    box-shadow: 0 8px 20px oklch(0.57522728 0.2628706 294.90116 / 0.35);
 }
 
 /* 深色模式下头像悬停效果 */
 body [data-bs-theme="dark"] .single-content .md-card:hover .md-card-avatar img {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(139, 61, 255, 0.5);
-    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px oklch(0.57522728 0.2628706 294.90116 / 0.5);
+    border-color: oklch(1 0 0 / 0.2);
     border-width: 2px;
     border-style: solid;
     border-radius: 50% !important;
@@ -193,10 +193,10 @@ body [data-bs-theme="dark"] .single-content .md-card:hover .md-card-avatar img {
 
 /* 深色模式下勋章样式 */
 body [data-bs-theme="dark"] .single-content .md-card-badge {
-    background: #ffeb3b !important;
-    color: #333 !important;
-    border: 1px solid white;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    background: oklch(0.92846393 0.18026478 102.49744) !important;
+    color: oklch(0.32109251 0 0) !important;
+    border: 1px solid oklch(1 0 0);
+    text-shadow: 1px 1px 2px oklch(1 0 0 / 0.5);
 }
 
 body [data-bs-theme="dark"] .single-content .md-card-title {
@@ -223,7 +223,7 @@ body .single-content .md-card-link-wrap::after {
 body .single-content .md-card-link-wrap * {
     text-decoration: none;
     border: none;
-    background: transparent;
+    background: oklch(0 0 0 / 0);
     color: inherit;
 }
 
@@ -231,7 +231,7 @@ body .single-content .md-card-link-wrap * {
 body .single-content .md-card-link-wrap a {
     text-decoration: none;
     border: none;
-    background: transparent;
+    background: oklch(0 0 0 / 0);
     color: inherit;
 }
 
@@ -244,7 +244,7 @@ body .single-content a.md-card-link-wrap:focus,
 body .single-content a.md-card-link-wrap:active,
 body .single-content a.md-card-link-wrap,
 body .single-content .md-card-link-wrap a {
-    background-color: transparent;
+    background-color: oklch(0 0 0 / 0);
     color: inherit;
     border-radius: 0;
     padding: 0;
@@ -252,7 +252,7 @@ body .single-content .md-card-link-wrap a {
 }
 
 body .single-content a.md-card-link-wrap:hover {
-    background-color: transparent;
+    background-color: oklch(0 0 0 / 0);
     color: inherit;
     border-radius: 0;
     padding: 0;
@@ -267,7 +267,7 @@ body .single-content .md-card-link-wrap a::after {
     display: none;
     content: none;
     height: 0;
-    background-color: transparent;
+    background-color: oklch(0 0 0 / 0);
     opacity: 0;
 }
 
@@ -280,7 +280,7 @@ body [data-bs-theme="dark"] .single-content a.md-card-link-wrap:focus,
 body [data-bs-theme="dark"] .single-content a.md-card-link-wrap:active,
 body [data-bs-theme="dark"] .single-content a.md-card-link-wrap,
 body [data-bs-theme="dark"] .single-content .md-card-link-wrap a {
-    background-color: transparent;
+    background-color: oklch(0 0 0 / 0);
     color: inherit;
     border-radius: 0;
     padding: 0;
@@ -288,7 +288,7 @@ body [data-bs-theme="dark"] .single-content .md-card-link-wrap a {
 }
 
 body [data-bs-theme="dark"] .single-content a.md-card-link-wrap:hover {
-    background-color: transparent;
+    background-color: oklch(0 0 0 / 0);
     color: inherit;
     border-radius: 0;
     padding: 0;
@@ -303,7 +303,7 @@ body [data-bs-theme="dark"] .single-content .md-card-link-wrap a::after {
     display: none;
     content: none;
     height: 0;
-    background-color: transparent;
+    background-color: oklch(0 0 0 / 0);
     opacity: 0;
 }
 
@@ -313,12 +313,12 @@ body .single-content .md-table-wrapper {
     overflow-x: auto;
     margin: 15px 0;
     border-radius: 16px;
-    box-shadow: 0 3px 10px rgba(255, 61, 239, 0.15);
+    box-shadow: 0 3px 10px oklch(0.71337977 0.28446205 331.87524 / 0.15);
     transition: all 0.3s ease;
 }
 
 body .single-content .md-table-wrapper:hover {
-    box-shadow: 0 8px 20px rgba(255, 61, 174, 0.25);
+    box-shadow: 0 8px 20px oklch(0.68420156 0.24645893 350.19514 / 0.25);
 }
 
 body .single-content .md-table {
@@ -326,8 +326,8 @@ body .single-content .md-table {
     min-width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid #f3e8ff;
+    background: oklch(1 0 0 / 0.95);
+    border: 2px solid oklch(0.94643041 0.03274181 307.17444);
     border-radius: 16px;
     overflow: hidden;
     margin: 0;
@@ -335,62 +335,62 @@ body .single-content .md-table {
 
 /* 表头样式 - 异色背景，文字加粗 */
 body .single-content .md-table thead {
-    background: linear-gradient(135deg, #ea66d4 0%, #ff00b36c 100%);
+    background: linear-gradient(135deg in srgb, oklch(0.7087595 0.20536967 334.43544) 0%, oklch(0.66331427 0.27969848 347.12869 / 0.42352941) 100%);
 }
 
 body .single-content .md-table th {
-    color: white;
+    color: oklch(1 0 0);
     font-weight: 700;
     padding: 12px 16px;
     text-align: left;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid oklch(1 0 0 / 0.2);
     white-space: nowrap;
 }
 
 /* 表格单元格样式 */
 body .single-content .md-table td {
     padding: 12px 16px;
-    border-bottom: 1px solid #e9d5ff;
-    color: #4b5563;
+    border-bottom: 1px solid oklch(0.90235949 0.06040841 306.70298);
+    color: oklch(0.446112 0.0263125 256.80176);
     white-space: nowrap;
 }
 
 /* 间隔一行透明浅色 - 斑马纹效果 */
 body .single-content .md-table tbody tr:nth-child(even) td {
-    background: rgba(139, 61, 255, 0.05);
+    background: oklch(0.57522728 0.2628706 294.90116 / 0.05);
 }
 
 /* 悬停效果 */
 body .single-content .md-table tbody tr:hover td {
-    background: rgba(139, 61, 255, 0.1);
+    background: oklch(0.57522728 0.2628706 294.90116 / 0.1);
 }
 
 /* 🌆 暗色模式下的表格样式 */
 body [data-bs-theme="dark"] .single-content .md-table {
-    background: rgba(30, 30, 30, 0.95);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    background: oklch(0.23503113 0 0 / 0.95);
+    border-color: oklch(1 0 0 / 0.2);
+    box-shadow: 0 3px 10px oklch(0 0 0 / 0.3);
 }
 
 body [data-bs-theme="dark"] .single-content .md-table thead {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg in srgb, oklch(0.62705653 0.1638298 271.52866) 0%, oklch(0.50117581 0.13842852 304.72922) 100%);
 }
 
 body [data-bs-theme="dark"] .single-content .md-table th {
-    color: white;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    color: oklch(1 0 0);
+    border-bottom: 2px solid oklch(1 0 0 / 0.2);
 }
 
 body [data-bs-theme="dark"] .single-content .md-table td {
     color: var(--bs-body-color);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid oklch(1 0 0 / 0.2);
 }
 
 /* 🌆 暗色模式 - 间隔一行透明浅色 - 斑马纹效果 */
 body [data-bs-theme="dark"] .single-content .md-table tbody tr:nth-child(even) td {
-    background: rgba(102, 126, 234, 0.15);
+    background: oklch(0.62705653 0.1638298 271.52866 / 0.15);
 }
 
 body [data-bs-theme="dark"] .single-content .md-table tbody tr:hover td {
-    background: rgba(102, 126, 234, 0.25);
+    background: oklch(0.62705653 0.1638298 271.52866 / 0.25);
 }

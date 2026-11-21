@@ -22,6 +22,9 @@
             page: 1,
             loading: false,
             hasMore: true,
+            hasError: false,
+            source: 'custom',
+            requestId: 0,
             filter: 'all',
             search: '',
             sort: 'date',
@@ -34,10 +37,96 @@
          * 🚀 初始化
          */
         init: function() {
+            if (this.initialized) return;
             this.cacheElements();
+            if (!this.$grid.length) {
+                return;
+            }
+            this.initialized = true;
             this.bindEvents();
-            this.hideOriginalUI();
+            if (typeof shirokiMediaConfig === 'undefined') {
+                this.showError('媒体库配置未加载，请刷新页面重试。');
+                return;
+            }
+            this.initUploader();
             this.loadMediaItems();
+        },
+
+        currentRequest: null,
+        retryTimer: null,
+        uploadRefreshTimer: null,
+
+        /**
+         * 上传区域沿用 WordPress 的上传 API，列表始终在自定义页面内刷新。
+         */
+        initUploader: function() {
+            const self = this;
+            const $area = $('.shiroki-upload-area');
+            const $dropzone = $area.find('.shiroki-upload-dropzone');
+            const $browse = $area.find('.shiroki-upload-select-btn');
+            const $progress = $area.find('.shiroki-upload-progress');
+            const $progressText = $area.find('.shiroki-upload-progress-text');
+            const $progressFill = $area.find('.shiroki-upload-progress-fill');
+
+            $('.shiroki-upload-btn').on('click', function() {
+                $area.toggle();
+                if (self.uploader && self.uploader.supported && self.uploader.refresh) {
+                    self.uploader.refresh();
+                }
+            });
+            $area.find('.shiroki-upload-close').on('click', function() {
+                $area.hide();
+            });
+
+            if (typeof wp === 'undefined' || typeof wp.Uploader !== 'function') {
+                $browse.on('click', function() {
+                    $progressText.text('上传组件未加载，请刷新页面重试。');
+                    $progress.show();
+                });
+                return;
+            }
+
+            try {
+                this.uploader = new wp.Uploader({
+                    browser: $browse,
+                    dropzone: $dropzone,
+                    params: {
+                        action: 'upload-attachment',
+                        _wpnonce: shirokiMediaConfig.mediaFormNonce
+                    },
+                    added: function() {
+                        $progressText.text('正在上传...');
+                        $progressFill.css('width', '0%');
+                        $progress.show();
+                    },
+                    progress: function(attachment) {
+                        const percent = Math.max(0, Math.min(100, Number(attachment.get('percent')) || 0));
+                        $progressFill.css('width', percent + '%');
+                        $progressText.text('正在上传... ' + percent + '%');
+                    },
+                    success: function() {
+                        $progressFill.css('width', '100%');
+                        $progressText.text('上传成功，正在刷新媒体库...');
+                        clearTimeout(self.uploadRefreshTimer);
+                        self.uploadRefreshTimer = setTimeout(function() {
+                            $progress.hide();
+                            self.resetAndReload();
+                        }, 700);
+                    },
+                    error: function(message) {
+                        $progressText.text(message || '上传失败，请重试。');
+                        $progress.show();
+                    }
+                });
+                if (!this.uploader.supported) {
+                    $progressText.text('当前浏览器不支持此上传方式。');
+                    $progress.show();
+                }
+            } catch (error) {
+                console.error('媒体上传组件初始化失败', error);
+                $progressText.text('上传组件未加载，请刷新页面重试。');
+                $progress.show();
+            }
         },
 
         /**
@@ -46,11 +135,13 @@
         cacheElements: function() {
             this.$grid = $('#shiroki-media-grid');
             this.$empty = $('#shiroki-media-empty');
+            this.$error = $('#shiroki-media-error');
+            this.$errorMessage = this.$error.find('.shiroki-media-error-message');
+            this.$loading = $('#shiroki-media-loading');
+            this.$loadMore = $('#shiroki-media-load-more');
             this.$search = $('#shiroki-media-search');
             this.$filters = $('.shiroki-media-filter-btn');
             this.$sortBtns = $('.shiroki-media-sort-btn');
-            this.$originalTable = $('.wp-list-table');
-            this.$originalNav = $('.tablenav');
         },
 
         /**
@@ -59,13 +150,10 @@
         bindEvents: function() {
             const self = this;
 
-            /* 🔍 搜索功能 - 搜索时加载所有结果，不受懒加载限制 */
+            /* 🔍 搜索结果同样分页，避免附件较多时服务器超时 */
             this.$search.on('input', this.debounce(function() {
                 self.state.search = $(this).val();
-                self.state.page = 1;
-                self.state.hasMore = true;
-                self.$grid.empty();
-                self.loadMediaItems();
+                self.resetAndReload();
             }, 300));
 
             /* 🏷️ 筛选功能 */
@@ -76,19 +164,25 @@
                 $(this).addClass('active');
                 
                 self.state.filter = filter;
-                self.state.page = 1;
-                self.state.hasMore = true;
-                self.$grid.empty();
+                self.resetAndReload();
+            });
+
+            this.$loadMore.on('click', function() {
+                self.loadMediaItems();
+            });
+            $('#shiroki-media-retry').on('click', function() {
+                if (typeof shirokiMediaConfig === 'undefined') {
+                    window.location.reload();
+                    return;
+                }
+                self.state.source = 'custom';
+                self.clearError();
                 self.loadMediaItems();
             });
 
-            /* 📜 无限滚动加载 - 每次滚动到底部加载数量 */
+            /* 📜 无限滚动加载 */
             $(window).on('scroll', this.debounce(function() {
-                /* 🔍 搜索模式下不启用懒加载 */
-                if (self.state.search) {
-                    return;
-                }
-                if (self.isNearBottom() && !self.state.loading && self.state.hasMore) {
+                if (self.isNearBottom() && !self.state.loading && !self.state.hasError && self.state.hasMore) {
                     self.loadMediaItems();
                 }
             }, 200));
@@ -100,7 +194,7 @@
                     return;
                 }
 
-                const id = parseInt($(this).data('id'));
+                const id = parseInt($(this).data('id'), 10);
                 const $card = $(this);
 
                 // ◀️ 切换选中状态
@@ -182,77 +276,203 @@
                 // ◀️ 更新状态并重新加载
                 self.state.sort = sort;
                 self.state.order = order;
-                self.state.page = 1;
-                self.state.hasMore = true;
-                self.$grid.empty();
-                self.loadMediaItems();
+                self.resetAndReload();
             });
         },
 
-        /**
-         * 🙈 隐藏原版UI
-         */
-        hideOriginalUI: function() {
-            // ◀️ 完全隐藏原版UI元素
-            $('.view-switch, .wp-list-table, .tablenav, .media-toolbar, .attachments-wrapper, .attachments-browser, .wp-media-grid, .media-frame-content .attachments').hide();
+        resetAndReload: function() {
+            // 使旧响应失效，再取消旧请求，避免快速切换条件时渲染过期结果。
+            this.state.requestId++;
+            clearTimeout(this.retryTimer);
+            this.retryTimer = null;
+            if (this.currentRequest) {
+                this.currentRequest.abort();
+                this.currentRequest = null;
+            }
 
-            // ◀️ 移除主页面多余的空 media-frame-toolbar
-            $('.wrap .media-frame-toolbar').remove();
-            
-            // ◀️ 显示自定义网格
-            this.$grid.show();
+            this.state.loading = false;
+            this.state.page = 1;
+            this.state.hasMore = true;
+            this.state.source = 'custom';
+            this.state.selectedItems.clear();
+            this.updateBulkActions();
+            this.$grid.empty();
+            this.$grid.css('display', 'grid');
+            this.$empty.hide();
+            this.hideLoading();
+            this.clearError();
+            this.loadMediaItems();
         },
 
         /**
-         * 📡 加载媒体项目
+         * 📡 分页加载。主接口失败后使用 WordPress 附件 AJAX 数据填充同一套卡片。
          */
         loadMediaItems: function() {
-            if (this.state.loading || !this.state.hasMore) {
+            if (this.state.loading || this.state.hasError || !this.state.hasMore) {
                 return;
             }
 
             this.state.loading = true;
             this.showLoading();
+            const requestId = ++this.state.requestId;
+            this.requestMediaPage(requestId, this.state.source, 0);
+        },
 
-            $.ajax({
+        requestMediaPage: function(requestId, source, attempt) {
+            if (requestId !== this.state.requestId) return;
+
+            const isCore = source === 'core';
+            const query = {
+                s: this.state.search,
+                order: this.state.order.toUpperCase(),
+                orderby: this.state.sort === 'name' ? 'title' : 'date',
+                posts_per_page: this.state.perPage,
+                paged: this.state.page
+            };
+            if (['image', 'video', 'audio'].includes(this.state.filter)) {
+                query.post_mime_type = this.state.filter;
+            }
+
+            this.currentRequest = $.ajax({
                 url: shirokiMediaConfig.ajaxUrl,
                 type: 'POST',
-                data: {
+                dataType: 'json',
+                timeout: 15000,
+                data: isCore ? {
+                    action: 'query-attachments',
+                    query: query
+                } : {
                     action: 'shiroki_get_media_items',
                     nonce: shirokiMediaConfig.nonce,
                     page: this.state.page,
-                    per_page: this.state.perPage, /* ◀️ 每页数量 */
+                    per_page: this.state.perPage,
                     search: this.state.search,
                     filter: this.state.filter,
                     sort: this.state.sort,
                     order: this.state.order
-                },
-                success: (response) => {
-                    if (response.success) {
-                        this.renderMediaItems(response.data.items);
-                        this.state.hasMore = response.data.has_more;
-                        this.state.page++;
-                        
-                        // ◀️ 显示/隐藏空状态
-                        if (this.state.page === 2 && response.data.items.length === 0) {
-                            this.$empty.show();
-                            this.$grid.hide();
-                        } else {
-                            this.$empty.hide();
-                            this.$grid.show();
-                        }
-                    } else {
-                        this.$grid.html('<div class="shiroki-media-error">加载失败，请刷新页面重试</div>');
-                    }
-                },
-                error: (xhr, status, error) => {
-                    this.$grid.html('<div class="shiroki-media-error">加载失败: ' + error + '</div>');
-                },
-                complete: () => {
-                    this.state.loading = false;
-                    this.hideLoading();
                 }
+            }).done((response, textStatus, xhr) => {
+                if (requestId !== this.state.requestId) return;
+                this.currentRequest = null;
+
+                const valid = response && response.success &&
+                    (isCore ? Array.isArray(response.data) :
+                        response.data && Array.isArray(response.data.items));
+                if (!valid) {
+                    this.handleRequestFailure(requestId, source, attempt,
+                        response && response.data && response.data.message);
+                    return;
+                }
+
+                const items = isCore ? response.data.map((item) => this.normalizeCoreItem(item)) : response.data.items;
+                const pages = parseInt(xhr.getResponseHeader('X-WP-TotalPages'), 10);
+                const hasMore = isCore
+                    ? (Number.isFinite(pages) ? this.state.page < pages : items.length === this.state.perPage)
+                    : Boolean(response.data.has_more);
+
+                // 首页意外为空时用核心附件查询核实，避免服务器端过滤器误报空库。
+                if (!isCore && this.state.page === 1 && items.length === 0 &&
+                    this.canUseCoreQuery()) {
+                    this.requestMediaPage(requestId, 'core', 0);
+                    return;
+                }
+
+                this.renderMediaItems(items);
+                this.state.source = source;
+                this.state.hasMore = hasMore;
+                this.state.page++;
+                this.finishLoading();
+                if (!this.$grid.children('.shiroki-media-card').length) {
+                    this.$grid.hide();
+                    this.$empty.show();
+                } else {
+                    this.$empty.hide();
+                    this.$grid.css('display', 'grid');
+                }
+                this.$loadMore.toggle(this.state.hasMore);
+            }).fail((xhr, status) => {
+                if (requestId !== this.state.requestId || status === 'abort') return;
+                this.currentRequest = null;
+                console.error('媒体文件 AJAX 加载失败', source, status, xhr.status);
+                this.handleRequestFailure(requestId, source, attempt);
             });
+        },
+
+        canUseCoreQuery: function() {
+            return !['document', 'file'].includes(this.state.filter);
+        },
+
+        handleRequestFailure: function(requestId, source, attempt, serverMessage) {
+            if (requestId !== this.state.requestId) return;
+
+            // 网络抖动只重试一次，随后尝试另一条附件查询接口。
+            if (attempt < 1) {
+                this.retryTimer = setTimeout(() => {
+                    this.retryTimer = null;
+                    this.requestMediaPage(requestId, source, attempt + 1);
+                }, 700);
+                return;
+            }
+            if (source === 'custom' && this.canUseCoreQuery()) {
+                this.requestMediaPage(requestId, 'core', 0);
+                return;
+            }
+
+            this.finishLoading();
+            this.showError(typeof serverMessage === 'string' && serverMessage
+                ? serverMessage : shirokiMediaConfig.strings.requestFailed);
+        },
+
+        finishLoading: function() {
+            this.state.loading = false;
+            this.hideLoading();
+        },
+
+        showError: function(message) {
+            this.state.hasError = true;
+            this.$errorMessage.text(message);
+            this.$error.show();
+            this.$loadMore.hide();
+            this.hideLoading();
+        },
+
+        clearError: function() {
+            this.state.hasError = false;
+            this.$error.hide();
+            this.$errorMessage.empty();
+        },
+
+        normalizeCoreItem: function(item) {
+            item = item && typeof item === 'object' ? item : {};
+            const url = typeof item.url === 'string' ? item.url : '';
+            const filename = typeof item.filename === 'string' ? item.filename : '';
+            const extension = filename.includes('.') ? (filename.split('.').pop() || '').toLowerCase() : '';
+            const mime = typeof item.mime === 'string' ? item.mime : '';
+            let type = ['image', 'video', 'audio'].includes(item.type) ? item.type : 'file';
+            if (type === 'file' && (/^(application\/pdf|text\/plain|text\/markdown|application\/msword)/.test(mime) ||
+                /^(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|md|rtf|odt|ods|odp)$/.test(extension))) {
+                type = 'document';
+            }
+            const sizes = item.sizes && typeof item.sizes === 'object' ? item.sizes : {};
+            const thumbnail = (sizes.medium && sizes.medium.url) ||
+                (sizes.thumbnail && sizes.thumbnail.url) || '';
+            return {
+                id: Number(item.id) || 0,
+                title: item.title || filename || '未命名文件',
+                caption: item.caption || '',
+                description: item.description || '',
+                url: url,
+                thumbnail: thumbnail,
+                mime_type: mime,
+                file_type: type,
+                file_size: item.filesizeHumanReadable || '',
+                file_size_bytes: Number(item.filesizeInBytes) || 0,
+                dimensions: item.width && item.height ? item.width + '×' + item.height : '',
+                icon_svg: '',
+                file_extension: extension,
+                edit_link: item.editLink ||
+                    shirokiMediaConfig.adminUrl + 'post.php?post=' + (Number(item.id) || 0) + '&action=edit'
+            };
         },
 
         /**
@@ -263,7 +483,14 @@
                 return;
             }
 
-            const html = items.map(item => this.createMediaCard(item)).join('');
+            const html = items.map((item) => {
+                try {
+                    return this.createMediaCard(item);
+                } catch (error) {
+                    console.error('媒体文件卡片渲染失败', error);
+                    return '';
+                }
+            }).join('');
             this.$grid.append(html);
         },
 
@@ -271,36 +498,43 @@
          * 🃏 创建媒体卡片HTML
          */
         createMediaCard: function(item) {
-            const isImage = item.file_type === 'image';
-            const thumbnail = isImage && item.thumbnail 
-                ? `<img src="${item.thumbnail}" alt="${this.escapeHtml(item.title)}">`
-                : `<div class="shiroki-media-file-icon">${item.icon_svg}</div>`;
+            if (!item || !Number(item.id)) return '';
+            const id = Number(item.id);
+            const type = String(item.file_type || 'file');
+            const title = String(item.title || '未命名文件');
+            const url = String(item.url || '');
+            const thumbnailUrl = String(item.thumbnail || '');
+            const editLink = String(item.edit_link || '');
+            const isImage = type === 'image';
+            const thumbnail = isImage && thumbnailUrl
+                ? `<img src="${this.escapeHtml(thumbnailUrl)}" alt="${this.escapeHtml(title)}">`
+                : `<div class="shiroki-media-file-icon">${item.icon_svg || '📄'}</div>`;
             
             const metaTags = [];
             if (item.dimensions) {
-                metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-dimensions">📐 ${item.dimensions}</span>`);
+                metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-dimensions">📐 ${this.escapeHtml(item.dimensions)}</span>`);
             }
             if (item.file_size) {
-                metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-size">📦 ${item.file_size}</span>`);
+                metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-size">📦 ${this.escapeHtml(item.file_size)}</span>`);
             }
             // ◀️ 🏷️ 格式勋章（文件扩展名）
             if (item.file_extension) {
-                metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-extension">${item.file_extension.toUpperCase()}</span>`);
+                metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-extension">${this.escapeHtml(String(item.file_extension).toUpperCase())}</span>`);
             }
-            metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-type">${this.getFileTypeLabel(item.file_type)}</span>`);
+            metaTags.push(`<span class="shiroki-media-meta-tag shiroki-media-meta-type">${this.getFileTypeLabel(type)}</span>`);
 
             const description = item.caption || item.description || '暂无描述';
-            const shortUrl = this.truncateUrl(item.url, 30);
+            const shortUrl = this.escapeHtml(this.truncateUrl(url, 30));
 
-            const isSelected = this.state.selectedItems.has(item.id);
+            const isSelected = this.state.selectedItems.has(id);
 
             return `
-                <div class="shiroki-media-card ${item.file_type === 'video' ? 'shiroki-media-type-video' : ''} ${isSelected ? 'selected' : ''}"
-                     data-id="${item.id}"
-                     data-type="${item.file_type}">
+                <div class="shiroki-media-card ${type === 'video' ? 'shiroki-media-type-video' : ''} ${isSelected ? 'selected' : ''}"
+                     data-id="${id}"
+                     data-type="${this.escapeHtml(type)}">
 
                     <!-- 🔘 选择圆圈（右上角） -->
-                    <div class="shiroki-media-select-circle" data-id="${item.id}">
+                    <div class="shiroki-media-select-circle" data-id="${id}">
                         <div class="shiroki-media-select-inner"></div>
                     </div>
 
@@ -318,8 +552,8 @@
                         <!-- 🔵 文件名称标签 -->
                         <div class="shiroki-media-label-name">
                             <span class="shiroki-media-label-title">文件名称</span>
-                            <span class="shiroki-media-label-content" title="${this.escapeHtml(item.title)}">
-                                ${this.escapeHtml(item.title)}
+                            <span class="shiroki-media-label-content" title="${this.escapeHtml(title)}">
+                                ${this.escapeHtml(title)}
                             </span>
                         </div>
                         
@@ -332,9 +566,9 @@
                         </div>
                         
                         <!-- 🟣 文件URL标签 -->
-                        <div class="shiroki-media-label-url" data-url="${this.escapeHtml(item.url)}">
+                        <div class="shiroki-media-label-url" data-url="${this.escapeHtml(url)}">
                             <span class="shiroki-media-label-title">文件URL</span>
-                            <span class="shiroki-media-label-content" title="${this.escapeHtml(item.url)}">
+                            <span class="shiroki-media-label-content" title="${this.escapeHtml(url)}">
                                 ${shortUrl}
                             </span>
                         </div>
@@ -342,13 +576,13 @@
                     
                     <!-- ⚡ 操作按钮 -->
                     <div class="shiroki-media-actions">
-                        <button class="shiroki-media-btn shiroki-media-btn-view" data-url="${this.escapeHtml(item.url)}">
+                        <button class="shiroki-media-btn shiroki-media-btn-view" data-url="${this.escapeHtml(url)}" ${url ? '' : 'disabled'}>
                             👁️ 查看
                         </button>
-                        <button class="shiroki-media-btn shiroki-media-btn-edit" data-link="${item.edit_link}">
+                        <button class="shiroki-media-btn shiroki-media-btn-edit" data-link="${this.escapeHtml(editLink)}">
                             ✏️ 编辑
                         </button>
-                        <button class="shiroki-media-btn shiroki-media-btn-delete" data-id="${item.id}">
+                        <button class="shiroki-media-btn shiroki-media-btn-delete" data-id="${id}">
                             🗑️ 删除
                         </button>
                     </div>
@@ -374,6 +608,7 @@
          * ✂️ 截断URL显示
          */
         truncateUrl: function(url, maxLength) {
+            url = String(url || '');
             if (url.length <= maxLength) return url;
             return url.substring(0, maxLength) + '...';
         },
@@ -382,9 +617,9 @@
          * 🛡️ HTML转义
          */
         escapeHtml: function(text) {
-            if (!text) return '';
+            if (text === null || text === undefined) return '';
             const div = document.createElement('div');
-            div.textContent = text;
+            div.textContent = String(text);
             return div.innerHTML;
         },
 
@@ -436,13 +671,15 @@
          */
         bulkDelete: function() {
             const ids = Array.from(this.state.selectedItems);
-            if (ids.length === 0) return;
+            if (ids.length === 0 || this.bulkDeleting) return;
 
             if (!confirm('⚠️ 确定要删除选中的 ' + ids.length + ' 个媒体文件吗？此操作不可恢复。')) {
                 return;
             }
 
-            let deletedCount = 0;
+            this.bulkDeleting = true;
+            let completedCount = 0;
+            let failedCount = 0;
             const total = ids.length;
 
             ids.forEach(id => {
@@ -455,21 +692,15 @@
                         id: id
                     },
                     success: (response) => {
-                        if (response.success) {
-                            deletedCount++;
-                            $(`.shiroki-media-card[data-id="${id}"]`).fadeOut(300, function() {
-                                $(this).remove();
-                            });
-                        }
+                        if (!response || !response.success) failedCount++;
                     },
+                    error: () => { failedCount++; },
                     complete: () => {
-                        if (deletedCount === total) {
-                            this.state.selectedItems.clear();
-                            this.updateBulkActions();
-                            if ($('.shiroki-media-card').length === 0) {
-                                $('#shiroki-media-empty').show();
-                                $('#shiroki-media-grid').hide();
-                            }
+                        completedCount++;
+                        if (completedCount === total) {
+                            this.bulkDeleting = false;
+                            this.resetAndReload();
+                            if (failedCount) alert('有 ' + failedCount + ' 个媒体文件删除失败，请重试。');
                         }
                     }
                 });
@@ -565,14 +796,9 @@
                 success: (response) => {
                     if (response && response.success) {
                         /* ◀️ 动画移除卡片 */
-                        $card.fadeOut(400, function() {
-                            $(this).remove();
-
-                            /* ◀️ 如果网格为空，显示空状态 */
-                            if ($('.shiroki-media-card').length === 0) {
-                                $('#shiroki-media-empty').show();
-                                $('#shiroki-media-grid').hide();
-                            }
+                        $card.fadeOut(400, () => {
+                            $card.remove();
+                            this.resetAndReload();
                         });
                     } else {
                         const errorMsg = response && response.data ? response.data : '未知错误';
@@ -591,16 +817,15 @@
          * ⏳ 显示加载状态
          */
         showLoading: function() {
-            if (this.state.page === 1) {
-                this.$grid.html('<div class="shiroki-media-loading">' + shirokiMediaConfig.strings.loading + '</div>');
-            }
+            this.$loading.show();
+            this.$loadMore.hide();
         },
 
         /**
          * ✅ 隐藏加载状态
          */
         hideLoading: function() {
-            $('.shiroki-media-loading').remove();
+            this.$loading.hide();
         },
 
         /**
@@ -635,7 +860,7 @@
      */
     $(document).ready(function() {
         // ◀️ 仅在媒体库页面初始化
-        if ($('body').hasClass('upload-php')) {
+        if ($('body').hasClass('upload-php') && $('#shiroki-media-grid').length) {
             // ◀️ 延迟初始化，确保PHP注入的HTML已存在
             setTimeout(function() {
                 ShirokiMediaLibrary.init();

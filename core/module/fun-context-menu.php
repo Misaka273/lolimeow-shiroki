@@ -24,13 +24,13 @@ function boxmoe_add_context_menu() {
         position: fixed;
         z-index: 999999;
         width: 160px;
-        background: #fff;
-        box-shadow: 0 4px 15px rgba(125, 147, 178, 0.3);
+        background: oklch(1 0 0);
+        box-shadow: 0 4px 15px oklch(0.6573 0.0528 256.97 / 0.3);
         border-radius: 8px;
         padding: 6px 0;
         font-family: "Microsoft YaHei", sans-serif;
         font-size: 13px;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid oklch(0 0 0 / 0.05);
         user-select: none;
         -webkit-user-select: none;
         opacity: 0;
@@ -51,7 +51,7 @@ function boxmoe_add_context_menu() {
     .boxmoe-menu-item {
         padding: 8px 16px;
         cursor: pointer;
-        color: #333;
+        color: oklch(0.3211 0 0);
         display: flex;
         align-items: center;
         transition: all 0.2s;
@@ -62,37 +62,37 @@ function boxmoe_add_context_menu() {
         margin-right: 10px;
         width: 16px;
         text-align: center;
-        color: #888;
+        color: oklch(0.6268 0 0);
         font-size: 14px;
     }
 
     .boxmoe-menu-item:hover {
-        background-color: #ecf5ff;
-        color: #409EFF;
+        background-color: oklch(0.9663 0.0165 250.84);
+        color: oklch(0.6898 0.1679 252.18);
     }
 
     .boxmoe-menu-item:hover i {
-        color: #409EFF;
+        color: oklch(0.6898 0.1679 252.18);
     }
 
     /* 分割线 */
     .boxmoe-menu-separator {
         height: 1px;
-        background-color: #eee;
+        background-color: oklch(0.9491 0 0);
         margin: 4px 0;
     }
 
     /* 禁用状态 */
     .boxmoe-menu-item.disabled {
-        color: #ccc;
+        color: oklch(0.8452 0 0);
         cursor: default;
     }
     .boxmoe-menu-item.disabled:hover {
-        background-color: transparent;
-        color: #ccc;
+        background-color: oklch(0 0 0 / 0);
+        color: oklch(0.8452 0 0);
     }
     .boxmoe-menu-item.disabled i {
-        color: #ccc;
+        color: oklch(0.8452 0 0);
     }
     
     /* 隐藏状态 */
@@ -102,21 +102,21 @@ function boxmoe_add_context_menu() {
 
     /* 🥳 暗黑模式适配 (粉色背景) */
     [data-bs-theme="dark"] #boxmoe-context-menu {
-        background-color: #fce4ec;
-        border-color: #f8bbd0;
+        background-color: oklch(0.9405 0.0282 355.44);
+        border-color: oklch(0.8533 0.0749 356.33);
     }
     [data-bs-theme="dark"] .boxmoe-menu-item {
-        color: #ad1457;
+        color: oklch(0.4898 0.1868 2.53);
     }
     [data-bs-theme="dark"] .boxmoe-menu-item:hover {
-        background-color: #f8bbd0;
-        color: #880e4f;
+        background-color: oklch(0.8533 0.0749 356.33);
+        color: oklch(0.4152 0.1605 355.69);
     }
     [data-bs-theme="dark"] .boxmoe-menu-item:hover i {
-        color: #880e4f;
+        color: oklch(0.4152 0.1605 355.69);
     }
     [data-bs-theme="dark"] .boxmoe-menu-separator {
-        background-color: #f8bbd0;
+        background-color: oklch(0.8533 0.0749 356.33);
     }
 
     </style>

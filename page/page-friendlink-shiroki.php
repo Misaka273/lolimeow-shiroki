@@ -35,32 +35,32 @@ get_header();
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 30px;
-    border-bottom: 2px solid #f0f0f0;
+    border-bottom: 2px solid oklch(0.9551 0 0);
     padding-bottom: 15px;
 }
 
 .shiroki-category-tab {
     padding: 10px 20px;
-    background: #f8f9fa;
+    background: oklch(0.9816 0.0017 247.84);
     border: none;
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-size: 14px;
     font-weight: 500;
-    color: #666;
+    color: oklch(0.5103 0 0);
     position: relative;
 }
 
 .shiroki-category-tab:hover {
-    background: #e9ecef;
+    background: oklch(0.9417 0.0052 247.88);
     transform: translateY(-2px);
 }
 
 .shiroki-category-tab.active {
-    background: linear-gradient(45deg, #ff6b9d, #fecfef);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05));
+    color: oklch(1 0 0);
+    box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.3);
 }
 
 /* 🌸 分类内容区域样式 */
@@ -80,17 +80,17 @@ get_header();
 
 /* 🌸 本站信息区域 */
 .shiroki-site-info {
-    background: #f8f9fa;
+    background: oklch(0.9816 0.0017 247.84);
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 30px;
-    border: 1px solid #f0f0f0;
+    border: 1px solid oklch(0.9551 0 0);
 }
 
 .shiroki-site-info-title {
     font-size: 18px;
     font-weight: 600;
-    color: #333;
+    color: oklch(0.3211 0 0);
     margin: 0 0 8px;
     display: flex;
     align-items: center;
@@ -99,7 +99,7 @@ get_header();
 
 .shiroki-site-info-desc {
     font-size: 14px;
-    color: #888;
+    color: oklch(0.6268 0 0);
     margin: 0 0 16px;
 }
 
@@ -114,9 +114,9 @@ get_header();
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    background: #fff;
+    background: oklch(1 0 0);
     border-radius: 8px;
-    border: 1px solid #eee;
+    border: 1px solid oklch(0.9491 0 0);
     min-width: 0;
 }
 
@@ -124,14 +124,14 @@ get_header();
     flex-shrink: 0;
     font-size: 13px;
     font-weight: 600;
-    color: #666;
+    color: oklch(0.5103 0 0);
     min-width: 72px;
 }
 
 .shiroki-site-info-value {
     flex: 1;
     font-size: 13px;
-    color: #333;
+    color: oklch(0.3211 0 0);
     word-break: break-all;
     line-height: 1.4;
     min-width: 0;
@@ -149,19 +149,19 @@ get_header();
     width: 32px;
     height: 32px;
     padding: 0;
-    border: 1px solid #e0e0e0;
+    border: 1px solid oklch(0.9067 0 0);
     border-radius: 6px;
-    background: #fff;
-    color: #666;
+    background: oklch(1 0 0);
+    color: oklch(0.5103 0 0);
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 14px;
 }
 
 .shiroki-site-info-copy:hover {
-    background: linear-gradient(45deg, #ff6b9d, #fecfef);
-    border-color: transparent;
-    color: #fff;
+    background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05));
+    border-color: oklch(0 0 0 / 0);
+    color: oklch(1 0 0);
 }
 
 /* 🌸 友链卡片样式（双栏布局） */
@@ -173,18 +173,18 @@ get_header();
 }
 
 .shiroki-link-card {
-    background: #f8f9fa;
+    background: oklch(0.9816 0.0017 247.84);
     border-radius: 12px;
     padding: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 10px oklch(0 0 0 / 0.08);
     transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
+    border: 1px solid oklch(0.9551 0 0);
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     gap: 15px;
-    color: #333;
+    color: oklch(0.3211 0 0);
     text-shadow: none;
 }
 
@@ -211,7 +211,7 @@ get_header();
 
 .shiroki-link-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px oklch(0 0 0 / 0.1);
 }
 
 .shiroki-link-card:hover::before {
@@ -227,7 +227,7 @@ get_header();
     overflow: hidden;
     flex-shrink: 0;
     position: relative;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px oklch(0 0 0 / 0.1);
 }
 
 .shiroki-link-avatar img {
@@ -244,8 +244,8 @@ get_header();
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #4caf50;
-    border: 2px solid #fff;
+    background: oklch(0.6731 0.1624 144.21);
+    border: 2px solid oklch(1 0 0);
 }
 
 /* 🌸 友链信息样式 */
@@ -257,7 +257,7 @@ get_header();
 .shiroki-link-title {
     font-size: 16px;
     font-weight: 600;
-    color: #333;
+    color: oklch(0.3211 0 0);
     margin-bottom: 5px;
     display: flex;
     align-items: center;
@@ -266,14 +266,14 @@ get_header();
 
 .shiroki-link-url {
     font-size: 12px;
-    color: #666;
+    color: oklch(0.5103 0 0);
     margin-bottom: 8px;
     word-break: break-all;
 }
 
 .shiroki-link-description {
     font-size: 13px;
-    color: #777;
+    color: oklch(0.5693 0 0);
     line-height: 1.4;
     margin-bottom: 10px;
 }
@@ -283,7 +283,7 @@ get_header();
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
-    color: #999;
+    color: oklch(0.683 0 0);
 }
 
 .shiroki-link-visit {
@@ -291,8 +291,8 @@ get_header();
     align-items: center;
     gap: 5px;
     padding: 4px 10px;
-    background: #f0f4ff;
-    color: #4a6cf7;
+    background: oklch(0.9673 0.0153 269.99);
+    color: oklch(0.5864 0.2109 268.6);
     border-radius: 12px;
     text-decoration: none;
     font-size: 12px;
@@ -300,8 +300,8 @@ get_header();
 }
 
 .shiroki-link-visit:hover {
-    background: #4a6cf7;
-    color: #fff;
+    background: oklch(0.5864 0.2109 268.6);
+    color: oklch(1 0 0);
     transform: none;
     box-shadow: none;
 }
@@ -312,7 +312,7 @@ get_header();
     height: 32px;
     border-radius: 4px;
     object-fit: contain;
-    border: 1px solid #e0e0e0;
+    border: 1px solid oklch(0.9067 0 0);
     flex-shrink: 0;
 }
 
@@ -337,76 +337,76 @@ get_header();
 @media (prefers-color-scheme: dark) {
     /* 🌆 全局容器 */
     .shiroki-friendlink-container {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 页面标题区域 */
     .shiroki-page-header h1 {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-page-header p {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 分类导航标签 */
     .shiroki-category-tab {
-        background: #2d2d2d !important;
-        color: #b0b0b0 !important;
+        background: oklch(0.2972 0 0) !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     .shiroki-category-tab:hover {
-        background: #3d3d3d !important;
+        background: oklch(0.36 0 0) !important;
     }
     
     .shiroki-category-tab.active {
-        background: linear-gradient(45deg, #ff6b9d, #fecfef) !important;
-        color: #fff !important;
+        background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05)) !important;
+        color: oklch(1 0 0) !important;
     }
     
     /* 🌆 本站信息区域 */
     .shiroki-site-info {
-        background: #2d2d2d !important;
-        border-color: #404040 !important;
+        background: oklch(0.2972 0 0) !important;
+        border-color: oklch(0.3715 0 0) !important;
     }
     
     .shiroki-site-info-title {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-site-info-desc {
-        color: #999 !important;
+        color: oklch(0.683 0 0) !important;
     }
     
     .shiroki-site-info-item {
-        background: #333 !important;
-        border-color: #444 !important;
+        background: oklch(0.3211 0 0) !important;
+        border-color: oklch(0.3867 0 0) !important;
     }
     
     .shiroki-site-info-label {
-        color: #999 !important;
+        color: oklch(0.683 0 0) !important;
     }
     
     .shiroki-site-info-value {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-site-info-copy {
-        background: #3d3d3d !important;
-        border-color: #555 !important;
-        color: #b0b0b0 !important;
+        background: oklch(0.36 0 0) !important;
+        border-color: oklch(0.4495 0 0) !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 分类标题 */
     .shiroki-category-content h2 {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 友链卡片 */
     .shiroki-link-card {
-        background: #2d2d2d !important;
-        border-color: #404040 !important;
-        color: #e0e0e0 !important;
+        background: oklch(0.2972 0 0) !important;
+        border-color: oklch(0.3715 0 0) !important;
+        color: oklch(0.9067 0 0) !important;
         text-shadow: none !important;
     }
     
@@ -415,25 +415,25 @@ get_header();
     }
     
     .shiroki-link-title {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-link-description {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     .shiroki-link-category {
-        color: #999 !important;
+        color: oklch(0.683 0 0) !important;
     }
     
     .shiroki-link-visit {
-        background: #3a3a4a !important;
-        color: #b0b0b0 !important;
+        background: oklch(0.3551 0.0276 284.91) !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     .shiroki-link-visit:hover {
-        background: #4a6cf7 !important;
-        color: #fff !important;
+        background: oklch(0.5864 0.2109 268.6) !important;
+        color: oklch(1 0 0) !important;
     }
     
     .shiroki-link-card:hover::before {
@@ -443,57 +443,57 @@ get_header();
     
     /* 🌆 友链申请区域 */
     .shiroki-apply-section h2 {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-apply-section > div {
-        background: #2d2d2d !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        background: oklch(0.2972 0 0) !important;
+        box-shadow: 0 4px 15px oklch(0 0 0 / 0.2) !important;
     }
     
     .shiroki-apply-section > div > p {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 申请信息框 */
     .shiroki-apply-section > div > div {
-        background: #333 !important;
-        color: #e0e0e0 !important;
+        background: oklch(0.3211 0 0) !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-apply-section > div > div p {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-apply-section > div > div p strong {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .shiroki-apply-section > div > div p span {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 提交按钮区域 */
     .shiroki-apply-section a {
-        background: linear-gradient(45deg, #ff6b9d, #fecfef) !important;
-        color: #fff !important;
+        background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05)) !important;
+        color: oklch(1 0 0) !important;
     }
     
     /* 🌆 未创建提交页提示 */
-    .shiroki-apply-section > div > div[style*="background: #f8d7da"] {
-        background: #3d2d2d !important;
-        border: 1px solid #5c3d3d !important;
-        color: #e0c8c8 !important;
+    .shiroki-apply-section > div > div[style*="background: oklch(0.9075 0.037 11.63)"] {
+        background: oklch(0.3155 0.0237 18.49) !important;
+        border: 1px solid oklch(0.3956 0.0439 19.21) !important;
+        color: oklch(0.8528 0.0271 17.7) !important;
     }
     
     /* 🌆 页脚信息 */
     .shiroki-friendlink-container > div:last-child p {
-        color: #666 !important;
+        color: oklch(0.5103 0 0) !important;
     }
     
     /* 🌆 空状态提示 */
     .shiroki-link-grid > div {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
 }
 </style>
@@ -502,8 +502,8 @@ get_header();
 <div class="shiroki-friendlink-container">
     <!-- 📝 页面标题 -->
     <div class="shiroki-page-header" style="text-align: center; margin-bottom: 40px;">
-        <h1 style="color: #333; font-size: 28px; margin-bottom: 15px;"><?php the_title(); ?></h1>
-        <p style="color: #666; font-size: 16px; line-height: 1.6;">
+        <h1 style="color: oklch(0.3211 0 0); font-size: 28px; margin-bottom: 15px;"><?php the_title(); ?></h1>
+        <p style="color: oklch(0.5103 0 0); font-size: 16px; line-height: 1.6;">
             精心整理的友情链接，按类别展示，发现更多精彩网站
         </p>
     </div>
@@ -575,7 +575,7 @@ get_header();
     <div class="shiroki-category-contents">
         <!-- 🌐 全部友链 -->
         <div class="shiroki-category-content active" id="category-all">
-            <h2 style="color: #444; font-size: 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="color: oklch(0.3867 0 0); font-size: 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
                 <span>🌐</span>
                 <span>全部友链</span>
             </h2>
@@ -605,7 +605,7 @@ get_header();
                         <?php if (!empty($link_image)) : ?>
                             <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                         <?php else : ?>
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg in srgb, oklch(0.6271 0.1638 271.53) 0%, oklch(0.5012 0.1384 304.73) 100%); display: flex; align-items: center; justify-content: center; color: oklch(1 0 0); font-size: 24px; font-weight: bold;">
                                 <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
                             </div>
                         <?php endif; ?>
@@ -636,7 +636,7 @@ get_header();
                     endforeach;
                 else :
                 ?>
-                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: oklch(0.5103 0 0);">
                     <p style="font-size: 16px; margin-bottom: 15px;">暂无友情链接</p>
                     <p style="font-size: 14px;">欢迎提交友链申请～</p>
                 </div>
@@ -658,7 +658,7 @@ get_header();
         ?>
         <!-- 🎯 <?php echo esc_html($category->name); ?> 分类 -->
         <div class="shiroki-category-content" id="category-<?php echo esc_attr($category->slug); ?>">
-            <h2 style="color: #444; font-size: 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="color: oklch(0.3867 0 0); font-size: 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
                 <span>- </span>
                 <span><?php echo esc_html($category->name); ?></span>
             </h2>
@@ -677,7 +677,7 @@ get_header();
                         <?php if (!empty($link_image)) : ?>
                             <img src="<?php echo esc_url($link_image); ?>" alt="<?php echo esc_attr($link->link_name); ?>">
                         <?php else : ?>
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; font-weight: bold;">
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg in srgb, oklch(0.6271 0.1638 271.53) 0%, oklch(0.5012 0.1384 304.73) 100%); display: flex; align-items: center; justify-content: center; color: oklch(1 0 0); font-size: 24px; font-weight: bold;">
                                 <?php echo esc_html(strtoupper(substr($link->link_name, 0, 1))); ?>
                             </div>
                         <?php endif; ?>
@@ -700,7 +700,7 @@ get_header();
                     endforeach;
                 else :
                 ?>
-                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: oklch(0.5103 0 0);">
                     <p style="font-size: 16px; margin-bottom: 15px;">暂无<?php echo esc_html($category->name); ?>类友链</p>
                     <p style="font-size: 14px;">欢迎提交<?php echo esc_html($category->name); ?>类友链申请～</p>
                 </div>
@@ -714,7 +714,7 @@ get_header();
     </div>
 
     <!-- 📝 友链申请区域 -->
-    <div class="shiroki-apply-section" style="max-width: 800px; margin: 60px auto 0; border-top: 1px solid #eee; padding-top: 40px;">
+    <div class="shiroki-apply-section" style="max-width: 800px; margin: 60px auto 0; border-top: 1px solid oklch(0.9491 0 0); padding-top: 40px;">
         <h2 style="font-size: 22px; margin-bottom: 20px; text-align: center;">申请友链</h2>
         <div style="padding: 30px; border-radius: 12px;">
             <div style="margin-bottom: 20px; line-height: 1.8;">
@@ -745,7 +745,7 @@ get_header();
                 // 🎯 如果存在友链申请页面，则显示跳转按钮
                 if (!empty($friendlink_url)) {
                 ?>
-                    <a href="<?php echo esc_url($friendlink_url); ?>" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 30px; background: linear-gradient(45deg, #ff6b9d, #fecfef); color: #fff; border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
+                    <a href="<?php echo esc_url($friendlink_url); ?>" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 30px; background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05)); color: oklch(1 0 0); border-radius: 25px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
                         <span>📝</span>
                         <span>申请友链</span>
                         <span>→</span>
@@ -758,7 +758,7 @@ get_header();
     </div>
 
     <!-- 📋 页脚信息 -->
-    <div style="text-align: center; margin-top: 40px; padding: 20px; color: #999; font-size: 14px;">
+    <div style="text-align: center; margin-top: 40px; padding: 20px; color: oklch(0.683 0 0); font-size: 14px;">
         <p>© <?php echo date('Y'); ?> <?php echo get_option('blogname'); ?> | 友链分类页面由 灵阈研都 🕊️ 纸鸢社 提供</p>
     </div>
 </div>

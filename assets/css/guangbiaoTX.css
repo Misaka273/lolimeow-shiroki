@@ -16,7 +16,7 @@
   position: absolute;
   width: 1px;
   height: 1px;
-  color: rgb(4, 0, 255);
+  color: oklch(0.4525675 0.31277734 264.31596);
   pointer-events: none;
   transform-style: preserve-3d;
 }
@@ -26,5 +26,5 @@
   color: inherit;
   inset: 0;
   position: absolute;
-  text-shadow: 0 0 1em rgba(133, 182, 255, 0.384);
+  text-shadow: 0 0 1em oklch(0.77062716 0.11764573 258.14926 / 0.384);
 }

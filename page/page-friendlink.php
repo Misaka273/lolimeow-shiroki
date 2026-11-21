@@ -92,21 +92,21 @@ function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_
             body {
                 font-family: Arial, 'Microsoft YaHei', sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
-                background: linear-gradient(to right, #ff6b9d, #fecfef);
+                background: linear-gradient(to right in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05));
                 padding: 40px 30px;
                 text-align: center;
             }
@@ -118,30 +118,30 @@ function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_
                 max-width: 120px;
                 height: auto;
                 border-radius: 50%;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                background-color: #ffffff;
+                box-shadow: 0 4px 12px oklch(0 0 0 / 0.15);
+                background-color: oklch(1 0 0);
                 padding: 10px;
             }
             .email-title {
-                color: #000000ff;
+                color: oklch(0 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                text-shadow: 0 2px 4px oklch(0 0 0 / 0.1);
             }
             .email-body {
                 padding: 40px 30px;
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .info-section {
                 margin: 30px 0;
             }
             .info-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
@@ -153,32 +153,32 @@ function send_friendlink_approved_email($to_email, $site_name, $site_url, $your_
             }
             .info-table td {
                 padding: 15px;
-                border-bottom: 1px solid #f0f0f0;
+                border-bottom: 1px solid oklch(0.9551 0 0);
             }
             .info-table .label {
                 font-weight: 600;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 width: 35%;
             }
             .info-table .value {
-                color: #333;
+                color: oklch(0.3211 0 0);
                 font-size: 15px;
             }
             .info-table .value a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -281,21 +281,21 @@ function send_friendlink_apply_notification($admin_email, $site_name, $site_url,
             body {
                 font-family: Arial, 'Microsoft YaHei', sans-serif;
                 line-height: 1.6;
-                color: #333;
+                color: oklch(0.3211 0 0);
                 margin: 0;
                 padding: 20px;
-                background-color: #fecfef;
+                background-color: oklch(0.9043 0.0669 338.05);
             }
             .email-wrapper {
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #ffffff;
+                background-color: oklch(1 0 0);
                 border-radius: 20px;
                 overflow: hidden;
-                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px oklch(0.7234 0.1854 1.78 / 0.2);
             }
             .email-header {
-                background: linear-gradient(to right, #ff6b9d, #fecfef);
+                background: linear-gradient(to right in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05));
                 padding: 40px 30px;
                 text-align: center;
             }
@@ -307,30 +307,30 @@ function send_friendlink_apply_notification($admin_email, $site_name, $site_url,
                 max-width: 120px;
                 height: auto;
                 border-radius: 50%;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                background-color: #ffffff;
+                box-shadow: 0 4px 12px oklch(0 0 0 / 0.15);
+                background-color: oklch(1 0 0);
                 padding: 10px;
             }
             .email-title {
-                color: #000000ff;
+                color: oklch(0 0 0);
                 font-size: 28px;
                 font-weight: 700;
                 margin: 0;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                text-shadow: 0 2px 4px oklch(0 0 0 / 0.1);
             }
             .email-body {
                 padding: 40px 30px;
             }
             .greeting {
                 font-size: 16px;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 margin-bottom: 30px;
             }
             .info-section {
                 margin: 30px 0;
             }
             .info-section h3 {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 font-size: 18px;
                 margin-bottom: 20px;
                 font-weight: 600;
@@ -342,32 +342,32 @@ function send_friendlink_apply_notification($admin_email, $site_name, $site_url,
             }
             .info-table td {
                 padding: 15px;
-                border-bottom: 1px solid #f0f0f0;
+                border-bottom: 1px solid oklch(0.9551 0 0);
             }
             .info-table .label {
                 font-weight: 600;
-                color: #666;
+                color: oklch(0.5103 0 0);
                 width: 35%;
             }
             .info-table .value {
-                color: #333;
+                color: oklch(0.3211 0 0);
                 font-size: 15px;
             }
             .info-table .value a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
             .email-footer {
-                background-color: #f9f9f9;
+                background-color: oklch(0.9821 0 0);
                 padding: 25px 30px;
                 text-align: center;
                 font-size: 13px;
-                color: #999;
-                border-top: 1px solid #eee;
+                color: oklch(0.683 0 0);
+                border-top: 1px solid oklch(0.9491 0 0);
             }
             .email-footer a {
-                color: #ff6b9d;
+                color: oklch(0.7234 0.1854 1.78);
                 text-decoration: none;
                 font-weight: 600;
             }
@@ -573,15 +573,15 @@ get_header();
 .fl-site-info {
     max-width: 1200px;
     margin: 0 auto 40px;
-    background: #f8f9fa;
+    background: oklch(0.9816 0.0017 247.84);
     border-radius: 12px;
     padding: 24px;
-    border: 1px solid #f0f0f0;
+    border: 1px solid oklch(0.9551 0 0);
 }
 .fl-site-info-title {
     font-size: 18px;
     font-weight: 600;
-    color: #333;
+    color: oklch(0.3211 0 0);
     margin: 0 0 8px;
     display: flex;
     align-items: center;
@@ -589,7 +589,7 @@ get_header();
 }
 .fl-site-info-desc {
     font-size: 14px;
-    color: #888;
+    color: oklch(0.6268 0 0);
     margin: 0 0 16px;
 }
 .fl-site-info-grid {
@@ -602,22 +602,22 @@ get_header();
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    background: #fff;
+    background: oklch(1 0 0);
     border-radius: 8px;
-    border: 1px solid #eee;
+    border: 1px solid oklch(0.9491 0 0);
     min-width: 0;
 }
 .fl-site-info-label {
     flex-shrink: 0;
     font-size: 13px;
     font-weight: 600;
-    color: #666;
+    color: oklch(0.5103 0 0);
     min-width: 72px;
 }
 .fl-site-info-value {
     flex: 1;
     font-size: 13px;
-    color: #333;
+    color: oklch(0.3211 0 0);
     word-break: break-all;
     line-height: 1.4;
     min-width: 0;
@@ -630,18 +630,18 @@ get_header();
     width: 32px;
     height: 32px;
     padding: 0;
-    border: 1px solid #e0e0e0;
+    border: 1px solid oklch(0.9067 0 0);
     border-radius: 6px;
-    background: #fff;
-    color: #666;
+    background: oklch(1 0 0);
+    color: oklch(0.5103 0 0);
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 14px;
 }
 .fl-site-info-copy:hover {
-    background: linear-gradient(45deg, #ff6b9d, #fecfef);
-    border-color: transparent;
-    color: #fff;
+    background: linear-gradient(45deg in srgb, oklch(0.7234 0.1854 1.78), oklch(0.9043 0.0669 338.05));
+    border-color: oklch(0 0 0 / 0);
+    color: oklch(1 0 0);
 }
 .fl-form-grid {
     display: grid;
@@ -655,7 +655,7 @@ get_header();
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid oklch(0.9491 0 0);
     padding-top: 40px;
     align-items: start;
 }
@@ -670,19 +670,19 @@ get_header();
     padding-top: 0;
 }
 .fl-panel-card {
-    background: #fff;
+    background: oklch(1 0 0);
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 10px oklch(0 0 0 / 0.05);
     height: 100%;
     box-sizing: border-box;
 }
 .fl-notice-section .fl-panel-card {
-    background: #f0f8fb;
-    border: 1px solid #007cba;
+    background: oklch(0.974 0.0094 222.06);
+    border: 1px solid oklch(0.5608 0.1315 241.32);
 }
 .fl-panel-title {
-    color: #444;
+    color: oklch(0.3867 0 0);
     font-size: 22px;
     margin: 0 0 20px;
 }
@@ -693,13 +693,13 @@ get_header();
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #333;
+    color: oklch(0.3211 0 0);
 }
 .fl-form-field input,
 .fl-form-field textarea {
     width: 100%;
     padding: 12px 15px;
-    border: 1px solid #ddd;
+    border: 1px solid oklch(0.8975 0 0);
     border-radius: 4px;
     font-size: 14px;
     box-sizing: border-box;
@@ -709,8 +709,8 @@ get_header();
     margin-top: 5px;
 }
 .fl-form-actions button {
-    background: #007cba;
-    color: #fff;
+    background: oklch(0.5608 0.1315 241.32);
+    color: oklch(1 0 0);
     border: none;
     padding: 12px 30px;
     border-radius: 4px;
@@ -720,16 +720,16 @@ get_header();
 }
 .fl-apply-intro {
     margin-bottom: 20px;
-    color: #666;
+    color: oklch(0.5103 0 0);
     line-height: 1.8;
 }
 .fl-apply-intro p:first-child {
-    color: #444;
+    color: oklch(0.3867 0 0);
     margin: 0 0 8px;
 }
 .fl-apply-intro p:last-child {
     font-size: 12px;
-    color: #999;
+    color: oklch(0.683 0 0);
     margin: 0;
 }
 .fl-captcha-row {
@@ -744,7 +744,7 @@ get_header();
 }
 .fl-captcha-row span {
     font-size: 12px;
-    color: #666;
+    color: oklch(0.5103 0 0);
 }
 .fl-notice-alert {
     padding: 10px;
@@ -753,19 +753,19 @@ get_header();
     grid-column: 1 / -1;
 }
 .fl-notice-alert-success {
-    background: #d4edda;
-    color: #155724;
+    background: oklch(0.9226 0.0367 152.82);
+    color: oklch(0.4032 0.1046 147.25);
 }
 .fl-notice-alert-error {
-    background: #f8d7da;
-    color: #721c24;
+    background: oklch(0.9075 0.037 11.63);
+    color: oklch(0.3713 0.1191 20.24);
 }
 .fl-site-icon {
     width: 32px;
     height: 32px;
     border-radius: 4px;
     object-fit: contain;
-    border: 1px solid #e0e0e0;
+    border: 1px solid oklch(0.9067 0 0);
     vertical-align: middle;
     margin-right: 8px;
 }
@@ -780,144 +780,144 @@ get_header();
 @media (prefers-color-scheme: dark) {
     /* 🌆 本站信息区域 */
     .fl-site-info {
-        background: #2d2d2d !important;
-        border-color: #404040 !important;
+        background: oklch(0.2972 0 0) !important;
+        border-color: oklch(0.3715 0 0) !important;
     }
-    .fl-site-info-title { color: #e0e0e0 !important; }
-    .fl-site-info-desc { color: #999 !important; }
+    .fl-site-info-title { color: oklch(0.9067 0 0) !important; }
+    .fl-site-info-desc { color: oklch(0.683 0 0) !important; }
     .fl-site-info-item {
-        background: #333 !important;
-        border-color: #444 !important;
+        background: oklch(0.3211 0 0) !important;
+        border-color: oklch(0.3867 0 0) !important;
     }
-    .fl-site-info-label { color: #999 !important; }
-    .fl-site-info-value { color: #e0e0e0 !important; }
+    .fl-site-info-label { color: oklch(0.683 0 0) !important; }
+    .fl-site-info-value { color: oklch(0.9067 0 0) !important; }
     .fl-site-info-copy {
-        background: #3d3d3d !important;
-        border-color: #555 !important;
-        color: #b0b0b0 !important;
+        background: oklch(0.36 0 0) !important;
+        border-color: oklch(0.4495 0 0) !important;
+        color: oklch(0.7572 0 0) !important;
     }
 
     /* 🌆 全局容器样式 */
     .yikan-friendlink-page {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 标题样式 */
     .yikan-friendlink-page h2 {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 双栏板块容器 */
     .fl-panels-grid {
-        border-top-color: #404040 !important;
+        border-top-color: oklch(0.3715 0 0) !important;
     }
     .fl-panel-card {
-        background: #2d2d2d !important;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+        background: oklch(0.2972 0 0) !important;
+        box-shadow: 0 2px 10px oklch(0 0 0 / 0.2) !important;
     }
     .fl-notice-section .fl-panel-card {
-        background: #2d2d2d !important;
-        border-color: #404040 !important;
+        background: oklch(0.2972 0 0) !important;
+        border-color: oklch(0.3715 0 0) !important;
     }
     .fl-panel-title {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     .fl-apply-intro,
     .fl-apply-intro p:first-child {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     .fl-apply-intro p:last-child {
-        color: #888 !important;
+        color: oklch(0.6268 0 0) !important;
     }
     .fl-form-field label {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     .fl-form-field input,
     .fl-form-field textarea {
-        background: #333 !important;
-        border-color: #555 !important;
-        color: #e0e0e0 !important;
+        background: oklch(0.3211 0 0) !important;
+        border-color: oklch(0.4495 0 0) !important;
+        color: oklch(0.9067 0 0) !important;
     }
     .fl-captcha-row span {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
 
     /* 🌆 管理员邮件发送模块 */
     .fl-notice-section > div {
-        background: #2d2d2d !important;
-        border-color: #404040 !important;
+        background: oklch(0.2972 0 0) !important;
+        border-color: oklch(0.3715 0 0) !important;
     }
     
     .fl-notice-section > div > p {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 表单元素 */
     .fl-notice-section input,
     .fl-notice-section textarea {
-        background: #333 !important;
-        border-color: #555 !important;
-        color: #e0e0e0 !important;
+        background: oklch(0.3211 0 0) !important;
+        border-color: oklch(0.4495 0 0) !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .fl-notice-section label {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 按钮样式 */
     .fl-notice-section button,
     .fl-apply-section button,
     .fl-form-actions button {
-        background: #007cba !important;
-        color: #fff !important;
+        background: oklch(0.5608 0.1315 241.32) !important;
+        color: oklch(1 0 0) !important;
     }
     
     /* 🌆 友链申请区域 */
     .fl-apply-section > div {
-        background: #2d2d2d !important;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+        background: oklch(0.2972 0 0) !important;
+        box-shadow: 0 2px 10px oklch(0 0 0 / 0.2) !important;
     }
     
     .fl-apply-section > div > div {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     .fl-apply-section > div > div > p {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 友链申请说明文字 */
     .fl-apply-section > div > div > p:nth-child(1) {
-        color: #000000ff !important;
+        color: oklch(0 0 0) !important;
         font-weight: 500 !important;
     }
     
     /* 🌆 申请表单 */
     .fl-apply-section input,
     .fl-apply-section textarea {
-        background: #333 !important;
-        border-color: #555 !important;
-        color: #e0e0e0 !important;
+        background: oklch(0.3211 0 0) !important;
+        border-color: oklch(0.4495 0 0) !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     .fl-apply-section label {
-        color: #e0e0e0 !important;
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 验证码区域 */
     .fl-apply-section span {
-        color: #b0b0b0 !important;
+        color: oklch(0.7572 0 0) !important;
     }
     
     /* 🌆 状态消息 */
-    .fl-notice-section div[style*="background: #d4edda"],
-    .fl-notice-section div[style*="background: #f8d7da"] {
-        color: #e0e0e0 !important;
+    .fl-notice-section div[style*="background: oklch(0.9226 0.0367 152.82)"],
+    .fl-notice-section div[style*="background: oklch(0.9075 0.037 11.63)"] {
+        color: oklch(0.9067 0 0) !important;
     }
     
     /* 🌆 链接样式 */
     .yikan-friendlink-page a {
-        color: #00bfff !important;
+        color: oklch(0.7554 0.1534 231.64) !important;
     }
 }
 </style>
@@ -961,8 +961,8 @@ get_header();
 
     <!-- 友联列表区域 | YI KAN搜索导航yy4y.com博客44y4.com -->
     <!-- <div class="fl-list-section" style="margin-bottom: 50px;">
-        <h1 style="color: #333; font-size: 28px; margin-bottom: 30px; text-align: center;"><?php the_title(); ?></h1>
-        <h2 style="color: #444; font-size: 22px; margin-bottom: 20px;">YIKAN友联</h2>
+        <h1 style="color: oklch(0.3211 0 0); font-size: 28px; margin-bottom: 30px; text-align: center;"><?php the_title(); ?></h1>
+        <h2 style="color: oklch(0.3867 0 0); font-size: 22px; margin-bottom: 20px;">YIKAN友联</h2>
         
         <?php
         // 获取友情链接列表 | YI KAN搜索导航yy4y.com博客44y4.com
@@ -976,20 +976,20 @@ get_header();
         <?php if (!empty($friendlinks)) : ?>
             <ul style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: flex-start;">
                 <?php foreach ($friendlinks as $link) : ?>
-                    <li style="padding: 10px 20px; background: #f8f9fa; border-radius: 6px; transition: all 0.3s ease;">
-                        <a href="<?php echo esc_url($link->link_url); ?>" target="_blank" style="color: #2d3748; text-decoration: none; font-size: 16px;">
+                    <li style="padding: 10px 20px; background: oklch(0.9816 0.0017 247.84); border-radius: 6px; transition: all 0.3s ease;">
+                        <a href="<?php echo esc_url($link->link_url); ?>" target="_blank" style="color: oklch(0.3351 0.0331 260.91); text-decoration: none; font-size: 16px;">
                             <?php echo esc_html($link->link_name); ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         <?php else : ?>
-            <p style="color: #666; font-size: 16px; line-height: 1.6;">暂无友情链接，欢迎提交申请～</p>
+            <p style="color: oklch(0.5103 0 0); font-size: 16px; line-height: 1.6;">暂无友情链接，欢迎提交申请～</p>
         <?php endif; ?>
         -->
         
         <!-- 版权声明 | YI KAN搜索导航yy4y.com博客44y4.com -->
-        <!--<p style="color: #999; font-size: 14px; margin-top: 20px; text-align: right;">
+        <!--<p style="color: oklch(0.683 0 0); font-size: 14px; margin-top: 20px; text-align: right;">
             © <?php echo date('Y'); ?> <?php echo FL_COPYRIGHT_TEXT; ?> 版权所有
         </p>
     </div> -->
@@ -1090,7 +1090,7 @@ get_header();
                     <div class="fl-captcha-row">
                         <input type="text" name="fl_captcha" required placeholder="请输入图形中的字符">
                         <img src="<?php echo get_permalink(); ?>?fl_captcha_img=1" alt="验证码"
-                             style="width: <?php echo FL_CAPTCHA_WIDTH; ?>px; height: <?php echo FL_CAPTCHA_HEIGHT; ?>px; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;"
+                             style="width: <?php echo FL_CAPTCHA_WIDTH; ?>px; height: <?php echo FL_CAPTCHA_HEIGHT; ?>px; border: 1px solid oklch(0.8975 0 0); border-radius: 4px; cursor: pointer;"
                              onclick="this.src='<?php echo get_permalink(); ?>?fl_captcha_img=1&t='+Math.random()">
                         <span>点击验证码刷新</span>
                     </div>
@@ -1102,7 +1102,7 @@ get_header();
                 </div>
 
                 <?php if (isset($_GET['fl_msg'])) : ?>
-                    <div style="margin-top: 15px; font-size: 14px; color: <?php echo (isset($_GET['fl_type']) && $_GET['fl_type'] === 'success') ? '#28a745' : '#dc3545'; ?>;">
+                    <div style="margin-top: 15px; font-size: 14px; color: <?php echo (isset($_GET['fl_type']) && $_GET['fl_type'] === 'success') ? 'oklch(0.6401 0.1751 146.74)' : 'oklch(0.5915 0.202 21.24)'; ?>;">
                         <?php echo esc_html(urldecode($_GET['fl_msg'])); ?>
                     </div>
                 <?php endif; ?>
@@ -1114,7 +1114,7 @@ get_header();
                 form.addEventListener('submit', function() {
                     btn.disabled = true;
                     btn.innerHTML = '提交中...';
-                    btn.style.backgroundColor = '#6c757d';
+                    btn.style.backgroundColor = 'oklch(0.5575 0.0165 244.89)';
                 });
             </script>
         </div>

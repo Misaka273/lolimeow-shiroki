@@ -172,7 +172,7 @@ class widget_currentuser extends WP_Widget {
 		echo '    left: -50%;';
 		echo '    width: 200%;';
 		echo '    height: 200%;';
-		echo '    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);';
+		echo '    background: linear-gradient(45deg in srgb, oklch(0 0 0 / 0), oklch(1 0 0 / 0.3), oklch(0 0 0 / 0));';
 		echo '    transform: rotate(45deg);';
 		echo '    transition: left 0.5s ease, opacity 0.3s ease;';
 		echo '    opacity: 0;';
@@ -186,12 +186,12 @@ class widget_currentuser extends WP_Widget {
 		echo '.profile-email {';
 		echo '    margin: 15px 0;';
 		echo '    padding: 10px 15px;';
-		echo '    background-color: #ffffff;';
+		echo '    background-color: oklch(1 0 0);';
 		echo '    border-radius: 8px;';
 		echo '    font-size: 14px;';
 		echo '    text-align: center;';
-		echo '    color: #333333;';
-		echo '    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);';
+		echo '    color: oklch(0.3211 0 0);';
+		echo '    box-shadow: 0 2px 8px oklch(0 0 0 / 0.1);';
 		echo '    font-weight: 500;';
 		echo '    z-index: 10;';
 		echo '    display: block !important;';
@@ -199,7 +199,7 @@ class widget_currentuser extends WP_Widget {
 		echo '.profile-email span {';
 		echo '    word-break: break-all;';
 		echo '    font-weight: 500;';
-		echo '    color: #333333 !important;';
+		echo '    color: oklch(0.3211 0 0) !important;';
 		echo '}';
 		echo '</style>';
 		

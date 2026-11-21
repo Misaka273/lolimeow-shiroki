@@ -12,13 +12,13 @@
   }
   window.__shirokiGuangbiaoClickInitialized = true;
 
-  var COLORS = ['#E23636', '#001AFF', '#00FFEA', '#FF009D', '#FFD166', '#7B61FF', '#00C853', '#FF6D00'];
+  var COLORS = ['oklch(0.6007 0.2083 26.16)', 'oklch(0.4628 0.3059 264.18)', 'oklch(0.8987 0.1589 184.32)', 'oklch(0.6548 0.27 353.54)', 'oklch(0.8803 0.1348 86.06)', 'oklch(0.6057 0.224 285.06)', 'oklch(0.7266 0.2085 148.34)', 'oklch(0.7049 0.1989 45.77)'];
 
   var PRESETS = {
     five_lines: {
       type: 'fan',
       duration: 420,
-      color: '#1877F2',
+      color: 'oklch(0.5891 0.2029 257.86)',
       lineHeight: 5,
       shortLength: 5,
       finalLength: 25,

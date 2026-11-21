@@ -75,7 +75,7 @@
 /* 🔘 筛选按钮 */
 .shiroki-stats-filter-btn {
   padding: var(--admin-space-sm) var(--admin-space-lg);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   border: none;
   border-radius: var(--admin-radius-md);
   font-size: var(--admin-font-size-md);
@@ -149,19 +149,19 @@
 
 /* 🎴 统计卡片内容 */
 .shiroki-stats-card-views {
-  background: linear-gradient(135deg, rgba(99, 179, 237, 0.15) 0%, rgba(183, 148, 244, 0.15) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.739179 0.115418 242.053 / 0.15) 0%, oklch(0.735825 0.139368 299.78 / 0.15) 100%);
 }
 
 .shiroki-stats-card-visits {
-  background: linear-gradient(135deg, rgba(72, 187, 120, 0.15) 0%, rgba(56, 178, 172, 0.15) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.709577 0.143366 154.532 / 0.15) 0%, oklch(0.696425 0.10529 190.239 / 0.15) 100%);
 }
 
 .shiroki-stats-card-downloads {
-  background: linear-gradient(135deg, rgba(246, 173, 85, 0.15) 0%, rgba(237, 137, 54, 0.15) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.801224 0.134256 68.787 / 0.15) 0%, oklch(0.72437 0.153399 56.072 / 0.15) 100%);
 }
 
 .shiroki-stats-card-users {
-  background: linear-gradient(135deg, rgba(237, 100, 166, 0.15) 0%, rgba(159, 122, 234, 0.15) 100%);
+  background: linear-gradient(135deg in srgb, oklch(0.692305 0.181722 352.86 / 0.15) 0%, oklch(0.663693 0.163442 296.963 / 0.15) 100%);
 }
 
 /* 🎨 卡片图标 */
@@ -273,15 +273,15 @@
 }
 
 .legend-item.views .legend-dot {
-  background: #63b3ed;
+  background: oklch(0.739179 0.115418 242.053);
 }
 
 .legend-item.visits .legend-dot {
-  background: #48bb78;
+  background: oklch(0.709577 0.143366 154.532);
 }
 
 .legend-item.downloads .legend-dot {
-  background: #ed8936;
+  background: oklch(0.72437 0.153399 56.072);
 }
 
 /* 📊 图表主体 */
@@ -369,19 +369,19 @@
 }
 
 .ranking-number.top {
-  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg in srgb, oklch(0.886771 0.182186 95.33) 0%, oklch(0.801577 0.170502 73.267) 100%);
+  color: oklch(1 0 0);
+  box-shadow: 0 2px 8px oklch(0.886771 0.182186 95.33 / 0.4);
 }
 
 .ranking-number.top:nth-child(2) {
-  background: linear-gradient(135deg, #c0c0c0 0%, #a0a0a0 100%);
-  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
+  background: linear-gradient(135deg in srgb, oklch(0.807796 0 0) 0%, oklch(0.705757 0 0) 100%);
+  box-shadow: 0 2px 8px oklch(0.807796 0 0 / 0.4);
 }
 
 .ranking-number.top:nth-child(3) {
-  background: linear-gradient(135deg, #cd7f32 0%, #b87333 100%);
-  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
+  background: linear-gradient(135deg in srgb, oklch(0.666106 0.131533 61.294) 0%, oklch(0.617953 0.117102 60.399) 100%);
+  box-shadow: 0 2px 8px oklch(0.666106 0.131533 61.294 / 0.4);
 }
 
 /* 🖼️ 用户头像 */
@@ -390,7 +390,7 @@
   height: 40px;
   border-radius: var(--admin-radius-full);
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid oklch(1 0 0 / 0.5);
   box-shadow: var(--admin-shadow-sm);
 }
 

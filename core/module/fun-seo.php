@@ -115,6 +115,14 @@ function boxmoe_theme_title(){
 	$site_description = get_bloginfo('description');
 	$title_sep = boxmoe_title_link();
 	
+	// 首页标题允许后台自定义：搜索/AI 场景下核心词应该排在品牌前面
+	if( (is_home() || is_front_page()) && (int) $paged < 2 ){
+		$custom_home_title = trim( (string) get_boxmoe('boxmoe_home_seo_title') );
+		if( $custom_home_title !== '' ){
+			return $custom_home_title;
+		}
+	}
+	
 	// 获取当前页面标题
 	if (is_single() || is_page()) {
 		$t = get_the_title();
@@ -164,6 +172,24 @@ function boxmoe_theme_title(){
 	
 	return $html;
 }
+
+// 分享卡片使用文章/页面本身的标题，避免失焦提示文字被当作卡片标题。
+function boxmoe_social_title_meta(){
+    if (!is_singular()) {
+        return;
+    }
+
+    $title = trim(wp_strip_all_tags(get_the_title(get_queried_object_id())));
+    if ($title === '') {
+        return;
+    }
+
+    $title = esc_attr($title);
+    echo '<meta property="og:title" content="' . $title . '">' . "\n";
+    echo '<meta name="twitter:card" content="summary">' . "\n";
+    echo '<meta name="twitter:title" content="' . $title . '">' . "\n";
+}
+add_action('wp_head', 'boxmoe_social_title_meta', 2);
 
 // 获取文章副标题--------------------------boxmoe.com--------------------------
 function get_the_subtitle($span=true){
@@ -292,14 +318,11 @@ function boxmoe_description() {
     $description = '';
     $blog_name = get_bloginfo('name');
     if ( is_singular() ) {
-      if( !empty( $post->post_excerpt ) ) {
-        $text = $post->post_excerpt;
-      } else {
-        $text = $post->post_content;
-      }
-      $description = trim( str_replace( array( "\r\n", "\r", "\n", "　", " "), " ", str_replace( "\"", "'", strip_tags( $text ) ) ) );
+      $public_data = boxmoe_geo_public_post_data($post);
+      $text = $public_data['excerpt'] !== '' ? $public_data['excerpt'] : $public_data['content'];
+      $description = trim(wp_strip_all_tags(strip_shortcodes($text)));
       if ( !( $description ) ) $description = $blog_name . "-" . trim( wp_title('', false) );
-      if(get_boxmoe('boxmoe_auto_keywords_description_switch') ) {
+      if(!$public_data['restricted'] && get_boxmoe('boxmoe_auto_keywords_description_switch') ) {
           $the = trim(get_post_meta($post->ID, 'description', true));
           if( $the ) $description = $the;
       }
@@ -319,6 +342,71 @@ function boxmoe_description() {
     } elseif ( is_search() )   { $description = $blog_name . ": '" . esc_html( $s, 1 ) . "' ".__('的搜索結果', 'boxmoe');
     } else { $description = $blog_name . "'" . trim( wp_title('', false) ) . "'";
     }
-    $description = mb_substr( $description, 0, 80, 'utf-8' );
-    echo "<meta name=\"description\" itemprop=\"description\" itemprop=\"name\" content=\"$description\">\n";
+    $description = trim(wp_strip_all_tags(strip_shortcodes((string) $description)));
+    $description = preg_replace('/\s+/u', ' ', $description);
+    $description = mb_substr( $description, 0, 120, 'utf-8' );
+    echo '<meta name="description" itemprop="description" content="' . esc_attr($description) . '">' . "\n";
   }
+
+
+// 规范网址（canonical）：主题统一输出，覆盖首页/分类/标签/作者/日期归档与分页--------------------------gl.baimu.live--------------------------
+function boxmoe_canonical_url(){
+    $url = '';
+
+    if ( is_front_page() || is_home() ) {
+        $url = home_url('/');
+    } elseif ( is_singular() ) {
+        $url = get_permalink();
+    } elseif ( is_category() || is_tag() || is_tax() ) {
+        $term = get_queried_object();
+        if ( $term && ! is_wp_error( $term ) && isset( $term->term_id ) ) {
+            $link = get_term_link( $term );
+            if ( ! is_wp_error( $link ) ) {
+                $url = $link;
+            }
+        }
+    } elseif ( is_author() ) {
+        $url = get_author_posts_url( get_queried_object_id() );
+    } elseif ( is_post_type_archive() ) {
+        $post_type = get_query_var( 'post_type' );
+        if ( is_array( $post_type ) ) {
+            $post_type = reset( $post_type );
+        }
+        $url = get_post_type_archive_link( $post_type );
+    } elseif ( is_date() ) {
+        if ( is_day() ) {
+            $url = get_day_link( get_query_var( 'year' ), get_query_var( 'monthnum' ), get_query_var( 'day' ) );
+        } elseif ( is_month() ) {
+            $url = get_month_link( get_query_var( 'year' ), get_query_var( 'monthnum' ) );
+        } elseif ( is_year() ) {
+            $url = get_year_link( get_query_var( 'year' ) );
+        }
+    }
+
+    if ( empty( $url ) || is_wp_error( $url ) ) {
+        return '';
+    }
+
+    if ( is_paged() ) {
+        $url = get_pagenum_link( max( 1, (int) get_query_var( 'paged' ) ) );
+    }
+
+    return $url;
+}
+
+function boxmoe_canonical_tag(){
+    if ( is_404() || is_search() || is_preview() || is_feed() ) {
+        return;
+    }
+
+    // 核心的 rel_canonical 只在单页输出，主题统一接管后要移除，避免同一页面两条 canonical
+    remove_action( 'wp_head', 'rel_canonical' );
+
+    $url = boxmoe_canonical_url();
+    if ( $url === '' ) {
+        return;
+    }
+
+    echo '<link rel="canonical" href="' . esc_url( $url ) . '" />' . "\n";
+}
+add_action( 'wp_head', 'boxmoe_canonical_tag', 3 );

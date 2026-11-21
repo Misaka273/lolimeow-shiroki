@@ -7,29 +7,29 @@
 /* 🔗 基础变量定义 */
 :root {
   /* ☀️ 亮色模式变量 */
-  --search-line-bg: transparent;
-  --search-line-bg-hover: rgba(0, 0, 0, 0.02);
-  --search-line-bg-focus: rgba(255, 255, 255, 0.5);
-  --search-line-border: var(--bs-dark, #212529);
+  --search-line-bg: oklch(0 0 0 / 0);
+  --search-line-bg-hover: oklch(0 0 0 / 0.02);
+  --search-line-bg-focus: oklch(1 0 0 / 0.5);
+  --search-line-border: var(--bs-dark, oklch(0.26209276 0.00949347 248.18975));
   --search-line-border-width: 1.5px;
-  --search-line-border-focus: var(--bs-primary, #8b3dff);
-  --search-line-text: var(--bs-dark, #212529);
-  --search-line-placeholder: #999999;
-  --search-line-icon: var(--bs-dark, #212529);
+  --search-line-border-focus: var(--bs-primary, oklch(0.57522728 0.2628706 294.90116));
+  --search-line-text: var(--bs-dark, oklch(0.26209276 0.00949347 248.18975));
+  --search-line-placeholder: oklch(0.6829534 0 0);
+  --search-line-icon: var(--bs-dark, oklch(0.26209276 0.00949347 248.18975));
   --search-line-radius: 20px;
   --search-line-transition: all 0.25s ease;
 }
 
 /* 🌆 暗色模式变量 */
 [data-bs-theme="dark"] {
-  --search-line-bg: transparent;
-  --search-line-bg-hover: rgba(255, 255, 255, 0.05);
-  --search-line-bg-focus: rgba(255, 255, 255, 0.1);
-  --search-line-border: rgba(255, 255, 255, 0.6);
-  --search-line-border-focus: var(--bs-primary, #a855f7);
-  --search-line-text: #ffffff;
-  --search-line-placeholder: rgba(255, 255, 255, 0.5);
-  --search-line-icon: rgba(255, 255, 255, 0.8);
+  --search-line-bg: oklch(0 0 0 / 0);
+  --search-line-bg-hover: oklch(1 0 0 / 0.05);
+  --search-line-bg-focus: oklch(1 0 0 / 0.1);
+  --search-line-border: oklch(1 0 0 / 0.6);
+  --search-line-border-focus: var(--bs-primary, oklch(0.62684592 0.23254185 303.90043));
+  --search-line-text: oklch(1 0 0);
+  --search-line-placeholder: oklch(1 0 0 / 0.5);
+  --search-line-icon: oklch(1 0 0 / 0.8);
 }
 
 /* 📏 导航栏搜索框容器 */
@@ -86,7 +86,7 @@
   min-height: 40px;
   border: none;
   border-radius: 0;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   cursor: pointer;
   z-index: 1;
   display: flex;
@@ -102,7 +102,7 @@
 
 /* 📏 搜索按钮悬停效果 */
 .boxmoe_header .search-form.search-style-line .search-btn:hover {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
 }
 
 /* 📏 激活状态 - 搜索框展开 */
@@ -121,12 +121,12 @@
 .boxmoe_header .search-form.search-style-line.active .search-input:focus {
   background: var(--search-line-bg-focus);
   border-color: var(--search-line-border-focus);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 0 3px oklch(0.60563076 0.21891508 292.71722 / 0.1);
 }
 
 /* 📏 激活状态 - 搜索按钮定位 */
 .boxmoe_header .search-form.search-style-line.active .search-btn {
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   position: absolute;
   right: 0;
 }
@@ -149,7 +149,7 @@
   border: none;
   outline: none;
   border-radius: var(--search-line-radius);
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   transition: var(--search-line-transition);
   opacity: 0;
   font-size: 0.9rem;
@@ -168,7 +168,7 @@
 .boxmoe_header .mobile-search-form.search-style-line .search-submit.mobile-search-btn,
 .boxmoe_header .mobile-search-form.search-style-line .search-wrap .search-submit.mobile-search-btn {
   border: none !important;
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 8px;
@@ -189,7 +189,7 @@
 /* 📏 移动端搜索按钮图标 */
 .boxmoe_header .mobile-search-form.search-style-line .mobile-search-btn i,
 .boxmoe_header .mobile-search-form.search-style-line .search-submit.mobile-search-btn i {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   color: inherit;
 }
 
@@ -197,7 +197,7 @@
 .boxmoe_header .mobile-search-form.search-style-line .mobile-search-btn:hover,
 .boxmoe_header .mobile-search-form.search-style-line .search-submit.mobile-search-btn:hover,
 .boxmoe_header .mobile-search-form.search-style-line .search-wrap .search-submit.mobile-search-btn:hover {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
 }
 
 /* 📏 移动端激活状态 */
@@ -213,14 +213,14 @@
 .boxmoe_header .mobile-search-form.search-style-line.active .mobile-search-input:focus {
   background: var(--search-line-bg-focus);
   border-color: var(--search-line-border-focus);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 0 3px oklch(0.60563076 0.21891508 292.71722 / 0.1);
 }
 
 /* 📏 移动端激活状态 - 搜索按钮 */
 .boxmoe_header .mobile-search-form.search-style-line.active .mobile-search-btn,
 .boxmoe_header .mobile-search-form.search-style-line.active .search-submit.mobile-search-btn,
 .boxmoe_header .mobile-search-form.search-style-line.active .search-wrap .search-submit.mobile-search-btn {
-  background: transparent !important;
+  background: oklch(0 0 0 / 0) !important;
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -258,7 +258,7 @@
 .search-form.search-style-line .search-input:focus {
   background: var(--search-line-bg-focus);
   border-color: var(--search-line-border-focus);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 0 3px oklch(0.60563076 0.21891508 292.71722 / 0.1);
 }
 
 .search-form.search-style-line .search-submit {

@@ -8,7 +8,7 @@
 if(!defined('ABSPATH')){echo'Look your sister';exit;}
 // 🔗 重定向到登录页面的注册模块
 $login_url = boxmoe_sign_in_link_page();
-wp_safe_redirect( add_query_arg('mode', 'signup', $login_url) );
+wp_safe_redirect(boxmoe_auth_entry_url(add_query_arg('mode', 'signup', $login_url)));
 exit;
 ?>
 <html <?php language_attributes(); ?>>
@@ -23,11 +23,11 @@ exit;
     <style>
         /* 🥳 注册页样式 - 双面板设计 */
         :root {
-            --primary: #5995fd;
-            --primary-dark: #4d84e2;
-            --bg: #f0f0f0;
-            --text: #444;
-            --white: #fff;
+            --primary: oklch(0.6786 0.1664 260.64);
+            --primary-dark: oklch(0.6213 0.154 260.42);
+            --bg: oklch(0.9551 0 0);
+            --text: oklch(0.3867 0 0);
+            --white: oklch(1 0 0);
         }
         
         * {
@@ -57,7 +57,7 @@ exit;
             top: -10%;
             right: 48%;
             transform: translateY(-50%);
-            background-image: linear-gradient(-45deg, #1c5fd1 0%, #1ec3fa 100%);
+            background-image: linear-gradient(-45deg in srgb, oklch(0.5148 0.1884 260.62) 0%, oklch(0.7642 0.1443 228.04) 100%);
             transition: 1.8s ease-in-out;
             border-radius: 50%;
             z-index: 6;
@@ -106,14 +106,14 @@ exit;
         
         .title {
             font-size: 2.2rem;
-            color: #444;
+            color: oklch(0.3867 0 0);
             margin-bottom: 10px;
         }
         
         .input_field {
             max-width: 380px;
             width: 100%;
-            background-color: #f0f0f0;
+            background-color: oklch(0.9551 0 0);
             margin: 10px 0;
             height: 55px;
             border-radius: 55px;
@@ -132,12 +132,12 @@ exit;
             font-weight: 600;
             font-size: 1.1rem;
             padding-left: 10px;
-            color: #333;
+            color: oklch(0.3211 0 0);
             font-size: 16px;
         }
         
         .input_field input::placeholder {
-            color: #aaa;
+            color: oklch(0.738 0 0);
             font-weight: 500;
         }
         
@@ -152,10 +152,10 @@ exit;
             border-radius: 50%;
             outline: none;
             -webkit-appearance: none;
-            border: 1px solid #fff;
-            -webkit-tab-highlight-color: rgba(0, 0, 0, 0);
-            color: #fff;
-            background: #fff;
+            border: 1px solid oklch(1 0 0);
+            -webkit-tab-highlight-color: oklch(0 0 0 / 0);
+            color: oklch(1 0 0);
+            background: oklch(1 0 0);
         }
         
         .shortMessage::before,
@@ -164,24 +164,24 @@ exit;
             position: absolute;
             top: 0;
             left: 0;
-            background: #fff;
+            background: oklch(1 0 0);
             width: 100%;
             height: 100%;
-            border: 1px solid #999999;
+            border: 1px solid oklch(0.683 0 0);
             border-radius: 50%;
-            color: #fff;
+            color: oklch(1 0 0);
         }
         
         .shortMessage:checked::before,
         .Password_login:checked::before {
             content: "\2713";
-            background-color: #51a7e0;
-            border: 1px solid #51a7e0;
+            background-color: oklch(0.699 0.1179 240.42);
+            border: 1px solid oklch(0.699 0.1179 240.42);
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            color: #fff;
+            color: oklch(1 0 0);
             font-size: 0.52rem;
             border-radius: 50%;
         }
@@ -195,18 +195,18 @@ exit;
         }
         
         .agree_text a {
-            color: #51a7e0;
+            color: oklch(0.699 0.1179 240.42);
             text-decoration: none;
         }
         
         .btn {
             width: 150px;
-            background-color: #5995fd;
+            background-color: oklch(0.6786 0.1664 260.64);
             border: none;
             outline: none;
             height: 49px;
             border-radius: 49px;
-            color: #fff;
+            color: oklch(1 0 0);
             text-transform: uppercase;
             font-weight: 600;
             margin: 10px 0;
@@ -215,7 +215,7 @@ exit;
         }
         
         .btn:hover {
-            background-color: #4d84e2;
+            background-color: oklch(0.6213 0.154 260.42);
         }
         
         .panels-container {
@@ -248,7 +248,7 @@ exit;
         }
         
         .panel .content {
-            color: #fff;
+            color: oklch(1 0 0);
             transition: transform 0.9s ease-in-out;
             transition-delay: 0.6s;
         }
@@ -267,7 +267,7 @@ exit;
         .btn.transparent {
             margin: 0;
             background: none;
-            border: 2px solid #fff;
+            border: 2px solid oklch(1 0 0);
             width: 130px;
             height: 41px;
             font-weight: 600;
@@ -287,27 +287,27 @@ exit;
         
         /* 🌙 暗色模式适配 */
         [data-bs-theme="dark"] {
-            --primary: #6e9eff;
-            --primary-dark: #5a87e3;
-            --bg: #1a1a1a;
-            --text: #e0e0e0;
-            --white: #2d2d2d;
+            --primary: oklch(0.7084 0.1517 263.15);
+            --primary-dark: oklch(0.6344 0.1473 263.17);
+            --bg: oklch(0.2178 0 0);
+            --text: oklch(0.9067 0 0);
+            --white: oklch(0.2972 0 0);
         }
         
         [data-bs-theme="dark"] .title {
-            color: #e0e0e0;
+            color: oklch(0.9067 0 0);
         }
         
         [data-bs-theme="dark"] .input_field {
-            background-color: #3d3d3d;
+            background-color: oklch(0.36 0 0);
         }
         
         [data-bs-theme="dark"] .input_field input {
-            color: #e0e0e0;
+            color: oklch(0.9067 0 0);
         }
         
         [data-bs-theme="dark"] .input_field input::placeholder {
-            color: #888;
+            color: oklch(0.6268 0 0);
         }
         
         /* ANIMATION */

@@ -42,7 +42,7 @@ jQuery(document).ready(function($){
 				var screenshot = optionsframework_selector.find('.screenshot');
 				var isImage = attachment.attributes.type == 'image' || attachment.attributes.url.toLowerCase().match(/\.(jpg|jpeg|png|gif|avif|webp|ico|svg)$/i);
 				if ( isImage ) {
-					screenshot.empty().append('<img src="' + attachment.attributes.url + '" style="max-width: 162px; max-height: 75px; object-fit: contain; background: #f5f5f5;">').show();
+					screenshot.empty().append('<img src="' + attachment.attributes.url + '" style="max-width: 162px; max-height: 75px; object-fit: contain; background: oklch(0.9702 0 0);">').show();
 				}
 				// 更新按钮状态
 				var uploadButton = optionsframework_selector.find('.upload-button');
@@ -65,7 +65,7 @@ jQuery(document).ready(function($){
 		// 重置预览图，确保预览图等比例显示
 		var screenshot = selector.find('.screenshot');
 		if (defaultUrl) {
-			screenshot.empty().append('<img src="' + defaultUrl + '" style="max-width: 162px; max-height: 75px; object-fit: contain; background: #f5f5f5;">').show();
+			screenshot.empty().append('<img src="' + defaultUrl + '" style="max-width: 162px; max-height: 75px; object-fit: contain; background: oklch(0.9702 0 0);">').show();
 		} else {
 			screenshot.empty().hide();
 		}

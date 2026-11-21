@@ -63,7 +63,7 @@
   font-size: 24px;
   font-weight: var(--admin-font-weight-bold);
   color: var(--admin-current-text-primary);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-shadow: 0 2px 4px oklch(0 0 0 / 0.05);
 }
 
 /* 🎨 标题图标 */
@@ -521,12 +521,12 @@
   align-items: center;
   gap: var(--admin-space-xs);
   padding: var(--admin-space-xs) var(--admin-space-sm);
-  background: rgba(0, 0, 0, 0.6);
+  background: oklch(0 0 0 / 0.6);
   backdrop-filter: var(--admin-glass-blur);
   border-radius: var(--admin-radius-md);
   font-size: var(--admin-font-size-sm);
   font-weight: var(--admin-font-weight-semibold);
-  color: #ffd700;
+  color: oklch(0.886771 0.182186 95.33);
 }
 
 /* 📝 信息区域 */
@@ -645,7 +645,7 @@
 
 .shiroki-anime-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--admin-primary-border) 0%, var(--admin-purple-border) 100%);
+  background: linear-gradient(90deg in srgb, var(--admin-primary-border) 0%, var(--admin-purple-border) 100%);
   border-radius: var(--admin-radius-full);
   transition: width 0.6s ease;
 }
@@ -743,7 +743,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: oklch(0 0 0 / 0.5);
   backdrop-filter: blur(4px);
 }
 
@@ -927,7 +927,7 @@
   width: 100%;
   padding: var(--admin-space-sm) var(--admin-space-md);
   border: 0;
-  background: transparent;
+  background: oklch(0 0 0 / 0);
   color: var(--admin-current-text-primary);
   font-size: var(--admin-font-size-sm);
   text-align: left;
